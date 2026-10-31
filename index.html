@@ -9,26 +9,26 @@
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 --bg:#f7f8fa;--sf:#fff;--sf2:#f1f3f5;--tx:#1a1e24;--mut:#68727e;--bd:#e4e7eb;
 --up:#d02a38;--dn:#1668c4;--upbg:rgba(208,42,56,.09);--dnbg:rgba(22,104,196,.09);
---ac:#1a1e24;--acx:#fff;--ok:#1d9e57;--warn:#d98a16;color-scheme:light}
+--ac:#1a1e24;--acx:#fff;--ok:#1d9e57;--warn:#d98a16;--adsh:rgba(26,30,36,.22);color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
 --bg:#0b0d10;--sf:#14171b;--sf2:#1d2126;--tx:#eceff3;--mut:#8f99a6;--bd:#262b31;
 --up:#ff5f6b;--dn:#5ea0ff;--upbg:rgba(255,95,107,.13);--dnbg:rgba(94,160,255,.13);
---ac:#eceff3;--acx:#0b0d10;color-scheme:dark}}
+--ac:#eceff3;--acx:#0b0d10;--adsh:rgba(0,0,0,.65);color-scheme:dark}}
 :root[data-theme="dark"]{
 --bg:#0b0d10;--sf:#14171b;--sf2:#1d2126;--tx:#eceff3;--mut:#8f99a6;--bd:#262b31;
 --up:#ff5f6b;--dn:#5ea0ff;--upbg:rgba(255,95,107,.13);--dnbg:rgba(94,160,255,.13);
---ac:#eceff3;--acx:#0b0d10;color-scheme:dark}
+--ac:#eceff3;--acx:#0b0d10;--adsh:rgba(0,0,0,.65);color-scheme:dark}
 html{scroll-padding-top:64px}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 "Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;font-variant-numeric:tabular-nums}
-main{max-width:680px;margin:0 auto;padding:20px 16px 44px}
+main{max-width:680px;margin:0 auto;padding:20px 16px 44px;box-shadow:-20px 0 30px -20px var(--adsh),20px 0 30px -20px var(--adsh)}
+@media(max-width:720px){main{box-shadow:none}}
 h1{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.25;margin:0}
 h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .sub{color:var(--mut);font-size:13px;margin:3px 0 0}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 /* 상단 헤더 */
-.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
-.hd-t{min-width:0}
+.hd{display:flex;justify-content:flex-end;align-items:flex-start;gap:10px;flex-wrap:wrap}
 .live{display:inline-flex;align-items:center;gap:7px;padding:7px 2px;font-size:12px;color:var(--mut);white-space:nowrap;margin-top:5px}
 .dot{width:9px;height:9px;border-radius:50%;background:var(--warn);flex:none}
 .dot.ok{background:var(--ok)}
@@ -388,7 +388,6 @@ main{padding:18px 12px 40px}
 .xsel{font-size:13.5px}
 /* 모바일: 로그인 버튼은 제목 줄 오른쪽 끝으로, 연결 상태는 설명 아래 줄에 그대로 */
 .hd-r{display:contents}
-.hd-t{order:1}
 .acct{order:2}
 .live{order:3;flex:0 0 100%}
 }
@@ -573,7 +572,7 @@ main{padding:18px 12px 40px}
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-t"><h1>잡주넷</h1></div><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span><b id="lg-id"></b><span class="opbdg" id="lg-op" hidden>운영자</span></button></div></div></div>
+<div class="hd"><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span><b id="lg-id"></b><span class="opbdg" id="lg-op" hidden>운영자</span></button></div></div></div>
 
 <div class="ixtiles" aria-label="주요 지수">
 <div class="ixt"><small><i id="ixt-ks-d"></i>코스피</small><b id="ixt-ks-v">—</b><span class="ixc na" id="ixt-ks-c">—</span><span class="ixhl" id="ixt-ks-hl"></span></div>
