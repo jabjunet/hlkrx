@@ -507,7 +507,7 @@ main{padding:18px 12px 40px}
 /* 비교 탭: 빈 검색 목록(차트 이어진 10종목) 전용 내부 스크롤 — 한 번에 3행만 보이고, 목록 안에서 스크롤해 나머지를 본다. 행 높이 41px × 3 = 123px */
 .cmp-sugscroll{max-height:123px;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .cmp-sugscroll .cmp-sug{height:41px}
-/* 비교 탭 메인 고정 4분할: 비트·유가·금·나스닥 — 모든 화면 폭에서 2×2 유지 */
+/* 비교 탭 메인 고정 4분할: 비트·유가·금·나스닥 — 데스크톱은 2×2, 모바일(720px 이하)은 한 열로 쌓아 표시 */
 .steady{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .steady-cell{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:12px;min-width:0;display:flex;flex-direction:column}
 .steady-hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;min-width:0}
@@ -519,7 +519,7 @@ main{padding:18px 12px 40px}
 .steady-tvw>div[id$="-in"]{height:100%}
 .steady-tvw>div[id$="-in"]>div{height:100%!important}
 .steady-tvw .tvmsg{z-index:2}
-@media(max-width:520px){.steady{gap:8px}.steady-cell{padding:10px}}
+@media(max-width:720px){.steady{grid-template-columns:1fr;gap:8px}.steady-cell{padding:10px}}
 .cmp-more-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:10px;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:12px}
 .cmp-more-btn:hover{background:var(--sf2)}
 #cmp2wrap[hidden]{display:none}
@@ -1044,7 +1044,7 @@ if(can){var cells=[],any=false;
 var d="";if(p!=null&&can===x[0]&&q&&q[0]>0){var dv=(p/q[0]-1)*100;d=' <span class="pill '+(dv>0?"up":dv<0?"dn":"")+'">'+(dv>0?"+":"")+dv.toFixed(2)+'%</span>'}
 cells.push('<span class="etfxc"><i>'+E[1]+'</i>'+(p!=null?"$"+f(p,p<10?3:2):"—")+d+'</span>')});
 if(any)strip='<div class="etfx">'+(can!==x[0]?'<span class="etfxl">'+can+' 선물</span>':"")+cells.join("")+'</div>'}
-return '<div class="etfr" role="row"><div class="etfm"><b>'+x[0]+'</b><span class="etfn">'+x[1]+'</span><span class="pill">'+x[3]+'</span></div><div class="etfd">'+pr+'<span class="etfs">'+x[4]+' · '+x[5]+fee+'</span></div>'+strip+'</div>'}
+return '<div class="etfr" role="row"><div class="etfm"><b>'+x[0]+'</b><span class="etfn">'+x[1]+'</span></div><div class="etfd">'+pr+'<span class="etfs">'+x[4]+' · '+x[5]+fee+'</span></div>'+strip+'</div>'}
 function grp(label,list){return '<div class="pgrp" role="row"><span>'+label+'</span><span class="pgrpc">'+list.length+'개 종목</span></div>'+list.map(row).join("")}
 var us=r.filter(function(x){return x[2]==="US"}),kr=r.filter(function(x){return x[2]==="KR"}),html="";
 if(us.length)html+=grp("미국 상장 ETF · 나스닥/NYSE",us);
@@ -1060,7 +1060,7 @@ return !q||s.indexOf(q)>=0||(ex.nm[s]||"").indexOf(qt)>=0}).sort(srt);
 var favs=r.filter(function(x){return FAV[toCan(v,x[0].replace(/_$/,""))]}),rest=r.filter(function(x){return !FAV[toCan(v,x[0].replace(/_$/,""))]});
 r=favs.concat(rest);
 el("tt").textContent=ex.label+" 주식 전체 ("+r.length+")";
-function rowHtml(x){var dn=x[0].replace(/_$/,"");var hl=v==="hl"?HL2[x[0]]:((x[4]>0||x[5]>0)?[x[4],x[5]]:null);var sub=ex.nm[x[0]],can2=toCan(v,dn),sec=secOf(can2);return arow(dn,sub?sub+" · "+sec:sec,x,hl)}
+function rowHtml(x){var dn=x[0].replace(/_$/,"");var hl=v==="hl"?HL2[x[0]]:((x[4]>0||x[5]>0)?[x[4],x[5]]:null);var sub=ex.nm[x[0]];return arow(dn,sub,x,hl)}
 function grpHtml(label,list){return '<div class="pgrp" role="row"><span>'+label+'</span><span class="pgrpc">'+list.length+'개 종목</span></div>'+list.map(rowHtml).join("")}
 var html;
 if(!r.length)html='<div class="pempty">검색 결과가 없습니다.</div>';
