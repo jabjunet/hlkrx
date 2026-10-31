@@ -94,8 +94,6 @@ input{font:inherit;font-size:13px;font-weight:600;color:var(--tx);background:var
 .srch input,.chips input{flex:1;min-width:90px;min-height:38px;border-radius:999px;padding:7px 14px;margin:0}
 .fxr{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--mut);margin:0 0 10px}
 .fxr input{width:110px;min-height:40px;border-radius:8px;padding:6px 8px}
-/* 상태 바 (KRX 개장/휴장): 테두리·박스 없이 플랫 */
-.st{display:flex;justify-content:space-between;gap:8px;background:none;padding:4px 2px;font-size:13px;margin:12px 0}
 /* 표 공통: 모든 탭 같은 머리글·행 높이·여백·정렬. 내부 스크롤·외곽 테두리 없이 페이지에 바로 얹음 */
 .wrap{overflow:visible;background:none}
 table{border-collapse:collapse;width:100%}
@@ -518,8 +516,8 @@ main{padding:18px 12px 40px}
 .steady-pr{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:4px;min-width:0}
 .steady-pr b{font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1.25;overflow-wrap:anywhere}
 .steady-chg{font-size:12.5px;font-weight:700;white-space:nowrap}
-.steady-chart{height:262px;margin-top:8px;position:relative;min-width:0}
-/* 나스닥 칸 TradingView 위젯: 칸 높이를 그대로 채우고, 로딩 문구는 위젯 위에 겹쳐 둔다 */
+.steady-chart{height:300px;margin-top:8px;position:relative;min-width:0}
+/* 비교 4분할 TradingView 위젯: 칸 높이를 그대로 채우고, 로딩 문구는 위젯 위에 겹쳐 둔다 */
 .steady-tvw iframe{width:100%!important;height:100%!important;border:0;display:block;border-radius:6px;background:var(--sf)}
 .steady-tvw>div[id$="-in"]{height:100%}
 .steady-tvw>div[id$="-in"]>div{height:100%!important}
@@ -528,28 +526,6 @@ main{padding:18px 12px 40px}
 .cmp-more-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:10px;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:12px}
 .cmp-more-btn:hover{background:var(--sf2)}
 #cmp2wrap[hidden]{display:none}
-/* 비교 4분할: 종목 이름 버튼 (누르면 종목 바꾸기 창) + 종목 바꾸기 창 */
-.symbtn{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:5px 7px;margin:-5px -7px;color:var(--tx);font:inherit;cursor:pointer;border-radius:7px;text-align:left;min-width:0;flex:none}
-.symbtn:hover{background:var(--sf2)}
-.symbtn b{font-size:14px;white-space:nowrap}
-.symbtn i{font-style:normal;color:var(--mut);font-size:11px;flex:none}
-.spov{position:fixed;inset:0;z-index:220;background:rgba(10,12,14,.55);display:flex;align-items:center;justify-content:center;padding:16px}
-.spov[hidden]{display:none}
-.spbox{background:var(--sf);border:1px solid var(--bd);border-radius:14px;width:100%;max-width:420px;max-height:min(560px,calc(100dvh - 32px));display:flex;flex-direction:column;box-shadow:0 18px 44px rgba(0,0,0,.28);overflow:hidden}
-.spbox-hd{display:flex;align-items:center;gap:8px;padding:16px 18px 10px}
-.spbox-hd b{font-size:16px}
-.spx{margin-left:auto;width:36px;height:36px;border:0;background:none;color:var(--mut);font-size:22px;line-height:1;cursor:pointer;border-radius:8px;flex:none}
-.spq-wrap{padding:0 18px 10px}
-.spq{width:100%;min-height:44px;border-radius:10px;padding:9px 12px;font-size:14px;box-sizing:border-box}
-.splist{overflow-y:auto;padding:0 8px 10px;-webkit-overflow-scrolling:touch}
-.sprow{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:8px 10px;border:0;background:none;color:var(--tx);font:inherit;text-align:left;border-radius:8px;cursor:pointer}
-.sprow:hover{background:var(--sf2)}
-.sprow b{font-size:14px;flex:none}
-.sprow span{color:var(--mut);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sprow em{margin-left:auto;flex:none;font-style:normal;font-size:11.5px;font-weight:700;color:var(--ok)}
-.sprow.is-cur{background:var(--sf2)}
-.spempty{padding:22px 12px;color:var(--mut);font-size:13px;text-align:center}
-@media(max-width:520px){.spov{align-items:flex-end;padding:0}.spbox{max-width:none;max-height:86dvh;border-radius:16px 16px 0 0;border-bottom:0}}
 /* 자체 채팅 (Firebase): 우하단 버튼 + 작은 패널, 패널을 열 때 초기화 */
 .chatbtn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:120;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 16px;border:1px solid var(--bd);border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.22)}
 .chatbtn svg{flex:none;display:block}
@@ -626,7 +602,6 @@ main{padding:18px 12px 40px}
 <div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" id="tab-pb" aria-pressed="false" aria-haspopup="true" aria-expanded="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><div class="tabdd" id="tabdd" hidden><div class="tabdd-i" id="tabdd-item" role="button" tabindex="0">ETF</div></div></div>
 <section id="pa">
 <div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button><button data-m="us" aria-pressed="false">해외 주식</button></div><div class="pair" id="xc"><button data-x="hl" aria-pressed="true">Hyperliquid</button><button data-x="bn" aria-pressed="false">Binance</button></div></div>
-<div class="st" id="st"><div><b>KRX</b> 상태 확인 중…</div><span></span></div>
 <div class="fxr"><span id="cnt">종목 총 8개</span> · 환율 USD/KRW <input id="fx" inputmode="decimal" value="1,324.6" aria-label="달러/원 환율"><span id="fx-live" role="status">실시간 연결 중…</span></div>
 <div class="srch"><input id="qk" placeholder="종목 검색" aria-label="김프 종목 검색"></div>
 <div class="msort" id="msort"><span>정렬</span><button data-k="c" data-l="전일대비">전일대비</button><button data-k="hi" data-l="고가대비">고가대비</button><button data-k="lo" data-l="저가대비">저가대비</button><button data-k="v" data-l="거래량">거래량</button></div>
@@ -678,7 +653,6 @@ main{padding:18px 12px 40px}
 <section id="pg" hidden>
 <div class="pick"><span class="xselw mtw"><button type="button" class="xsel" id="mt-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="원자재 선택"><span class="xnm" id="mt-nm">금</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="mt-menu" role="listbox" aria-label="원자재 선택" hidden><button type="button" role="option" data-mtv="au" aria-selected="true">금</button><button type="button" role="option" data-mtv="ag" aria-selected="false">은</button><button type="button" role="option" data-mtv="cu" aria-selected="false">구리</button><button type="button" role="option" data-mtv="oil" aria-selected="false">유가</button></div></span><div class="mtx"><small id="mt-xhl-l">Hyperliquid · 1oz 가격</small><b id="mt-xhl">—</b></div><div class="mtx"><small id="mt-xbn-l">Binance · 1oz 가격</small><b id="mt-xbn">—</b></div></div>
 <div class="mtsum" id="mt-sline" aria-live="polite"></div>
-<p class="sub" style="margin-bottom:10px">금·은·구리는 국내시세와 국제시세를 나란히 놓고 김프까지 비교합니다.</p>
 <div id="mt-au">
 <div class="tvbar"><button type="button" class="mt-tgl" id="au-tgl" aria-expanded="false" aria-controls="au-tvwrap">차트보기</button><span class="gread" id="au-tv"></span></div>
 <div id="au-tvwrap" hidden><div class="tvw" id="au-tvw"></div></div>
@@ -743,22 +717,22 @@ main{padding:18px 12px 40px}
 <section id="pc" hidden>
 <div class="steady" aria-label="주요 종목 고정 차트">
 <div class="steady-cell">
-<div class="steady-hd"><button type="button" class="symbtn" id="steady-btc-btn" aria-haspopup="dialog" aria-label="종목 바꾸기 (현재 비트코인)"><b id="steady-btc-nm">비트코인</b><i aria-hidden="true">▾</i></button><span class="steady-sub" id="steady-btc-sub">BTC · Binance 선물</span></div>
+<div class="steady-hd"><b id="steady-btc-nm">비트코인</b><span class="steady-sub" id="steady-btc-sub">BTC · Binance 선물</span></div>
 <div class="steady-pr"><b id="steady-btc-p">불러오는 중…</b><span class="steady-chg" id="steady-btc-c"></span></div>
 <div class="steady-chart" id="steady-chart-btc"></div>
 </div>
 <div class="steady-cell">
-<div class="steady-hd"><button type="button" class="symbtn" id="steady-oil-btn" aria-haspopup="dialog" aria-label="종목 바꾸기 (현재 유가)"><b id="steady-oil-nm">유가</b><i aria-hidden="true">▾</i></button><span class="steady-sub" id="steady-oil-sub">WTI 원유</span></div>
+<div class="steady-hd"><b id="steady-oil-nm">유가</b><span class="steady-sub" id="steady-oil-sub">WTI 원유</span></div>
 <div class="steady-pr"><b id="steady-oil-p">불러오는 중…</b><span class="steady-chg" id="steady-oil-c"></span></div>
 <div class="steady-chart" id="steady-chart-oil"></div>
 </div>
 <div class="steady-cell">
-<div class="steady-hd"><button type="button" class="symbtn" id="steady-gold-btn" aria-haspopup="dialog" aria-label="종목 바꾸기 (현재 금)"><b id="steady-gold-nm">금</b><i aria-hidden="true">▾</i></button><span class="steady-sub" id="steady-gold-sub">GOLD · 국제 금</span></div>
+<div class="steady-hd"><b id="steady-gold-nm">금</b><span class="steady-sub" id="steady-gold-sub">GOLD · 국제 금</span></div>
 <div class="steady-pr"><b id="steady-gold-p">불러오는 중…</b><span class="steady-chg" id="steady-gold-c"></span></div>
 <div class="steady-chart" id="steady-chart-gold"></div>
 </div>
 <div class="steady-cell">
-<div class="steady-hd"><button type="button" class="symbtn" id="steady-ndx-btn" aria-haspopup="dialog" aria-label="종목 바꾸기 (현재 나스닥)"><b id="steady-ndx-nm">나스닥</b><i aria-hidden="true">▾</i></button><span class="steady-sub" id="steady-ndx-sub">NQ · 나스닥 선물</span></div>
+<div class="steady-hd"><b id="steady-ndx-nm">나스닥</b><span class="steady-sub" id="steady-ndx-sub">NQ · 나스닥 선물</span></div>
 <div class="steady-pr"><b id="steady-ndx-p">불러오는 중…</b><span class="steady-chg" id="steady-ndx-c"></span></div>
 <div class="steady-chart" id="steady-chart-ndx"></div>
 </div>
@@ -1178,7 +1152,6 @@ return{n:s,tg:e.tag,fk:s,b:h[1],c:h[2],v:h[3]*fx/100,p:pv,hi:g.hi,lo:g.lo,mc:cap
 rkb();el("cnt").textContent="종목 총 "+rows.length+"개"}
 el("mk").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;mk=b.dataset.m;var u=mk==="us";
 this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});
-el("st").style.display=u?"none":"";
 el("nt").textContent=u?"해외 주식은 한국 거래소 가격이 없어, 선택한 거래소 가격을 원주 기준가(오라클)와 비교한 김프입니다. 역외 시세는 해외 거래소 파생 상품 기준이며 실제 주식 소유권과 무관합니다. 정보 제공 목적으로만 표시됩니다.":NT0;
 if(!u)el("cnt").textContent="종목 총 8개";calc()});
 /* 스냅샷 고/저 폴백: OKX·Bybit 스냅샷에 들어 있는 당일 고/저를 Hyperliquid·Binance 행에도 미리 채워 둔다.
@@ -1311,21 +1284,19 @@ fStamp();calc();draw();return true}
 function yl1(host){fetch("https://"+host+"/v5/market/tickers?category=linear").then(function(r){return r.json()}).then(function(j){if(ylData(j))return;if(host==="api.bybit.com")yl1("api.bytick.com")}).catch(function(){if(host==="api.bybit.com")yl1("api.bytick.com")})}
 function yl(){if(document.hidden)return;yl1("api.bybit.com")}
 yl();setInterval(yl,15000);
-document.addEventListener("visibilitychange",function(){if(!document.hidden){live();bl();bf();ol();ofund();yl();krxStat();krx()}});
+document.addEventListener("visibilitychange",function(){if(!document.hidden){live();bl();bf();ol();ofund();yl();krx()}});
 var KX={"SK하이닉스":"000660","삼성전자":"005930","KODEX 200":"069500","삼성전기":"009150","현대차":"005380","한미반도체":"042700","LG전자":"066570","NAVER":"035420"};
 function wonK(v){var e=v/1e8;return e>=10000?Math.floor(e/10000)+"조 "+f(Math.round(e%10000))+"억":e>=10?f(Math.round(e))+"억":e.toFixed(1)+"억"}
 function krxClock(){var p={},i,parts=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Seoul",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());for(i=0;i<parts.length;i++)p[parts[i].type]=parts[i].value;var wd={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[p.weekday];return{day:wd,mins:(parseInt(p.hour,10)%24)*60+parseInt(p.minute,10)}}
 function krxOpen(){var n=krxClock();return n.day>0&&n.day<6&&n.mins>=540&&n.mins<930}
-function krxStat(){var open=krxOpen();el("st").firstElementChild.innerHTML="<b>KRX</b> "+(open?"장중":"휴장");el("st").querySelector("span").textContent=open?"장중 · 최근 체결가로 갱신됨":"최근 거래일 종가로 갱신됨"}
 function krx(){fetch("https://scanner.tradingview.com/korea/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:["KRX:000660","KRX:005930","KRX:069500","KRX:009150","KRX:005380","KRX:042700","KRX:066570","KRX:035420"]},columns:["close","volume","Value.Traded","market_cap_basic"]})}).then(function(r){return r.json()}).then(function(j){
 var m={};(j.data||[]).forEach(function(x){if(x.d)m[x.s.replace("KRX:","")]=x.d});
 var ok=false;
 R.forEach(function(r){var d=m[KX[r[0]]];if(d&&d[0]>0){r[2]=d[0];if(d[2]>0)r[3]=wonK(d[2]);if(d[3]>0)MCK[KX[r[0]]]=d[3];ok=true}});
 if(!ok)return;
-krxStat();
 calc()}).catch(function(){})}
-krxStat();krx();
-setInterval(function(){if(document.hidden)return;krxStat();if(krxOpen())krx()},30000);
+krx();
+setInterval(function(){if(document.hidden)return;if(krxOpen())krx()},30000);
 function amcap(){var seen={},list=[],i;
 D.forEach(function(x){if(!KCODE[x[0]]&&!seen[x[0]]){seen[x[0]]=1;list.push(x[0])}});
 BD.forEach(function(x){var t=x[0].replace(/_$/,"");if(!KCODE[t]&&!seen[t]){seen[t]=1;list.push(t)}});
@@ -2415,57 +2386,58 @@ setInterval(function(){var had={};[1,2].forEach(function(idx){if(CMPSEL[idx])had
 })();
 </script>
 <script>
-/* 비교 탭 메인 고정 4분할 (비트·유가·금·나스닥): 비트·유가·금 차트는 페이지
-   자체 차트(ncMount)로 그리고, 나스닥 칸 차트만 TradingView 위젯
-   (FOREXCOM:NSXUSD)으로 그린다. 각 칸의 종목 이름을 누르면 종목 바꾸기 창이
-   열려 그 칸만 다른 종목으로 교체할 수 있다. 가격 조회가 실패하면 그 칸
-   차트 캔들의 마지막 종가로 가격·등락을 채운다 (나스닥 칸은 아래 NQ 캔들 경로). */
+/* 비교 탭 메인 고정 4분할 (비트·유가·금·나스닥): 네 칸 모두 TradingView 고급
+   차트 위젯으로 그린다. 상단 툴바를 표시하고 심볼 변경을 허용해
+   (allow_symbol_change) 위젯 왼쪽 위의 심볼 검색으로 바로 종목을 바꿀 수
+   있게 한다. 위젯이 심볼 변경을 알리면 칸 위의 이름·가격 줄도 새 심볼
+   기준으로 따라간다. 기본 심볼: 비트코인 BINANCE:BTCUSDT · 유가 TVC:USOIL ·
+   금 TVC:GOLD · 나스닥 FOREXCOM:NSXUSD. CME_MINI:NQ1! 같은 선물 연속 심볼은
+   임베드 위젯에서 차단돼 차트에는 쓰지 않고, 나스닥 칸의 가격 줄만 NQ 선물
+   스캔 값으로 따로 채운다. */
 (function(){
 function $(id){return document.getElementById(id)}
 function pcOpen(){var s=$("pc");return !!(s&&!s.hidden)}
+var CELLS={
+btc:{name:"비트코인",sub:"BTC · Binance 선물",sym:"BINANCE:BTCUSDT",dec:0},
+oil:{name:"유가",sub:"WTI 원유",sym:"TVC:USOIL",dec:2},
+gold:{name:"금",sub:"GOLD · 국제 금",sym:"TVC:GOLD",dec:2},
+ndx:{name:"나스닥",sub:"NQ · 나스닥 선물",sym:"FOREXCOM:NSXUSD",dec:2}};
+var cellSym={btc:CELLS.btc.sym,oil:CELLS.oil.sym,gold:CELLS.gold.sym,ndx:CELLS.ndx.sym};
+function isDef(key){return cellSym[key]===CELLS[key].sym}
+function decFor(p){return p>=100?2:p>=1?3:5}
 function setPrice(key,p,c,dec){
 var pe=$("steady-"+key+"-p"),ce=$("steady-"+key+"-c");
 if(!pe)return;
 if(p==null||!(p>0)){pe.textContent="가격을 불러오지 못했어요";if(ce){ce.textContent="";ce.className="steady-chg"}return}
-pe.textContent="$"+f(p,dec);
+pe.textContent="$"+f(p,dec==null?decFor(p):dec);
 if(ce){
 if(c==null||isNaN(c)){ce.textContent="";ce.className="steady-chg"}
 else{ce.textContent=(c>0?"+":"")+Number(c).toFixed(2)+"%";ce.className="steady-chg "+(c>0?"up":c<0?"dn":"")}}}
-function fetchTvSym(key,sym,dec){
+function fetchTvSym(key,sym,dec,retry){
 fetch("https://scanner.tradingview.com/symbol?symbol="+encodeURIComponent(sym)+"&fields=close%7Cchange").then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
+if(cellSym[key]!==sym)return;
 var p=parseFloat(j&&j.close);
-if(!(p>0)){candleFallback(key,dec);return}
+if(!(p>0))throw new Error("noprice");
 var c=parseFloat(j.change);
-setPrice(key,p,isNaN(c)?null:c,dec)}).catch(function(){candleFallback(key,dec)})}
+setPrice(key,p,isNaN(c)?null:c,dec)}).catch(function(){
+if(cellSym[key]!==sym)return;
+if(!retry){setTimeout(function(){if(cellSym[key]===sym)fetchTvSym(key,sym,dec,true)},2000);return}
+setPrice(key,null)})}
 function fetchBtc(){
 fetch("https://www.binance.com/fapi/v1/ticker/24hr?symbol=BTCUSDT").then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
+if(!isDef("btc"))return;
 var p=parseFloat(j&&j.lastPrice);
-if(!(p>0)){candleFallback("btc",0);return}
+if(!(p>0)){fetchTvSym("btc",CELLS.btc.sym,CELLS.btc.dec);return}
 var c=parseFloat(j.priceChangePercent);
-setPrice("btc",p,isNaN(c)?null:c,0)}).catch(function(){candleFallback("btc",0)})}
-function fetchPrices(){["btc","oil","gold","ndx"].forEach(function(k){fetchCellPrice(k)})}
-/* 가격 폴백: 가격 조회(TV 스캐너)가 실패하면 그 칸 차트 캔들의 마지막 종가로
-   가격·등락(24시간 전 종가 대비)을 채운다. 캔들이 아직 안 왔으면 잠시 기다리며 재시도한다. */
-function candlePrice(key,dec){
-var w=$("steady-chart-"+key),cs=w&&w._nccs;
-if(!cs||cs.length<2||!(cs[cs.length-1].c>0))return false;
-var last=cs[cs.length-1],ref=cs[Math.max(0,cs.length-7)];
-setPrice(key,last.c,(ref&&ref.c>0)?(last.c/ref.c-1)*100:null,dec);
-return true}
-function candleFallback(key,dec){
-var e0=SSEL[key].entry;
-if(candlePrice(key,dec))return;
-var n=0,iv=setInterval(function(){
-if(SSEL[key].entry!==e0){clearInterval(iv);return}
-n++;
-if(candlePrice(key,dec)){clearInterval(iv);return}
-if(n>=15){clearInterval(iv);setPrice(key,null)}},800)}
-/* 나스닥 칸 차트: TradingView 위젯에는 나스닥100 CFD 심볼
-   FOREXCOM:NSXUSD를 넣는다. CME_MINI:NQ1!은 임베드 위젯에서 차단돼
-   위젯에는 쓰지 않는다. 위젯 로더는 원자재 탭이 쓰는 mtLoadTvJs를 재사용한다.
-   가격·등락은 TradingView 스캐너로 NQ 선물 심볼(CME_MINI:NQ1!)을 조회해 채우고,
-   조회가 실패하면 아래 NQ 캔들 경로(Hyperliquid xyz:NQ 4시간봉 → Yahoo NQ=F
-   1시간봉을 4시간봉으로 합침)로 가격만 채운다 — 위젯 차트는 건드리지 않는다. */
+setPrice("btc",p,isNaN(c)?null:c,0)}).catch(function(){if(isDef("btc"))fetchTvSym("btc",CELLS.btc.sym,CELLS.btc.dec)})}
+function fetchCellPrice(key){
+if(key==="ndx"&&isDef(key)){nqPrice(key);return}
+if(key==="btc"&&isDef(key)){fetchBtc();return}
+fetchTvSym(key,cellSym[key],isDef(key)?CELLS[key].dec:null)}
+function fetchPrices(){["btc","oil","gold","ndx"].forEach(fetchCellPrice)}
+/* 나스닥 칸 가격: TradingView 스캐너로 NQ 선물 심볼(CME_MINI:NQ1!)을 조회하고,
+   실패하면 NQ 캔들(Hyperliquid xyz:NQ 4시간봉 → Yahoo NQ=F 1시간봉을 4시간봉으로
+   합침)의 마지막 종가·24시간 전 종가로 채운다. 위젯 차트 자체는 건드리지 않는다. */
 function nqParseYahoo(j){
 var r=j&&j.chart&&j.chart.result&&j.chart.result[0];if(!r||!r.timestamp)throw new Error("yh");
 var q=r.indicators&&r.indicators.quote&&r.indicators.quote[0];if(!q||!q.close)throw new Error("yh q");
@@ -2492,143 +2464,82 @@ return new Promise(function(res,rej){
 var left=urls.length,done=false;
 urls.forEach(function(u){nqFetchText(u,9000).then(function(t){var cs=nqAgg4h(nqParseYahoo(JSON.parse(t)));if(cs.length<10)throw new Error("short");if(!done){done=true;res(cs)}}).catch(function(){left--;if(left===0&&!done)rej(new Error("yahoo failed"))})})})}
 return fromHl().catch(function(){return fromYahoo()})}
-/* 나스닥 칸 가격: TradingView 스캐너로 NQ 선물 심볼을 조회하고,
-   실패하면 NQ 캔들(HL→Yahoo)의 마지막 종가·24시간 전 종가로 채운다.
-   어느 경우에도 위젯 차트 자체는 건드리지 않는다. */
 function nqPrice(key){
-var e0=SSEL[key].entry,dec=e0.dec;
 fetch("https://scanner.tradingview.com/futures/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:["CME_MINI:NQ1!"]},columns:["close","change"]})}).then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
-if(SSEL[key].entry!==e0)return;
+if(!isDef(key))return;
 var d=(j.data||[])[0];
 var p=d&&d.d?parseFloat(d.d[0]):NaN;
 if(!(p>0))throw new Error("noprice");
 var c=parseFloat(d.d[1]);
-setPrice(key,p,isNaN(c)?null:c,dec)}).catch(function(){
-if(SSEL[key].entry!==e0)return;
+setPrice(key,p,isNaN(c)?null:c,CELLS[key].dec)}).catch(function(){
+if(!isDef(key))return;
 nqFetch().then(function(cs){
-if(SSEL[key].entry!==e0)return;
+if(!isDef(key))return;
 var last=cs[cs.length-1],ref=cs[Math.max(0,cs.length-7)];
-setPrice(key,last.c,(ref&&ref.c>0)?(last.c/ref.c-1)*100:null,dec)}).catch(function(){if(SSEL[key].entry===e0)setPrice(key,null)})})}
+setPrice(key,last.c,(ref&&ref.c>0)?(last.c/ref.c-1)*100:null,CELLS[key].dec)}).catch(function(){if(isDef(key))setPrice(key,null)})})}
 /* TradingView 위젯 로더: 원자재 탭의 mtLoadTvJs(전역)를 재사용하고,
    없을 때만 같은 방식으로 tv.js를 직접 불러온다. */
-var nqTvWait=null,nqTvLoading=false;
-function nqLoadTvJs(cb){
+var tvWait=null,tvLoading=false;
+function tvLoadJs(cb){
 if(window.TradingView&&TradingView.widget){cb(true);return}
 if(typeof mtLoadTvJs==="function"){mtLoadTvJs(cb);return}
-(nqTvWait=nqTvWait||[]).push(cb);
-if(nqTvLoading)return;
-nqTvLoading=true;
+(tvWait=tvWait||[]).push(cb);
+if(tvLoading)return;
+tvLoading=true;
 var s=document.createElement("script");
 s.src="https://s3.tradingview.com/tv.js";s.async=true;
-s.onload=function(){var ok=!!(window.TradingView&&TradingView.widget);(nqTvWait||[]).splice(0).forEach(function(fn){fn(ok)})};
-s.onerror=function(){(nqTvWait||[]).splice(0).forEach(function(fn){fn(false)})};
+s.onload=function(){var ok=!!(window.TradingView&&TradingView.widget);(tvWait||[]).splice(0).forEach(function(fn){fn(ok)})};
+s.onerror=function(){(tvWait||[]).splice(0).forEach(function(fn){fn(false)})};
 document.head.appendChild(s)}
-/* 나스닥 칸 차트 마운트: TradingView 위젯 (FOREXCOM:NSXUSD, 4시간봉).
-   종목 이름으로 바꾸는 상호작용은 위젯 자체 기능이 아니라 칸의 이름 버튼이
-   맡으므로 allow_symbol_change는 끈다 (다른 칸들과 같은 설정). */
-function mountNqTv(key){
+/* 위젯 안에서 심볼이 바뀌면 칸 위의 이름·가격 줄을 새 심볼 기준으로 맞춘다. */
+function hookSym(widget,key,tok,w){
+try{
+var ch=null;
+if(typeof widget.activeChart==="function")ch=widget.activeChart();
+else if(typeof widget.chart==="function")ch=widget.chart();
+if(!ch||typeof ch.onSymbolChanged!=="function")return;
+ch.onSymbolChanged(function(si){
+if(w._tvTok!==tok)return;
+var full=null;
+try{if(typeof ch.symbol==="function")full=ch.symbol()}catch(e){}
+if(!full&&si)full=si.full_name||si.name;
+if(!full||full===cellSym[key])return;
+cellSym[key]=full;
+var nm=$("steady-"+key+"-nm"),sb=$("steady-"+key+"-sub");
+if(nm)nm.textContent=(si&&(si.description||si.name))||full;
+if(sb)sb.textContent=full;
+var pe=$("steady-"+key+"-p");if(pe)pe.textContent="불러오는 중…";
+var ce=$("steady-"+key+"-c");if(ce){ce.textContent="";ce.className="steady-chg"}
+fetchCellPrice(key)})}catch(e){}}
+/* 칸 차트 마운트: TradingView 고급 차트 위젯. 상단 툴바를 보이고 심볼 변경을
+   허용해, 위젯 왼쪽 위 심볼 검색으로 종목을 바로 바꿀 수 있게 한다. */
+function mountTv(key){
 var w=$("steady-chart-"+key);if(!w)return;
-w._nqTok=String(Date.now())+"tv"+key;
-w._nccs=null;
+var sym=cellSym[key];
+w._tvTok=String(Date.now())+"tv"+key;
 w.classList.add("steady-tvw");
-var tok=w._nqTok;
+var tok=w._tvTok;
 w.innerHTML='<div class="tvmsg"><span>차트 불러오는 중…</span></div><div id="steady-'+key+'-tvw-in" style="width:100%;height:100%"></div>';
 var ready=false;
-function done(){if(w._nqTok!==tok||ready)return;ready=true;var m=w.querySelector(".tvmsg");if(m)m.hidden=true}
-function fail(){if(w._nqTok!==tok||ready||w.querySelector("iframe"))return;
-w.innerHTML='<div class="tvmsg"><b>차트를 불러오지 못했어요</b><span>TradingView 차트 연결을 불러오지 못했어요. 연결 문제일 수 있으니 다시 시도해 보세요.</span><a class="tvlink" href="https://www.tradingview.com/chart/?symbol=CME_MINI%3ANQ1!" target="_blank" rel="noopener">TradingView에서 열기</a><button type="button" class="tvretry">다시 시도</button></div>';
-var b=w.querySelector(".tvretry");if(b)b.addEventListener("click",function(){mountNqTv(key)})}
-var fitN=0,fitIv=setInterval(function(){if(w._nqTok!==tok){clearInterval(fitIv);return}
+function done(){if(w._tvTok!==tok||ready)return;ready=true;var m=w.querySelector(".tvmsg");if(m)m.hidden=true}
+function fail(){if(w._tvTok!==tok||ready||w.querySelector("iframe"))return;
+w.innerHTML='<div class="tvmsg"><b>차트를 불러오지 못했어요</b><span>TradingView 차트 연결을 불러오지 못했어요. 연결 문제일 수 있으니 다시 시도해 보세요.</span><a class="tvlink" href="https://www.tradingview.com/chart/?symbol='+encodeURIComponent(sym)+'" target="_blank" rel="noopener">TradingView에서 열기</a><button type="button" class="tvretry">다시 시도</button></div>';
+var b=w.querySelector(".tvretry");if(b)b.addEventListener("click",function(){mountTv(key)})}
+var fitN=0,fitIv=setInterval(function(){if(w._tvTok!==tok){clearInterval(fitIv);return}
 var fr=w.querySelector("iframe");if(!fr){if(++fitN>60)clearInterval(fitIv);return}
 done();
 var H=w.clientHeight,Wd=w.clientWidth;if(H<50){clearInterval(fitIv);return}
 var n=fr.parentElement;while(n&&n!==w){n.style.setProperty("height","100%","important");n=n.parentElement}
 if(Math.abs(fr.clientHeight-H)>2||Math.abs(fr.clientWidth-Wd)>2){fr.style.setProperty("height",H+"px","important");fr.style.setProperty("width",Wd+"px","important");if(++fitN>60)clearInterval(fitIv)}else clearInterval(fitIv)},400);
-setTimeout(function(){if(w._nqTok===tok&&!w.querySelector("iframe"))fail()},15000);
-nqLoadTvJs(function(ok){
-if(w._nqTok!==tok)return;
+setTimeout(function(){if(w._tvTok===tok&&!w.querySelector("iframe"))fail()},15000);
+tvLoadJs(function(ok){
+if(w._tvTok!==tok)return;
 if(!ok){fail();return}
 try{
-var widget=new TradingView.widget({container_id:"steady-"+key+"-tvw-in",symbol:"FOREXCOM:NSXUSD",interval:"240",theme:(typeof tvtheme==="function"?tvtheme():"light"),style:"1",timezone:"Asia/Seoul",locale:"kr",hide_side_toolbar:true,allow_symbol_change:false,save_image:false,autosize:true});
-if(widget&&typeof widget.onChartReady==="function")widget.onChartReady(done);
-}catch(e){fail()}});
-nqPrice(key)}
-/* 종목 교체 카탈로그: 표시 이름·단위·가격 조회 심볼(pf)·차트 마운트 정보.
-   차트는 페이지 자체 차트(ncMount)로 그리고 나스닥(NQ)만 TradingView 위젯
-   경로(mountNqTv)를 쓴다. 가격은 pf 심볼로 조회하되 실패하면 candleFallback이
-   차트 캔들 종가로 채운다 (나스닥은 nqPrice가 따로 처리). */
-var SCAT=[
-{id:"BTC",name:"비트코인",sub:"BTC · Binance 선물",dec:0,pf:"btc",mount:{hl:null,bn:"BTCUSDT",tv:"BINANCE:BTCUSDT"}},
-{id:"ETH",name:"이더리움",sub:"ETH · Binance 선물",dec:2,pf:"BINANCE:ETHUSDT",mount:{hl:null,bn:"ETHUSDT",tv:"BINANCE:ETHUSDT"}},
-{id:"SOL",name:"솔라나",sub:"SOL · Binance 선물",dec:2,pf:"BINANCE:SOLUSDT",mount:{hl:null,bn:"SOLUSDT",tv:"BINANCE:SOLUSDT"}},
-{id:"XRP",name:"리플",sub:"XRP · Binance 선물",dec:3,pf:"BINANCE:XRPUSDT",mount:{hl:null,bn:"XRPUSDT",tv:"BINANCE:XRPUSDT"}},
-{id:"DOGE",name:"도지코인",sub:"DOGE · Binance 선물",dec:4,pf:"BINANCE:DOGEUSDT",mount:{hl:null,bn:"DOGEUSDT",tv:"BINANCE:DOGEUSDT"}},
-{id:"GOLD",name:"금",sub:"GOLD · 국제 금",dec:2,pf:"TVC:GOLD",mount:{hl:"xyz:GOLD",bn:"XAUUSDT",tv:"TVC:GOLD"}},
-{id:"SILVER",name:"은",sub:"SILVER · 국제 은",dec:2,pf:"TVC:SILVER",mount:{hl:"xyz:SILVER",bn:"XAGUSDT",tv:"TVC:SILVER"}},
-{id:"COPPER",name:"구리",sub:"COPPER · 국제 구리",dec:3,pf:"TVC:COPPER",mount:{hl:"xyz:COPPER",bn:"COPPERUSDT",tv:"TVC:COPPER"}},
-{id:"USOIL",name:"유가",sub:"WTI 원유",dec:2,pf:"TVC:USOIL",mount:{hl:"xyz:CL",bn:"CLUSDT",tv:"TVC:USOIL"}},
-{id:"NQ",name:"나스닥",sub:"NQ · 나스닥 선물",dec:2,pf:null,mount:{type:"nq"}},
-{id:"NVDA",name:"엔비디아",sub:"NVDA · Binance 선물",dec:2,pf:"NASDAQ:NVDA",mount:{hl:null,bn:"NVDAUSDT",tv:"BINANCE:NVDAUSDT.P"}},
-{id:"AAPL",name:"애플",sub:"AAPL · Binance 선물",dec:2,pf:"NASDAQ:AAPL",mount:{hl:null,bn:"AAPLUSDT",tv:"BINANCE:AAPLUSDT.P"}},
-{id:"MSFT",name:"마이크로소프트",sub:"MSFT · Binance 선물",dec:2,pf:"NASDAQ:MSFT",mount:{hl:null,bn:"MSFTUSDT",tv:"BINANCE:MSFTUSDT.P"}},
-{id:"TSLA",name:"테슬라",sub:"TSLA · Binance 선물",dec:2,pf:"NASDAQ:TSLA",mount:{hl:null,bn:"TSLAUSDT",tv:"BINANCE:TSLAUSDT.P"}},
-{id:"GOOGL",name:"알파벳·구글",sub:"GOOGL · Binance 선물",dec:2,pf:"NASDAQ:GOOGL",mount:{hl:null,bn:"GOOGLUSDT",tv:"BINANCE:GOOGLUSDT.P"}},
-{id:"AMZN",name:"아마존",sub:"AMZN · Binance 선물",dec:2,pf:"NASDAQ:AMZN",mount:{hl:null,bn:"AMZNUSDT",tv:"BINANCE:AMZNUSDT.P"}},
-{id:"META",name:"메타",sub:"META · Binance 선물",dec:2,pf:"NASDAQ:META",mount:{hl:null,bn:"METAUSDT",tv:"BINANCE:METAUSDT.P"}},
-{id:"AVGO",name:"브로드컴",sub:"AVGO · Binance 선물",dec:2,pf:"NASDAQ:AVGO",mount:{hl:null,bn:"AVGOUSDT",tv:"BINANCE:AVGOUSDT.P"}},
-{id:"MU",name:"마이크론",sub:"MU · Binance 선물",dec:2,pf:"NASDAQ:MU",mount:{hl:null,bn:"MUUSDT",tv:"BINANCE:MUUSDT.P"}},
-{id:"COIN",name:"코인베이스",sub:"COIN · Binance 선물",dec:2,pf:"NASDAQ:COIN",mount:{hl:null,bn:"COINUSDT",tv:"BINANCE:COINUSDT.P"}},
-{id:"PLTR",name:"팔란티어",sub:"PLTR · Binance 선물",dec:2,pf:"NASDAQ:PLTR",mount:{hl:null,bn:"PLTRUSDT",tv:"BINANCE:PLTRUSDT.P"}}];
-function scatById(id){for(var i=0;i<SCAT.length;i++)if(SCAT[i].id===id)return SCAT[i];return null}
-var SSEL={btc:{entry:scatById("BTC")},oil:{entry:scatById("USOIL")},gold:{entry:scatById("GOLD")},ndx:{entry:scatById("NQ")}};
-function fetchCellPrice(key){
-var e=SSEL[key].entry;if(!e)return;
-if(e.mount.type==="nq"){nqPrice(key);return}
-if(e.pf==="btc"){fetchBtc();return}
-if(e.pf)fetchTvSym(key,e.pf,e.dec);else candleFallback(key,e.dec)}
-function applySteady(key,entry){
-if(!entry||SSEL[key].entry===entry)return;
-SSEL[key]={entry:entry};
-var nm=$("steady-"+key+"-nm"),sb=$("steady-"+key+"-sub"),btn=$("steady-"+key+"-btn");
-if(nm)nm.textContent=entry.name;
-if(sb)sb.textContent=entry.sub;
-if(btn)btn.setAttribute("aria-label","종목 바꾸기 (현재 "+entry.name+")");
-var pe=$("steady-"+key+"-p");if(pe)pe.textContent="불러오는 중…";
-var ce=$("steady-"+key+"-c");if(ce){ce.textContent="";ce.className="steady-chg"}
-var w=$("steady-chart-"+key);
-if(w){w._nqTok="off";w._ncopt=null;w._nccs=null;w.classList.remove("steady-tvw");
-if(entry.mount.type==="nq")mountNqTv(key);
-else if(typeof ncMount==="function")ncMount(w,entry.mount)}
-fetchCellPrice(key)}
-/* 종목 바꾸기: 칸의 종목 이름을 누르면 검색·목록 창이 열리고, 고르면 그 칸의
-   가격·차트만 새 종목으로 바뀐다 (트레이딩뷰의 종목 교체 상호작용을 본뜬 자체 구현). */
-var spOv=null,spKey=null,spTrigger=null;
-function spBuild(){
-if(spOv)return;
-spOv=document.createElement("div");spOv.className="spov";spOv.hidden=true;
-spOv.innerHTML='<div class="spbox" role="dialog" aria-modal="true" aria-label="종목 바꾸기"><div class="spbox-hd"><b>종목 바꾸기</b><button type="button" class="spx" aria-label="닫기">×</button></div><div class="spq-wrap"><input class="spq" type="text" placeholder="종목 검색 (예: 엔비디아, NVDA, 금)" aria-label="종목 검색"></div><div class="splist" role="listbox"></div></div>';
-document.body.appendChild(spOv);
-spOv.querySelector(".spx").addEventListener("click",spClose);
-spOv.addEventListener("click",function(e){if(e.target===spOv)spClose()});
-spOv.querySelector(".spq").addEventListener("input",spRender);
-spOv.querySelector(".splist").addEventListener("click",function(e){var b=e.target.closest?e.target.closest("[data-spid]"):null;if(!b)return;var entry=scatById(b.getAttribute("data-spid"));var key=spKey;spClose();if(entry&&key)applySteady(key,entry)});
-document.addEventListener("keydown",function(e){if(e.key==="Escape"&&spOv&&!spOv.hidden)spClose()})}
-function spRender(){
-if(!spOv||!spKey)return;
-var q=spOv.querySelector(".spq").value.trim(),qu=q.toUpperCase();
-var cur=SSEL[spKey].entry.id;
-var items=SCAT.filter(function(e){return !q||(e.name+" "+e.sub+" "+e.id).toUpperCase().indexOf(qu)>=0||e.name.indexOf(q)>=0});
-var list=spOv.querySelector(".splist");
-if(!items.length){list.innerHTML='<div class="spempty">검색 결과가 없어요</div>';return}
-list.innerHTML=items.map(function(e){var c=e.id===cur;return '<button type="button" class="sprow'+(c?" is-cur":"")+'" data-spid="'+e.id+'" role="option" aria-selected="'+c+'"><b>'+e.name+'</b><span>'+e.sub+'</span>'+(c?'<em>현재</em>':'')+'</button>'}).join("")}
-function spOpen(key,trigger){spBuild();spKey=key;spTrigger=trigger;spOv.querySelector(".spq").value="";spOv.hidden=false;spRender();setTimeout(function(){try{spOv.querySelector(".spq").focus()}catch(e){}},30)}
-function spClose(){if(!spOv)return;spOv.hidden=true;spKey=null;if(spTrigger&&typeof spTrigger.focus==="function")spTrigger.focus();spTrigger=null}
-function mountCharts(){
-if(typeof ncMount==="function"){
-var btc=$("steady-chart-btc");if(btc)ncMount(btc,scatById("BTC").mount);
-var oil=$("steady-chart-oil");if(oil)ncMount(oil,scatById("USOIL").mount);
-var gold=$("steady-chart-gold");if(gold)ncMount(gold,scatById("GOLD").mount)}
-mountNqTv("ndx")}
+var widget=new TradingView.widget({container_id:"steady-"+key+"-tvw-in",symbol:sym,interval:"240",theme:(typeof tvtheme==="function"?tvtheme():"light"),style:"1",timezone:"Asia/Seoul",locale:"kr",hide_top_toolbar:false,hide_side_toolbar:false,allow_symbol_change:true,save_image:false,autosize:true});
+if(widget&&typeof widget.onChartReady==="function")widget.onChartReady(function(){done();hookSym(widget,key,tok,w)});
+}catch(e){fail()}})}
+function mountCharts(){["btc","oil","gold","ndx"].forEach(mountTv)}
 var started=false;
 function start(){
 if(!pcOpen())return;
@@ -2648,7 +2559,6 @@ wrap.hidden=!open;
 btn.setAttribute("aria-expanded",String(open));
 var ch=$("cmp-more-chev");if(ch)ch.textContent=open?"▴":"▾";
 if(open&&typeof window.__cmpRefresh==="function"){try{window.__cmpRefresh()}catch(e){}}});
-["btc","oil","gold","ndx"].forEach(function(key){var sb=$("steady-"+key+"-btn");if(sb)sb.addEventListener("click",function(){spOpen(key,sb)})});
 })();
 </script>
 <script>
