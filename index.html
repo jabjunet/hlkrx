@@ -519,6 +519,11 @@ main{padding:18px 12px 40px}
 .steady-pr b{font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1.25;overflow-wrap:anywhere}
 .steady-chg{font-size:12.5px;font-weight:700;white-space:nowrap}
 .steady-chart{height:262px;margin-top:8px;position:relative;min-width:0}
+/* 나스닥 칸 TradingView 위젯: 칸 높이를 그대로 채우고, 로딩 문구는 위젯 위에 겹쳐 둔다 */
+.steady-tvw iframe{width:100%!important;height:100%!important;border:0;display:block;border-radius:6px;background:var(--sf)}
+.steady-tvw>div[id$="-in"]{height:100%}
+.steady-tvw>div[id$="-in"]>div{height:100%!important}
+.steady-tvw .tvmsg{z-index:2}
 @media(max-width:520px){.steady{gap:8px}.steady-cell{padding:10px}.steady-pr b{font-size:16px}}
 .cmp-more-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:10px;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:12px}
 .cmp-more-btn:hover{background:var(--sf2)}
@@ -2410,11 +2415,11 @@ setInterval(function(){var had={};[1,2].forEach(function(idx){if(CMPSEL[idx])had
 })();
 </script>
 <script>
-/* 비교 탭 메인 고정 4분할 (비트·유가·금·나스닥): 가격은 실제 조회값만 표시하고,
-   차트는 전부 페이지 자체 차트로 그린다 (비트·유가·금은 ncMount, 나스닥은
-   나스닥 선물 NQ 캔들). 각 칸의 종목 이름을 누르면 종목 바꾸기 창이 열려
-   그 칸만 다른 종목으로 교체할 수 있다. 가격 조회가 실패하면 그 칸 차트
-   캔들의 마지막 종가로 가격·등락을 채운다. */
+/* 비교 탭 메인 고정 4분할 (비트·유가·금·나스닥): 비트·유가·금 차트는 페이지
+   자체 차트(ncMount)로 그리고, 나스닥 칸 차트만 TradingView 위젯
+   (CME_MINI:NQ1!)으로 그린다. 각 칸의 종목 이름을 누르면 종목 바꾸기 창이
+   열려 그 칸만 다른 종목으로 교체할 수 있다. 가격 조회가 실패하면 그 칸
+   차트 캔들의 마지막 종가로 가격·등락을 채운다 (나스닥 칸은 아래 NQ 캔들 경로). */
 (function(){
 function $(id){return document.getElementById(id)}
 function pcOpen(){var s=$("pc");return !!(s&&!s.hidden)}
@@ -2455,10 +2460,12 @@ if(SSEL[key].entry!==e0){clearInterval(iv);return}
 n++;
 if(candlePrice(key,dec)){clearInterval(iv);return}
 if(n>=15){clearInterval(iv);setPrice(key,null)}},800)}
-/* 나스닥 칸: NASDAQ:NDX는 무료 TradingView 위젯에서 불러올 수 없어 나스닥 선물(NQ)
-   캔들을 자체 차트로 그린다. 1차로 Hyperliquid xyz:NQ 4시간봉을 시도하고,
-   없으면 Yahoo NQ=F 1시간봉을 공개 프록시로 받아 4시간봉으로 합친다.
-   가격·등락도 같은 캔들 데이터로 채운다. */
+/* 나스닥 칸 차트: TradingView 위젯에 나스닥 선물 연속 심볼 CME_MINI:NQ1!을
+   넣는다. 예전에 실패한 NASDAQ:NDX와 달리 NQ1!은 선물 연속 심볼이라 무료
+   위젯에서 열린다. 위젯 로더는 원자재 탭이 쓰는 mtLoadTvJs를 재사용한다.
+   가격·등락은 TradingView 스캐너로 같은 심볼(CME_MINI:NQ1!)을 조회해 채우고,
+   조회가 실패하면 아래 NQ 캔들 경로(Hyperliquid xyz:NQ 4시간봉 → Yahoo NQ=F
+   1시간봉을 4시간봉으로 합침)로 가격만 채운다 — 위젯 차트는 건드리지 않는다. */
 function nqParseYahoo(j){
 var r=j&&j.chart&&j.chart.result&&j.chart.result[0];if(!r||!r.timestamp)throw new Error("yh");
 var q=r.indicators&&r.indicators.quote&&r.indicators.quote[0];if(!q||!q.close)throw new Error("yh q");
@@ -2485,29 +2492,71 @@ return new Promise(function(res,rej){
 var left=urls.length,done=false;
 urls.forEach(function(u){nqFetchText(u,9000).then(function(t){var cs=nqAgg4h(nqParseYahoo(JSON.parse(t)));if(cs.length<10)throw new Error("short");if(!done){done=true;res(cs)}}).catch(function(){left--;if(left===0&&!done)rej(new Error("yahoo failed"))})})})}
 return fromHl().catch(function(){return fromYahoo()})}
-function nqLoad(key){
-var w=$("steady-chart-"+key);if(!w)return;
-var tok=w._nqTok;
+/* 나스닥 칸 가격: TradingView 스캐너로 위젯과 같은 심볼을 조회하고,
+   실패하면 NQ 캔들(HL→Yahoo)의 마지막 종가·24시간 전 종가로 채운다.
+   어느 경우에도 위젯 차트 자체는 건드리지 않는다. */
+function nqPrice(key){
+var e0=SSEL[key].entry,dec=e0.dec;
+fetch("https://scanner.tradingview.com/futures/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:["CME_MINI:NQ1!"]},columns:["close","change"]})}).then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
+if(SSEL[key].entry!==e0)return;
+var d=(j.data||[])[0];
+var p=d&&d.d?parseFloat(d.d[0]):NaN;
+if(!(p>0))throw new Error("noprice");
+var c=parseFloat(d.d[1]);
+setPrice(key,p,isNaN(c)?null:c,dec)}).catch(function(){
+if(SSEL[key].entry!==e0)return;
 nqFetch().then(function(cs){
-if(w._nqTok!==tok)return;
-w._nccs=cs;w._ncsrc="나스닥 선물(NQ)";
-if(typeof NCW!=="undefined"&&NCW.indexOf(w)<0)NCW.push(w);
-w.innerHTML='<div class="nchd"></div>';
-if(typeof ncDrawSvg==="function")ncDrawSvg(w);
-candlePrice(key,SSEL[key].entry.dec)}).catch(function(){
-if(w._nqTok!==tok)return;
-if(w._nccs){candlePrice(key,SSEL[key].entry.dec);return}
-w.innerHTML='<div class="tvmsg"><b>차트를 불러오지 못했어요</b><span>나스닥 선물(NQ) 데이터를 가져오지 못했어요. 연결 문제일 수 있으니 다시 시도해 보세요.</span><button type="button" class="tvretry">다시 시도</button></div>';
-var b=w.querySelector(".tvretry");if(b)b.addEventListener("click",function(){mountNq(key)});
-setPrice(key,null)})}
-function mountNq(key){
+if(SSEL[key].entry!==e0)return;
+var last=cs[cs.length-1],ref=cs[Math.max(0,cs.length-7)];
+setPrice(key,last.c,(ref&&ref.c>0)?(last.c/ref.c-1)*100:null,dec)}).catch(function(){if(SSEL[key].entry===e0)setPrice(key,null)})})}
+/* TradingView 위젯 로더: 원자재 탭의 mtLoadTvJs(전역)를 재사용하고,
+   없을 때만 같은 방식으로 tv.js를 직접 불러온다. */
+var nqTvWait=null,nqTvLoading=false;
+function nqLoadTvJs(cb){
+if(window.TradingView&&TradingView.widget){cb(true);return}
+if(typeof mtLoadTvJs==="function"){mtLoadTvJs(cb);return}
+(nqTvWait=nqTvWait||[]).push(cb);
+if(nqTvLoading)return;
+nqTvLoading=true;
+var s=document.createElement("script");
+s.src="https://s3.tradingview.com/tv.js";s.async=true;
+s.onload=function(){var ok=!!(window.TradingView&&TradingView.widget);(nqTvWait||[]).splice(0).forEach(function(fn){fn(ok)})};
+s.onerror=function(){(nqTvWait||[]).splice(0).forEach(function(fn){fn(false)})};
+document.head.appendChild(s)}
+/* 나스닥 칸 차트 마운트: TradingView 위젯 (CME_MINI:NQ1!, 4시간봉).
+   종목 이름으로 바꾸는 상호작용은 위젯 자체 기능이 아니라 칸의 이름 버튼이
+   맡으므로 allow_symbol_change는 끈다 (다른 칸들과 같은 설정). */
+function mountNqTv(key){
 var w=$("steady-chart-"+key);if(!w)return;
-w._nqTok=String(Date.now())+"nq"+key;
-if(!w._nccs)w.innerHTML='<div class="nchd"><span>차트 불러오는 중…</span></div><div class="tvmsg">차트 불러오는 중…</div>';
-nqLoad(key)}
-/* 종목 교체 카탈로그: 표시 이름·단위·가격 조회 심볼(pf)·자체 차트 마운트 정보.
-   차트는 전부 페이지 자체 차트(ncMount / NQ 경로)로 그리고, 가격은 pf 심볼로
-   조회하되 실패하면 candleFallback이 차트 캔들 종가로 채운다. */
+w._nqTok=String(Date.now())+"tv"+key;
+w._nccs=null;
+w.classList.add("steady-tvw");
+var tok=w._nqTok;
+w.innerHTML='<div class="tvmsg"><span>차트 불러오는 중…</span></div><div id="steady-'+key+'-tvw-in" style="width:100%;height:100%"></div>';
+var ready=false;
+function done(){if(w._nqTok!==tok||ready)return;ready=true;var m=w.querySelector(".tvmsg");if(m)m.hidden=true}
+function fail(){if(w._nqTok!==tok||ready||w.querySelector("iframe"))return;
+w.innerHTML='<div class="tvmsg"><b>차트를 불러오지 못했어요</b><span>TradingView 차트 연결을 불러오지 못했어요. 연결 문제일 수 있으니 다시 시도해 보세요.</span><a class="tvlink" href="https://www.tradingview.com/chart/?symbol=CME_MINI%3ANQ1!" target="_blank" rel="noopener">TradingView에서 열기</a><button type="button" class="tvretry">다시 시도</button></div>';
+var b=w.querySelector(".tvretry");if(b)b.addEventListener("click",function(){mountNqTv(key)})}
+var fitN=0,fitIv=setInterval(function(){if(w._nqTok!==tok){clearInterval(fitIv);return}
+var fr=w.querySelector("iframe");if(!fr){if(++fitN>60)clearInterval(fitIv);return}
+done();
+var H=w.clientHeight,Wd=w.clientWidth;if(H<50){clearInterval(fitIv);return}
+var n=fr.parentElement;while(n&&n!==w){n.style.setProperty("height","100%","important");n=n.parentElement}
+if(Math.abs(fr.clientHeight-H)>2||Math.abs(fr.clientWidth-Wd)>2){fr.style.setProperty("height",H+"px","important");fr.style.setProperty("width",Wd+"px","important");if(++fitN>60)clearInterval(fitIv)}else clearInterval(fitIv)},400);
+setTimeout(function(){if(w._nqTok===tok&&!w.querySelector("iframe"))fail()},15000);
+nqLoadTvJs(function(ok){
+if(w._nqTok!==tok)return;
+if(!ok){fail();return}
+try{
+var widget=new TradingView.widget({container_id:"steady-"+key+"-tvw-in",symbol:"CME_MINI:NQ1!",interval:"240",theme:(typeof tvtheme==="function"?tvtheme():"light"),style:"1",timezone:"Asia/Seoul",locale:"kr",hide_side_toolbar:true,allow_symbol_change:false,save_image:false,autosize:true});
+if(widget&&typeof widget.onChartReady==="function")widget.onChartReady(done);
+}catch(e){fail()}});
+nqPrice(key)}
+/* 종목 교체 카탈로그: 표시 이름·단위·가격 조회 심볼(pf)·차트 마운트 정보.
+   차트는 페이지 자체 차트(ncMount)로 그리고 나스닥(NQ)만 TradingView 위젯
+   경로(mountNqTv)를 쓴다. 가격은 pf 심볼로 조회하되 실패하면 candleFallback이
+   차트 캔들 종가로 채운다 (나스닥은 nqPrice가 따로 처리). */
 var SCAT=[
 {id:"BTC",name:"비트코인",sub:"BTC · Binance 선물",dec:0,pf:"btc",mount:{hl:null,bn:"BTCUSDT",tv:"BINANCE:BTCUSDT"}},
 {id:"ETH",name:"이더리움",sub:"ETH · Binance 선물",dec:2,pf:"BINANCE:ETHUSDT",mount:{hl:null,bn:"ETHUSDT",tv:"BINANCE:ETHUSDT"}},
@@ -2534,7 +2583,7 @@ function scatById(id){for(var i=0;i<SCAT.length;i++)if(SCAT[i].id===id)return SC
 var SSEL={btc:{entry:scatById("BTC")},oil:{entry:scatById("USOIL")},gold:{entry:scatById("GOLD")},ndx:{entry:scatById("NQ")}};
 function fetchCellPrice(key){
 var e=SSEL[key].entry;if(!e)return;
-if(e.mount.type==="nq"){var w=$("steady-chart-"+key);if(w&&w._nccs)nqLoad(key);else candleFallback(key,e.dec);return}
+if(e.mount.type==="nq"){nqPrice(key);return}
 if(e.pf==="btc"){fetchBtc();return}
 if(e.pf)fetchTvSym(key,e.pf,e.dec);else candleFallback(key,e.dec)}
 function applySteady(key,entry){
@@ -2547,8 +2596,8 @@ if(btn)btn.setAttribute("aria-label","종목 바꾸기 (현재 "+entry.name+")")
 var pe=$("steady-"+key+"-p");if(pe)pe.textContent="불러오는 중…";
 var ce=$("steady-"+key+"-c");if(ce){ce.textContent="";ce.className="steady-chg"}
 var w=$("steady-chart-"+key);
-if(w){w._nqTok="off";w._ncopt=null;w._nccs=null;
-if(entry.mount.type==="nq")mountNq(key);
+if(w){w._nqTok="off";w._ncopt=null;w._nccs=null;w.classList.remove("steady-tvw");
+if(entry.mount.type==="nq")mountNqTv(key);
 else if(typeof ncMount==="function")ncMount(w,entry.mount)}
 fetchCellPrice(key)}
 /* 종목 바꾸기: 칸의 종목 이름을 누르면 검색·목록 창이 열리고, 고르면 그 칸의
@@ -2579,7 +2628,7 @@ if(typeof ncMount==="function"){
 var btc=$("steady-chart-btc");if(btc)ncMount(btc,scatById("BTC").mount);
 var oil=$("steady-chart-oil");if(oil)ncMount(oil,scatById("USOIL").mount);
 var gold=$("steady-chart-gold");if(gold)ncMount(gold,scatById("GOLD").mount)}
-mountNq("ndx")}
+mountNqTv("ndx")}
 var started=false;
 function start(){
 if(!pcOpen())return;
