@@ -513,16 +513,13 @@ main{padding:18px 12px 40px}
 .steady-hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;min-width:0}
 .steady-hd b{font-size:14px;white-space:nowrap}
 .steady-sub{color:var(--mut);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.steady-pr{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:4px;min-width:0}
-.steady-pr b{font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1.25;overflow-wrap:anywhere}
-.steady-chg{font-size:12.5px;font-weight:700;white-space:nowrap}
 .steady-chart{height:300px;margin-top:8px;position:relative;min-width:0}
 /* 비교 4분할 TradingView 위젯: 칸 높이를 그대로 채우고, 로딩 문구는 위젯 위에 겹쳐 둔다 */
 .steady-tvw iframe{width:100%!important;height:100%!important;border:0;display:block;border-radius:6px;background:var(--sf)}
 .steady-tvw>div[id$="-in"]{height:100%}
 .steady-tvw>div[id$="-in"]>div{height:100%!important}
 .steady-tvw .tvmsg{z-index:2}
-@media(max-width:520px){.steady{gap:8px}.steady-cell{padding:10px}.steady-pr b{font-size:16px}}
+@media(max-width:520px){.steady{gap:8px}.steady-cell{padding:10px}}
 .cmp-more-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:10px;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:12px}
 .cmp-more-btn:hover{background:var(--sf2)}
 #cmp2wrap[hidden]{display:none}
@@ -718,22 +715,18 @@ main{padding:18px 12px 40px}
 <div class="steady" aria-label="주요 종목 고정 차트">
 <div class="steady-cell">
 <div class="steady-hd"><b id="steady-btc-nm">비트코인</b><span class="steady-sub" id="steady-btc-sub">BTC · Binance 선물</span></div>
-<div class="steady-pr"><b id="steady-btc-p">불러오는 중…</b><span class="steady-chg" id="steady-btc-c"></span></div>
 <div class="steady-chart" id="steady-chart-btc"></div>
 </div>
 <div class="steady-cell">
 <div class="steady-hd"><b id="steady-oil-nm">유가</b><span class="steady-sub" id="steady-oil-sub">WTI 원유</span></div>
-<div class="steady-pr"><b id="steady-oil-p">불러오는 중…</b><span class="steady-chg" id="steady-oil-c"></span></div>
 <div class="steady-chart" id="steady-chart-oil"></div>
 </div>
 <div class="steady-cell">
 <div class="steady-hd"><b id="steady-gold-nm">금</b><span class="steady-sub" id="steady-gold-sub">GOLD · 국제 금</span></div>
-<div class="steady-pr"><b id="steady-gold-p">불러오는 중…</b><span class="steady-chg" id="steady-gold-c"></span></div>
 <div class="steady-chart" id="steady-chart-gold"></div>
 </div>
 <div class="steady-cell">
 <div class="steady-hd"><b id="steady-ndx-nm">나스닥</b><span class="steady-sub" id="steady-ndx-sub">NQ · 나스닥 선물</span></div>
-<div class="steady-pr"><b id="steady-ndx-p">불러오는 중…</b><span class="steady-chg" id="steady-ndx-c"></span></div>
 <div class="steady-chart" id="steady-chart-ndx"></div>
 </div>
 </div>
@@ -2389,94 +2382,18 @@ setInterval(function(){var had={};[1,2].forEach(function(idx){if(CMPSEL[idx])had
 /* 비교 탭 메인 고정 4분할 (비트·유가·금·나스닥): 네 칸 모두 TradingView 고급
    차트 위젯으로 그린다. 상단 툴바를 표시하고 심볼 변경을 허용해
    (allow_symbol_change) 위젯 왼쪽 위의 심볼 검색으로 바로 종목을 바꿀 수
-   있게 한다. 위젯이 심볼 변경을 알리면 칸 위의 이름·가격 줄도 새 심볼
+   있게 한다. 위젯이 심볼 변경을 알리면 칸 위의 이름 줄도 새 심볼
    기준으로 따라간다. 기본 심볼: 비트코인 BINANCE:BTCUSDT · 유가 TVC:USOIL ·
-   금 TVC:GOLD · 나스닥 FOREXCOM:NSXUSD. CME_MINI:NQ1! 같은 선물 연속 심볼은
-   임베드 위젯에서 차단돼 차트에는 쓰지 않고, 나스닥 칸의 가격 줄만 NQ 선물
-   스캔 값으로 따로 채운다. */
+   금 TVC:GOLD · 나스닥 FOREXCOM:NSXUSD. 가격 줄은 두지 않고 가격은 위젯 안에서 본다. */
 (function(){
 function $(id){return document.getElementById(id)}
 function pcOpen(){var s=$("pc");return !!(s&&!s.hidden)}
 var CELLS={
-btc:{name:"비트코인",sub:"BTC · Binance 선물",sym:"BINANCE:BTCUSDT",dec:0},
-oil:{name:"유가",sub:"WTI 원유",sym:"TVC:USOIL",dec:2},
-gold:{name:"금",sub:"GOLD · 국제 금",sym:"TVC:GOLD",dec:2},
-ndx:{name:"나스닥",sub:"NQ · 나스닥 선물",sym:"FOREXCOM:NSXUSD",dec:2}};
+btc:{name:"비트코인",sub:"BTC · Binance 선물",sym:"BINANCE:BTCUSDT"},
+oil:{name:"유가",sub:"WTI 원유",sym:"TVC:USOIL"},
+gold:{name:"금",sub:"GOLD · 국제 금",sym:"TVC:GOLD"},
+ndx:{name:"나스닥",sub:"NQ · 나스닥 선물",sym:"FOREXCOM:NSXUSD"}};
 var cellSym={btc:CELLS.btc.sym,oil:CELLS.oil.sym,gold:CELLS.gold.sym,ndx:CELLS.ndx.sym};
-function isDef(key){return cellSym[key]===CELLS[key].sym}
-function decFor(p){return p>=100?2:p>=1?3:5}
-function setPrice(key,p,c,dec){
-var pe=$("steady-"+key+"-p"),ce=$("steady-"+key+"-c");
-if(!pe)return;
-if(p==null||!(p>0)){pe.textContent="가격을 불러오지 못했어요";if(ce){ce.textContent="";ce.className="steady-chg"}return}
-pe.textContent="$"+f(p,dec==null?decFor(p):dec);
-if(ce){
-if(c==null||isNaN(c)){ce.textContent="";ce.className="steady-chg"}
-else{ce.textContent=(c>0?"+":"")+Number(c).toFixed(2)+"%";ce.className="steady-chg "+(c>0?"up":c<0?"dn":"")}}}
-function fetchTvSym(key,sym,dec,retry){
-fetch("https://scanner.tradingview.com/symbol?symbol="+encodeURIComponent(sym)+"&fields=close%7Cchange").then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
-if(cellSym[key]!==sym)return;
-var p=parseFloat(j&&j.close);
-if(!(p>0))throw new Error("noprice");
-var c=parseFloat(j.change);
-setPrice(key,p,isNaN(c)?null:c,dec)}).catch(function(){
-if(cellSym[key]!==sym)return;
-if(!retry){setTimeout(function(){if(cellSym[key]===sym)fetchTvSym(key,sym,dec,true)},2000);return}
-setPrice(key,null)})}
-function fetchBtc(){
-fetch("https://www.binance.com/fapi/v1/ticker/24hr?symbol=BTCUSDT").then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
-if(!isDef("btc"))return;
-var p=parseFloat(j&&j.lastPrice);
-if(!(p>0)){fetchTvSym("btc",CELLS.btc.sym,CELLS.btc.dec);return}
-var c=parseFloat(j.priceChangePercent);
-setPrice("btc",p,isNaN(c)?null:c,0)}).catch(function(){if(isDef("btc"))fetchTvSym("btc",CELLS.btc.sym,CELLS.btc.dec)})}
-function fetchCellPrice(key){
-if(key==="ndx"&&isDef(key)){nqPrice(key);return}
-if(key==="btc"&&isDef(key)){fetchBtc();return}
-fetchTvSym(key,cellSym[key],isDef(key)?CELLS[key].dec:null)}
-function fetchPrices(){["btc","oil","gold","ndx"].forEach(fetchCellPrice)}
-/* 나스닥 칸 가격: TradingView 스캐너로 NQ 선물 심볼(CME_MINI:NQ1!)을 조회하고,
-   실패하면 NQ 캔들(Hyperliquid xyz:NQ 4시간봉 → Yahoo NQ=F 1시간봉을 4시간봉으로
-   합침)의 마지막 종가·24시간 전 종가로 채운다. 위젯 차트 자체는 건드리지 않는다. */
-function nqParseYahoo(j){
-var r=j&&j.chart&&j.chart.result&&j.chart.result[0];if(!r||!r.timestamp)throw new Error("yh");
-var q=r.indicators&&r.indicators.quote&&r.indicators.quote[0];if(!q||!q.close)throw new Error("yh q");
-var cs=[];
-for(var i=0;i<r.timestamp.length;i++){var c=parseFloat(q.close[i]);if(!(c>0))continue;cs.push({t:r.timestamp[i]*1000,o:parseFloat(q.open[i])||c,h:parseFloat(q.high[i])||c,l:parseFloat(q.low[i])||c,c:c})}
-if(cs.length<10)throw new Error("yh short");return cs}
-function nqAgg4h(cs){
-var out=[],cur=null;
-cs.forEach(function(x){var b=Math.floor(x.t/(4*3600*1000))*4*3600*1000;
-if(!cur||cur.t!==b){cur={t:b,o:x.o,h:x.h,l:x.l,c:x.c};out.push(cur)}
-else{cur.h=Math.max(cur.h,x.h);cur.l=Math.min(cur.l,x.l);cur.c=x.c}});
-return out}
-function nqFetchText(url,ms){return new Promise(function(res,rej){var ctl=("AbortController" in window)?new AbortController():null;var to=setTimeout(function(){if(ctl)ctl.abort();rej(new Error("timeout"))},ms||9000);fetch(url,ctl?{signal:ctl.signal}:{}).then(function(r){clearTimeout(to);if(!r.ok)throw new Error("http "+r.status);return r.text()}).then(function(t){res(t)}).catch(function(e){clearTimeout(to);rej(e)})})}
-function nqFetch(){
-var now=Date.now(),start=now-14*24*3600*1000;
-function fromHl(){
-return fetch("https://api.hyperliquid.xyz/info",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"candleSnapshot",req:{coin:"xyz:NQ",interval:"4h",startTime:start,endTime:now}})}).then(function(r){if(!r.ok)throw new Error("hl");return r.json()}).then(function(j){
-var cs=(j||[]).map(function(x){return{t:+x.t,o:+x.o,h:+x.h,l:+x.l,c:+x.c}}).filter(function(x){return x.c>0});
-if(cs.length<10)throw new Error("hl short");return cs})}
-function fromYahoo(){
-var base="https://query1.finance.yahoo.com/v8/finance/chart/NQ%3DF?interval=60m&range=14d";
-var urls=["https://api.cors.lol/?url="+encodeURIComponent(base),"https://api.allorigins.win/raw?url="+encodeURIComponent(base),"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(base),"https://corsproxy.io/?url="+encodeURIComponent(base)];
-return new Promise(function(res,rej){
-var left=urls.length,done=false;
-urls.forEach(function(u){nqFetchText(u,9000).then(function(t){var cs=nqAgg4h(nqParseYahoo(JSON.parse(t)));if(cs.length<10)throw new Error("short");if(!done){done=true;res(cs)}}).catch(function(){left--;if(left===0&&!done)rej(new Error("yahoo failed"))})})})}
-return fromHl().catch(function(){return fromYahoo()})}
-function nqPrice(key){
-fetch("https://scanner.tradingview.com/futures/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:["CME_MINI:NQ1!"]},columns:["close","change"]})}).then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
-if(!isDef(key))return;
-var d=(j.data||[])[0];
-var p=d&&d.d?parseFloat(d.d[0]):NaN;
-if(!(p>0))throw new Error("noprice");
-var c=parseFloat(d.d[1]);
-setPrice(key,p,isNaN(c)?null:c,CELLS[key].dec)}).catch(function(){
-if(!isDef(key))return;
-nqFetch().then(function(cs){
-if(!isDef(key))return;
-var last=cs[cs.length-1],ref=cs[Math.max(0,cs.length-7)];
-setPrice(key,last.c,(ref&&ref.c>0)?(last.c/ref.c-1)*100:null,CELLS[key].dec)}).catch(function(){if(isDef(key))setPrice(key,null)})})}
 /* TradingView 위젯 로더: 원자재 탭의 mtLoadTvJs(전역)를 재사용하고,
    없을 때만 같은 방식으로 tv.js를 직접 불러온다. */
 var tvWait=null,tvLoading=false;
@@ -2491,7 +2408,7 @@ s.src="https://s3.tradingview.com/tv.js";s.async=true;
 s.onload=function(){var ok=!!(window.TradingView&&TradingView.widget);(tvWait||[]).splice(0).forEach(function(fn){fn(ok)})};
 s.onerror=function(){(tvWait||[]).splice(0).forEach(function(fn){fn(false)})};
 document.head.appendChild(s)}
-/* 위젯 안에서 심볼이 바뀌면 칸 위의 이름·가격 줄을 새 심볼 기준으로 맞춘다. */
+/* 위젯 안에서 심볼이 바뀌면 칸 위의 이름 줄을 새 심볼 기준으로 맞춘다. */
 function hookSym(widget,key,tok,w){
 try{
 var ch=null;
@@ -2508,9 +2425,7 @@ cellSym[key]=full;
 var nm=$("steady-"+key+"-nm"),sb=$("steady-"+key+"-sub");
 if(nm)nm.textContent=(si&&(si.description||si.name))||full;
 if(sb)sb.textContent=full;
-var pe=$("steady-"+key+"-p");if(pe)pe.textContent="불러오는 중…";
-var ce=$("steady-"+key+"-c");if(ce){ce.textContent="";ce.className="steady-chg"}
-fetchCellPrice(key)})}catch(e){}}
+})}catch(e){}}
 /* 칸 차트 마운트: TradingView 고급 차트 위젯. 상단 툴바를 보이고 심볼 변경을
    허용해, 위젯 왼쪽 위 심볼 검색으로 종목을 바로 바꿀 수 있게 한다. */
 function mountTv(key){
@@ -2543,15 +2458,12 @@ function mountCharts(){["btc","oil","gold","ndx"].forEach(mountTv)}
 var started=false;
 function start(){
 if(!pcOpen())return;
-fetchPrices();
 if(started)return;
 started=true;
 mountCharts()}
 var tabs=$("tabs");
 if(tabs)tabs.addEventListener("click",function(e){var b=e.target.closest?e.target.closest("button"):null;if(b&&b.dataset.t==="pc")start()});
 if(pcOpen())start();
-setInterval(function(){if(!document.hidden&&pcOpen())fetchPrices()},60000);
-document.addEventListener("visibilitychange",function(){if(!document.hidden&&pcOpen())fetchPrices()});
 var btn=$("cmp-more-btn"),wrap=$("cmp2wrap");
 if(btn&&wrap)btn.addEventListener("click",function(){
 var open=wrap.hidden;
