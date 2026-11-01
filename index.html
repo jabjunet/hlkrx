@@ -18,7 +18,7 @@
 --bg:#0b0d10;--sf:#14171b;--sf2:#1d2126;--tx:#eceff3;--mut:#8f99a6;--bd:#262b31;
 --up:#ff5f6b;--dn:#5ea0ff;--upbg:rgba(255,95,107,.13);--dnbg:rgba(94,160,255,.13);
 --ac:#eceff3;--acx:#0b0d10;--adsh:rgba(0,0,0,.65);color-scheme:dark}
-html{scroll-padding-top:66px}
+html{scroll-padding-top:78px}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 "Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;font-variant-numeric:tabular-nums}
 main{max-width:680px;margin:0 auto;padding:2px 16px 44px;box-shadow:-20px 0 30px -20px var(--adsh),20px 0 30px -20px var(--adsh)}
@@ -28,7 +28,7 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .sub{color:var(--mut);font-size:13px;margin:3px 0 0}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 /* 상단 헤더 */
-.hd{display:flex;justify-content:space-between;align-items:stretch;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:35;background:var(--bg);border-bottom:1px solid var(--bd);margin:0 0 8px}
+.hd{display:flex;justify-content:space-between;align-items:stretch;gap:10px;flex-wrap:wrap;position:sticky;top:8px;z-index:35;background:var(--bg);border-bottom:1px solid var(--bd);margin:8px 0 8px}
 .live{display:inline-flex;align-items:center;gap:7px;padding:1px 2px;font-size:12px;color:var(--mut);white-space:nowrap;margin-top:0}
 .dot{width:9px;height:9px;border-radius:50%;background:var(--warn);flex:none}
 .dot.ok{background:var(--ok)}
@@ -39,7 +39,7 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .stat.live::before{background:var(--ok)}
 /* 탭 바 */
 .tabs{display:flex;position:relative;background:none;margin:0;padding:0;flex:none;align-items:stretch}
-.tabs button{flex:none;min-height:30px;border:0;background:none;color:var(--mut);padding:4px 7px;font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs button{flex:none;min-height:38px;border:0;background:none;color:var(--mut);padding:4px 10px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tabs button[aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
 /* 데스크톱: 해외 탭 바로 아래에 붙는 전환 드롭다운 (항목 하나) */
 .tabdd{position:absolute;top:100%;left:50px;width:76px;background:var(--sf2);border:0;outline:none;box-shadow:none;z-index:40;padding:4px;border-radius:0 0 8px 8px}
@@ -99,7 +99,7 @@ input{font:inherit;font-size:13px;font-weight:600;color:var(--tx);background:var
 table{border-collapse:collapse;width:100%}
 th,td{padding:8px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--bd);font-size:13px}
 tr:last-child td{border-bottom:0}
-thead th{position:sticky;top:35px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd);font-size:12px;font-weight:600;color:var(--mut)}
+thead th{position:sticky;top:47px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd);font-size:12px;font-weight:600;color:var(--mut)}
 th:first-child,td:first-child{text-align:left}
 tbody tr:hover{background:var(--sf2)}
 td small{display:block;color:var(--mut);font-size:11.5px}
@@ -132,7 +132,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .kp7 th:nth-child(1){width:28%}.kp7 th:nth-child(2){width:16%}.kp7 th:nth-child(3){width:12.5%}.kp7 th:nth-child(4){width:11.5%}.kp7 th:nth-child(5){width:11%}.kp7 th:nth-child(6){width:11%}.kp7 th:nth-child(7){width:10%}
 /* 전체 종목 목록 (4열): <table> 레이아웃 엔진 해석에 맡기지 않고 행마다 CSS 그리드 열(37/24/19/20%)을 직접 지정. Hyperliquid·Binance가 같은 arow() 마크업을 쓰므로 두 거래소의 너비·열 비율·글자·행 높이·여백·로고가 구조적으로 동일하고, 행 너비는 언제나 컨테이너 100% */
 #pb .phd,#pb .prow{display:grid;grid-template-columns:34% 28% 18% 20%;align-items:center;width:100%}
-#pb .phd{position:sticky;top:35px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
+#pb .phd{position:sticky;top:47px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
 #pb .phd>div{padding:6px 8px;font-size:12px;font-weight:600;color:var(--mut);text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
 #pb .phd>div:first-child{text-align:left}
 #pb .phd>div[data-k]{cursor:pointer;user-select:none;-webkit-user-select:none}
@@ -304,7 +304,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 main{max-width:1120px;padding:4px 28px 56px}
 .pmrow{display:none}
 h1{font-size:24px}
-.tabs button{font-size:15px}
+.tabs button{font-size:16.5px}
 .sum b{font-size:20px}
 .pm{font-size:36px}
 th,td{padding:9px 10px}
@@ -324,7 +324,7 @@ th,td{padding:9px 10px}
 /* 모바일: 김프 7열 전부 표시, 종목명 말줄임 없음 */
 @media(max-width:520px){
 main{padding:0 12px 40px}
-.tabs button{font-size:13.5px;padding:4px 4px}
+.tabs button{font-size:14.5px;padding:4px 7px}
 .sum div{padding:10px 12px}
 .sum b{font-size:16px}
 .xsum div{padding:10px 12px}
@@ -332,7 +332,7 @@ main{padding:0 12px 40px}
 .kp7 th .hd7{display:none}
 /* 김프 표 모바일: 두 줄 행 — 1줄 이름·현재가·김프, 2줄 전일대비·고가대비·저가대비·거래량 */
 .kp7 thead tr{display:flex;width:100%}
-.kp7 thead th{position:sticky;top:35px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
+.kp7 thead th{position:sticky;top:47px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
 .kp7 tbody tr{display:flex;flex-wrap:wrap;width:100%;align-items:flex-start;border-bottom:1px solid var(--bd)}
 .kp7 tbody tr:last-child{border-bottom:0}
 .kp7 th,.kp7 td{border-bottom:0}
@@ -816,14 +816,14 @@ main{padding:0 12px 40px}
 <div><small>1주 전</small><b id="ind-fg-w">—</b><span id="ind-fg-wl"></span></div>
 <div><small>1달 전</small><b id="ind-fg-mo">—</b><span id="ind-fg-mol"></span></div>
 </div>
-<p class="indmeta" id="ind-fg-m">CNN Fear &amp; Greed · 하루 1회 갱신</p>
+<p class="indmeta" id="ind-fg-m">CNN Fear &amp; Greed · 8시간마다 확인</p>
 </div>
 <div class="c" id="ind-vix-card">
 <div class="indlab">VIX 공포지수</div>
 <div class="fgrow"><span class="indb" id="ind-vix-v">—</span><span class="pill" id="ind-vix-c">—</span></div>
 <p class="fundint" id="ind-vix-t">—</p>
 <p class="indsub">S&amp;P 500 옵션 가격으로 본 향후 30일 변동성 기대치입니다.</p>
-<p class="indmeta" id="ind-vix-m">TradingView · 1분마다 확인</p>
+<p class="indmeta" id="ind-vix-m">TradingView · 8시간마다 확인</p>
 </div>
 <div class="c">
 <div class="indlab">주요 지수 등락</div>
@@ -841,6 +841,18 @@ main{padding:0 12px 40px}
 <div class="indb" id="ind-fd-v">—</div>
 <p class="fundint" id="ind-fd-t">—</p>
 <p class="indmeta" id="ind-fd-m">바이낸스 선물 · 1분마다 확인</p>
+</div>
+<div class="c">
+<div class="indlab">옵션 만기일</div>
+<div class="ixrows">
+<div class="ixrow"><span>미국 옵션</span><span class="ixrv"><b id="ind-exp-us">—</b><span class="pill" id="ind-exp-us-d">—</span></span></div>
+</div>
+<p class="indsub" id="ind-exp-us-n">—</p>
+<div class="ixrows">
+<div class="ixrow"><span>한국 파생상품</span><span class="ixrv"><b id="ind-exp-kr">—</b><span class="pill" id="ind-exp-kr-d">—</span></span></div>
+</div>
+<p class="indsub" id="ind-exp-kr-n">—</p>
+<p class="indmeta">날짜 규칙으로 계산 · 미국 매월 셋째 금요일, 한국 매월 둘째 목요일</p>
 </div>
 </section>
 <details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-10-31), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 조회가 안 될 때는 마지막 스냅샷(2026-10-28 조회, KRX는 10/23 종가)을 보여줍니다.</p></details>
@@ -2589,12 +2601,13 @@ wire("legal-terms-open","legal-terms-ov","legal-terms-x");
 </script>
 <script>
 /* 지표 탭: 주식 시장 심리 지표를 각자 따로 불러온다. 하나가 실패해도 그 카드만
-   '—'로 두고 나머지는 계속 표시한다. 탭을 처음 열 때 불러오고, 탭이 열려 있는
-   동안 1분마다 다시 확인한다.
+   '—'로 두고 나머지는 계속 표시한다. 탭을 처음 열 때 불러오고, 공포·탐욕·VIX는
+   8시간마다, 주요 지수·펀딩비는 1분마다 다시 확인한다.
    - 공포·탐욕: CNN Fear & Greed(주식용). CNN 데이터가 브라우저에서 열리지 않으면
      공포·탐욕 카드를 빼고 VIX 카드를 메인 공포 지표로 승격시킨다.
    - VIX·주요 지수: 김프 탭 지수 타일과 같은 TradingView 스캐너 방식.
-   - 주식 평균 펀딩비: 해외 탭 주식 종목들의 바이낸스 선물 펀딩비 평균. */
+   - 주식 평균 펀딩비: 해외 탭 주식 종목들의 바이낸스 선물 펀딩비 평균.
+   - 옵션 만기일: 외부 데이터 없이 날짜 규칙으로 브라우저에서 계산한다. */
 (function(){
 function $(id){return document.getElementById(id)}
 function pad(n){return (n<10?"0":"")+n}
@@ -2634,7 +2647,7 @@ $("ind-fg-v").textContent=Math.round(cur);
 var lab=$("ind-fg-lab");lab.textContent=fgLabel(cur);lab.style.background=fgColor(cur);lab.style.color="#fff";
 var mk=$("ind-fg-mark");mk.hidden=false;mk.style.left=Math.max(0,Math.min(100,cur))+"%";mk.style.borderColor=fgColor(cur);
 setFg("ind-fg-y","ind-fg-yl",y);setFg("ind-fg-w","ind-fg-wl",w);setFg("ind-fg-mo","ind-fg-mol",mo);
-meta("ind-fg-m",true,"CNN Fear & Greed · 하루 1회 갱신");
+meta("ind-fg-m",true,"CNN Fear & Greed · 8시간마다 확인");
 }).catch(fgFail)}
 function loadVix(){
 tvScan("america",["CBOE:VIX"],["close","change","change_abs"]).then(function(j){
@@ -2645,7 +2658,7 @@ var pill=$("ind-vix-c");
 if(!isNaN(chg)){pill.textContent=(chg>0?"+":"")+chg.toFixed(2)+"%";pill.className="pill "+(chg>0?"up":chg<0?"dn":"")}
 else if(!isNaN(abs)){pill.textContent=(abs>0?"+":"")+abs.toFixed(2);pill.className="pill "+(abs>0?"up":abs<0?"dn":"")}
 $("ind-vix-t").textContent=v<20?"20 아래 · 시장이 안정적인 편이에요":v<30?"20~30 · 불안이 커지는 구간이에요":"30 위 · 공포가 큰 구간이에요";
-meta("ind-vix-m",true,"TradingView · 1분마다 확인");
+meta("ind-vix-m",true,"TradingView · 8시간마다 확인");
 }).catch(function(){meta("ind-vix-m",false)})}
 function setIx(key,v,c){
 if(!(v>0))return false;
@@ -2691,14 +2704,31 @@ list.forEach(function(s){var r=m[s+"USDT"];if(!isNaN(r)){sum+=r*100;n++}});
 if(n<3)throw new Error("short");
 applyFund(sum/n,n);
 }).catch(function(){if(!fundFromCache())meta("ind-fd-m",false)})}
-function refresh(){if(document.hidden)return;loadFg();loadVix();loadIx();loadFund()}
+/* 옵션 만기일: 미국 옵션은 매월 셋째 금요일, 한국 파생상품은 매월 둘째 목요일.
+   3·6·9·12월 만기는 미국은 '네 마녀의 날', 한국은 '선물·옵션 동시만기'로 표시한다. */
+function nthWday(y,m,wd,n){var off=(wd-new Date(y,m,1).getDay()+7)%7;return new Date(y,m,1+off+(n-1)*7)}
+function nextExps(wd,n){var t=new Date();t=new Date(t.getFullYear(),t.getMonth(),t.getDate());var out=[],y=t.getFullYear(),m=t.getMonth();while(out.length<2){var d=nthWday(y,m,wd,n);if(d>=t)out.push(d);m++;if(m>11){m=0;y++}}return out}
+function fmtExp(d){return d.getFullYear()+"년 "+(d.getMonth()+1)+"월 "+d.getDate()+"일 ("+"일월화수목금토".charAt(d.getDay())+")"}
+function fillExp(pre,list,tag){
+var t=new Date();t=new Date(t.getFullYear(),t.getMonth(),t.getDate());
+var d0=list[0],d1=list[1],dd=Math.round((d0-t)/86400000);
+$(pre).textContent=fmtExp(d0);
+var p=$(pre+"-d");p.textContent=dd<=0?"오늘 만기":"D-"+dd;if(dd<=0)p.className="pill up";
+var q0=(d0.getMonth()+1)%3===0,q1=(d1.getMonth()+1)%3===0;
+$(pre+"-n").textContent=(q0?tag+" · ":"")+"다음 만기 "+fmtExp(d1)+(q1?" · "+tag:"")}
+function loadExp(){fillExp("ind-exp-us",nextExps(5,3),"네 마녀의 날");fillExp("ind-exp-kr",nextExps(4,2),"선물·옵션 동시만기")}
+/* 갱신 주기: 공포·탐욕·VIX는 8시간, 주요 지수·펀딩비·만기일은 1분 간격으로 확인한다. */
+var SLOWMS=8*60*60*1000,lastSlow=0;
+function refreshFast(){if(document.hidden)return;loadIx();loadFund();loadExp()}
+function refreshSlow(){lastSlow=Date.now();loadFg();loadVix()}
+function slowIfDue(){if(Date.now()-lastSlow>=SLOWMS)refreshSlow()}
 var started=false;
 function start(){
-if(!started){started=true;refresh();setInterval(function(){var s=$("pi");if(s&&!s.hidden)refresh()},60000)}
-else refresh()}
+if(!started){started=true;refreshSlow();refreshFast();setInterval(function(){var s=$("pi");if(s&&!s.hidden){refreshFast();slowIfDue()}},60000)}
+else{refreshFast();slowIfDue()}}
 var tabs=$("tabs");
 if(tabs)tabs.addEventListener("click",function(e){var b=e.target.closest?e.target.closest("button"):null;if(b&&b.dataset.t==="pi")start()});
-document.addEventListener("visibilitychange",function(){if(!document.hidden){var s=$("pi");if(s&&!s.hidden&&started)refresh()}});
+document.addEventListener("visibilitychange",function(){if(!document.hidden){var s=$("pi");if(s&&!s.hidden&&started){refreshFast();slowIfDue()}}});
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c6e8ab4e4ea4777bf54ca7e737337b9"}'></script><!-- End Cloudflare Web Analytics -->
