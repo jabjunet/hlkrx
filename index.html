@@ -38,8 +38,8 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .stat::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--warn);margin-right:6px;vertical-align:1px}
 .stat.live::before{background:var(--ok)}
 /* 탭 바 */
-.tabs{display:flex;position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--bd);margin:14px 0 12px;padding-top:4px}
-.tabs button{flex:1 1 0;min-height:40px;border:0;background:none;color:var(--mut);padding:8px 2px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs{display:flex;position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--bd);margin:0 0 12px;padding-top:2px}
+.tabs button{flex:1 1 0;min-height:32px;border:0;background:none;color:var(--mut);padding:5px 2px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tabs button[aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
 /* 데스크톱: 해외 탭 바로 아래에 붙는 전환 드롭다운 (항목 하나) */
 .tabdd{position:absolute;top:100%;left:20%;width:20%;background:var(--sf2);border:0;outline:none;box-shadow:none;z-index:40;padding:4px;border-radius:0 0 8px 8px}
@@ -99,7 +99,7 @@ input{font:inherit;font-size:13px;font-weight:600;color:var(--tx);background:var
 table{border-collapse:collapse;width:100%}
 th,td{padding:11px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--bd);font-size:13px}
 tr:last-child td{border-bottom:0}
-thead th{position:sticky;top:45px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd);font-size:12px;font-weight:600;color:var(--mut)}
+thead th{position:sticky;top:35px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd);font-size:12px;font-weight:600;color:var(--mut)}
 th:first-child,td:first-child{text-align:left}
 tbody tr:hover{background:var(--sf2)}
 td small{display:block;color:var(--mut);font-size:11.5px}
@@ -133,7 +133,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .kp7 th:nth-child(1){width:28%}.kp7 th:nth-child(2){width:16%}.kp7 th:nth-child(3){width:12.5%}.kp7 th:nth-child(4){width:11.5%}.kp7 th:nth-child(5){width:11%}.kp7 th:nth-child(6){width:11%}.kp7 th:nth-child(7){width:10%}
 /* 전체 종목 목록 (4열): <table> 레이아웃 엔진 해석에 맡기지 않고 행마다 CSS 그리드 열(37/24/19/20%)을 직접 지정. Hyperliquid·Binance가 같은 arow() 마크업을 쓰므로 두 거래소의 너비·열 비율·글자·행 높이·여백·로고가 구조적으로 동일하고, 행 너비는 언제나 컨테이너 100% */
 #pb .phd,#pb .prow{display:grid;grid-template-columns:37% 24% 19% 20%;align-items:center;width:100%}
-#pb .phd{position:sticky;top:45px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
+#pb .phd{position:sticky;top:35px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
 #pb .phd>div{padding:11px 10px;font-size:12px;font-weight:600;color:var(--mut);text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
 #pb .phd>div:first-child{text-align:left}
 #pb .phd>div[data-k]{cursor:pointer;user-select:none;-webkit-user-select:none}
@@ -300,7 +300,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 main{max-width:1120px;padding:28px 28px 56px}
 .pmrow{display:none}
 h1{font-size:24px}
-.tabs button{font-size:16px}
+.tabs button{font-size:14px}
 .sum b{font-size:20px}
 .pm{font-size:36px}
 th,td{padding:12px 10px}
@@ -316,7 +316,7 @@ th,td{padding:12px 10px}
 /* 모바일: 김프 7열 전부 표시, 종목명 말줄임 없음 */
 @media(max-width:520px){
 main{padding:18px 12px 40px}
-.tabs button{font-size:14px}
+.tabs button{font-size:12.5px}
 .sum div{padding:10px 12px}
 .sum b{font-size:16px}
 .xsum div{padding:10px 12px}
@@ -324,7 +324,7 @@ main{padding:18px 12px 40px}
 .kp7 th .hd7{display:none}
 /* 김프 표 모바일: 두 줄 행 — 1줄 이름·현재가·김프, 2줄 전일대비·고가대비·저가대비·거래량 */
 .kp7 thead tr{display:flex;width:100%}
-.kp7 thead th{position:sticky;top:45px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
+.kp7 thead th{position:sticky;top:35px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
 .kp7 tbody tr{display:flex;flex-wrap:wrap;width:100%;align-items:flex-start;border-bottom:1px solid var(--bd)}
 .kp7 tbody tr:last-child{border-bottom:0}
 .kp7 th,.kp7 td{border-bottom:0}
@@ -586,6 +586,7 @@ main{padding:18px 12px 40px}
 </head>
 <body>
 <main>
+<div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" id="tab-pb" aria-pressed="false" aria-haspopup="true" aria-expanded="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><div class="tabdd" id="tabdd" hidden><div class="tabdd-i" id="tabdd-item" role="button" tabindex="0">ETF</div></div></div>
 <div class="hd"><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span><b id="lg-id"></b><span class="opbdg" id="lg-op" hidden>운영자</span></button></div></div></div>
 
 <div class="ixtiles" aria-label="주요 지수">
@@ -596,7 +597,6 @@ main{padding:18px 12px 40px}
 <div class="ixt"><small><i id="ixt-fx-d"></i>달러/원</small><b id="ixt-fx-v">—</b><span class="ixc na" id="ixt-fx-c">—</span><span class="ixhl" id="ixt-fx-hl"></span></div>
 <div class="ixt"><small><i id="ixt-oil-d"></i>원유</small><b id="ixt-oil-v">—</b><span class="ixc na" id="ixt-oil-c">—</span><span class="ixhl" id="ixt-oil-hl"></span></div>
 </div>
-<div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" id="tab-pb" aria-pressed="false" aria-haspopup="true" aria-expanded="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><div class="tabdd" id="tabdd" hidden><div class="tabdd-i" id="tabdd-item" role="button" tabindex="0">ETF</div></div></div>
 <section id="pa">
 <div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button><button data-m="us" aria-pressed="false">해외 주식</button></div><div class="pair" id="xc"><button data-x="hl" aria-pressed="true">Hyperliquid</button><button data-x="bn" aria-pressed="false">Binance</button></div></div>
 <div class="fxr"><span id="cnt">종목 총 8개</span> · 환율 USD/KRW <input id="fx" inputmode="decimal" value="1,324.6" aria-label="달러/원 환율"><span id="fx-live" role="status">실시간 연결 중…</span></div>
@@ -659,7 +659,7 @@ main{padding:18px 12px 40px}
 <span class="gsub" id="au-krw"></span>
 </div>
 <div class="sum" id="au-sum"></div>
-<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-10-30</span>
+<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-10-31</span>
 </div>
 <div id="mt-ag" hidden>
 <div class="tvbar"><button type="button" class="mt-tgl" id="ag-tgl" aria-expanded="false" aria-controls="ag-tvwrap">차트보기</button><span class="gread" id="ag-tv"></span></div>
@@ -670,7 +670,7 @@ main{padding:18px 12px 40px}
 <span class="gsub" id="ag-krw"></span>
 </div>
 <div class="sum" id="ag-sum"></div>
-<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-10-30</span>
+<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-10-31</span>
 </div>
 <div id="mt-cu" hidden>
 <div class="tvbar"><button type="button" class="mt-tgl" id="cu-tgl" aria-expanded="false" aria-controls="cu-tvwrap">차트보기</button><span class="gread" id="cu-tv"></span></div>
@@ -748,7 +748,7 @@ main{padding:18px 12px 40px}
 </div>
 </div>
 </section>
-<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-10-30), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 조회가 안 될 때는 마지막 스냅샷(2026-10-28 조회, KRX는 10/23 종가)을 보여줍니다.</p></details>
+<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-10-31), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 조회가 안 될 때는 마지막 스냅샷(2026-10-28 조회, KRX는 10/23 종가)을 보여줍니다.</p></details>
 <footer class="sitefoot">
 <nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button></nav>
 <p>© 2026 잡주넷 · 문의는 사이트 내 채팅을 이용해 주세요.</p>
@@ -1408,10 +1408,10 @@ window.addEventListener("resize",function(){clearTimeout(ncRzT);ncRzT=setTimeout
 function gd2(n){return f(n,n<10?3:2)}
 function tvtheme(){var t=document.documentElement.getAttribute("data-theme");if(t)return t;return window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}
 var MT={
-au:{sym:"XAU",dec:2,usd:4041.20,buy:760000,sell:646000,tv:"TVC:GOLD",live:false,
+au:{sym:"XAU",dec:2,usd:4041.20,buy:731000,sell:626000,tv:"TVC:GOLD",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
-ag:{sym:"XAG",dec:3,usd:54.078,buy:9410,sell:8000,tv:"TVC:SILVER",live:false,
+ag:{sym:"XAG",dec:3,usd:54.078,buy:8860,sell:7530,tv:"TVC:SILVER",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
 cu:{sym:"HG",dec:4,usd:6.6219,dom:21700,tv:"TVC:COPPER",live:false,
