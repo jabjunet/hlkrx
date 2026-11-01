@@ -39,7 +39,7 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .stat.live::before{background:var(--ok)}
 /* 탭 바 */
 .tabs{display:flex;position:relative;background:none;margin:0;padding:0;flex:none;align-items:stretch}
-.tabs button{flex:none;min-height:30px;border:0;background:none;color:var(--mut);padding:4px 8px;font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs button{flex:none;min-height:30px;border:0;background:none;color:var(--mut);padding:4px 7px;font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tabs button[aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
 /* 데스크톱: 해외 탭 바로 아래에 붙는 전환 드롭다운 (항목 하나) */
 .tabdd{position:absolute;top:100%;left:50px;width:76px;background:var(--sf2);border:0;outline:none;box-shadow:none;z-index:40;padding:4px;border-radius:0 0 8px 8px}
@@ -324,7 +324,7 @@ th,td{padding:9px 10px}
 /* 모바일: 김프 7열 전부 표시, 종목명 말줄임 없음 */
 @media(max-width:520px){
 main{padding:0 12px 40px}
-.tabs button{font-size:13.5px;padding:4px 5px}
+.tabs button{font-size:13.5px;padding:4px 4px}
 .sum div{padding:10px 12px}
 .sum b{font-size:16px}
 .xsum div{padding:10px 12px}
@@ -540,6 +540,34 @@ main{padding:0 12px 40px}
 .cmp-more-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:10px;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:12px}
 .cmp-more-btn:hover{background:var(--sf2)}
 #cmp2wrap[hidden]{display:none}
+/* 지표 탭: 시장 심리 지표 카드 — 기존 카드(.c) 결에 맞춘 큰 숫자와 짧은 라벨 */
+.indb{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
+@media(min-width:1024px){.indb{font-size:34px}}
+.indlab{font-size:12.5px;color:var(--mut);font-weight:700;margin-bottom:3px}
+.indsub{color:var(--mut);font-size:12px;margin:4px 0 0;line-height:1.5}
+.indmeta{color:var(--mut);font-size:11.5px;margin:10px 0 0}
+.indgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.indgrid .c{margin-bottom:0}
+.fgrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.fgrow .pill{font-size:12.5px;padding:3px 9px}
+.fgg{position:relative;height:12px;border-radius:999px;margin:16px 2px 6px;background:linear-gradient(90deg,#d02a38 0%,#e07b39 25%,#d9b62a 50%,#5da24a 75%,#1d9e57 100%)}
+.fgg i{position:absolute;top:50%;left:0;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--tx);transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.25);box-sizing:border-box}
+.fgg i[hidden]{display:none}
+.fgs{display:flex;justify-content:space-between;font-size:11px;color:var(--mut)}
+.fgh{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.fgh>div{background:var(--sf2);border-radius:8px;padding:8px 10px;min-width:0}
+.fgh small{display:block;color:var(--mut);font-size:11px;font-weight:600}
+.fgh b{font-size:17px;letter-spacing:-.02em}
+.fgh span{font-size:11px;color:var(--mut);margin-left:3px}
+.lsnums{display:flex;gap:22px}
+.lsnums small{display:block;color:var(--mut);font-size:11.5px;font-weight:700}
+.lsnums b{font-size:24px;letter-spacing:-.02em;line-height:1.25}
+.lsb{display:flex;height:12px;border-radius:999px;overflow:hidden;background:var(--sf2);margin-top:10px}
+.lsb i{display:block;height:100%}
+.indrow2{display:flex;align-items:baseline;gap:8px;margin-top:6px;color:var(--mut);font-size:12.5px;flex-wrap:wrap}
+.indrow2 b{color:var(--tx);font-size:17px;letter-spacing:-.02em}
+.fundint{font-size:13px;font-weight:700;margin:5px 0 0}
+@media(max-width:520px){.indb{font-size:26px}.lsnums{gap:16px}.lsnums b{font-size:21px}.fgh b{font-size:15.5px}}
 /* 자체 채팅 (Firebase): 우하단 버튼 + 작은 패널, 패널을 열 때 초기화 */
 .chatbtn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:120;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 16px;border:1px solid var(--bd);border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.22)}
 .chatbtn svg{flex:none;display:block}
@@ -603,7 +631,7 @@ main{padding:0 12px 40px}
 </head>
 <body>
 <main>
-<div class="hd"><div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" id="tab-pb" aria-pressed="false" aria-haspopup="true" aria-expanded="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><div class="tabdd" id="tabdd" hidden><div class="tabdd-i" id="tabdd-item" role="button" tabindex="0">ETF</div></div></div><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span></button></div></div></div>
+<div class="hd"><div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" id="tab-pb" aria-pressed="false" aria-haspopup="true" aria-expanded="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><div class="tabdd" id="tabdd" hidden><div class="tabdd-i" id="tabdd-item" role="button" tabindex="0">ETF</div></div></div><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span></button></div></div></div>
 
 <section id="pa">
 <div class="ixtiles" aria-label="주요 지수">
@@ -761,6 +789,50 @@ main{padding:0 12px 40px}
 <div id="cmp-list2"></div>
 <div class="cmp-chart" id="cmp-chart2" hidden></div>
 </div>
+</div>
+</div>
+</section>
+<section id="pi" hidden>
+<h2>시장 심리 지표</h2>
+<p class="sub" style="margin-bottom:10px">공포·탐욕과 자금 쏠림처럼, 시장 분위기를 한눈에 보는 지표입니다.</p>
+<div class="c">
+<div class="indlab">공포·탐욕 지수</div>
+<div class="fgrow"><span class="indb" id="ind-fg-v">—</span><span class="pill" id="ind-fg-lab">—</span></div>
+<div class="fgg"><i id="ind-fg-mark" hidden></i></div>
+<div class="fgs"><span>0 · 극단적 공포</span><span>100 · 극단적 탐욕</span></div>
+<div class="fgh">
+<div><small>어제</small><b id="ind-fg-y">—</b><span id="ind-fg-yl"></span></div>
+<div><small>1주 전</small><b id="ind-fg-w">—</b><span id="ind-fg-wl"></span></div>
+<div><small>1달 전</small><b id="ind-fg-mo">—</b><span id="ind-fg-mol"></span></div>
+</div>
+<p class="indmeta" id="ind-fg-m">alternative.me · 하루 1회 갱신</p>
+</div>
+<div class="indgrid">
+<div class="c">
+<div class="indlab">비트코인 도미넌스</div>
+<div class="indb" id="ind-dom-v">—</div>
+<p class="indsub">전체 시가총액에서 비트코인이 차지하는 비중</p>
+<p class="indmeta" id="ind-dom-m">CoinGecko · 1분마다 확인</p>
+</div>
+<div class="c">
+<div class="indlab">전체 코인 시가총액</div>
+<div class="indb" id="ind-mc-v">—</div>
+<div class="indrow2"><span>24시간 거래량</span><b id="ind-vol-v">—</b></div>
+<p class="indmeta" id="ind-mc-m">CoinGecko · 1분마다 확인</p>
+</div>
+</div>
+<div class="indgrid">
+<div class="c">
+<div class="indlab">BTC 롱/숏 비율 · 바이낸스 선물</div>
+<div class="lsnums"><div><small>롱</small><b class="up" id="ind-ls-l">—</b></div><div><small>숏</small><b class="dn" id="ind-ls-s">—</b></div></div>
+<div class="lsb"><i id="ind-ls-bl" style="background:var(--up);width:50%"></i><i id="ind-ls-bs" style="background:var(--dn);width:50%"></i></div>
+<p class="indmeta" id="ind-ls-m">계정 수 기준 · 1분마다 확인</p>
+</div>
+<div class="c">
+<div class="indlab">주요 코인 평균 펀딩비</div>
+<div class="indb" id="ind-fd-v">—</div>
+<p class="fundint" id="ind-fd-t">—</p>
+<p class="indmeta" id="ind-fd-m">바이낸스 선물 · 1분마다 확인</p>
 </div>
 </div>
 </section>
@@ -2506,6 +2578,94 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!ov.hidden)
 }
 wire("legal-priv-open","legal-priv-ov","legal-priv-x");
 wire("legal-terms-open","legal-terms-ov","legal-terms-x");
+})();
+</script>
+<script>
+/* 지표 탭: 시장 심리 지표 5종을 각자 따로 불러온다. 하나가 실패해도 그 카드만
+   '—'로 두고 나머지는 계속 표시한다. 탭을 처음 열 때 불러오고, 탭이 열려 있는
+   동안 1분마다 다시 확인한다. 펀딩비 평균은 펀딩비 탭과 같은 바이낸스 선물
+   premiumIndex 데이터에서 주요 코인만 골라 평균을 낸다. */
+(function(){
+function $(id){return document.getElementById(id)}
+function pad(n){return (n<10?"0":"")+n}
+function stamp(){var d=new Date();return pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds())}
+function meta(id,ok,base){var e=$(id);if(!e)return;e.textContent=ok?base+" · 확인 "+stamp():"불러오기 실패 · 잠시 후 다시 시도해요"}
+function fgLabel(v){return v<=24?"극단적 공포":v<=44?"공포":v<=55?"중립":v<=74?"탐욕":"극단적 탐욕"}
+function fgColor(v){return v<=24?"#d02a38":v<=44?"#e07b39":v<=55?"#a8891c":v<=74?"#5da24a":"#1d9e57"}
+function fetchJson(url){return fetch(url).then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()})}
+function loadFg(){
+fetchJson("https://api.alternative.me/fng/?limit=31").then(function(j){
+var d=j&&j.data;if(!d||!d.length||isNaN(parseInt(d[0].value,10)))throw new Error("bad");
+var cur=parseInt(d[0].value,10);
+$("ind-fg-v").textContent=cur;
+var lab=$("ind-fg-lab");lab.textContent=fgLabel(cur);lab.style.background=fgColor(cur);lab.style.color="#fff";
+var mk=$("ind-fg-mark");mk.hidden=false;mk.style.left=cur+"%";mk.style.borderColor=fgColor(cur);
+[["ind-fg-y","ind-fg-yl",1],["ind-fg-w","ind-fg-wl",7],["ind-fg-mo","ind-fg-mol",30]].forEach(function(t){
+var row=d[t[2]];if(!row)return;var v=parseInt(row.value,10);if(isNaN(v))return;
+$(t[0]).textContent=v;$(t[1]).textContent=fgLabel(v)});
+meta("ind-fg-m",true,"alternative.me · 하루 1회 갱신");
+}).catch(function(){meta("ind-fg-m",false)})}
+function fmtUsd(v){if(!(v>0))return"—";if(v>=1e12)return"$"+(v/1e12).toFixed(2)+"조";if(v>=1e8)return"$"+Math.round(v/1e8).toLocaleString("ko-KR")+"억";return"$"+Math.round(v).toLocaleString("ko-KR")}
+function applyGlobal(dom,mcap,vol,src){
+if(!(dom>0))throw new Error("bad");
+$("ind-dom-v").textContent=dom.toFixed(1)+"%";
+$("ind-mc-v").textContent=fmtUsd(mcap);
+$("ind-vol-v").textContent=fmtUsd(vol);
+meta("ind-dom-m",true,src+" · 1분마다 확인");
+meta("ind-mc-m",true,src+" · 1분마다 확인")}
+function loadGlobal(){
+fetchJson("https://api.coingecko.com/api/v3/global").then(function(j){
+var d=j&&j.data;if(!d)throw new Error("bad");
+applyGlobal(parseFloat(d.market_cap_percentage&&d.market_cap_percentage.btc),parseFloat(d.total_market_cap&&d.total_market_cap.usd),parseFloat(d.total_volume&&d.total_volume.usd),"CoinGecko");
+}).catch(function(){
+fetchJson("https://api.coinlore.net/api/global/").then(function(j){
+var d=j&&j[0];if(!d)throw new Error("bad");
+applyGlobal(parseFloat(d.btc_d),parseFloat(d.total_mcap),parseFloat(d.total_volume),"CoinLore");
+}).catch(function(){meta("ind-dom-m",false);meta("ind-mc-m",false)})})}
+function loadLs(){
+var urls=["https://www.binance.com/futures/data/globalLongShortAccountRatio?symbol=BTCUSDT&period=5m&limit=1","https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=BTCUSDT&period=5m&limit=1"];
+(function go(i){
+if(i>=urls.length){meta("ind-ls-m",false);return}
+fetchJson(urls[i]).then(function(j){
+var d=j&&j[0];if(!d)throw new Error("bad");
+var lp=parseFloat(d.longAccount)*100,sp=parseFloat(d.shortAccount)*100;
+if(!(lp>0)||isNaN(sp))throw new Error("bad");
+$("ind-ls-l").textContent=lp.toFixed(1)+"%";
+$("ind-ls-s").textContent=sp.toFixed(1)+"%";
+$("ind-ls-bl").style.width=lp+"%";
+$("ind-ls-bs").style.width=sp+"%";
+meta("ind-ls-m",true,"바이낸스 선물 계정 수 기준 · 1분마다 확인");
+}).catch(function(){go(i+1)})})(0)}
+var MAJORS=["BTC","ETH","SOL","XRP","DOGE","BNB","SUI","ADA","LINK","AVAX"];
+function applyFund(avg,n){
+$("ind-fd-v").textContent=(avg>0?"+":"")+avg.toFixed(4)+"%";
+$("ind-fd-t").textContent=avg>0?"롱 쪽이 더 몰림":avg<0?"숏 쪽이 더 몰림":"롱·숏이 비슷하게 갈림";
+meta("ind-fd-m",true,"바이낸스 선물 주요 코인 "+n+"개 평균 · 1분마다 확인")}
+function fundFromCache(){
+try{
+var bn=window.FUND&&window.FUND.bn;if(!bn)return false;
+var sum=0,n=0;
+MAJORS.forEach(function(s){var e=bn[s];if(e&&!isNaN(e.r)){sum+=e.r;n++}});
+if(n<3)return false;
+applyFund(sum/n,n);return true;
+}catch(e){return false}}
+function loadFund(){
+fetchJson("https://www.binance.com/fapi/v1/premiumIndex").then(function(j){
+if(!j||!j.length)throw new Error("bad");
+var m={};j.forEach(function(x){if(x&&x.symbol)m[x.symbol]=parseFloat(x.lastFundingRate)});
+var sum=0,n=0;
+MAJORS.forEach(function(s){var r=m[s+"USDT"];if(!isNaN(r)){sum+=r*100;n++}});
+if(n<3)throw new Error("short");
+applyFund(sum/n,n);
+}).catch(function(){if(!fundFromCache())meta("ind-fd-m",false)})}
+function refresh(){if(document.hidden)return;loadFg();loadGlobal();loadLs();loadFund()}
+var started=false;
+function start(){
+if(!started){started=true;refresh();setInterval(function(){var s=$("pi");if(s&&!s.hidden)refresh()},60000)}
+else refresh()}
+var tabs=$("tabs");
+if(tabs)tabs.addEventListener("click",function(e){var b=e.target.closest?e.target.closest("button"):null;if(b&&b.dataset.t==="pi")start()});
+document.addEventListener("visibilitychange",function(){if(!document.hidden){var s=$("pi");if(s&&!s.hidden&&started)refresh()}});
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c6e8ab4e4ea4777bf54ca7e737337b9"}'></script><!-- End Cloudflare Web Analytics -->
