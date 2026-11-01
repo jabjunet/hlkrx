@@ -131,25 +131,25 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 /* 전체 종목 목록 (4열): <table> 레이아웃 엔진 해석에 맡기지 않고 행마다 CSS 그리드 열(37/24/19/20%)을 직접 지정. Hyperliquid·Binance가 같은 arow() 마크업을 쓰므로 두 거래소의 너비·열 비율·글자·행 높이·여백·로고가 구조적으로 동일하고, 행 너비는 언제나 컨테이너 100% */
 #pb .phd,#pb .prow{display:grid;grid-template-columns:37% 24% 19% 20%;align-items:center;width:100%}
 #pb .phd{position:sticky;top:33px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
-#pb .phd>div{padding:11px 10px;font-size:12px;font-weight:600;color:var(--mut);text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
+#pb .phd>div{padding:12px 8px;font-size:12px;font-weight:600;color:var(--mut);text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
 #pb .phd>div:first-child{text-align:left}
 #pb .phd>div[data-k]{cursor:pointer;user-select:none;-webkit-user-select:none}
 #pb .phd>div.on{color:var(--tx)}
 #pb .prow{border-bottom:1px solid var(--bd)}
 #pb .prow:last-child{border-bottom:0}
 #pb .prow:hover{background:var(--sf2)}
-#pb .prow>div{padding:11px 10px;font-size:13px;line-height:1.55;text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
+#pb .prow>div{padding:12px 8px;font-size:13px;line-height:1.4;text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
 #pb .prow>div:first-child{text-align:left}
 #pb .prow .pv{font-size:14px}
-#pb .prow .hlw{display:block;color:var(--mut);font-size:11px;font-weight:500;white-space:normal}
+#pb .prow .hlw{display:block;color:var(--mut);font-size:11px;font-weight:500;white-space:normal;line-height:1.35}
 #pb .prow .hl1{white-space:nowrap}
-#pb .prow .xdf{display:block;color:var(--mut);font-size:11px;font-weight:500;white-space:normal}
+#pb .prow .xdf{display:block;color:var(--mut);font-size:11px;font-weight:500;white-space:normal;line-height:1.35}
 #pb .prow .xdn{white-space:nowrap}
 #pb .prow .xdf .pill{font-size:10.5px;padding:1px 5px}
 #pb .pempty{padding:11px 10px;font-size:13px;color:var(--mut)}
-#pb .pgrp{display:flex;align-items:baseline;gap:8px;background:var(--sf2);color:var(--tx);font-weight:700;font-size:12.5px;padding:9px 10px;border-bottom:1px solid var(--bd)}
+#pb .pgrp{display:flex;align-items:baseline;gap:8px;background:var(--sf2);color:var(--tx);font-weight:700;font-size:12.5px;padding:8px 10px;border-bottom:1px solid var(--bd)}
 #pb .pgrp .pgrpc{color:var(--mut);font-weight:600;font-size:11.5px}
-#pb .nm b{font-size:13px}
+#pb .nm b{font-size:14px}
 #pb .nm small{font-size:11.5px}
 /* 티커와 한국어 이름 사이 간격: 이름 셀을 flex로 두고 gap으로 일정 간격 유지, 길면 이름 쪽이 말줄임 */
 #pb .nm>div{display:flex;align-items:baseline;gap:7px}
@@ -303,6 +303,10 @@ th,td{padding:12px 10px}
 .kp th,.kp td{padding:14px 10px}
 .kp td b{font-size:15px}
 .kp .l{font-size:12.5px}
+#pb .phd>div,#pb .prow>div{padding:14px 10px}
+#pb .prow .pv{font-size:15px}
+#pb .nm b{font-size:15px}
+#pb .av{width:30px;height:30px}
 .av{width:30px;height:30px}
 .xlogo{width:30px;height:30px}
 .xmenu img{width:30px;height:30px}
@@ -337,7 +341,7 @@ main{padding:0 12px 40px}
 .kp7 .l{font-size:11px}
 .kp7 .nm{gap:7px}
 .spk{width:48px;height:24px}
-#pb .spk{width:40px;height:20px}
+#pb .spk{width:48px;height:24px}
 .kp7 .nm b{font-size:13.5px}
 .kp7 .av{width:28px;height:28px;font-size:11px}
 .kp7 .pill{padding:2px 6px;font-size:12px}
@@ -358,16 +362,16 @@ main{padding:0 12px 40px}
 .msort span{font-size:11.5px;color:var(--mut)}
 .msort button{min-height:30px;padding:4px 10px;border:1px solid var(--bd);background:var(--sf);color:var(--mut);border-radius:999px;font:inherit;font-size:12px;font-weight:600;cursor:pointer}
 .msort button.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
-#pb .phd>div{padding:9px 5px}
-#pb .prow>div{padding:9px 5px;font-size:12.5px}
-#pb .nm b{font-size:12.5px}
-#pb .av{width:24px;height:24px}
-#pb .prow .pv{font-size:13.5px}
+#pb .phd>div{padding:9px 4px}
+#pb .prow>div{padding:10px 4px;font-size:12.5px;line-height:1.35}
+#pb .nm b{font-size:13.5px}
+#pb .av{width:28px;height:28px}
+#pb .prow .pv{font-size:14px}
 /* 모바일: 이름 열을 넓히고(41/25/17/17) 이름은 두 줄로 쌓으며, 차이 배지와 고/저는 열 폭이 모자라면 줄바꿈으로 이어져 숫자가 잘리지 않게 */
 #pb .phd,#pb .prow{grid-template-columns:41% 25% 17% 17%}
 #pb .phd>div,#pb .prow>div{padding-left:4px;padding-right:4px}
 #pb .nm>div{flex-direction:column;align-items:flex-start;gap:1px}
-#pb .nm b{font-size:11.5px;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;line-height:1.3}
+#pb .nm b{font-size:13.5px;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;line-height:1.3}
 #pb .nm small{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.3}
 #pb .prow .xdf{font-size:11px}
 #pb .prow .xdf .pill{font-size:10.5px;padding:1px 4px}
