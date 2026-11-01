@@ -28,7 +28,7 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .sub{color:var(--mut);font-size:13px;margin:3px 0 0}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 /* 상단 헤더 */
-.hd{display:flex;justify-content:flex-end;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.hd{display:flex;justify-content:space-between;align-items:stretch;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:35;background:var(--bg);border-bottom:1px solid var(--bd);margin:0 0 8px}
 .live{display:inline-flex;align-items:center;gap:7px;padding:1px 2px;font-size:12px;color:var(--mut);white-space:nowrap;margin-top:0}
 .dot{width:9px;height:9px;border-radius:50%;background:var(--warn);flex:none}
 .dot.ok{background:var(--ok)}
@@ -38,11 +38,11 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .stat::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--warn);margin-right:6px;vertical-align:1px}
 .stat.live::before{background:var(--ok)}
 /* 탭 바 */
-.tabs{display:flex;position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--bd);margin:0 0 8px;padding-top:0}
-.tabs button{flex:1 1 0;min-height:32px;border:0;background:none;color:var(--mut);padding:5px 2px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs{display:flex;position:relative;background:none;margin:0;padding:0;flex:none;align-items:stretch}
+.tabs button{flex:none;min-height:28px;border:0;background:none;color:var(--mut);padding:4px 8px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tabs button[aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
 /* 데스크톱: 해외 탭 바로 아래에 붙는 전환 드롭다운 (항목 하나) */
-.tabdd{position:absolute;top:100%;left:20%;width:20%;background:var(--sf2);border:0;outline:none;box-shadow:none;z-index:40;padding:4px;border-radius:0 0 8px 8px}
+.tabdd{position:absolute;top:100%;left:46px;width:76px;background:var(--sf2);border:0;outline:none;box-shadow:none;z-index:40;padding:4px;border-radius:0 0 8px 8px}
 .tabdd[hidden]{display:none}
 .tabdd-i{min-height:38px;display:flex;align-items:center;justify-content:center;font-size:14.5px;font-weight:700;color:var(--tx);background:transparent;border:0;border-radius:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .tabdd-i:hover,.tabdd-i:focus-visible{background:transparent;outline:none}
@@ -298,7 +298,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 main{max-width:1120px;padding:4px 28px 56px}
 .pmrow{display:none}
 h1{font-size:24px}
-.tabs button{font-size:14px}
+.tabs button{font-size:13px}
 .sum b{font-size:20px}
 .pm{font-size:36px}
 th,td{padding:9px 10px}
@@ -318,7 +318,7 @@ th,td{padding:9px 10px}
 /* 모바일: 김프 7열 전부 표시, 종목명 말줄임 없음 */
 @media(max-width:520px){
 main{padding:0 12px 40px}
-.tabs button{font-size:12.5px}
+.tabs button{font-size:11.5px;padding:4px 5px}
 .sum div{padding:10px 12px}
 .sum b{font-size:16px}
 .xsum div{padding:10px 12px}
@@ -588,8 +588,7 @@ main{padding:0 12px 40px}
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span><b id="lg-id"></b><span class="opbdg" id="lg-op" hidden>운영자</span></button></div></div></div>
-<div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" id="tab-pb" aria-pressed="false" aria-haspopup="true" aria-expanded="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><div class="tabdd" id="tabdd" hidden><div class="tabdd-i" id="tabdd-item" role="button" tabindex="0">ETF</div></div></div>
+<div class="hd"><div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" id="tab-pb" aria-pressed="false" aria-haspopup="true" aria-expanded="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><div class="tabdd" id="tabdd" hidden><div class="tabdd-i" id="tabdd-item" role="button" tabindex="0">ETF</div></div></div><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span><b id="lg-id"></b><span class="opbdg" id="lg-op" hidden>운영자</span></button></div></div></div>
 
 <section id="pa">
 <div class="ixtiles" aria-label="주요 지수">
