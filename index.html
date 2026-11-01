@@ -124,6 +124,8 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 /* 김프 표 (7열) */
 .kp{table-layout:fixed}
 .kp th,.kp td{padding:9px 8px}
+.kp th:first-child,.kp td:first-child{padding-left:12px}
+.kp th:last-child,.kp td:last-child{padding-right:12px}
 .kp td b{display:block;font-size:14px}
 .kp .l{display:block;color:var(--mut);font-size:12px}
 .kp .l.up{color:var(--up)}.kp .l.dn{color:var(--dn)}
@@ -140,6 +142,8 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 #pb .prow:hover{background:var(--sf2)}
 #pb .prow>div{padding:6px 8px;font-size:13px;line-height:1.24;text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
 #pb .prow>div:first-child{text-align:left}
+#pb .phd>div:first-child,#pb .prow>div:first-child{padding-left:12px}
+#pb .phd>div:last-child,#pb .prow>div:last-child{padding-right:12px}
 #pb .prow .pv{font-size:14px;line-height:1.2}
 #pb .prow .hlw{display:block;color:var(--mut);font-size:10.5px;font-weight:500;white-space:nowrap;line-height:1.3;letter-spacing:-.02em;margin-top:1px}
 #pb .prow .hl1{white-space:nowrap}
@@ -166,7 +170,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
    첫 줄은 언제나 [티커+이름(말줄임) | 현재가+등락 배지(오른쪽 고정)] 한 줄 — 이름이 길어도 가격은 아래 줄로 떨어지지 않는다.
    예전에는 .etfm의 flex-basis가 내용 너비(auto)라 이름+가격이 컨테이너를 넘으면 .etfd 통째로 다음 줄로 감겼고(SPY·QQQM),
    짧은 행만 첫 줄 오른쪽에 붙어(VOO·QQQ) 행마다 배치가 달랐다. 이름 쪽 basis를 0으로 고정해 항상 이름이 먼저 줄어들게 한다 */
-.etfr{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.etfr{display:flex;align-items:flex-start;gap:8px;padding:6px 12px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
 .etfr:last-child{border-bottom:0}
 .etfr:hover{background:var(--sf2)}
 .etfm{display:flex;align-items:center;gap:7px;min-width:0;flex:1 1 0;flex-wrap:nowrap;padding-top:2px}
@@ -335,14 +339,14 @@ main{padding:0 12px 40px}
 .kp7 tbody tr:last-child{border-bottom:0}
 .kp7 th,.kp7 td{border-bottom:0}
 .kp7 th{font-size:11.5px;padding:7px 0;letter-spacing:0;min-width:0}
-.kp7 th:nth-child(1){flex:0 0 54%;text-align:left;padding-right:4px}
+.kp7 th:nth-child(1){flex:0 0 54%;text-align:left;padding-left:10px;padding-right:4px}
 .kp7 th:nth-child(2){flex:0 0 25%;padding-left:6px;text-align:right}
-.kp7 th:nth-child(3){flex:0 0 21%;padding-left:6px;text-align:right}
+.kp7 th:nth-child(3){flex:0 0 21%;padding-left:6px;padding-right:10px;text-align:right}
 .kp7 th:nth-child(n+4){display:none}
 .kp7 td{padding:7px 0 1px;font-size:12.5px}
-.kp7 td:nth-child(1){flex:0 0 54%;min-width:0;padding-right:4px}
+.kp7 td:nth-child(1){flex:0 0 54%;min-width:0;padding-left:10px;padding-right:4px}
 .kp7 td:nth-child(2){flex:0 0 25%;padding-left:6px}
-.kp7 td:nth-child(3){flex:0 0 21%;padding-left:6px}
+.kp7 td:nth-child(3){flex:0 0 21%;padding-left:6px;padding-right:10px}
 .kp7 td b{font-size:14px}
 .kp7 .l{font-size:11px}
 .kp7 .nm{gap:7px}
@@ -359,6 +363,9 @@ main{padding:0 12px 40px}
 .kp7 td:nth-child(7)::before{content:"거래량"}
 .kp7 td:nth-child(n+4)::before{font-size:10px;color:var(--mut)}
 .kp7 td:nth-child(n+4) b{font-size:11.5px}
+.kp7 td:nth-child(4){padding-left:10px}
+.kp7 td:nth-child(7){padding-right:10px}
+.kp7 td[colspan]{padding-left:10px;padding-right:10px}
 .kp7 tr.na{opacity:.45}
 .kp7 tr.na td{padding-top:5px;padding-bottom:5px}
 .kp7 tr.na td:nth-child(n+4){display:none}
@@ -377,6 +384,8 @@ main{padding:0 12px 40px}
 /* 모바일: 가격 열을 넓혀(35/31/16/18) 비교 가격·차이 배지와 고/저가 각각 한 줄로 들어가 행이 세로로 늘어나지 않게 */
 #pb .phd,#pb .prow{grid-template-columns:35% 31% 16% 18%}
 #pb .phd>div,#pb .prow>div{padding-left:4px;padding-right:4px}
+#pb .phd>div:first-child,#pb .prow>div:first-child{padding-left:10px}
+#pb .phd>div:last-child,#pb .prow>div:last-child{padding-right:10px}
 #pb .nm>div{flex-direction:column;align-items:flex-start;gap:1px}
 #pb .nm b{font-size:13px;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;line-height:1.25}
 #pb .nm small{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.25}
@@ -416,6 +425,8 @@ main{padding:0 12px 40px}
 #pf .prow:hover{background:var(--sf2)}
 #pf .prow>div{padding:8px 8px;font-size:13px;line-height:1.45;text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
 #pf .prow>div:first-child{text-align:left}
+#pf .phd>div:first-child,#pf .prow>div:first-child{padding-left:12px}
+#pf .phd>div:last-child,#pf .prow>div:last-child{padding-right:12px}
 #pf .fv2{font-size:12.5px;font-weight:600;white-space:nowrap;letter-spacing:-.02em}
 #pf .fper{color:var(--mut);font-size:11px;font-weight:500;white-space:nowrap}
 #pf .pempty{padding:11px 10px;font-size:13px;color:var(--mut)}
@@ -429,6 +440,8 @@ main{padding:0 12px 40px}
 #pf .phd,#pf .prow{grid-template-columns:25% 18.75% 18.75% 18.75% 18.75%}
 #pf .phd>div{padding:7px 3px;font-size:11px}
 #pf .prow>div{padding:7px 3px;font-size:11.5px}
+#pf .phd>div:first-child,#pf .prow>div:first-child{padding-left:10px}
+#pf .phd>div:last-child,#pf .prow>div:last-child{padding-right:10px}
 #pf .fv2{font-size:11px}
 #pf .fper{font-size:10px}
 #pf .nm{gap:5px}
