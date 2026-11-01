@@ -6,7 +6,7 @@
 <title>잡주넷</title>
 <style>
 /* ===== 통합 디자인: 김프가식 표 중심 · 중립 배경 · 얇은 구분선 · 색+부호 등락 ===== */
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+:root{box-sizing:border-box;padding-top:0;padding-bottom:env(safe-area-inset-bottom,0px);
 --bg:#f7f8fa;--sf:#fff;--sf2:#f1f3f5;--tx:#1a1e24;--mut:#68727e;--bd:#e4e7eb;
 --up:#d02a38;--dn:#1668c4;--upbg:rgba(208,42,56,.09);--dnbg:rgba(22,104,196,.09);
 --ac:#1a1e24;--acx:#fff;--ok:#1d9e57;--warn:#d98a16;--adsh:rgba(26,30,36,.22);color-scheme:light}
@@ -21,7 +21,7 @@
 html{scroll-padding-top:64px}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 "Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;font-variant-numeric:tabular-nums}
-main{max-width:680px;margin:0 auto;padding:20px 16px 44px;box-shadow:-20px 0 30px -20px var(--adsh),20px 0 30px -20px var(--adsh)}
+main{max-width:680px;margin:0 auto;padding:2px 16px 44px;box-shadow:-20px 0 30px -20px var(--adsh),20px 0 30px -20px var(--adsh)}
 @media(max-width:720px){main{box-shadow:none}}
 h1{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.25;margin:0}
 h2{font-size:16px;font-weight:700;margin:8px 0 10px}
@@ -29,7 +29,7 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 /* 상단 헤더 */
 .hd{display:flex;justify-content:flex-end;align-items:flex-start;gap:10px;flex-wrap:wrap}
-.live{display:inline-flex;align-items:center;gap:7px;padding:7px 2px;font-size:12px;color:var(--mut);white-space:nowrap;margin-top:5px}
+.live{display:inline-flex;align-items:center;gap:7px;padding:1px 2px;font-size:12px;color:var(--mut);white-space:nowrap;margin-top:0}
 .dot{width:9px;height:9px;border-radius:50%;background:var(--warn);flex:none}
 .dot.ok{background:var(--ok)}
 .dot.bad{background:#b7bfc9}
@@ -38,7 +38,7 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .stat::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--warn);margin-right:6px;vertical-align:1px}
 .stat.live::before{background:var(--ok)}
 /* 탭 바 */
-.tabs{display:flex;position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--bd);margin:0 0 12px;padding-top:2px}
+.tabs{display:flex;position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--bd);margin:0 0 8px;padding-top:0}
 .tabs button{flex:1 1 0;min-height:32px;border:0;background:none;color:var(--mut);padding:5px 2px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tabs button[aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
 /* 데스크톱: 해외 탭 바로 아래에 붙는 전환 드롭다운 (항목 하나) */
@@ -99,7 +99,7 @@ input{font:inherit;font-size:13px;font-weight:600;color:var(--tx);background:var
 table{border-collapse:collapse;width:100%}
 th,td{padding:11px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--bd);font-size:13px}
 tr:last-child td{border-bottom:0}
-thead th{position:sticky;top:35px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd);font-size:12px;font-weight:600;color:var(--mut)}
+thead th{position:sticky;top:33px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd);font-size:12px;font-weight:600;color:var(--mut)}
 th:first-child,td:first-child{text-align:left}
 tbody tr:hover{background:var(--sf2)}
 td small{display:block;color:var(--mut);font-size:11.5px}
@@ -133,7 +133,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .kp7 th:nth-child(1){width:28%}.kp7 th:nth-child(2){width:16%}.kp7 th:nth-child(3){width:12.5%}.kp7 th:nth-child(4){width:11.5%}.kp7 th:nth-child(5){width:11%}.kp7 th:nth-child(6){width:11%}.kp7 th:nth-child(7){width:10%}
 /* 전체 종목 목록 (4열): <table> 레이아웃 엔진 해석에 맡기지 않고 행마다 CSS 그리드 열(37/24/19/20%)을 직접 지정. Hyperliquid·Binance가 같은 arow() 마크업을 쓰므로 두 거래소의 너비·열 비율·글자·행 높이·여백·로고가 구조적으로 동일하고, 행 너비는 언제나 컨테이너 100% */
 #pb .phd,#pb .prow{display:grid;grid-template-columns:37% 24% 19% 20%;align-items:center;width:100%}
-#pb .phd{position:sticky;top:35px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
+#pb .phd{position:sticky;top:33px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
 #pb .phd>div{padding:11px 10px;font-size:12px;font-weight:600;color:var(--mut);text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
 #pb .phd>div:first-child{text-align:left}
 #pb .phd>div[data-k]{cursor:pointer;user-select:none;-webkit-user-select:none}
@@ -231,16 +231,15 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .mt-tgl{min-height:36px;padding:7px 14px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:8px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .mt-tgl[aria-expanded="true"]{background:var(--ac);color:var(--acx);border-color:var(--ac)}
 .tvbtn{background:none;border:0;padding:6px 2px;font:inherit;font-size:13px;font-weight:700;color:var(--tx);cursor:pointer}
-/* 상단 지수 타일 (김프가식): 실시간 줄 아래 3열 그리드 */
-.ixtiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 2px}
-.ixt{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;min-width:0}
-.ixt small{display:flex;align-items:center;gap:5px;color:var(--mut);font-size:12px;margin-bottom:2px;white-space:nowrap}
-.ixt small i{width:6px;height:6px;border-radius:50%;background:#b7bfc9;flex:none}
+/* 상단 지수 타일 (김프가식): 탭 아래 6개 한 줄 그리드 */
+.ixtiles{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:2px 0 2px}
+.ixt{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:7px 9px;min-width:0}
+.ixt small{display:flex;align-items:center;gap:3px;color:var(--mut);font-size:11px;margin-bottom:1px;white-space:nowrap}
+.ixt small i{width:5px;height:5px;border-radius:50%;background:#b7bfc9;flex:none}
 .ixt small i.on{background:var(--ok)}
-.ixt b{display:block;font-size:17px;letter-spacing:-.02em;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ixt .ixc{display:block;font-size:12.5px;font-weight:600}
-.ixt .ixhl{display:block;font-size:11px;color:var(--mut);margin-top:2px;line-height:1.45}
-@media(min-width:1024px){.ixtiles{grid-template-columns:repeat(6,1fr)}}
+.ixt b{display:block;font-size:15px;letter-spacing:-.03em;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ixt .ixc{display:block;font-size:11.5px;font-weight:600}
+@media(max-width:520px){.ixtiles{gap:3px}.ixt{padding:5px 3px;border-radius:7px}.ixt small{font-size:9.5px;gap:2px}.ixt small i{width:4px;height:4px}.ixt b{font-size:10.5px;letter-spacing:-.06em}.ixt .ixc{font-size:9.5px}}
 /* 안내 문구 */
 .note{color:var(--mut);font-size:12.5px;line-height:1.65;margin:12px 2px 0}
 .dnote{margin:14px 0}
@@ -254,8 +253,8 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .dnote .note b{color:var(--tx)}
 /* 로그인 */
 .hd-r{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-.acct{margin-top:2px;flex:none}
-.lgb{min-height:36px;padding:7px 14px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.acct{margin-top:0;flex:none}
+.lgb{min-height:32px;padding:5px 12px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .lgb.ghost{color:var(--mut);font-weight:600}
 .who{display:inline-flex;align-items:center;gap:8px}
 .who[hidden]{display:none}
@@ -281,7 +280,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .opbdg[hidden]{display:none}
 .who .opbdg{margin-left:1px}
 /* 프로필 */
-.who{appearance:none;-webkit-appearance:none;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;min-height:36px;padding:4px 12px 4px 5px;font:inherit;cursor:pointer}
+.who{appearance:none;-webkit-appearance:none;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;min-height:32px;padding:2px 12px 2px 5px;font:inherit;cursor:pointer}
 .pav{width:27px;height:27px;border-radius:50%;background:var(--ac);color:var(--acx);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;overflow:hidden;flex:none}
 .pav img{width:100%;height:100%;object-fit:cover;display:block}
 .pav img[hidden]{display:none}
@@ -297,7 +296,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 @media(max-width:520px){.lgov{align-items:flex-end;padding:0}.lgbox{max-width:none;border-radius:16px 16px 0 0;border-bottom:0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}}
 /* 데스크톱 */
 @media(min-width:1024px){
-main{max-width:1120px;padding:28px 28px 56px}
+main{max-width:1120px;padding:4px 28px 56px}
 .pmrow{display:none}
 h1{font-size:24px}
 .tabs button{font-size:14px}
@@ -315,7 +314,7 @@ th,td{padding:12px 10px}
 }
 /* 모바일: 김프 7열 전부 표시, 종목명 말줄임 없음 */
 @media(max-width:520px){
-main{padding:18px 12px 40px}
+main{padding:0 12px 40px}
 .tabs button{font-size:12.5px}
 .sum div{padding:10px 12px}
 .sum b{font-size:16px}
@@ -324,7 +323,7 @@ main{padding:18px 12px 40px}
 .kp7 th .hd7{display:none}
 /* 김프 표 모바일: 두 줄 행 — 1줄 이름·현재가·김프, 2줄 전일대비·고가대비·저가대비·거래량 */
 .kp7 thead tr{display:flex;width:100%}
-.kp7 thead th{position:sticky;top:35px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
+.kp7 thead th{position:sticky;top:33px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
 .kp7 tbody tr{display:flex;flex-wrap:wrap;width:100%;align-items:flex-start;border-bottom:1px solid var(--bd)}
 .kp7 tbody tr:last-child{border-bottom:0}
 .kp7 th,.kp7 td{border-bottom:0}
@@ -586,20 +585,20 @@ main{padding:18px 12px 40px}
 </head>
 <body>
 <main>
-<div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" id="tab-pb" aria-pressed="false" aria-haspopup="true" aria-expanded="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><div class="tabdd" id="tabdd" hidden><div class="tabdd-i" id="tabdd-item" role="button" tabindex="0">ETF</div></div></div>
 <div class="hd"><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span><b id="lg-id"></b><span class="opbdg" id="lg-op" hidden>운영자</span></button></div></div></div>
+<div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" id="tab-pb" aria-pressed="false" aria-haspopup="true" aria-expanded="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><div class="tabdd" id="tabdd" hidden><div class="tabdd-i" id="tabdd-item" role="button" tabindex="0">ETF</div></div></div>
 
 <div class="ixtiles" aria-label="주요 지수">
-<div class="ixt"><small><i id="ixt-ks-d"></i>코스피</small><b id="ixt-ks-v">—</b><span class="ixc na" id="ixt-ks-c">—</span><span class="ixhl" id="ixt-ks-hl"></span></div>
-<div class="ixt"><small><i id="ixt-kq-d"></i>코스닥</small><b id="ixt-kq-v">—</b><span class="ixc na" id="ixt-kq-c">—</span><span class="ixhl" id="ixt-kq-hl"></span></div>
-<div class="ixt"><small><i id="ixt-ndx-d"></i>나스닥</small><b id="ixt-ndx-v">—</b><span class="ixc na" id="ixt-ndx-c">—</span><span class="ixhl" id="ixt-ndx-hl"></span></div>
-<div class="ixt"><small><i id="ixt-spx-d"></i>S&amp;P 500</small><b id="ixt-spx-v">—</b><span class="ixc na" id="ixt-spx-c">—</span><span class="ixhl" id="ixt-spx-hl"></span></div>
-<div class="ixt"><small><i id="ixt-fx-d"></i>달러/원</small><b id="ixt-fx-v">—</b><span class="ixc na" id="ixt-fx-c">—</span><span class="ixhl" id="ixt-fx-hl"></span></div>
-<div class="ixt"><small><i id="ixt-oil-d"></i>원유</small><b id="ixt-oil-v">—</b><span class="ixc na" id="ixt-oil-c">—</span><span class="ixhl" id="ixt-oil-hl"></span></div>
+<div class="ixt"><small><i id="ixt-ks-d"></i>코스피</small><b id="ixt-ks-v">—</b><span class="ixc na" id="ixt-ks-c">—</span></div>
+<div class="ixt"><small><i id="ixt-kq-d"></i>코스닥</small><b id="ixt-kq-v">—</b><span class="ixc na" id="ixt-kq-c">—</span></div>
+<div class="ixt"><small><i id="ixt-ndx-d"></i>나스닥</small><b id="ixt-ndx-v">—</b><span class="ixc na" id="ixt-ndx-c">—</span></div>
+<div class="ixt"><small><i id="ixt-spx-d"></i>S&amp;P 500</small><b id="ixt-spx-v">—</b><span class="ixc na" id="ixt-spx-c">—</span></div>
+<div class="ixt"><small><i id="ixt-fx-d"></i>달러/원</small><b id="ixt-fx-v">—</b><span class="ixc na" id="ixt-fx-c">—</span></div>
+<div class="ixt"><small><i id="ixt-oil-d"></i>원유</small><b id="ixt-oil-v">—</b><span class="ixc na" id="ixt-oil-c">—</span></div>
 </div>
 <section id="pa">
 <div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button><button data-m="us" aria-pressed="false">해외 주식</button></div><div class="pair" id="xc"><button data-x="hl" aria-pressed="true">Hyperliquid</button><button data-x="bn" aria-pressed="false">Binance</button></div></div>
-<div class="fxr"><span id="cnt">종목 총 8개</span> · 환율 USD/KRW <input id="fx" inputmode="decimal" value="1,324.6" aria-label="달러/원 환율"><span id="fx-live" role="status">실시간 연결 중…</span></div>
+<input id="fx" type="hidden" value="1,324.6">
 <div class="srch"><input id="qk" placeholder="종목 검색" aria-label="김프 종목 검색"></div>
 <div class="msort" id="msort"><span>정렬</span><button data-k="c" data-l="전일대비">전일대비</button><button data-k="hi" data-l="고가대비">고가대비</button><button data-k="lo" data-l="저가대비">저가대비</button><button data-k="v" data-l="거래량">거래량</button></div>
 <div class="wrap"><table class="kp kp7"><thead id="kh"><tr><th>이름</th><th data-k="b">현재가<span class="ar"></span></th><th data-k="p">김프<span class="ar"></span></th><th data-k="c">전일대비<span class="ar"></span></th><th data-k="hi">고가대비<span class="hd7">(당일)</span><span class="ar"></span></th><th data-k="lo">저가대비<span class="hd7">(당일)</span><span class="ar"></span></th><th data-k="v">거래량<span class="hd7">(일)</span><span class="ar"></span></th></tr></thead><tbody id="kb"></tbody></table></div>
@@ -1142,11 +1141,11 @@ else{rows=D.filter(function(x){return !KR[x[0]]&&!ET[x[0]]&&OR[x[0]]});
 es=rows.map(function(h){var s=h[0];return{h:h,s:s,b:OR[s],pv:(h[1]/OR[s]-1)*100,tag:"xyz:"+s}})}
 KBR=es.map(function(e){var h=e.h,s=e.s,b=e.b,pv=e.pv,c=pv>0?"up":pv<0?"dn":"",g=hlv2(h,bn?toCan("bn",s):s);
 return{n:s,tg:e.tag,fk:s,b:h[1],c:h[2],v:h[3]*fx/100,p:pv,hi:g.hi,lo:g.lo,mc:capOf(s),html:'<tr><td><div class="nm">'+fvBtn(s)+av(s)+'<div><b>'+s+'</b><span class="l">'+e.tag+'</span></div>'+spkHtml(bn?toCan("bn",s):s,xc)+'</div></td><td><b>'+f(h[1]*fx)+'</b><span class="l">$'+d2(h[1])+'</span></td><td><b><span class="pill '+c+'">'+(pv>0?"+":"")+pv.toFixed(2)+'%</span></b><span class="l '+c+'">'+(h[1]>b?"+":"−")+'$'+d2(Math.abs(h[1]-b))+'</span></td><td>'+pc(h[2])+'</td><td>'+pctc(g.hi)+'</td><td>'+pctc(g.lo)+'</td><td><b>'+won(h[3]*fx/100)+'</b></td></tr>'}});
-rkb();el("cnt").textContent="종목 총 "+rows.length+"개"}
+rkb();var cntEl=el("cnt");if(cntEl)cntEl.textContent="종목 총 "+rows.length+"개"}
 el("mk").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;mk=b.dataset.m;var u=mk==="us";
 this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});
 el("nt").textContent=u?"해외 주식은 한국 거래소 가격이 없어, 선택한 거래소 가격을 원주 기준가(오라클)와 비교한 김프입니다. 역외 시세는 해외 거래소 파생 상품 기준이며 실제 주식 소유권과 무관합니다. 정보 제공 목적으로만 표시됩니다.":NT0;
-if(!u)el("cnt").textContent="종목 총 8개";calc()});
+if(!u){var cntEl2=el("cnt");if(cntEl2)cntEl2.textContent="종목 총 8개"}calc()});
 /* 스냅샷 고/저 폴백: OKX·Bybit 스냅샷에 들어 있는 당일 고/저를 Hyperliquid·Binance 행에도 미리 채워 둔다.
    실시간(TradingView) 고/저가 도착하면 그 값으로 덮어쓰고, 조회가 늦거나 실패해도 고가대비·저가대비와 고/저 줄이 '—'로 비지 않는다. */
 (function(){var m={},i;
