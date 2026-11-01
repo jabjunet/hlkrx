@@ -263,9 +263,8 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .acct{margin-top:0;flex:none}
 .lgb{min-height:32px;padding:5px 12px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .lgb.ghost{color:var(--mut);font-weight:600}
-.who{display:inline-flex;align-items:center;gap:8px}
+.who{display:inline-flex;align-items:center}
 .who[hidden]{display:none}
-.who b{font-size:13px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lgov{position:fixed;inset:0;z-index:200;background:rgba(10,12,14,.55);display:flex;align-items:center;justify-content:center;padding:16px}
 .lgov[hidden]{display:none}
 .lgbox{position:relative;background:var(--sf);border:1px solid var(--bd);border-radius:14px;width:100%;max-width:360px;padding:22px 20px 18px;box-shadow:0 18px 44px rgba(0,0,0,.28)}
@@ -285,10 +284,9 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .gbtn[hidden]{display:none}
 .opbdg{display:inline-flex;align-items:center;flex:none;padding:2px 8px;border-radius:999px;background:var(--ac);color:var(--acx);font-size:11px;font-weight:700;line-height:1.5;letter-spacing:.01em;vertical-align:2px}
 .opbdg[hidden]{display:none}
-.who .opbdg{margin-left:1px}
 /* 프로필 */
-.who{appearance:none;-webkit-appearance:none;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;min-height:32px;padding:2px 12px 2px 5px;font:inherit;cursor:pointer}
-.pav{width:27px;height:27px;border-radius:50%;background:var(--ac);color:var(--acx);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;overflow:hidden;flex:none}
+.who{appearance:none;-webkit-appearance:none;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:50%;min-height:32px;padding:2px;font:inherit;cursor:pointer}
+.pav{width:28px;height:28px;border-radius:50%;background:var(--ac);color:var(--acx);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;overflow:hidden;flex:none}
 .pav img{width:100%;height:100%;object-fit:cover;display:block}
 .pav img[hidden]{display:none}
 .pav span[hidden]{display:none}
@@ -605,7 +603,7 @@ main{padding:0 12px 40px}
 </head>
 <body>
 <main>
-<div class="hd"><div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" id="tab-pb" aria-pressed="false" aria-haspopup="true" aria-expanded="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><div class="tabdd" id="tabdd" hidden><div class="tabdd-i" id="tabdd-item" role="button" tabindex="0">ETF</div></div></div><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span><b id="lg-id"></b><span class="opbdg" id="lg-op" hidden>운영자</span></button></div></div></div>
+<div class="hd"><div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" id="tab-pb" aria-pressed="false" aria-haspopup="true" aria-expanded="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><div class="tabdd" id="tabdd" hidden><div class="tabdd-i" id="tabdd-item" role="button" tabindex="0">ETF</div></div></div><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span></button></div></div></div>
 
 <section id="pa">
 <div class="ixtiles" aria-label="주요 지수">
@@ -1596,18 +1594,26 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden)fxFe
 </script>
 <script>
 (function(){
-var KEY="hlkrx_uid",PKEY="hlkrx_prof";
-var ov=el("lg-ov"),openB=el("lg-open"),who=el("lg-who"),idT=el("lg-id");
+var KEY="hlkrx_uid",PKEY="hlkrx_prof",IKEY="hlkrx_uimg";
+var ov=el("lg-ov"),openB=el("lg-open"),who=el("lg-who");
 var pov=el("pf-ov"),pnick=el("pf-nick"),perr=el("pf-err"),pfile=el("pf-file"),pskip=el("pf-skip");
 var tmpImg="",pfFirst=false;
 function saved(){try{return localStorage.getItem(KEY)||""}catch(e){return""}}
 function prof(){try{var p=JSON.parse(localStorage.getItem(PKEY)||"{}");return p&&typeof p==="object"?p:{}}catch(e){return{}}}
 function saveProf(p){try{localStorage.setItem(PKEY,JSON.stringify(p));return true}catch(e){return false}}
+/* 사용자가 직접 골라 저장한 프로필 사진은 별도 키(hlkrx_uimg)에 따로 보관한다.
+   이 키가 있으면(사진을 지워 빈 값으로 저장한 경우 포함) 그 값이 항상 우선하고,
+   로그인 동기화·구글 계정 사진·기본값이 이 사진을 덮어쓰지 못한다 */
+function uImg(){try{var v=localStorage.getItem(IKEY);return v===null?null:v}catch(e){return null}}
+function setUImg(v){try{localStorage.setItem(IKEY,v||"")}catch(e){}}
+function effImg(p){var u=uImg();return u!==null?u:((p&&p.img)||"")}
+/* 예전에 프로필 팝업에서 직접 저장한 사진(custom 표시)이 있으면 별도 키로 옮겨 보호한다 */
+(function(){if(uImg()===null){var p=prof();if(p.custom&&typeof p.img==="string")setUImg(p.img)}})();
 function firstCh(s){var a=Array.from(String(s||""));return a.length?a[0]:"?"}
 function setAv(t,im,nick,img){if(img){im.src=img;im.hidden=false;t.hidden=true}else{im.hidden=true;im.removeAttribute("src");t.hidden=false;t.textContent=firstCh(nick)}}
 function isOp(){var oe=typeof OPERATOR_EMAIL!=="undefined"?String(OPERATOR_EMAIL||"").trim().toLowerCase():"";if(!oe)return false;var u=saved().trim().toLowerCase();if(u&&u===oe)return true;var pe=String(prof().email||"").trim().toLowerCase();return !!pe&&pe===oe}
-function syncOp(){var op=isOp();var a=el("lg-op");if(a)a.hidden=!op;var b=el("pf-op");if(b)b.hidden=!op}
-function show(){var u=saved();openB.hidden=!!u;who.hidden=!u;if(u){var p=prof();var nick=p.nick||u;idT.textContent=nick;setAv(el("lg-pav-t"),el("lg-pav-img"),nick,p.img||"")}syncOp()}
+function syncOp(){var b=el("pf-op");if(b)b.hidden=!isOp()}
+function show(){var u=saved();openB.hidden=!!u;who.hidden=!u;if(u){var p=prof();var nick=p.nick||u;setAv(el("lg-pav-t"),el("lg-pav-img"),nick,effImg(p))}syncOp()}
 function open(){el("lg-msg").hidden=true;ov.hidden=false}
 el("lg-g").addEventListener("click",function(){var m=el("lg-msg");if(typeof window.__hlkrxFbSignIn==="function"){m.hidden=true;window.__hlkrxFbSignIn(false)}else{m.textContent="로그인을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.";m.hidden=false}});
 /* 채팅 쪽 로그인 흐름이 실패를 알릴 때 쓰는 공용 창구: 사이트 로그인으로 시작한 실패는 채팅 패널이 아니라
@@ -1629,10 +1635,13 @@ var email=String(u.email||"").trim();
 if(email){
 try{localStorage.setItem(KEY,email)}catch(e){}
 var p=prof();
-/* 구글 기본값은 사용자가 프로필을 직접 저장한 적이 없을 때만 빈 칸에 채운다.
-   직접 저장한 닉네임·사진은 동기화가 다시 건드리지 않는다 — 특히 사진을 지워서
-   빈 값으로 저장한 경우, 다음 로그인 때 구글 사진으로 되채우면 저장이 풀린 것처럼 보인다 */
-if(!p.custom){
+/* 사용자가 직접 골라 저장한 사진(hlkrx_uimg)이 있으면 그 사진이 항상 우선한다:
+   동기화가 프로필을 다시 쓸 때도 저장된 사진으로 되돌려 놓고, 구글 계정 사진으로는
+   절대 바꾸지 않는다. 저장된 사진이 없을 때만, 직접 저장한 적이 없는 경우에 한해
+   구글 기본값으로 빈 칸을 채운다 */
+var ui=uImg();
+if(ui!==null){p.img=ui}
+else if(!p.custom){
 if(!String(p.nick||"").trim()&&u.displayName)p.nick=String(u.displayName);
 if(!p.img&&u.photoURL)p.img=String(u.photoURL);
 }
@@ -1652,7 +1661,7 @@ openB.addEventListener("click",open);
 el("lg-x").addEventListener("click",close);
 ov.addEventListener("click",function(e){if(e.target===ov)close()});
 function pfDraw(){var nick=pnick.value.trim()||saved();setAv(el("pf-av-t"),el("pf-av-img"),nick,tmpImg);el("pf-del").hidden=!tmpImg}
-function pfOpen(first){var p=prof();pfFirst=!!first;tmpImg=p.img||"";pnick.value=p.nick||saved();perr.hidden=true;pskip.hidden=!first;syncOp();pov.hidden=false;pfDraw();setTimeout(function(){pnick.focus()},30)}
+function pfOpen(first){var p=prof();pfFirst=!!first;tmpImg=effImg(p);pnick.value=p.nick||saved();perr.hidden=true;pskip.hidden=!first;syncOp();pov.hidden=false;pfDraw();setTimeout(function(){pnick.focus()},30)}
 function pfClose(){if(pfFirst){var p=prof();p.done=1;saveProf(p)}pfFirst=false;pov.hidden=true}
 el("pf-x").addEventListener("click",pfClose);
 pov.addEventListener("click",function(e){if(e.target===pov)pfClose()});
@@ -1663,7 +1672,7 @@ el("pf-del").addEventListener("click",function(){tmpImg="";pfile.value="";pfDraw
 pfile.addEventListener("change",function(){var f=pfile.files&&pfile.files[0];if(!f)return;
 var rd=new FileReader();rd.onload=function(){var img=new Image();img.onload=function(){var S=160,w=img.naturalWidth,h=img.naturalHeight,m=Math.min(w,h),cv=document.createElement("canvas");cv.width=S;cv.height=S;var cx=cv.getContext("2d");cx.drawImage(img,(w-m)/2,(h-m)/2,m,m,0,0,S,S);try{tmpImg=cv.toDataURL("image/jpeg",0.85)}catch(e){tmpImg=""}pfDraw()};img.onerror=function(){perr.textContent="이미지를 불러오지 못했어요.";perr.hidden=false};img.src=rd.result};rd.readAsDataURL(f)});
 el("pf-save").addEventListener("click",function(){var nick=pnick.value.trim();if(!nick){perr.textContent="닉네임을 입력해 주세요.";perr.hidden=false;pnick.focus();return}
-var p=prof();p.nick=nick;p.img=tmpImg;p.done=1;p.custom=1;if(!saveProf(p)){perr.textContent="저장에 실패했어요. 사진 없이 다시 시도해 보세요.";perr.hidden=false;return}
+var p=prof();p.nick=nick;p.img=tmpImg;p.done=1;p.custom=1;setUImg(tmpImg);if(!saveProf(p)){perr.textContent="저장에 실패했어요. 사진 없이 다시 시도해 보세요.";perr.hidden=false;return}
 pfFirst=false;pov.hidden=true;show()});
 el("pf-out").addEventListener("click",function(){try{if(typeof firebase!=="undefined"&&firebase.auth)firebase.auth().signOut()}catch(e){}try{localStorage.removeItem(KEY)}catch(e){}pfFirst=false;pov.hidden=true;show()});
 who.addEventListener("click",function(){pfOpen(false)});
@@ -1686,7 +1695,7 @@ var loginSrc="chat";
 function cfgReady(){try{var c=(typeof FIREBASE_CONFIG!=="undefined")?FIREBASE_CONFIG:null;return !!(c&&typeof c.apiKey==="string"&&c.apiKey.trim()&&typeof c.databaseURL==="string"&&c.databaseURL.trim())}catch(e){return false}}
 function opEmail(){return (typeof OPERATOR_EMAIL!=="undefined"?String(OPERATOR_EMAIL||""):"").trim().toLowerCase()}
 function isOpEmail(em){var oe=opEmail();return !!oe&&String(em||"").trim().toLowerCase()===oe}
-function chatProf(){try{var p=JSON.parse(localStorage.getItem("hlkrx_prof")||"{}");return p&&typeof p==="object"?p:{}}catch(e){return{}}}
+function chatProf(){try{var p=JSON.parse(localStorage.getItem("hlkrx_prof")||"{}");if(!p||typeof p!=="object")p={};var ui=localStorage.getItem("hlkrx_uimg");if(ui!==null)p.img=ui;return p}catch(e){return{}}}
 function initial(nm){var a=Array.from(String(nm||""));return a.length?a[0]:"?"}
 function fmtTime(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts),now=new Date();var hm=d.toLocaleTimeString("ko-KR",{hour:"numeric",minute:"2-digit"});return d.toDateString()===now.toDateString()?hm:(d.getMonth()+1)+"/"+d.getDate()+" "+hm}
 function syncFt(){var logged=!!fbUser;form.hidden=false;
@@ -1824,7 +1833,8 @@ if(!msgRef){err.textContent="채팅 연결이 아직 준비되지 않았어요. 
 var t=input.value.trim();if(!t)return;
 if(t.length>500)t=t.slice(0,500);
 var profNow=chatProf();var profNick=String(profNow.nick||"").trim();var profImg=String(profNow.img||"").trim();
-var pushRef=msgRef.push({name:profNick||fbUser.displayName||"익명",photo:profImg||fbUser.photoURL||"",text:t,ts:firebase.database.ServerValue.TIMESTAMP,uid:fbUser.uid||"",op:isOpEmail(fbUser.email)});
+var uSaved=false;try{uSaved=localStorage.getItem("hlkrx_uimg")!==null}catch(e){}
+var pushRef=msgRef.push({name:profNick||fbUser.displayName||"익명",photo:uSaved?profImg:(profImg||fbUser.photoURL||""),text:t,ts:firebase.database.ServerValue.TIMESTAMP,uid:fbUser.uid||"",op:isOpEmail(fbUser.email)});
 if(pushRef&&typeof pushRef.catch==="function")pushRef.catch(function(){err.textContent="전송에 실패했어요. 다시 시도해 주세요.";err.hidden=false});
 try{sessionStorage.removeItem("hlkrx_chat_draft")}catch(e){}
 input.value="";input.focus();
