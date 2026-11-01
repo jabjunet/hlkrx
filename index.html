@@ -41,12 +41,6 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .tabs{display:flex;position:relative;background:none;margin:0;padding:0;flex:none;align-items:stretch}
 .tabs button{flex:none;min-height:38px;border:0;background:none;color:var(--mut);padding:4px 10px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tabs button[aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
-/* 데스크톱: 해외 탭 바로 아래에 붙는 전환 드롭다운 (항목 하나) */
-.tabdd{position:absolute;top:100%;left:50px;width:76px;background:var(--sf2);border:0;outline:none;box-shadow:none;z-index:40;padding:4px;border-radius:0 0 8px 8px}
-.tabdd[hidden]{display:none}
-.tabdd-i{min-height:38px;display:flex;align-items:center;justify-content:center;font-size:14.5px;font-weight:700;color:var(--tx);background:transparent;border:0;border-radius:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.tabdd-i:hover,.tabdd-i:focus-visible{background:transparent;outline:none}
-@media(max-width:1023px){.tabdd{display:none!important}}
 /* 버튼·토글 공통 */
 .chips,.xch{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;align-items:center}
 .chips button,.xch button{min-height:36px;padding:7px 13px;border:1px solid var(--bd);background:var(--sf);color:var(--mut);border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
@@ -55,6 +49,8 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 #pb .chips{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;max-width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
 #pb .chips::-webkit-scrollbar{display:none}
 #pb .chips button{flex:none;white-space:nowrap}
+/* 해외 탭 ETF 테마 칩: 데스크톱(721px 이상)에서는 가로 스크롤 없이 왼쪽 정렬로 줄바꿈해 전부 표시. 모바일(720px 이하)은 한 줄 가로 스크롤 유지 */
+@media(min-width:721px){#pb #fetf{flex-wrap:wrap;overflow-x:visible;overflow-y:visible;justify-content:flex-start;-webkit-overflow-scrolling:auto}}
 .xch span{font-size:12px;color:var(--mut)}
 /* 전체 종목 기준/비교 거래소 선택 줄: 라벨 + 선택 상자 + ⇄ + 선택 상자 + 라벨, 한 줄 고정 */
 .xpair{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:nowrap}
@@ -302,7 +298,6 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 /* 데스크톱 */
 @media(min-width:1024px){
 main{max-width:1120px;padding:4px 28px 56px}
-.pmrow{display:none}
 h1{font-size:24px}
 .tabs button{font-size:16.5px}
 .sum b{font-size:20px}
@@ -653,7 +648,7 @@ main{padding:0 12px 40px}
 </head>
 <body>
 <main>
-<div class="hd"><div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" id="tab-pb" aria-pressed="false" aria-haspopup="true" aria-expanded="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><div class="tabdd" id="tabdd" hidden><div class="tabdd-i" id="tabdd-item" role="button" tabindex="0">ETF</div></div></div><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span></button></div></div></div>
+<div class="hd"><div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button></div><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span></button></div></div></div>
 
 <section id="pa">
 <div class="ixtiles" aria-label="주요 지수">
@@ -1183,19 +1178,6 @@ syncF();draw()});
 function syncEtfTh(){el("fetf").querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x.dataset.t===etfTh))})}
 function syncMode(){el("pmode").querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String((x.dataset.pm==="etf")===etfOn))});el("f").hidden=etfOn;el("fetf").hidden=!etfOn;el("xv").hidden=etfOn;el("hh").hidden=etfOn;el("etfnote").hidden=!etfOn;el("q").placeholder=etfOn?"ETF 검색 (이름·티커·종목코드·지수)":"종목 검색";el("q").setAttribute("aria-label",etfOn?"ETF 검색":"해외 종목 검색");if(etfOn)etfFetch()}
 el("pmode").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var on=b.dataset.pm==="etf";if(on===etfOn)return;etfOn=on;if(!etfOn){etfTh="all";syncEtfTh()}syncMode();draw()});
-/* 데스크톱 전용: 해외 탭을 누르면 탭 바로 아래에 전환 항목 하나가 뜨고(주식 모드에서는 ETF, ETF 모드에서는 주식), 누르면 모드가 바뀐다. 모바일은 위 주식/ETF 두 칸 행을 그대로 쓴다 */
-var tabdd=el("tabdd"),tabddItem=el("tabdd-item"),tabPb=el("tab-pb");
-function ddIsDesk(){return window.matchMedia("(min-width:1024px)").matches}
-function ddSync(){tabddItem.textContent=etfOn?"주식":"ETF"}
-function ddClose(){if(tabdd.hidden)return;tabdd.hidden=true;tabPb.setAttribute("aria-expanded","false")}
-function ddPick(){var on=!etfOn;etfOn=on;if(!on){etfTh="all";syncEtfTh()}syncMode();draw();ddSync();ddClose()}
-tabddItem.addEventListener("click",ddPick);
-tabddItem.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();ddPick()}});
-el("tabs").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;if(b.dataset.t==="pb"&&ddIsDesk()){if(tabdd.hidden){ddSync();tabdd.hidden=false;tabPb.setAttribute("aria-expanded","true")}else{ddClose()}}else{ddClose()}});
-document.addEventListener("click",function(e){if(!tabdd.hidden&&!e.target.closest("#tabs"))ddClose()});
-document.addEventListener("keydown",function(e){if(e.key==="Escape")ddClose()});
-window.addEventListener("resize",function(){if(!ddIsDesk())ddClose()});
-ddSync();
 el("fetf").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;etfTh=b.dataset.t;syncEtfTh();draw()});
 el("hh").addEventListener("click",function(e){var h=e.target.closest("[data-k]");if(!h||!h.dataset.k)return;var k=h.dataset.k;
 if(sk.k===k){if(sk.d===-1)sk.d=1;else sk={k:"mc",d:-1}}else sk={k:k,d:-1};syncF();draw()});
