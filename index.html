@@ -97,7 +97,7 @@ input{font:inherit;font-size:13px;font-weight:600;color:var(--tx);background:var
 /* 표 공통: 모든 탭 같은 머리글·행 높이·여백·정렬. 내부 스크롤·외곽 테두리 없이 페이지에 바로 얹음 */
 .wrap{overflow:visible;background:none}
 table{border-collapse:collapse;width:100%}
-th,td{padding:11px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--bd);font-size:13px}
+th,td{padding:8px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--bd);font-size:13px}
 tr:last-child td{border-bottom:0}
 thead th{position:sticky;top:33px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd);font-size:12px;font-weight:600;color:var(--mut)}
 th:first-child,td:first-child{text-align:left}
@@ -106,7 +106,7 @@ td small{display:block;color:var(--mut);font-size:11.5px}
 th[data-k]{cursor:pointer;user-select:none;-webkit-user-select:none}
 th.on{color:var(--tx)}
 .ar{font-size:11px;font-weight:800;color:var(--ac)}
-tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;text-align:left;padding:8px 10px;white-space:normal}
+tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;text-align:left;padding:6px 10px;white-space:normal}
 .na{opacity:.5}
 .up{color:var(--up)}.dn{color:var(--dn)}
 /* 종목 셀 */
@@ -116,14 +116,14 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .av{flex:none;width:28px;height:28px;border-radius:50%;color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;background:#fff;overflow:hidden}
 .av img{width:100%;height:100%;display:block;object-fit:contain;padding:3px;box-sizing:border-box}
 /* 행 미니 차트(스파크라인): 종목 이름 바로 오른쪽 옆에 붙여 최근 흐름을 그린다 */
-.spk{flex:none;width:88px;height:38px;display:block}
+.spk{flex:none;width:80px;height:30px;display:block}
 .spk svg{display:block;width:100%;height:100%}
 .pill{display:inline-block;padding:2px 7px;border-radius:5px;font-weight:600;background:var(--sf2)}
 .pill.up{background:var(--upbg);color:var(--up)}
 .pill.dn{background:var(--dnbg);color:var(--dn)}
 /* 김프 표 (7열) */
 .kp{table-layout:fixed}
-.kp th,.kp td{padding:12px 8px}
+.kp th,.kp td{padding:9px 8px}
 .kp td b{display:block;font-size:14px}
 .kp .l{display:block;color:var(--mut);font-size:12px}
 .kp .l.up{color:var(--up)}.kp .l.dn{color:var(--dn)}
@@ -131,14 +131,14 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 /* 전체 종목 목록 (4열): <table> 레이아웃 엔진 해석에 맡기지 않고 행마다 CSS 그리드 열(37/24/19/20%)을 직접 지정. Hyperliquid·Binance가 같은 arow() 마크업을 쓰므로 두 거래소의 너비·열 비율·글자·행 높이·여백·로고가 구조적으로 동일하고, 행 너비는 언제나 컨테이너 100% */
 #pb .phd,#pb .prow{display:grid;grid-template-columns:37% 24% 19% 20%;align-items:center;width:100%}
 #pb .phd{position:sticky;top:33px;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
-#pb .phd>div{padding:12px 8px;font-size:12px;font-weight:600;color:var(--mut);text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
+#pb .phd>div{padding:9px 8px;font-size:12px;font-weight:600;color:var(--mut);text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
 #pb .phd>div:first-child{text-align:left}
 #pb .phd>div[data-k]{cursor:pointer;user-select:none;-webkit-user-select:none}
 #pb .phd>div.on{color:var(--tx)}
 #pb .prow{border-bottom:1px solid var(--bd)}
 #pb .prow:last-child{border-bottom:0}
 #pb .prow:hover{background:var(--sf2)}
-#pb .prow>div{padding:12px 8px;font-size:13px;line-height:1.4;text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
+#pb .prow>div{padding:9px 8px;font-size:13px;line-height:1.35;text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
 #pb .prow>div:first-child{text-align:left}
 #pb .prow .pv{font-size:14px}
 #pb .prow .hlw{display:block;color:var(--mut);font-size:11px;font-weight:500;white-space:normal;line-height:1.35}
@@ -147,7 +147,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 #pb .prow .xdn{white-space:nowrap}
 #pb .prow .xdf .pill{font-size:10.5px;padding:1px 5px}
 #pb .pempty{padding:11px 10px;font-size:13px;color:var(--mut)}
-#pb .pgrp{display:flex;align-items:baseline;gap:8px;background:var(--sf2);color:var(--tx);font-weight:700;font-size:12.5px;padding:8px 10px;border-bottom:1px solid var(--bd)}
+#pb .pgrp{display:flex;align-items:baseline;gap:8px;background:var(--sf2);color:var(--tx);font-weight:700;font-size:12.5px;padding:6px 10px;border-bottom:1px solid var(--bd)}
 #pb .pgrp .pgrpc{color:var(--mut);font-weight:600;font-size:11.5px}
 #pb .nm b{font-size:14px}
 #pb .nm small{font-size:11.5px}
@@ -161,7 +161,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 #pb .phd[hidden]{display:none}
 #etfnote[hidden]{display:none}
 /* 실제 상장 ETF 목록 행: 크립토 perp 행과 분리된 전용 레이아웃. 행 아래에 거래소별 선물 가격 줄(.etfx)이 붙는다 */
-.etfr{display:flex;align-items:center;gap:10px;padding:11px 10px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.etfr{display:flex;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
 .etfr:last-child{border-bottom:0}
 .etfr:hover{background:var(--sf2)}
 .etfm{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto;flex-wrap:wrap}
@@ -299,11 +299,11 @@ h1{font-size:24px}
 .tabs button{font-size:14px}
 .sum b{font-size:20px}
 .pm{font-size:36px}
-th,td{padding:12px 10px}
-.kp th,.kp td{padding:14px 10px}
+th,td{padding:9px 10px}
+.kp th,.kp td{padding:10px 10px}
 .kp td b{font-size:15px}
 .kp .l{font-size:12.5px}
-#pb .phd>div,#pb .prow>div{padding:14px 10px}
+#pb .phd>div,#pb .prow>div{padding:10px 10px}
 #pb .prow .pv{font-size:15px}
 #pb .nm b{font-size:15px}
 #pb .av{width:30px;height:30px}
@@ -328,12 +328,12 @@ main{padding:0 12px 40px}
 .kp7 tbody tr{display:flex;flex-wrap:wrap;width:100%;align-items:flex-start;border-bottom:1px solid var(--bd)}
 .kp7 tbody tr:last-child{border-bottom:0}
 .kp7 th,.kp7 td{border-bottom:0}
-.kp7 th{font-size:11.5px;padding:9px 0;letter-spacing:0;min-width:0}
+.kp7 th{font-size:11.5px;padding:7px 0;letter-spacing:0;min-width:0}
 .kp7 th:nth-child(1){flex:0 0 54%;text-align:left;padding-right:4px}
 .kp7 th:nth-child(2){flex:0 0 25%;padding-left:6px;text-align:right}
 .kp7 th:nth-child(3){flex:0 0 21%;padding-left:6px;text-align:right}
 .kp7 th:nth-child(n+4){display:none}
-.kp7 td{padding:10px 0 2px;font-size:12.5px}
+.kp7 td{padding:7px 0 1px;font-size:12.5px}
 .kp7 td:nth-child(1){flex:0 0 54%;min-width:0;padding-right:4px}
 .kp7 td:nth-child(2){flex:0 0 25%;padding-left:6px}
 .kp7 td:nth-child(3){flex:0 0 21%;padding-left:6px}
@@ -345,7 +345,7 @@ main{padding:0 12px 40px}
 .kp7 .nm b{font-size:13.5px}
 .kp7 .av{width:28px;height:28px;font-size:11px}
 .kp7 .pill{padding:2px 6px;font-size:12px}
-.kp7 td:nth-child(n+4){display:flex;align-items:baseline;gap:4px;flex:1 1 0;padding:2px 0 10px;font-size:11.5px;text-align:left;white-space:nowrap}
+.kp7 td:nth-child(n+4){display:flex;align-items:baseline;gap:4px;flex:1 1 0;padding:1px 0 7px;font-size:11.5px;text-align:left;white-space:nowrap}
 .kp7 td:nth-child(7){flex:0 0 auto}
 .kp7 td:nth-child(4)::before{content:"전일대비"}
 .kp7 td:nth-child(5)::before{content:"고가대비"}
@@ -354,7 +354,7 @@ main{padding:0 12px 40px}
 .kp7 td:nth-child(n+4)::before{font-size:10px;color:var(--mut)}
 .kp7 td:nth-child(n+4) b{font-size:11.5px}
 .kp7 tr.na{opacity:.45}
-.kp7 tr.na td{padding-top:7px;padding-bottom:7px}
+.kp7 tr.na td{padding-top:5px;padding-bottom:5px}
 .kp7 tr.na td:nth-child(n+4){display:none}
 .kp7 tr.na .nm b{font-size:12.5px}
 .kp7 td[colspan]{flex:1 1 100%}
@@ -362,8 +362,8 @@ main{padding:0 12px 40px}
 .msort span{font-size:11.5px;color:var(--mut)}
 .msort button{min-height:30px;padding:4px 10px;border:1px solid var(--bd);background:var(--sf);color:var(--mut);border-radius:999px;font:inherit;font-size:12px;font-weight:600;cursor:pointer}
 .msort button.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
-#pb .phd>div{padding:9px 4px}
-#pb .prow>div{padding:10px 4px;font-size:12.5px;line-height:1.35}
+#pb .phd>div{padding:7px 4px}
+#pb .prow>div{padding:7px 4px;font-size:12.5px;line-height:1.3}
 #pb .nm b{font-size:13.5px}
 #pb .av{width:28px;height:28px}
 #pb .prow .pv{font-size:14px}
@@ -400,14 +400,14 @@ main{padding:0 12px 40px}
    표 머리글은 박스 상단에 고정되고, 상태 줄·검색·안내 문구는 박스 밖에 그대로 남는다 */
 #pf .fscroll{max-height:60vh;max-height:60dvh;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--bd)}
 @media(max-width:520px){#pf .fscroll{max-height:54vh;max-height:54dvh}}
-#pf .phd>div{padding:11px 8px;font-size:12px;font-weight:600;color:var(--mut);text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
+#pf .phd>div{padding:8px 8px;font-size:12px;font-weight:600;color:var(--mut);text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
 #pf .phd>div:first-child{text-align:left}
 #pf .phd>div[data-k]{cursor:pointer;user-select:none;-webkit-user-select:none}
 #pf .phd>div.on{color:var(--tx)}
 #pf .prow{border-bottom:1px solid var(--bd)}
 #pf .prow:last-child{border-bottom:0}
 #pf .prow:hover{background:var(--sf2)}
-#pf .prow>div{padding:11px 8px;font-size:13px;line-height:1.55;text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
+#pf .prow>div{padding:8px 8px;font-size:13px;line-height:1.45;text-align:right;white-space:nowrap;min-width:0;overflow:hidden}
 #pf .prow>div:first-child{text-align:left}
 #pf .fv2{font-size:12.5px;font-weight:600;white-space:nowrap;letter-spacing:-.02em}
 #pf .fper{color:var(--mut);font-size:11px;font-weight:500;white-space:nowrap}
@@ -420,8 +420,8 @@ main{padding:0 12px 40px}
 #pf .av{width:28px;height:28px}
 @media(max-width:520px){
 #pf .phd,#pf .prow{grid-template-columns:25% 18.75% 18.75% 18.75% 18.75%}
-#pf .phd>div{padding:9px 3px;font-size:11px}
-#pf .prow>div{padding:9px 3px;font-size:11.5px}
+#pf .phd>div{padding:7px 3px;font-size:11px}
+#pf .prow>div{padding:7px 3px;font-size:11.5px}
 #pf .fv2{font-size:11px}
 #pf .fper{font-size:10px}
 #pf .nm{gap:5px}
