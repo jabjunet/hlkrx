@@ -567,6 +567,17 @@ main{padding:0 12px 40px}
 .indrow2{display:flex;align-items:baseline;gap:8px;margin-top:6px;color:var(--mut);font-size:12.5px;flex-wrap:wrap}
 .indrow2 b{color:var(--tx);font-size:17px;letter-spacing:-.02em}
 .fundint{font-size:13px;font-weight:700;margin:5px 0 0}
+/* 지표 탭: 주요 지수 등락 행 — 이름 왼쪽, 현재가·등락 배지 오른쪽 */
+.ixrows{margin-top:2px}
+.ixrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd)}
+.ixrow:last-child{border-bottom:0}
+.ixrow>span:first-child{font-size:13.5px;font-weight:600;white-space:nowrap}
+.ixrv{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.ixrv b{font-size:15.5px;letter-spacing:-.02em}
+.ixrv .pill{font-size:11.5px}
+/* CNN 공포·탐욕을 불러오지 못하면 VIX 카드가 메인 공포 지표로 승격된다 */
+#ind-vix-card.indmain .indb{font-size:38px}
+@media(min-width:1024px){#ind-vix-card.indmain .indb{font-size:44px}}
 @media(max-width:520px){.indb{font-size:26px}.lsnums{gap:16px}.lsnums b{font-size:21px}.fgh b{font-size:15.5px}}
 /* 자체 채팅 (Firebase): 우하단 버튼 + 작은 패널, 패널을 열 때 초기화 */
 .chatbtn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:120;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 16px;border:1px solid var(--bd);border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.22)}
@@ -794,9 +805,9 @@ main{padding:0 12px 40px}
 </section>
 <section id="pi" hidden>
 <h2>시장 심리 지표</h2>
-<p class="sub" style="margin-bottom:10px">공포·탐욕과 자금 쏠림처럼, 시장 분위기를 한눈에 보는 지표입니다.</p>
-<div class="c">
-<div class="indlab">공포·탐욕 지수</div>
+<p class="sub" style="margin-bottom:10px">주식 시장의 공포·탐욕과 자금 쏠림처럼, 시장 분위기를 한눈에 보는 지표입니다.</p>
+<div class="c" id="ind-fg-card">
+<div class="indlab">주식 공포·탐욕 지수 · CNN</div>
 <div class="fgrow"><span class="indb" id="ind-fg-v">—</span><span class="pill" id="ind-fg-lab">—</span></div>
 <div class="fgg"><i id="ind-fg-mark" hidden></i></div>
 <div class="fgs"><span>0 · 극단적 공포</span><span>100 · 극단적 탐욕</span></div>
@@ -805,35 +816,31 @@ main{padding:0 12px 40px}
 <div><small>1주 전</small><b id="ind-fg-w">—</b><span id="ind-fg-wl"></span></div>
 <div><small>1달 전</small><b id="ind-fg-mo">—</b><span id="ind-fg-mol"></span></div>
 </div>
-<p class="indmeta" id="ind-fg-m">alternative.me · 하루 1회 갱신</p>
+<p class="indmeta" id="ind-fg-m">CNN Fear &amp; Greed · 하루 1회 갱신</p>
 </div>
-<div class="indgrid">
-<div class="c">
-<div class="indlab">비트코인 도미넌스</div>
-<div class="indb" id="ind-dom-v">—</div>
-<p class="indsub">전체 시가총액에서 비트코인이 차지하는 비중</p>
-<p class="indmeta" id="ind-dom-m">CoinGecko · 1분마다 확인</p>
-</div>
-<div class="c">
-<div class="indlab">전체 코인 시가총액</div>
-<div class="indb" id="ind-mc-v">—</div>
-<div class="indrow2"><span>24시간 거래량</span><b id="ind-vol-v">—</b></div>
-<p class="indmeta" id="ind-mc-m">CoinGecko · 1분마다 확인</p>
-</div>
-</div>
-<div class="indgrid">
-<div class="c">
-<div class="indlab">BTC 롱/숏 비율 · 바이낸스 선물</div>
-<div class="lsnums"><div><small>롱</small><b class="up" id="ind-ls-l">—</b></div><div><small>숏</small><b class="dn" id="ind-ls-s">—</b></div></div>
-<div class="lsb"><i id="ind-ls-bl" style="background:var(--up);width:50%"></i><i id="ind-ls-bs" style="background:var(--dn);width:50%"></i></div>
-<p class="indmeta" id="ind-ls-m">계정 수 기준 · 1분마다 확인</p>
+<div class="c" id="ind-vix-card">
+<div class="indlab">VIX 공포지수</div>
+<div class="fgrow"><span class="indb" id="ind-vix-v">—</span><span class="pill" id="ind-vix-c">—</span></div>
+<p class="fundint" id="ind-vix-t">—</p>
+<p class="indsub">S&amp;P 500 옵션 가격으로 본 향후 30일 변동성 기대치입니다.</p>
+<p class="indmeta" id="ind-vix-m">TradingView · 1분마다 확인</p>
 </div>
 <div class="c">
-<div class="indlab">주요 코인 평균 펀딩비</div>
+<div class="indlab">주요 지수 등락</div>
+<div class="ixrows">
+<div class="ixrow"><span>나스닥</span><span class="ixrv"><b id="ind-ix-ndx-v">—</b><span class="pill" id="ind-ix-ndx-c">—</span></span></div>
+<div class="ixrow"><span>S&amp;P 500</span><span class="ixrv"><b id="ind-ix-spx-v">—</b><span class="pill" id="ind-ix-spx-c">—</span></span></div>
+<div class="ixrow"><span>다우</span><span class="ixrv"><b id="ind-ix-dji-v">—</b><span class="pill" id="ind-ix-dji-c">—</span></span></div>
+<div class="ixrow"><span>코스피</span><span class="ixrv"><b id="ind-ix-ks-v">—</b><span class="pill" id="ind-ix-ks-c">—</span></span></div>
+<div class="ixrow"><span>코스닥</span><span class="ixrv"><b id="ind-ix-kq-v">—</b><span class="pill" id="ind-ix-kq-c">—</span></span></div>
+</div>
+<p class="indmeta" id="ind-ix-m">TradingView · 1분마다 확인</p>
+</div>
+<div class="c">
+<div class="indlab">주식 평균 펀딩비</div>
 <div class="indb" id="ind-fd-v">—</div>
 <p class="fundint" id="ind-fd-t">—</p>
 <p class="indmeta" id="ind-fd-m">바이낸스 선물 · 1분마다 확인</p>
-</div>
 </div>
 </section>
 <details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-10-31), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 조회가 안 될 때는 마지막 스냅샷(2026-10-28 조회, KRX는 10/23 종가)을 보여줍니다.</p></details>
@@ -2581,10 +2588,13 @@ wire("legal-terms-open","legal-terms-ov","legal-terms-x");
 })();
 </script>
 <script>
-/* 지표 탭: 시장 심리 지표 5종을 각자 따로 불러온다. 하나가 실패해도 그 카드만
+/* 지표 탭: 주식 시장 심리 지표를 각자 따로 불러온다. 하나가 실패해도 그 카드만
    '—'로 두고 나머지는 계속 표시한다. 탭을 처음 열 때 불러오고, 탭이 열려 있는
-   동안 1분마다 다시 확인한다. 펀딩비 평균은 펀딩비 탭과 같은 바이낸스 선물
-   premiumIndex 데이터에서 주요 코인만 골라 평균을 낸다. */
+   동안 1분마다 다시 확인한다.
+   - 공포·탐욕: CNN Fear & Greed(주식용). CNN 데이터가 브라우저에서 열리지 않으면
+     공포·탐욕 카드를 빼고 VIX 카드를 메인 공포 지표로 승격시킨다.
+   - VIX·주요 지수: 김프 탭 지수 타일과 같은 TradingView 스캐너 방식.
+   - 주식 평균 펀딩비: 해외 탭 주식 종목들의 바이낸스 선물 펀딩비 평균. */
 (function(){
 function $(id){return document.getElementById(id)}
 function pad(n){return (n<10?"0":"")+n}
@@ -2593,59 +2603,82 @@ function meta(id,ok,base){var e=$(id);if(!e)return;e.textContent=ok?base+" · �
 function fgLabel(v){return v<=24?"극단적 공포":v<=44?"공포":v<=55?"중립":v<=74?"탐욕":"극단적 탐욕"}
 function fgColor(v){return v<=24?"#d02a38":v<=44?"#e07b39":v<=55?"#a8891c":v<=74?"#5da24a":"#1d9e57"}
 function fetchJson(url){return fetch(url).then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()})}
+function tvScan(market,tickers,cols){return fetch("https://scanner.tradingview.com/"+market+"/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:tickers},columns:cols})}).then(function(r){if(!r.ok)throw new Error("tv "+r.status);return r.json()})}
+var fgDown=false;
+function fgFail(){
+meta("ind-fg-m",false);
+if(fgDown)return;fgDown=true;
+var card=$("ind-fg-card"),vix=$("ind-vix-card");
+if(vix){vix.classList.add("indmain");if(card&&card.parentNode)card.parentNode.insertBefore(vix,card)}
+if(card)card.hidden=true}
+function fgOk(){
+if(!fgDown)return;fgDown=false;
+var card=$("ind-fg-card"),vix=$("ind-vix-card");
+if(vix)vix.classList.remove("indmain");
+if(card){card.hidden=false;if(vix&&card.parentNode)card.parentNode.insertBefore(card,vix)}}
+function setFg(vid,lid,v){if(isNaN(v))return;$(vid).textContent=Math.round(v);var l=$(lid);if(l)l.textContent=fgLabel(v)}
 function loadFg(){
-fetchJson("https://api.alternative.me/fng/?limit=31").then(function(j){
-var d=j&&j.data;if(!d||!d.length||isNaN(parseInt(d[0].value,10)))throw new Error("bad");
-var cur=parseInt(d[0].value,10);
-$("ind-fg-v").textContent=cur;
+fetchJson("https://production.dataviz.cnn.io/index/fearandgreed/graphdata").then(function(j){
+var fg=j&&j.fear_and_greed,hist=j&&j.fear_and_greed_historical&&j.fear_and_greed_historical.data;
+var cur=NaN,y=NaN,w=NaN,mo=NaN;
+if(hist&&hist.length){
+var pts=hist.filter(function(p){return p&&!isNaN(parseFloat(p.y))}).sort(function(a,b){return a.x-b.x});
+if(pts.length){
+var last=pts[pts.length-1];cur=parseFloat(last.y);
+function ago(days){var t=last.x-days*86400000,best=null;for(var i=0;i<pts.length;i++){if(pts[i].x<=t)best=pts[i];else break}return best?parseFloat(best.y):NaN}
+y=ago(1);w=ago(7);mo=ago(30)}}
+if(isNaN(cur)&&fg&&!isNaN(parseFloat(fg.score))){cur=parseFloat(fg.score);y=parseFloat(fg.previous_close);w=parseFloat(fg.previous_1_week);mo=parseFloat(fg.previous_1_month)}
+if(isNaN(cur))throw new Error("bad");
+fgOk();
+$("ind-fg-v").textContent=Math.round(cur);
 var lab=$("ind-fg-lab");lab.textContent=fgLabel(cur);lab.style.background=fgColor(cur);lab.style.color="#fff";
-var mk=$("ind-fg-mark");mk.hidden=false;mk.style.left=cur+"%";mk.style.borderColor=fgColor(cur);
-[["ind-fg-y","ind-fg-yl",1],["ind-fg-w","ind-fg-wl",7],["ind-fg-mo","ind-fg-mol",30]].forEach(function(t){
-var row=d[t[2]];if(!row)return;var v=parseInt(row.value,10);if(isNaN(v))return;
-$(t[0]).textContent=v;$(t[1]).textContent=fgLabel(v)});
-meta("ind-fg-m",true,"alternative.me · 하루 1회 갱신");
-}).catch(function(){meta("ind-fg-m",false)})}
-function fmtUsd(v){if(!(v>0))return"—";if(v>=1e12)return"$"+(v/1e12).toFixed(2)+"조";if(v>=1e8)return"$"+Math.round(v/1e8).toLocaleString("ko-KR")+"억";return"$"+Math.round(v).toLocaleString("ko-KR")}
-function applyGlobal(dom,mcap,vol,src){
-if(!(dom>0))throw new Error("bad");
-$("ind-dom-v").textContent=dom.toFixed(1)+"%";
-$("ind-mc-v").textContent=fmtUsd(mcap);
-$("ind-vol-v").textContent=fmtUsd(vol);
-meta("ind-dom-m",true,src+" · 1분마다 확인");
-meta("ind-mc-m",true,src+" · 1분마다 확인")}
-function loadGlobal(){
-fetchJson("https://api.coingecko.com/api/v3/global").then(function(j){
-var d=j&&j.data;if(!d)throw new Error("bad");
-applyGlobal(parseFloat(d.market_cap_percentage&&d.market_cap_percentage.btc),parseFloat(d.total_market_cap&&d.total_market_cap.usd),parseFloat(d.total_volume&&d.total_volume.usd),"CoinGecko");
-}).catch(function(){
-fetchJson("https://api.coinlore.net/api/global/").then(function(j){
-var d=j&&j[0];if(!d)throw new Error("bad");
-applyGlobal(parseFloat(d.btc_d),parseFloat(d.total_mcap),parseFloat(d.total_volume),"CoinLore");
-}).catch(function(){meta("ind-dom-m",false);meta("ind-mc-m",false)})})}
-function loadLs(){
-var urls=["https://www.binance.com/futures/data/globalLongShortAccountRatio?symbol=BTCUSDT&period=5m&limit=1","https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=BTCUSDT&period=5m&limit=1"];
-(function go(i){
-if(i>=urls.length){meta("ind-ls-m",false);return}
-fetchJson(urls[i]).then(function(j){
-var d=j&&j[0];if(!d)throw new Error("bad");
-var lp=parseFloat(d.longAccount)*100,sp=parseFloat(d.shortAccount)*100;
-if(!(lp>0)||isNaN(sp))throw new Error("bad");
-$("ind-ls-l").textContent=lp.toFixed(1)+"%";
-$("ind-ls-s").textContent=sp.toFixed(1)+"%";
-$("ind-ls-bl").style.width=lp+"%";
-$("ind-ls-bs").style.width=sp+"%";
-meta("ind-ls-m",true,"바이낸스 선물 계정 수 기준 · 1분마다 확인");
-}).catch(function(){go(i+1)})})(0)}
-var MAJORS=["BTC","ETH","SOL","XRP","DOGE","BNB","SUI","ADA","LINK","AVAX"];
+var mk=$("ind-fg-mark");mk.hidden=false;mk.style.left=Math.max(0,Math.min(100,cur))+"%";mk.style.borderColor=fgColor(cur);
+setFg("ind-fg-y","ind-fg-yl",y);setFg("ind-fg-w","ind-fg-wl",w);setFg("ind-fg-mo","ind-fg-mol",mo);
+meta("ind-fg-m",true,"CNN Fear & Greed · 하루 1회 갱신");
+}).catch(fgFail)}
+function loadVix(){
+tvScan("america",["CBOE:VIX"],["close","change","change_abs"]).then(function(j){
+var d=(j.data||[])[0];if(!d||!d.d||!(d.d[0]>0))throw new Error("bad");
+var v=d.d[0],chg=parseFloat(d.d[1]),abs=parseFloat(d.d[2]);
+$("ind-vix-v").textContent=v.toFixed(2);
+var pill=$("ind-vix-c");
+if(!isNaN(chg)){pill.textContent=(chg>0?"+":"")+chg.toFixed(2)+"%";pill.className="pill "+(chg>0?"up":chg<0?"dn":"")}
+else if(!isNaN(abs)){pill.textContent=(abs>0?"+":"")+abs.toFixed(2);pill.className="pill "+(abs>0?"up":abs<0?"dn":"")}
+$("ind-vix-t").textContent=v<20?"20 아래 · 시장이 안정적인 편이에요":v<30?"20~30 · 불안이 커지는 구간이에요":"30 위 · 공포가 큰 구간이에요";
+meta("ind-vix-m",true,"TradingView · 1분마다 확인");
+}).catch(function(){meta("ind-vix-m",false)})}
+function setIx(key,v,c){
+if(!(v>0))return false;
+$(key+"-v").textContent=v.toLocaleString("ko-KR",{minimumFractionDigits:2,maximumFractionDigits:2});
+var pill=$(key+"-c");
+if(!isNaN(c)){pill.textContent=(c>0?"+":"")+c.toFixed(2)+"%";pill.className="pill "+(c>0?"up":c<0?"dn":"")}
+return true}
+function loadIx(){
+var okA=false,okB=false,done=0;
+function fin(){if(++done===2&&(okA||okB))meta("ind-ix-m",true,"TradingView · 1분마다 확인");else if(done===2)meta("ind-ix-m",false)}
+tvScan("america",["NASDAQ:NDX","SP:SPX","DJ:DJI"],["close","change"]).then(function(j){
+var m={};(j.data||[]).forEach(function(x){if(x.d)m[x.s]=x.d});
+[["ind-ix-ndx","NASDAQ:NDX"],["ind-ix-spx","SP:SPX"],["ind-ix-dji","DJ:DJI"]].forEach(function(pr){var d=m[pr[1]];if(d&&setIx(pr[0],parseFloat(d[0]),parseFloat(d[1])))okA=true});
+fin()}).catch(fin);
+tvScan("korea",["KRX:KOSPI","KRX:KOSDAQ"],["close","change"]).then(function(j){
+var m={};(j.data||[]).forEach(function(x){if(x.d)m[x.s]=x.d});
+[["ind-ix-ks","KRX:KOSPI"],["ind-ix-kq","KRX:KOSDAQ"]].forEach(function(pr){var d=m[pr[1]];if(d&&setIx(pr[0],parseFloat(d[0]),parseFloat(d[1])))okB=true});
+fin()}).catch(fin)}
+/* 해외 탭 주식 종목 목록: 섹터 분류표(SECMAP)에서 ETF·지수만 빼고 전부 주식으로 본다.
+   분류표를 못 읽으면 주요 미국 주식 목록으로 대체한다. */
+var STKFALLBACK=["NVDA","TSLA","AAPL","MSFT","AMZN","META","GOOGL","AMD","AVGO","PLTR","COIN","MSTR","NFLX","MU","INTC","QCOM","ARM","HOOD","SMCI","TSM"];
+function stockList(){
+try{var m=window.SECMAP;if(m){var out=[];Object.keys(m).forEach(function(k){if(m[k]!=="ETF·지수")out.push(k)});if(out.length>=10)return out}}catch(e){}
+return STKFALLBACK}
 function applyFund(avg,n){
 $("ind-fd-v").textContent=(avg>0?"+":"")+avg.toFixed(4)+"%";
 $("ind-fd-t").textContent=avg>0?"롱 쪽이 더 몰림":avg<0?"숏 쪽이 더 몰림":"롱·숏이 비슷하게 갈림";
-meta("ind-fd-m",true,"바이낸스 선물 주요 코인 "+n+"개 평균 · 1분마다 확인")}
+meta("ind-fd-m",true,"바이낸스 선물 해외 주식 "+n+"개 평균 · 1분마다 확인")}
 function fundFromCache(){
 try{
 var bn=window.FUND&&window.FUND.bn;if(!bn)return false;
-var sum=0,n=0;
-MAJORS.forEach(function(s){var e=bn[s];if(e&&!isNaN(e.r)){sum+=e.r;n++}});
+var list=stockList(),sum=0,n=0;
+list.forEach(function(s){var e=bn[s];if(e&&!isNaN(e.r)){sum+=e.r;n++}});
 if(n<3)return false;
 applyFund(sum/n,n);return true;
 }catch(e){return false}}
@@ -2653,12 +2686,12 @@ function loadFund(){
 fetchJson("https://www.binance.com/fapi/v1/premiumIndex").then(function(j){
 if(!j||!j.length)throw new Error("bad");
 var m={};j.forEach(function(x){if(x&&x.symbol)m[x.symbol]=parseFloat(x.lastFundingRate)});
-var sum=0,n=0;
-MAJORS.forEach(function(s){var r=m[s+"USDT"];if(!isNaN(r)){sum+=r*100;n++}});
+var list=stockList(),sum=0,n=0;
+list.forEach(function(s){var r=m[s+"USDT"];if(!isNaN(r)){sum+=r*100;n++}});
 if(n<3)throw new Error("short");
 applyFund(sum/n,n);
 }).catch(function(){if(!fundFromCache())meta("ind-fd-m",false)})}
-function refresh(){if(document.hidden)return;loadFg();loadGlobal();loadLs();loadFund()}
+function refresh(){if(document.hidden)return;loadFg();loadVix();loadIx();loadFund()}
 var started=false;
 function start(){
 if(!started){started=true;refresh();setInterval(function(){var s=$("pi");if(s&&!s.hidden)refresh()},60000)}
