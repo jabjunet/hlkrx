@@ -78,6 +78,8 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .xpair .xsel{min-height:36px;padding:5px 8px;font-size:13px;gap:8px;border-radius:9px}
 .xpair .xlogo{width:22px;height:22px}
 .xpair .xsel .xca{font-size:11px}
+/* ⇄ 버튼 폭을 좁혀 두 선택 상자와 버튼 사이 간격을 더 붙인다 (상자 크기·정렬·동작은 그대로) */
+.xpair .xswap{width:26px}
 /* 작은 토글 쌍 (김프 탭 시장·거래소 전환): 한 줄에 나란히 배치 */
 .segrow{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
 .pair{display:inline-flex;gap:2px;background:var(--sf2);border:1px solid var(--bd);border-radius:999px;padding:3px;margin:0}
@@ -459,10 +461,10 @@ main{padding:0 12px 40px}
 #pb .prow>div:nth-child(3) .pill{font-size:10.5px;padding:1px 4px}
 .pair button{padding:5px 10px;font-size:12.5px}
 /* 모바일: 기준/비교 라벨은 각 선택 상자 위로, 상자 둘과 ⇄는 한 줄 유지 */
-.xpair{display:grid;grid-template-columns:auto 36px auto;justify-content:start;grid-template-areas:"lb . lc" "sb sw sc";row-gap:4px;column-gap:6px}
+.xpair{display:grid;grid-template-columns:auto 26px auto;justify-content:start;grid-template-areas:"lb . lc" "sb sw sc";row-gap:4px;column-gap:4px}
 .xpair .lb{grid-area:lb}.xpair .lc{grid-area:lc}
 .xpair .sb{grid-area:sb}.xpair .sc{grid-area:sc}
-#xswap{grid-area:sw;justify-self:center;width:36px;height:44px}
+#xswap{grid-area:sw;justify-self:center;width:26px;height:44px}
 .xsel{font-size:13.5px}
 /* 모바일: 로그인 버튼은 제목 줄 오른쪽 끝으로, 연결 상태는 설명 아래 줄에 그대로 */
 .hd-r{display:contents}
