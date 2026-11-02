@@ -1294,7 +1294,7 @@ if(kr.length)html+=grp("국내 상장 ETF · 한국거래소(KRX)",kr);
 if(!r.length)html='<div class="pempty">검색 결과가 없습니다.</div>';
 el("tb").innerHTML=html}
 function draw(){el("hh").classList.toggle("nqhd",!etfOn&&v==="nq");renderSelChips();if(!etfOn){el("f").hidden=(v==="nq");el("fnq").hidden=!(v==="nq"&&nqSecOpen);el("nqsecbtn").hidden=(v!=="nq");el("nqmore").hidden=(v!=="nq"||typeof NQ==="undefined"||NQ.done);el("q").placeholder=(v==="nq")?"나스닥 종목 검색 (티커·회사명)":"종목 검색";if(v==="nq"){if(typeof NQ!=="undefined")nqDraw();return}}
-if(etfOn){drawEtf();return}
+if(etfOn){el("fetf").hidden=!etfThOpen;drawEtf();return}
 var ex=EXN[v];if(!ex)return;
 var q=el("q").value.trim().toUpperCase(),qt=el("q").value.trim(),r=xlist(v).filter(function(x){var s=x[0];
 var can=toCan(v,s.replace(/_$/,"")),isE=isEtf(ex,s,can);
