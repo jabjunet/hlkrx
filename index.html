@@ -647,9 +647,12 @@ main{padding:0 12px 40px}
 .ytcard .yt1{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:7px;font-size:13px;font-weight:600;line-height:1.4}
 .ytcard .yt2{display:block;margin-top:2px;font-size:11.5px;color:var(--mut)}
 .ytempty{padding:12px 2px;font-size:13px;color:var(--mut)}
-/* 지표 탭: 전인구 유튜브 최신 영상 1개 — 섹션 전체 너비로 크게 보여준다 (썸네일 16:9 + 제목 + 업로드 시간) */
-.ytbig .ytcard .yt1{font-size:15px;margin-top:9px}
-.ytbig .ytcard .yt2{font-size:12.5px;margin-top:3px}
+/* 지표 탭: 전인구 유튜브 최신 영상 1개 — 작은 가로형 카드 (왼쪽 작은 썸네일 약 160px 16:9, 오른쪽 제목 + 업로드 시간) */
+.ytrow .ytcard{display:flex;gap:12px;align-items:flex-start}
+.ytrow .ytcard img{width:160px;flex:none}
+.ytrow .ytcard .ytxt{display:block;min-width:0;flex:1}
+.ytrow .ytcard .yt1{margin-top:0}
+@media(max-width:520px){.ytrow .ytcard img{width:120px}}
 /* 지표 탭: 시장 심리 지표 카드 — 기존 카드(.c) 결에 맞춘 큰 숫자와 짧은 라벨 */
 .indb{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
 @media(min-width:1024px){.indb{font-size:34px}}
@@ -3338,7 +3341,7 @@ setInterval(function(){if(!document.hidden)load()},10*60000);
 <script>
 /* 지표 탭: 전인구 유튜브 최신 영상 1개 — 비교 탭 섹션과 같은 방식으로 전인구경제연구소 공식 채널
    (UCznImSIaxZR7fdLCICLdgaQ)의 유튜브 RSS를 브라우저에서 직접 불러와 가장 최신 영상 딱 1개만
-   크게 보여준다(썸네일·제목·업로드 시간). 클릭하면 유튜브 원본이 새 탭으로 열린다.
+   작은 가로형 카드로 보여준다(왼쪽 작은 썸네일, 오른쪽 제목·업로드 시간). 클릭하면 유튜브 원본이 새 탭으로 열린다.
    CORS로 직접 fetch가 막히면 공개 프록시를 순서대로 경유한다: ① rss2json ② allorigins(raw XML).
    전부 실패하면 이 섹션에 짧은 안내만 표시하고 지표 탭의 다른 카드에는 영향을 주지 않는다.
    페이지가 열릴 때 불러오고 10분 간격으로 자동 갱신한다. */
@@ -3393,7 +3396,7 @@ if(!cache){box.innerHTML='<div class="ytempty">영상을 불러오지 못했어�
 var list=cache.slice().sort(function(a,b){return (b.d||0)-(a.d||0)}).slice(0,1);
 if(!list.length){box.innerHTML='<div class="ytempty">영상을 불러오지 못했어요</div>';return}
 var v=list[0],a=ago(v.d);
-box.innerHTML='<div class="ytbig"><a class="ytcard" href="'+esc(v.u)+'" target="_blank" rel="noopener">'+(v.th?'<img src="'+esc(v.th)+'" alt="" loading="lazy">':"")+'<span class="yt1">'+esc(v.t)+'</span>'+(a?'<span class="yt2">'+a+'</span>':"")+'</a></div>'}
+box.innerHTML='<div class="ytrow"><a class="ytcard" href="'+esc(v.u)+'" target="_blank" rel="noopener">'+(v.th?'<img src="'+esc(v.th)+'" alt="" loading="lazy">':"")+'<span class="ytxt"><span class="yt1">'+esc(v.t)+'</span>'+(a?'<span class="yt2">'+a+'</span>':"")+'</span></a></div>'}
 function load(){
 fetchT(FEED).then(parseXml)
 .catch(function(){return fetchT("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(FEED)).then(parseR2J)})
