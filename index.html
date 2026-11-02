@@ -69,6 +69,11 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .xmenu img{flex:none;width:28px;height:28px;object-fit:contain;box-sizing:border-box}
 .xswap{flex:none;width:40px;height:40px;border:0;background:none;color:var(--mut);font-size:17px;line-height:1;cursor:pointer;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;padding:0}
 .xswap:hover{color:var(--tx);background:var(--sf2)}
+/* 해외 탭 거래소 선택 줄: 두 선택 상자는 내용에 맞는 너비로 줄여 왼쪽에 붙이고 오른쪽 공간은 비워 둔다.
+   드롭다운 메뉴는 상자보다 좁아지지 않게 최소 너비를 유지한다 */
+.xpair .xselw{flex:0 0 auto}
+.xpair .xsel{width:auto}
+#xv .xmenu{min-width:200px}
 /* 작은 토글 쌍 (김프 탭 시장·거래소 전환): 한 줄에 나란히 배치 */
 .segrow{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
 .pair{display:inline-flex;gap:2px;background:var(--sf2);border:1px solid var(--bd);border-radius:999px;padding:3px;margin:0}
@@ -117,6 +122,17 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .pill{display:inline-block;padding:2px 7px;border-radius:5px;font-weight:600;background:var(--sf2)}
 .pill.up{background:var(--upbg);color:var(--up)}
 .pill.dn{background:var(--dnbg);color:var(--dn)}
+/* 종가 줄: 해당 시장이 끝나 있을 때만 현재가 칸 맨 위에 넣는다 — 작은 pill 배지 '종가' + 굵은 종가 값,
+   그 아래 현재가는 회색 작은 글씨(.pcv)로 내린다. 장중에는 이 마크업 자체가 없어 기존 표시와 같다 */
+.cln{display:block;white-space:nowrap;line-height:1.25}
+.cln .cb{display:inline-block;padding:1px 6px;border-radius:5px;background:var(--mut);color:var(--bg);font-size:10.5px;font-weight:700;vertical-align:2px;margin-right:5px;letter-spacing:-.02em}
+.cln .cvv{font-weight:800;color:var(--tx);letter-spacing:-.02em}
+.kp td .cln .cvv{display:inline;font-size:14.5px}
+#pb .prow .cln .cvv{font-size:14px}
+.etfd .cln .cvv{font-size:16.5px}
+.etfcur{display:flex;align-items:center;gap:6px;justify-content:flex-end;flex-wrap:nowrap;white-space:nowrap}
+.pcv{display:block;color:var(--mut);font-size:12.5px;font-weight:600;white-space:nowrap;line-height:1.3}
+@media(max-width:520px){.etfd .cln .cvv{font-size:15.5px}.kp7 .cln .cb{font-size:9.5px;padding:1px 4px;margin-right:3px}.kp7 .cln .cvv{font-size:12.5px}.kp7 .pcv{font-size:11px}}
 /* 김프 표 (7열) */
 .kp{table-layout:fixed}
 .kp th,.kp td{padding:9px 8px}
@@ -439,7 +455,7 @@ main{padding:0 12px 40px}
 #pb .prow>div:nth-child(3) .pill{font-size:10.5px;padding:1px 4px}
 .pair button{padding:5px 10px;font-size:12.5px}
 /* 모바일: 기준/비교 라벨은 각 선택 상자 위로, 상자 둘과 ⇄는 한 줄 유지 */
-.xpair{display:grid;grid-template-columns:1fr 36px 1fr;grid-template-areas:"lb . lc" "sb sw sc";row-gap:4px;column-gap:6px}
+.xpair{display:grid;grid-template-columns:auto 36px auto;justify-content:start;grid-template-areas:"lb . lc" "sb sw sc";row-gap:4px;column-gap:6px}
 .xpair .lb{grid-area:lb}.xpair .lc{grid-area:lc}
 .xpair .sb{grid-area:sb}.xpair .sc{grid-area:sc}
 #xswap{grid-area:sw;justify-self:center;width:36px;height:44px}
@@ -940,7 +956,7 @@ main{padding:0 12px 40px}
 <p class="indmeta">날짜 규칙으로 계산 · 미국 매월 셋째 금요일, 한국 매월 둘째 목요일</p>
 </div>
 </section>
-<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-10-31), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 칩으로 업종별로 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 조회가 안 될 때는 마지막 스냅샷(2026-10-28 조회, KRX는 10/23 종가)을 보여줍니다.</p></details>
+<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-10-31), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 칩으로 업종별로 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-10-28 조회, KRX는 10/23 종가)을 보여줍니다.</p></details>
 <footer class="sitefoot">
 <nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button></nav>
 <p>© 2026 잡주넷 · 문의는 사이트 내 채팅을 이용해 주세요.</p>
@@ -1079,9 +1095,10 @@ if(mk==="us")return us(fx);
 var bn=xc==="bn";
 function src(r){return bn?brow(BR[r[0]]):(r[1]?D.filter(function(x){return x[0]===r[1]})[0]:null)}
 KBR=R.map(function(r){var h=src(r);var fk=r[1]||r[0];
-if(!h)return{n:r[0],tg:r[0],fk:fk,b:null,c:null,v:null,p:null,hi:null,lo:null,mc:null,html:'<tr class="na"><td><div class="nm">'+av(r[0])+'<div><b>'+r[0]+'</b><span class="l">미상장</span></div>'+spkHtml("",xc)+'</div></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td></tr>'};
+if(!h)return{n:r[0],tg:r[0],fk:fk,b:null,c:null,v:null,p:null,hi:null,lo:null,mc:null,html:'<tr class="na"><td><div class="nm">'+av(r[0])+'<div><b>'+r[0]+'</b><span class="l">미상장</span></div>'+spkHtml("",xc)+'</div></td>'+(krxOpen()?'<td><b>—</b></td>':'<td>'+clnHtml(r[2]>0?f(r[2]):null)+'<span class="pcv">—</span></td>')+'<td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td></tr>'};
 var o=h[1]*fx,pv=(r[2]/o-1)*100,c=pv>0?"up":pv<0?"dn":"",tag=bn?BR[r[0]]+"USDT":"xyz:"+r[1],g=hlv2(h,r[1]);
-return{n:r[0],tg:tag,fk:fk,b:h[1],c:h[2],v:h[3]*fx/100,p:pv,hi:g.hi,lo:g.lo,mc:(MCN[r[0]]&&MCK[MCN[r[0]]]!=null)?MCK[MCN[r[0]]]:null,html:'<tr><td><div class="nm">'+av(r[0])+'<div><b>'+r[0]+'</b><span class="l">'+tag+'</span></div>'+spkHtml(bn?toCan("bn",BR[r[0]]):r[1],xc)+'</div></td><td><b>'+f(o)+'</b><span class="l">$'+f(h[1],h[1]<10?3:2)+'</span></td><td><b><span class="pill '+c+'">'+(pv>0?"+":"")+pv.toFixed(2)+'%</span></b><span class="l '+c+'">'+(r[2]>o?"+":"−")+f(Math.abs(r[2]-o))+'원</span></td><td>'+pc(h[2])+'</td><td>'+pctc(g.hi)+'</td><td>'+pctc(g.lo)+'</td><td><b>'+won(h[3]*fx/100)+'</b></td></tr>'}});rkb()}
+var pcell=krxOpen()?'<td><b>'+f(o)+'</b><span class="l">$'+f(h[1],h[1]<10?3:2)+'</span></td>':'<td>'+clnHtml(r[2]>0?f(r[2]):null)+'<span class="pcv">'+f(o)+'</span></td>';
+return{n:r[0],tg:tag,fk:fk,b:h[1],c:h[2],v:h[3]*fx/100,p:pv,hi:g.hi,lo:g.lo,mc:(MCN[r[0]]&&MCK[MCN[r[0]]]!=null)?MCK[MCN[r[0]]]:null,html:'<tr><td><div class="nm">'+av(r[0])+'<div><b>'+r[0]+'</b><span class="l">'+tag+'</span></div>'+spkHtml(bn?toCan("bn",BR[r[0]]):r[1],xc)+'</div></td>'+pcell+'<td><b><span class="pill '+c+'">'+(pv>0?"+":"")+pv.toFixed(2)+'%</span></b><span class="l '+c+'">'+(r[2]>o?"+":"−")+f(Math.abs(r[2]-o))+'원</span></td><td>'+pc(h[2])+'</td><td>'+pctc(g.hi)+'</td><td>'+pctc(g.lo)+'</td><td><b>'+won(h[3]*fx/100)+'</b></td></tr>'}});rkb()}
 var XMAP={SKHX:"SKHYNIX",SMSN:"SAMSUNG"},RMAP={SKHYNIX:"SKHX",SAMSUNG:"SMSN"};
 var XTAG={hl:"HL",bn:"BN",okx:"OKX",by:"BY",nq:"NQ"};
 function xlist(x){return x==="bn"?BD:x==="okx"?OD:x==="by"?YD:x==="nq"?(typeof NQARR!=="undefined"?NQARR:[]):D}
@@ -1098,7 +1115,8 @@ var r=xrow(cv,fromCan(cv,toCan(v,t)));if(!r||!(r[1]>0))return"";
 var other=r[1],d=(price/other-1)*100,c=d>0?"up":d<0?"dn":"";
 return'<span class="xdf"><span class="xdn">'+XTAG[cv]+' '+f(other,other<10?3:2)+'</span> <span class="pill '+c+'">'+(d>0?"+":"")+d.toFixed(2)+'%</span></span>'}
 function arow(t,sub,x,hl){var hs="";if(hl){var pp=[];if(hl[0]>0)pp.push("고 "+f(hl[0],hl[0]<10?3:2));if(hl[1]>0)pp.push("저 "+f(hl[1],hl[1]<10?3:2));if(pp.length===2)pp[0]+=" ·";if(pp.length)hs='<span class="hlw"><span class="hl1">'+pp.join('</span> <span class="hl1">')+"</span></span>"}
-return"<div class=prow role=row><div role=cell><div class=nm>"+av(t)+"<div><b>"+t+"</b>"+(sub?" <small>"+sub+"</small>":"")+"</div>"+spkHtml(toCan(v,t),v)+"</div></div><div role=cell><b class=pv>"+f(x[1],x[1]<10?3:2)+"</b>"+xdiff(t,x[1])+hs+"</div><div role=cell>"+pc(x[2])+"</div><div role=cell>"+(x[3]>=1?"$"+x[3].toFixed(1)+"M":"$"+Math.round(x[3]*1000)+"K")+"</div></div>"}
+var canA=toCan(v,t),pcellA;if(mktClosed(canA)){var pcvA=pclose(canA,x);pcellA=clnHtml(pcvA!=null?f(pcvA,pcvA<10?3:2):null)+'<span class="pcv">'+f(x[1],x[1]<10?3:2)+"</span>"}else pcellA='<b class=pv>'+f(x[1],x[1]<10?3:2)+"</b>";
+return"<div class=prow role=row><div role=cell><div class=nm>"+av(t)+"<div><b>"+t+"</b>"+(sub?" <small>"+sub+"</small>":"")+"</div>"+spkHtml(toCan(v,t),v)+"</div></div><div role=cell>"+pcellA+xdiff(t,x[1])+hs+"</div><div role=cell>"+pc(x[2])+"</div><div role=cell>"+(x[3]>=1?"$"+x[3].toFixed(1)+"M":"$"+Math.round(x[3]*1000)+"K")+"</div></div>"}
 /* ===== 행 미니 차트(스파크라인) =====
    김프·해외 목록의 종목 이름 바로 오른쪽 옆에 최근 7일(1시간봉) 가격 흐름을 그린다.
    화면에 보이는 행만 골라(IntersectionObserver) 현재 탭에서 고른 거래소의 캔들을 받아오고,
@@ -1229,7 +1247,7 @@ return x[0].indexOf(q)>=0||x[1].toUpperCase().indexOf(q)>=0||x[1].indexOf(qt)>=0
 el("tt").textContent="실제 상장 ETF ("+r.length+")";
 function row(x){var fee=x[6]?" · 운용보수 연 "+x[6]+"%":"";
 var q=ETFP[x[0]],pr;
-if(q&&q[0]>0){var pv=x[2]==="KR"?f(q[0])+"원":"$"+f(q[0],q[0]<10?3:2);pr='<span class="etfp"><b>'+pv+'</b>'+(q[1]!=null?pc(q[1]):"")+'</span>'}
+if(q&&q[0]>0){var pv=x[2]==="KR"?f(q[0])+"원":"$"+f(q[0],q[0]<10?3:2);var pillE=q[1]!=null?pc(q[1]):"";var closedE=x[2]==="KR"?!krxOpen():!usOpen();pr=closedE?clnHtml(pv)+'<span class="etfcur"><span class="pcv">'+pv+'</span>'+pillE+'</span>':'<span class="etfp"><b>'+pv+'</b>'+pillE+'</span>'}
 else pr='<span class="etfp"><b class="na">—</b></span>';
 var strip="",can=ETFPERP[x[0]];
 if(can){var cells=[],any=false;
@@ -1318,7 +1336,9 @@ es=rows.map(function(h){var s=h[0].replace(/_$/,"");return{h:h,s:s,b:OR[s],pv:(h
 else{rows=D.filter(function(x){return !KR[x[0]]&&!ET[x[0]]&&OR[x[0]]});
 es=rows.map(function(h){var s=h[0];return{h:h,s:s,b:OR[s],pv:(h[1]/OR[s]-1)*100,tag:"xyz:"+s}})}
 KBR=es.map(function(e){var h=e.h,s=e.s,b=e.b,pv=e.pv,c=pv>0?"up":pv<0?"dn":"",g=hlv2(h,bn?toCan("bn",s):s);
-return{n:s,tg:e.tag,fk:s,b:h[1],c:h[2],v:h[3]*fx/100,p:pv,hi:g.hi,lo:g.lo,mc:capOf(s),html:'<tr><td><div class="nm">'+av(s)+'<div><b>'+s+'</b><span class="l">'+e.tag+'</span></div>'+spkHtml(bn?toCan("bn",s):s,xc)+'</div></td><td><b>'+f(h[1]*fx)+'</b><span class="l">$'+d2(h[1])+'</span></td><td><b><span class="pill '+c+'">'+(pv>0?"+":"")+pv.toFixed(2)+'%</span></b><span class="l '+c+'">'+(h[1]>b?"+":"−")+'$'+d2(Math.abs(h[1]-b))+'</span></td><td>'+pc(h[2])+'</td><td>'+pctc(g.hi)+'</td><td>'+pctc(g.lo)+'</td><td><b>'+won(h[3]*fx/100)+'</b></td></tr>'}});
+var pcv2=usOpen()?undefined:pclose(bn?toCan("bn",s):s,h);
+var pcell2=pcv2===undefined?'<td><b>'+f(h[1]*fx)+'</b><span class="l">$'+d2(h[1])+'</span></td>':'<td>'+clnHtml(pcv2!=null?f(pcv2*fx):null)+'<span class="pcv">'+f(h[1]*fx)+'</span></td>';
+return{n:s,tg:e.tag,fk:s,b:h[1],c:h[2],v:h[3]*fx/100,p:pv,hi:g.hi,lo:g.lo,mc:capOf(s),html:'<tr><td><div class="nm">'+av(s)+'<div><b>'+s+'</b><span class="l">'+e.tag+'</span></div>'+spkHtml(bn?toCan("bn",s):s,xc)+'</div></td>'+pcell2+'<td><b><span class="pill '+c+'">'+(pv>0?"+":"")+pv.toFixed(2)+'%</span></b><span class="l '+c+'">'+(h[1]>b?"+":"−")+'$'+d2(Math.abs(h[1]-b))+'</span></td><td>'+pc(h[2])+'</td><td>'+pctc(g.hi)+'</td><td>'+pctc(g.lo)+'</td><td><b>'+won(h[3]*fx/100)+'</b></td></tr>'}});
 rkb();var cntEl=el("cnt");if(cntEl)cntEl.textContent="종목 총 "+rows.length+"개"}
 el("mk").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;mk=b.dataset.m;var u=mk==="us";
 this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});
@@ -1350,7 +1370,7 @@ function hlApply(j){
 var u=j[0].universe,c=j[1],m={},i;
 for(i=0;i<u.length;i++)m[u[i].name.replace(/^xyz:/,"")]=c[i];
 D.forEach(function(x){var a=m[x[0]];if(!a)return;var p=parseFloat(a.markPx)||parseFloat(a.midPx);if(!(p>0))return;x[1]=p;
-var pv=parseFloat(a.prevDayPx);if(pv>0)x[2]=(p/pv-1)*100;
+var pv=parseFloat(a.prevDayPx);if(pv>0){x[2]=(p/pv-1)*100;x[6]=pv}
 var v=parseFloat(a.dayNtlVlm);if(v>=0)x[3]=v/1e6;
 var fr=parseFloat(a.funding);if(!isNaN(fr))FUND.hl[x[0]]={r:fr*100,h:1};
 var o=parseFloat(a.oraclePx);if(o>0)OR[x[0]]=o});
@@ -1459,14 +1479,16 @@ var KX={"SK하이닉스":"000660","삼성전자":"005930","KODEX 200":"069500","
 function wonK(v){var e=v/1e8;return e>=10000?Math.floor(e/10000)+"조 "+f(Math.round(e%10000))+"억":e>=10?f(Math.round(e))+"억":e.toFixed(1)+"억"}
 function krxClock(){var p={},i,parts=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Seoul",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());for(i=0;i<parts.length;i++)p[parts[i].type]=parts[i].value;var wd={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[p.weekday];return{day:wd,mins:(parseInt(p.hour,10)%24)*60+parseInt(p.minute,10)}}
 function krxOpen(){var n=krxClock();return n.day>0&&n.day<6&&n.mins>=540&&n.mins<930}
-function krx(){fetch("https://scanner.tradingview.com/korea/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:["KRX:000660","KRX:005930","KRX:069500","KRX:009150","KRX:005380","KRX:042700","KRX:066570","KRX:035420"]},columns:["close","volume","Value.Traded","market_cap_basic"]})}).then(function(r){return r.json()}).then(function(j){
+var krxT=0;
+function krx(){krxT=Date.now();fetch("https://scanner.tradingview.com/korea/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:["KRX:000660","KRX:005930","KRX:069500","KRX:009150","KRX:005380","KRX:042700","KRX:066570","KRX:035420"]},columns:["close","volume","Value.Traded","market_cap_basic"]})}).then(function(r){return r.json()}).then(function(j){
 var m={};(j.data||[]).forEach(function(x){if(x.d)m[x.s.replace("KRX:","")]=x.d});
 var ok=false;
 R.forEach(function(r){var d=m[KX[r[0]]];if(d&&d[0]>0){r[2]=d[0];if(d[2]>0)r[3]=wonK(d[2]);if(d[3]>0)MCK[KX[r[0]]]=d[3];ok=true}});
 if(!ok)return;
 calc()}).catch(function(){})}
 krx();
-setInterval(function(){if(document.hidden)return;if(krxOpen())krx()},30000);
+/* 장중에는 30초마다 갱신하고, 장이 끝난 뒤에도 1분에 한 번은 다시 받아 김프 표의 종가가 최종 종가로 굳게 한다 */
+setInterval(function(){if(document.hidden)return;if(krxOpen()||Date.now()-krxT>55000)krx()},30000);
 function amcap(){var seen={},list=[],i;
 D.forEach(function(x){if(!KCODE[x[0]]&&!seen[x[0]]){seen[x[0]]=1;list.push(x[0])}});
 BD.forEach(function(x){var t=x[0].replace(/_$/,"");if(!KCODE[t]&&!seen[t]){seen[t]=1;list.push(t)}});
@@ -1483,6 +1505,31 @@ var chunks=[];for(i=0;i<us.length;i+=100)chunks.push(us.slice(i,i+100));
 chunks.forEach(function(ch){fetch("https://scanner.tradingview.com/america/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({columns:["name","high","low"],filter:[{left:"name",operation:"in_range",right:ch}],range:[0,ch.length+10]})}).then(function(r){return r.json()}).then(function(j){(j.data||[]).forEach(function(x){if(x.d&&(x.d[1]>0||x.d[2]>0)){HL2[x.d[0]]=[x.d[1],x.d[2]];for(var di=0;di<D.length;di++)if(D[di][0]===x.d[0]){if(x.d[1]>0)D[di][4]=x.d[1];if(x.d[2]>0)D[di][5]=x.d[2]}}});if(v==="hl")draw();calc()}).catch(function(){})});
 var kt=Object.keys(kr);if(kt.length)fetch("https://scanner.tradingview.com/korea/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:kt},columns:["high","low"]})}).then(function(r){return r.json()}).then(function(j){var fx=num(el("fx").value);if(!(fx>0))return;(j.data||[]).forEach(function(x){var t=kr[x.s];if(t&&x.d&&(x.d[0]>0||x.d[1]>0)){HL2[t]=[x.d[0]>0?x.d[0]/fx:0,x.d[1]>0?x.d[1]/fx:0];for(var di=0;di<D.length;di++)if(D[di][0]===t){if(x.d[0]>0)D[di][4]=x.d[0]/fx;if(x.d[1]>0)D[di][5]=x.d[1]/fx}}});if(v==="hl")draw();calc()}).catch(function(){})}
 hlfetch();setInterval(function(){if(!document.hidden)hlfetch()},60000);
+/* ===== 종가(가장 최근 거래일 마감 가격) =====
+   장이 열려 있는 동안에는 종가 줄을 아예 넣지 않고, 장이 끝난 상태(개장 전·장 종료 후·휴장일)에서만
+   현재가 칸 맨 위에 [종가] 배지 줄을 넣고 현재가는 그 아래 회색 작은 글씨로 내린다.
+   시장 판정은 종목 기준이다: 한국 종목은 한국 장(평일 09:00–15:30 KST, 기존 krxOpen),
+   미국 종목은 미국 현지(ET) 정규장(평일 09:30–16:00)을 Intl 타임존으로 계산해
+   서머타임 기간에는 KST 22:30–05:00으로 자동 이동한다.
+   종가 값은 이미 쓰는 TradingView 스캐너의 close로 받아 PCC에 넣어 둔다(장이 닫혀 있으면 close가
+   가장 최근 거래일의 종가와 같다). 미국 종목은 america 스캔, 한국 종목은 korea 스캔(KRX 코드, 원→달러 환산).
+   스캐너로 못 구한 종목은 Hyperliquid 전일 가격(prevDayPx, 행의 [6])으로 대체하고, 그래도 없으면 '—'로 표시한다.
+   갱신은 기존 1분 주기에 맞추고, 행 다시 그리기(김프 15초·해외 15초·ETF/나스닥 1분)가 장 경계를 넘으면
+   종가 표시가 새로고침 없이 자동으로 켜지고 꺼진다. */
+function usClock(){var p={},i,parts=new Intl.DateTimeFormat("en-US",{timeZone:"America/New_York",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());for(i=0;i<parts.length;i++)p[parts[i].type]=parts[i].value;var wd={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[p.weekday];return{day:wd,mins:(parseInt(p.hour,10)%24)*60+parseInt(p.minute,10)}}
+function usOpen(){var n=usClock();return n.day>0&&n.day<6&&n.mins>=570&&n.mins<960}
+function mktClosed(can){return KCODE[can]?!krxOpen():!usOpen()}
+var PCC={};
+function pclose(can,x){if(typeof PCC!=="undefined"&&PCC[can]>0)return PCC[can];if(x&&x[6]>0)return x[6];for(var i=0;i<D.length;i++)if(D[i][0]===can&&D[i][6]>0)return D[i][6];return null}
+function clnHtml(val){return '<span class="cln"><span class="cb">종가</span><b class="cvv">'+(val!=null?val:"—")+'</b></span>'}
+function pcfetch(){var seen={},us=[],i;
+function add(can){if(can&&!seen[can]){seen[can]=1;if(!KCODE[can])us.push(can)}}
+D.forEach(function(x){add(x[0])});BD.forEach(function(x){add(toCan("bn",x[0].replace(/_$/,"")))});OD.forEach(function(x){add(toCan("okx",x[0]))});YD.forEach(function(x){add(toCan("by",x[0]))});
+var changed=false,chunks=[];for(i=0;i<us.length;i+=100)chunks.push(us.slice(i,i+100));
+chunks.forEach(function(ch){fetch("https://scanner.tradingview.com/america/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({columns:["name","close"],filter:[{left:"name",operation:"in_range",right:ch}],range:[0,ch.length+10]})}).then(function(r){return r.json()}).then(function(j){(j.data||[]).forEach(function(x){if(x.d&&x.d[1]>0&&PCC[x.d[0]]!==x.d[1]){PCC[x.d[0]]=x.d[1];changed=true}});if(changed){calc();draw()}}).catch(function(){})});
+var byCode={},kt=[];Object.keys(KCODE).forEach(function(can){if(seen[can]){var cd=KCODE[can];if(!byCode[cd]){byCode[cd]=[];kt.push("KRX:"+cd)}byCode[cd].push(can)}});
+if(kt.length)fetch("https://scanner.tradingview.com/korea/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:kt},columns:["close"]})}).then(function(r){return r.json()}).then(function(j){var fx=num(el("fx").value);if(!(fx>0))return;(j.data||[]).forEach(function(x){var cans=byCode[x.s.replace("KRX:","")];if(cans&&x.d&&x.d[0]>0){var vv=x.d[0]/fx;cans.forEach(function(can){if(PCC[can]!==vv){PCC[can]=vv;changed=true}})}});if(changed){calc();draw()}}).catch(function(){})}
+pcfetch();setInterval(function(){if(!document.hidden)pcfetch()},60000);
 /* 펀딩비 탭: 해외 탭과 같은 종목 universe를 canonical 티커로 합쳐 4개 거래소 펀딩을 나란히 표시 */
 function fUniverse(){var seen={},list=[];function add(ex,arr){for(var i=0;i<arr.length;i++){var raw=String(arr[i][0]).replace(/_$/,"");var can=toCan(ex,raw);if(!seen[can]){seen[can]=1;list.push(can)}}}add("hl",D);add("bn",BD);add("okx",OD);add("by",YD);return list}
 function fName(can){try{if(NM[can])return NM[can];var bt=fromCan("bn",can);if(BNM[bt])return BNM[bt];var ot=fromCan("okx",can);if(ONM[ot])return ONM[ot];var yt=fromCan("by",can);if(YNM[yt])return YNM[yt]}catch(e){}return ""}
@@ -1625,8 +1672,9 @@ function nqRowHtml(it){
 var sn=nqShortName(it);
 var hs="",pp=[];if(it.hi>0)pp.push("고 "+f(it.hi,it.hi<10?3:2));if(it.lo>0)pp.push("저 "+f(it.lo,it.lo<10?3:2));if(pp.length===2)pp[0]+=" ·";if(pp.length)hs='<span class="hlw"><span class="hl1">'+pp.join('</span> <span class="hl1">')+"</span></span>";
 var pr=it.p>0?f(it.p,it.p<10?3:2):"—";
+var pcellN=(it.p>0&&!usOpen())?clnHtml(pr)+'<span class="pcv">'+pr+"</span>":'<b class=pv>'+pr+"</b>";
 var vol=it.vt>=1000?"$"+(it.vt/1000).toFixed(1)+"B":it.vt>=1?"$"+it.vt.toFixed(1)+"M":it.vt>0?"$"+Math.round(it.vt*1000)+"K":"—";
-return"<div class=\"prow nqrow\" role=row><div role=cell><div class=nm>"+nqAv(it)+"<div><b>"+nqEsc(it.t)+"</b>"+(sn?" <small>"+nqEsc(sn)+"</small>":"")+"</div></div></div><div role=cell><b class=pv>"+pr+"</b>"+nqDiff(it.t,it.p)+hs+"</div><div role=cell>"+(it.c==null?"—":pc(it.c))+"</div><div role=cell>"+vol+"</div></div>"}
+return"<div class=\"prow nqrow\" role=row><div role=cell><div class=nm>"+nqAv(it)+"<div><b>"+nqEsc(it.t)+"</b>"+(sn?" <small>"+nqEsc(sn)+"</small>":"")+"</div></div></div><div role=cell>"+pcellN+nqDiff(it.t,it.p)+hs+"</div><div role=cell>"+(it.c==null?"—":pc(it.c))+"</div><div role=cell>"+vol+"</div></div>"}
 function nqRender(){
 el("tt").textContent=NQSEC==="all"?"나스닥 주식 전체 ("+f(NQ.total||NQ.items.length)+")":"나스닥 · "+NQSECNM[NQSEC]+" ("+f(NQ.total||NQ.items.length)+")";
 var html;
