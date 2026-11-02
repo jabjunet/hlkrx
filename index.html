@@ -243,6 +243,24 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .ixt b{display:block;font-size:15px;letter-spacing:-.03em;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ixt .ixc{display:block;font-size:11.5px;font-weight:600}
 @media(max-width:520px){.ixtiles{gap:3px}.ixt{padding:5px 3px;border-radius:7px}.ixt small{font-size:9.5px;gap:2px}.ixt small i{width:4px;height:4px}.ixt b{font-size:10.5px;letter-spacing:-.06em}.ixt .ixc{font-size:9.5px}}
+/* 홈 탭: 실시간 차트 (토스 발견 화면 결) — [미국|한국]·[급상승|급하락] 두 칸 전환 행 2줄 + 큰 순위 숫자·동그란 로고·종목명/현재가 행.
+   행 양쪽 안쪽 여백은 다른 표와 동일하게 데스크톱 12px·모바일 10px */
+.hmv{margin-top:14px}
+.hmv h2{margin:8px 0 10px}
+.hmseg{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:6px;margin-bottom:6px}
+.hmvr{display:flex;align-items:center;gap:12px;padding:11px 12px;border-bottom:1px solid var(--bd)}
+.hmvr:last-child{border-bottom:0}
+.hmvr:hover{background:var(--sf2)}
+.hmvr .hrk{flex:none;width:20px;font-size:17px;font-weight:700;text-align:center}
+.hmvr .av{width:40px;height:40px;font-size:15px}
+.hmvr .hwho{flex:1 1 0;min-width:0}
+.hmvr .hn1{display:flex;align-items:baseline;gap:7px;min-width:0}
+.hmvr .hn1 b{font-size:15.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.hmvr .hn1 span{color:var(--mut);font-size:12px;white-space:nowrap;flex:none}
+.hmvr .hn2{display:block;margin-top:2px;font-size:13px;color:var(--mut);white-space:nowrap}
+.hmvr .hn2 em{font-style:normal;font-weight:700;margin-left:5px}
+.hmvempty{padding:14px 12px;font-size:13px;color:var(--mut);border-bottom:1px solid var(--bd)}
+@media(max-width:520px){.hmvr{padding:11px 10px}.hmvempty{padding:14px 10px}}
 /* 안내 문구 */
 .note{color:var(--mut);font-size:12.5px;line-height:1.65;margin:12px 2px 0}
 .dnote{margin:14px 0}
@@ -648,9 +666,9 @@ main{padding:0 12px 40px}
 </head>
 <body>
 <main>
-<div class="hd"><div class="tabs" id="tabs"><button data-t="pa" aria-pressed="true">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button></div><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span></button></div></div></div>
+<div class="hd"><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button></div><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span></button></div></div></div>
 
-<section id="pa">
+<section id="ph">
 <div class="ixtiles" aria-label="주요 지수">
 <div class="ixt"><small><i id="ixt-ks-d"></i>코스피</small><b id="ixt-ks-v">—</b><span class="ixc na" id="ixt-ks-c">—</span></div>
 <div class="ixt"><small><i id="ixt-kq-d"></i>코스닥</small><b id="ixt-kq-v">—</b><span class="ixc na" id="ixt-kq-c">—</span></div>
@@ -659,6 +677,17 @@ main{padding:0 12px 40px}
 <div class="ixt"><small><i id="ixt-fx-d"></i>달러/원</small><b id="ixt-fx-v">—</b><span class="ixc na" id="ixt-fx-c">—</span></div>
 <div class="ixt"><small><i id="ixt-oil-d"></i>원유</small><b id="ixt-oil-v">—</b><span class="ixc na" id="ixt-oil-c">—</span></div>
 </div>
+<div class="hmv">
+<h2>실시간 차트</h2>
+<div class="segrow hmseg">
+<div class="pair" id="hm-mk"><button type="button" data-hm="us" aria-pressed="true">미국</button><button type="button" data-hm="kr" aria-pressed="false">한국</button></div>
+<div class="pair" id="hm-dr"><button type="button" data-hd="up" aria-pressed="true">급상승</button><button type="button" data-hd="dn" aria-pressed="false">급하락</button></div>
+</div>
+<div id="hm-list"><div class="hmvempty">불러오는 중…</div></div>
+<p class="note">등락률은 TradingView 기준 전일 종가 대비이며 1분마다 갱신합니다. 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준으로 표시됩니다.</p>
+</div>
+</section>
+<section id="pa" hidden>
 <div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button><button data-m="us" aria-pressed="false">해외 주식</button></div><div class="pair" id="xc"><button data-x="hl" aria-pressed="true">Hyperliquid</button><button data-x="bn" aria-pressed="false">Binance</button></div></div>
 <input id="fx" type="hidden" value="1,324.6">
 <div class="srch"><input id="qk" placeholder="종목 검색" aria-label="김프 종목 검색"></div>
@@ -2717,6 +2746,48 @@ else{refreshFast();slowIfDue()}}
 var tabs=$("tabs");
 if(tabs)tabs.addEventListener("click",function(e){var b=e.target.closest?e.target.closest("button"):null;if(b&&b.dataset.t==="pi")start()});
 document.addEventListener("visibilitychange",function(){if(!document.hidden){var s=$("pi");if(s&&!s.hidden&&started){refreshFast();slowIfDue()}}});
+})();
+</script>
+<script>
+/* 홈 탭: 실시간 차트 (토스 발견 화면 결) — [미국|한국]·[급상승|급하락] 전환으로 급등·급락 TOP 5를 한 목록에서 본다.
+   데이터는 ETF·지수에서 이미 쓰는 TradingView 스캐너(america/scan·korea/scan)를 브라우저에서 직접 호출해
+   등락률(change) 정렬로 상위 5개씩 가져온다. 저유동성 잡주를 거르기 위해 미국은 가격 1달러 이상 + 거래대금
+   하한, 한국은 거래대금 하한 필터를 건다. 네 조합을 미리 받아 두고 전환은 받아 둔 목록으로 바로 바꾼다.
+   갱신은 1분 간격(기존 1분 갱신 그룹과 동일). 장 마감·휴장에는 마지막 종가 기준 등락이 그대로 표시된다. */
+(function(){
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+var mk="us",dir=1,cache={};
+function scan(market,d){
+var f=[{left:"type",operation:"in_range",right:["stock"]},{left:"change",operation:d>0?"greater":"less",right:0}];
+if(market==="america"){f.push({left:"close",operation:"egreater",right:1});f.push({left:"Value.Traded",operation:"egreater",right:5000000})}
+else{f.push({left:"Value.Traded",operation:"egreater",right:1000000000})}
+return fetch("https://scanner.tradingview.com/"+market+"/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({columns:["name","description","close","change"],filter:f,sort:{sortBy:"change",sortOrder:d>0?"desc":"asc"},range:[0,5]})}).then(function(r){if(!r.ok)throw new Error("tv "+r.status);return r.json()})}
+function ava(key){
+if(typeof av==="function")return av(key);
+var h="hsl("+((key.charCodeAt(0)||0)*47%360)+" 45% 42%)";
+return '<span class="av" style="background:'+h+'">'+esc(key.charAt(0))+'</span>'}
+function rowHtml(x,i,kr){
+var d=x.d||[],nm=d[0]||"",desc=d[1]||"",px=d[2],ch=d[3];
+if(px==null||isNaN(px)||ch==null||isNaN(ch))return "";
+var pr=kr?Math.round(px).toLocaleString("ko-KR")+"원":"$"+Number(px).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+var head=kr?'<b>'+esc(desc||nm)+'</b><span>'+esc(nm)+'</span>':'<b>'+esc(nm)+'</b><span>'+esc(desc)+'</span>';
+return '<div class="hmvr"><span class="hrk">'+(i+1)+'</span>'+ava(kr?(desc||nm):nm)+'<span class="hwho"><span class="hn1">'+head+'</span><span class="hn2">'+pr+'<em class="'+(ch>=0?"up":"dn")+'">'+(ch>0?"+":"")+ch.toFixed(2)+'%</em></span></span></div>'}
+function render(){
+var key=mk+(dir>0?"-up":"-dn"),rows=cache[key],box=$("hm-list");
+if(!rows){box.innerHTML='<div class="hmvempty">불러오는 중…</div>';return}
+if(rows==="err"){box.innerHTML='<div class="hmvempty">불러오지 못했습니다</div>';return}
+var html="",kr=mk==="kr";
+for(var i=0;i<rows.length&&i<5;i++)html+=rowHtml(rows[i],i,kr);
+box.innerHTML=html||'<div class="hmvempty">표시할 종목이 없습니다</div>'}
+function fill(key,market,d){
+scan(market,d).then(function(j){cache[key]=j.data||[];render()}).catch(function(){if(!cache[key])cache[key]="err";render()})}
+function load(){fill("us-up","america",1);fill("us-dn","america",-1);fill("kr-up","korea",1);fill("kr-dn","korea",-1)}
+function syncPair(boxId,attr,val){var box=$(boxId);if(!box)return;box.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x.getAttribute(attr)===val))})}
+$("hm-mk").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;mk=b.getAttribute("data-hm");syncPair("hm-mk","data-hm",mk);render()});
+$("hm-dr").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;dir=b.getAttribute("data-hd")==="up"?1:-1;syncPair("hm-dr","data-hd",dir>0?"up":"dn");render()});
+load();
+setInterval(function(){if(!document.hidden)load()},60000);
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c6e8ab4e4ea4777bf54ca7e737337b9"}'></script><!-- End Cloudflare Web Analytics -->
