@@ -291,6 +291,9 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hnwr .nt1{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hnwr .nt2{display:block;margin-top:1px;font-size:11.5px;color:var(--mut)}
 @media(max-width:520px){.hnwr{padding:8px 10px}}
+.hnmore{display:block;width:100%;min-height:44px;border:0;border-top:1px solid var(--bd);background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.hnmore[hidden]{display:none}
+.hnmore:hover{background:var(--sf2);color:var(--tx)}
 /* 안내 문구 */
 .note{color:var(--mut);font-size:12.5px;line-height:1.65;margin:12px 2px 0}
 .dnote{margin:14px 0}
@@ -718,6 +721,7 @@ main{padding:0 12px 40px}
 <div class="hnw">
 <div class="hmhd"><h2>실시간 뉴스</h2></div>
 <div id="hn-list"><div class="hmvempty">불러오는 중…</div></div>
+<button type="button" class="hnmore" id="hn-more" hidden>더 보기</button>
 </div>
 </section>
 <section id="pa" hidden>
@@ -3014,7 +3018,9 @@ setInterval(function(){if(!document.hidden)load()},60000);
 </script>
 <script>
 /* 홈 탭: 실시간 뉴스 — 한국경제·매일경제·Investing.com 한국어판 공식 RSS를 브라우저에서 직접 불러와
-   세 출처 기사를 한 목록으로 합쳐 발행 시간 최신순으로 섞어 최대 10개를 보여준다. 출처명은 화면에 표시하지 않는다.
+   세 출처 기사를 한 목록으로 합쳐 발행 시간 최신순으로 섞어 최대 10개를 불러오고, 처음에는 5개만 보여주며
+   아래 '더 보기' 버튼을 누르면 나머지가 전부 펼쳐지고 버튼은 숨는다. 7분 자동 갱신으로 새로 불러오면 다시 5개 접힌 상태로 돌아간다.
+   불러온 기사가 5개 이하면 버튼을 표시하지 않는다. 출처명은 화면에 표시하지 않는다.
    피드 모두 CORS 헤더가 없어 직접 fetch가 막히면 공개 RSS 프록시를 순서대로 경유한다:
    ① rss2json(JSON 변환) ② allorigins(raw XML). 일부 출처가 실패하면 성공한 출처 기사만으로 채우고, 전부 실패할 때만 안내를 표시한다.
    피드 주소는 빌드 시점에 실제 응답을 확인했다: 한국경제 https://www.hankyung.com/feed/all-news (200, RSS 2.0),
@@ -3070,24 +3076,30 @@ if(m<1)return "방금 전";
 if(m<60)return m+"분 전";
 if(m<1440)return Math.floor(m/60)+"시간 전";
 return Math.floor(m/1440)+"일 전"}
+var expanded=false;
 function render(){
-var box=$("hn-list"),merged=[],ready=0;
+var box=$("hn-list"),btn=$("hn-more"),merged=[],ready=0;
 ["hk","mk","iv"].forEach(function(k){
 if(settled[k])ready++;
 var rows=cache[k];
 if(rows&&rows!=="err"){for(var i=0;i<rows.length;i++)merged.push(rows[i])}});
 if(!merged.length){
+btn.hidden=true;
 if(ready<3){box.innerHTML='<div class="hmvempty">불러오는 중…</div>';return}
 box.innerHTML='<div class="hmvempty">뉴스를 불러오지 못했어요</div>';return}
 merged.sort(function(a,b){return (b.d||0)-(a.d||0)});
-var seen={},html="",n=0;
-for(var i=0;i<merged.length&&n<10;i++){
+var seen={},list=[];
+for(var i=0;i<merged.length&&list.length<10;i++){
 if(seen[merged[i].u])continue;
-seen[merged[i].u]=1;n++;
-var a=ago(merged[i].d);
-html+='<a class="hnwr" href="'+esc(merged[i].u)+'" target="_blank" rel="noopener"><span class="nt1">'+esc(merged[i].t)+'</span>'+(a?'<span class="nt2">'+a+'</span>':"")+'</a>'}
-box.innerHTML=html||'<div class="hmvempty">표시할 뉴스가 없습니다</div>'}
-function load(){loadSrc("hk");loadSrc("mk");loadSrc("iv")}
+seen[merged[i].u]=1;list.push(merged[i])}
+var show=expanded?list:list.slice(0,5),html="";
+for(var j=0;j<show.length;j++){
+var a=ago(show[j].d);
+html+='<a class="hnwr" href="'+esc(show[j].u)+'" target="_blank" rel="noopener"><span class="nt1">'+esc(show[j].t)+'</span>'+(a?'<span class="nt2">'+a+'</span>':"")+'</a>'}
+box.innerHTML=html||'<div class="hmvempty">표시할 뉴스가 없습니다</div>';
+btn.hidden=!(list.length>5&&!expanded)}
+function load(){expanded=false;loadSrc("hk");loadSrc("mk");loadSrc("iv")}
+$("hn-more").addEventListener("click",function(){expanded=true;render()});
 render();load();
 setInterval(function(){if(!document.hidden)load()},7*60000);
 })();
