@@ -74,6 +74,10 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .xpair .xselw{flex:0 0 auto}
 .xpair .xsel{width:auto}
 #xv .xmenu{min-width:200px}
+/* 선택 상자 자체를 한 단계 더 작게: 패딩·높이를 줄이고 로고·글자도 비례해 축소 (드롭다운 메뉴는 그대로) */
+.xpair .xsel{min-height:36px;padding:5px 8px;font-size:13px;gap:8px;border-radius:9px}
+.xpair .xlogo{width:22px;height:22px}
+.xpair .xsel .xca{font-size:11px}
 /* 작은 토글 쌍 (김프 탭 시장·거래소 전환): 한 줄에 나란히 배치 */
 .segrow{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
 .pair{display:inline-flex;gap:2px;background:var(--sf2);border:1px solid var(--bd);border-radius:999px;padding:3px;margin:0}
