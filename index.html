@@ -168,6 +168,11 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 #pb .prow.nqrow .nm b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;line-height:1.25}
 #pb .prow.nqrow .nm small{display:block;flex:none;width:100%;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;line-height:1.25}
 }
+/* 나스닥 모드 열 배분: 나스닥 행은 스파크라인 칸을 없애고(마크업에서 제거) 그 폭을 이름 열에 준다.
+   이름 열을 넓히고 거래량 열은 B·M 축약 표기에 맞춰 줄여, 티커와 짧은 표시명이 말줄임 없이 온전히 보이게 한다.
+   헤더(#hh)는 나스닥 모드일 때만 .nqhd 클래스로 같은 비율을 적용해 열 정렬이 어긋나지 않게 한다.
+   다른 모드의 행·헤더에는 적용되지 않는다 */
+#pb .prow.nqrow,#pb .phd.nqhd{grid-template-columns:40% 28% 15% 17%}
 #pb .av{width:25px;height:25px}
 #fetf[hidden]{display:none}
 #f[hidden]{display:none}
@@ -1206,7 +1211,7 @@ if(us.length)html+=grp("미국 상장 ETF · 나스닥/NYSE",us);
 if(kr.length)html+=grp("국내 상장 ETF · 한국거래소(KRX)",kr);
 if(!r.length)html='<div class="pempty">검색 결과가 없습니다.</div>';
 el("tb").innerHTML=html}
-function draw(){if(!etfOn){el("f").hidden=(v==="nq");el("nqmore").hidden=(v!=="nq"||typeof NQ==="undefined"||NQ.done);el("q").placeholder=(v==="nq")?"나스닥 종목 검색 (티커·회사명)":"종목 검색";if(v==="nq"){if(typeof NQ!=="undefined")nqDraw();return}}
+function draw(){el("hh").classList.toggle("nqhd",!etfOn&&v==="nq");if(!etfOn){el("f").hidden=(v==="nq");el("nqmore").hidden=(v!=="nq"||typeof NQ==="undefined"||NQ.done);el("q").placeholder=(v==="nq")?"나스닥 종목 검색 (티커·회사명)":"종목 검색";if(v==="nq"){if(typeof NQ!=="undefined")nqDraw();return}}
 if(etfOn){drawEtf();return}
 var ex=EXN[v];if(!ex)return;
 var q=el("q").value.trim().toUpperCase(),qt=el("q").value.trim(),r=xlist(v).filter(function(x){var s=x[0];
@@ -1486,7 +1491,8 @@ setInterval(function(){if(!document.hidden&&!el("pf").hidden)fRefresh()},10000);
    (america/scan, NASDAQ 거래소, 주식·펀드)로 실시간 조회한다. 기본 정렬은 시가총액 순이고
    한 번에 60개씩 받아 스크롤하면 이어서 더 불러온다(스캐너 페이지네이션). 검색창에 입력하면
    티커·회사명 부분일치로 나스닥 전체에서 찾는다(티커 매치와 회사명 매치를 합쳐 시총순 정렬).
-   행 형식은 기존 해외 행과 같다(로고·티커·회사명·스파크라인·가격·비교 거래소 선물 줄+차이 배지·24h·거래량).
+   행 형식은 기존 해외 행과 같되(로고·티커·회사명·가격·비교 거래소 선물 줄+차이 배지·24h·거래량),
+   나스닥 행만 스파크라인 칸을 빼고 그 폭을 이름 열에 줘 티커·종목명이 잘리지 않게 한다(거래량은 B·M 단위 축약 표기).
    비교 거래소(기본 Binance) 선물이 없는 종목은 선물 자리에 '—'를 표시한다. 하이퍼리퀴드를 기준으로 강제하지 않는다.
    불러온 종목의 나스닥 가격은 1분마다 갱신하고, 비교 거래소 선물 줄은 기존 15초 갱신 때 함께 다시 그려진다. */
 var NQPS=60,NQARR=[];
@@ -1533,7 +1539,9 @@ return av(it.t)}
    Common Stock·Ordinary Shares·Depositary·Registered·Repr 류의 부가 설명과 Inc.·Corp.·
    Corporation·Company·Ltd.·PLC 같은 법인 접미사는 잘라 핵심 이름만 남긴다
    (Alphabet Inc. Depositary Shs Repr 1/20th Conv Pfd Registered Shs → Alphabet).
-   비교 탭 사전(CMPNM)에 한글명이 있는 종목은 한글명을 우선 표시하고 클래스 글자를 붙인다(알파벳 A). */
+   비교 탭 사전에 한글명이 있는 종목은 한글명을 우선 표시하고 클래스 글자를 붙인다(알파벳 A).
+   주의: 그 사전(CMPNM)은 비교 탭 스크립트의 IIFE 안에 선언돼 전역이 아니므로, 비교 탭 쪽에서
+   window.CMPNM으로 노출한 것을 통해 참조한다(전역 변수명으로 직접 참조하면 닿지 않아 영문명으로 폴백한다). */
 var NQKALIAS={GOOG:"GOOGL"};
 function nqShortName(it){
 var raw=String(it.nm||"").replace(/\s+/g," ").trim();
@@ -1541,10 +1549,10 @@ if(!raw)return"";
 var cls="",m=raw.match(/\bClass\s+([A-Z])\b/)||raw.match(/\bCl\.?\s+([A-Z])\b/);
 if(m)cls=m[1];
 var can=String(it.t||"").replace(/\./g,""),ko="";
-try{var cn=(typeof CMPNM!=="undefined")?CMPNM[NQKALIAS[can]||can]:null;if(cn&&cn[1])ko=cn[1]}catch(e){}
+try{var CD=(typeof CMPNM!=="undefined")?CMPNM:(window.CMPNM||null);var cn=CD?CD[NQKALIAS[can]||can]:null;if(cn&&cn[1])ko=cn[1]}catch(e){}
 if(ko){if(cls&&ko.indexOf("·")>0)ko=ko.split("·")[0];return cls?ko+" "+cls:ko}
 var s=raw,cut=s.length,i,mm;
-var cuts=[/\bClass\s+[A-Z]\b/,/\bAmerican\s+Depositary\b/i,/\bUnsponsored\b/i,/\bDepositary\b/i,/\bRepresenting\b/i,/\bRepr\b/i,/\bRegistered\b/i,/\bNew York Registry\b/i,/\bRegistry\b/i,/\bCommon\b/i,/\bOrdinary\b/i,/\bPreferred\b/i,/\bPreference\b/i,/\bCumulative\b/i,/\bPfd\b/i,/\bCum\b/i,/\bShares\b/i,/\bShs\b/i,/\bStock\b/i,/\bWarrants?\b/i,/\bRights\b/i,/\bUnits\b/i,/\bNotes\b/i,/\d+(\.\d+)?\s*%/,/,\s*Series\b/,/\sSeries\s+[A-Z0-9]/];
+var cuts=[/\bClass\s+[A-Z]\b/,/\bAmerican\s+Depositary\b/i,/\bUnsponsored\b/i,/\bDepositary\b/i,/\bDepository\b/i,/\bRepresenting\b/i,/\bRepr\b/i,/\bRegistered\b/i,/\bNew York Registry\b/i,/\bRegistry\b/i,/\bCommon\b/i,/\bOrdinary\b/i,/\bPreferred\b/i,/\bPreference\b/i,/\bCumulative\b/i,/\bPfd\b/i,/\bCum\b/i,/\bShares\b/i,/\bShs\b/i,/\bStock\b/i,/\bWarrants?\b/i,/\bRights\b/i,/\bUnits\b/i,/\bNotes\b/i,/\d+(\.\d+)?\s*%/,/,\s*Series\b/,/\sSeries\s+[A-Z0-9]/];
 for(i=0;i<cuts.length;i++){mm=s.search(cuts[i]);if(mm>=0&&mm<cut)cut=mm}
 s=s.slice(0,cut).replace(/[\s,]+$/,"").replace(/\s+(N\.V\.|B\.V\.|S\.A\.A\.|S\.A\.|S\.p\.A\.)(?=\s|$)/g,"");
 var suf=/[\s,]+(Inc|Corp|Corporation|Incorporated|Company|Co|Ltd|Limited|Public|PLC|LLC|LLP|LP|SA|NV|BV|AG|SE|GmbH|ASA|SPA|S\.A|N\.V|B\.V)\.*$/i;
@@ -1556,8 +1564,8 @@ function nqRowHtml(it){
 var sn=nqShortName(it);
 var hs="",pp=[];if(it.hi>0)pp.push("고 "+f(it.hi,it.hi<10?3:2));if(it.lo>0)pp.push("저 "+f(it.lo,it.lo<10?3:2));if(pp.length===2)pp[0]+=" ·";if(pp.length)hs='<span class="hlw"><span class="hl1">'+pp.join('</span> <span class="hl1">')+"</span></span>";
 var pr=it.p>0?f(it.p,it.p<10?3:2):"—";
-var vol=it.vt>=1?"$"+it.vt.toFixed(1)+"M":it.vt>0?"$"+Math.round(it.vt*1000)+"K":"—";
-return"<div class=\"prow nqrow\" role=row><div role=cell><div class=nm>"+nqAv(it)+"<div><b>"+nqEsc(it.t)+"</b>"+(sn?" <small>"+nqEsc(sn)+"</small>":"")+"</div>"+spkHtml(it.t.replace(/\./g,""),"bn")+"</div></div><div role=cell><b class=pv>"+pr+"</b>"+nqDiff(it.t,it.p)+hs+"</div><div role=cell>"+(it.c==null?"—":pc(it.c))+"</div><div role=cell>"+vol+"</div></div>"}
+var vol=it.vt>=1000?"$"+(it.vt/1000).toFixed(1)+"B":it.vt>=1?"$"+it.vt.toFixed(1)+"M":it.vt>0?"$"+Math.round(it.vt*1000)+"K":"—";
+return"<div class=\"prow nqrow\" role=row><div role=cell><div class=nm>"+nqAv(it)+"<div><b>"+nqEsc(it.t)+"</b>"+(sn?" <small>"+nqEsc(sn)+"</small>":"")+"</div></div></div><div role=cell><b class=pv>"+pr+"</b>"+nqDiff(it.t,it.p)+hs+"</div><div role=cell>"+(it.c==null?"—":pc(it.c))+"</div><div role=cell>"+vol+"</div></div>"}
 function nqRender(){
 el("tt").textContent="나스닥 주식 전체 ("+f(NQ.total||NQ.items.length)+")";
 var html;
@@ -2106,6 +2114,9 @@ try{if(sessionStorage.getItem("hlkrx_chat_redirect")==="1"){sessionStorage.remov
 <script>
 (function(){
 var CMPNM={NVDA:["NVIDIA","엔비디아"],TSLA:["Tesla","테슬라"],AAPL:["Apple","애플"],MSFT:["Microsoft","마이크로소프트"],GOOGL:["Alphabet (Google)","알파벳·구글"],META:["Meta","메타"],AMZN:["Amazon","아마존"],AMD:["AMD","에이엠디"],INTC:["Intel","인텔"],AVGO:["Broadcom","브로드컴"],MU:["Micron","마이크론"],MRNA:["Moderna","모더나"],SNDK:["SanDisk","샌디스크"],WDC:["Western Digital","웨스턴디지털"],TSM:["TSMC","티에스엠씨"],ASML:["ASML","에이에스엠엘"],ARM:["Arm","암"],QCOM:["Qualcomm","퀄컴"],AMAT:["Applied Materials","어플라이드머티리얼즈"],LRCX:["Lam Research","램리서치"],KLAC:["KLA","케이엘에이"],TER:["Teradyne","테라다인"],MRVL:["Marvell","마벨"],NET:["Cloudflare","클라우드플레어"],CRWD:["CrowdStrike","크라우드스트라이크"],PANW:["Palo Alto Networks","팔로알토네트웍스"],PLTR:["Palantir","팔란티어"],COIN:["Coinbase","코인베이스"],HOOD:["Robinhood","로빈후드"],MSTR:["MicroStrategy","마이크로스트래티지"],CRCL:["Circle","서클"],SPCX:["SpaceX","스페이스X"],BABA:["Alibaba","알리바바"],NFLX:["Netflix","넷플릭스"],DIS:["Disney","디즈니"],ORCL:["Oracle","오라클"],CRM:["Salesforce","세일즈포스"],ADBE:["Adobe","어도비"],NOW:["ServiceNow","서비스나우"],IBM:["IBM","아이비엠"],DELL:["Dell","델"],HPE:["Hewlett Packard Enterprise","휴렛팩커드"],CSCO:["Cisco","시스코"],ACN:["Accenture","액센추어"],TXN:["Texas Instruments","텍사스인스트루먼트"],LLY:["Eli Lilly","일라이릴리"],UNH:["UnitedHealth","유나이티드헬스"],JNJ:["Johnson & Johnson","존슨앤드존슨"],ABBV:["AbbVie","애브비"],MRK:["Merck","머크"],AMGN:["Amgen","암젠"],NVO:["Novo Nordisk","노보노디스크"],COST:["Costco","코스트코"],WMT:["Walmart","월마트"],HD:["Home Depot","홈디포"],MCD:["McDonald's","맥도날드"],KO:["Coca-Cola","코카콜라"],NKE:["Nike","나이키"],V:["Visa","비자"],PYPL:["PayPal","페이팔"],JPM:["JPMorgan","제이피모건"],BAC:["Bank of America","뱅크오브아메리카"],GS:["Goldman Sachs","골드만삭스"],BX:["Blackstone","블랙스톤"],BRKB:["Berkshire Hathaway","버크셔해서웨이"],CVX:["Chevron","셰브론"],XOM:["Exxon Mobil","엑슨모빌"],CAT:["Caterpillar","캐터필러"],GE:["GE Aerospace","GE에어로스페이스"],GEV:["GE Vernova","GE버노바"],UBER:["Uber","우버"],SHOP:["Shopify","쇼피파이"],SNOW:["Snowflake","스노우플레이크"],DDOG:["Datadog","데이터독"],MDB:["MongoDB","몽고디비"],GTLB:["GitLab","깃랩"],TEAM:["Atlassian","아틀라시안"],PATH:["UiPath","유아이패스"],APP:["AppLovin","앱러빈"],TTWO:["Take-Two","테이크투"],ZM:["Zoom","줌"],RDDT:["Reddit","레딧"],EBAY:["eBay","이베이"],SONY:["Sony","소니"],NOK:["Nokia","노키아"],GME:["GameStop","게임스탑"],AMC:["AMC Entertainment","AMC"],CVNA:["Carvana","카바나"],RIVN:["Rivian","리비안"],SOFI:["SoFi","소파이"],DKNG:["DraftKings","드래프트킹스"],IONQ:["IonQ","아이온큐"],RKLB:["Rocket Lab","로켓랩"],ASTS:["AST SpaceMobile"],OKLO:["Oklo","오클로"],SMCI:["Super Micro Computer","슈퍼마이크로컴퓨터"],CRWV:["CoreWeave","코어위브"],CBRS:["Cerebras","세레브라스"],NBIS:["Nebius","네비우스"],BE:["Bloom Energy","블룸에너지"],IREN:["IREN"],MARA:["MARA Holdings","마라"],RIOT:["Riot Platforms","라이엇플랫폼즈"],BMNR:["BitMine Immersion","비트마인"],HIMS:["Hims & Hers","힘스앤드허스"],GLW:["Corning","코닝"],VRT:["Vertiv","버티브"],ANET:["Arista Networks","아리스타네트웍스"],COHR:["Coherent","코히런트"],LITE:["Lumentum","루멘텀"],AAOI:["Applied Optoelectronics"],AKAM:["Akamai","아카마이"],CIEN:["Ciena","시에나"],SNPS:["Synopsys","시놉시스"],TWLO:["Twilio","트윌리오"],OKTA:["Okta","옥타"],ZS:["Zscaler","지스케일러"],FLEX:["Flex","플렉스"],ON:["ON Semiconductor","온세미컨덕터"],UMC:["United Microelectronics","UMC"],TSEM:["Tower Semiconductor","타워세미컨덕터"],ALAB:["Astera Labs","아스테라랩스"],CRDO:["Credo Technology","크레도"],APLD:["Applied Digital","어플라이드디지털"],IBKR:["Interactive Brokers","인터랙티브브로커스"],ISRG:["Intuitive Surgical","인튜이티브서지컬"],MDT:["Medtronic","메드트로닉"],VST:["Vistra","비스트라"],CEG:["Constellation Energy","컨스텔레이션에너지"],MP:["MP Materials","MP머티리얼즈"],HUT:["Hut 8","헛8"],TEM:["Tempus AI","템퍼스AI"],FLY:["Firefly Aerospace","파이어플라이"],LUNR:["Intuitive Machines","인튜이티브머신즈"],RDW:["Redwire","레드와이어"],OUST:["Ouster","아우스터"],VICR:["Vicor","바이코"],SIMO:["Silicon Motion","실리콘모션"],CGNX:["Cognex","코그넥스"],ROK:["Rockwell Automation","로크웰오토메이션"],GPRO:["GoPro","고프로"],PENG:["Penguin Solutions","펭귄솔루션즈"],AEHR:["Aehr Test Systems"],TTMI:["TTM Technologies"],OSCR:["Oscar Health","오스카헬스"],VKTX:["Viking Therapeutics","바이킹테라퓨틱스"],RUM:["Rumble","럼블"],POET:["POET Technologies"],SPY:["S&P 500 ETF","S&P500 ETF"],QQQ:["Nasdaq-100 ETF","나스닥100 ETF"],TQQQ:["Nasdaq-100 3x ETF","나스닥100 3배 ETF"],SQQQ:["Nasdaq-100 Short 3x ETF","나스닥100 인버스 3배 ETF"],SOXL:["Semiconductor 3x ETF","반도체 3배 ETF"],SOXS:["Semiconductor Short 3x ETF","반도체 인버스 3배 ETF"],SMH:["Semiconductor ETF","반도체 ETF"],IWM:["Russell 2000 ETF","러셀2000 ETF"],TLT:["20+ Year Treasury ETF","미국 장기국채 ETF"],TMF:["Treasury 3x ETF","장기국채 3배 ETF"],TBT:["Treasury Short 2x ETF","장기국채 인버스 ETF"],TZA:["Small Cap Short 3x ETF","러셀2000 인버스 3배 ETF"],UVXY:["Volatility 1.5x ETF","변동성 ETF"],XLE:["Energy Sector ETF","에너지 ETF"],XBI:["Biotech ETF","바이오 ETF"],GDX:["Gold Miners ETF","금광 ETF"],URNM:["Uranium Miners ETF","우라늄 ETF"],BITO:["Bitcoin ETF","비트코인 ETF"],USO:["Oil ETF","원유 ETF"],EWJ:["Japan ETF","일본 ETF"],EWT:["Taiwan ETF","대만 ETF"],EWZ:["Brazil ETF","브라질 ETF"],NVDL:["NVIDIA 2x ETF","엔비디아 2배 ETF"],TSLL:["Tesla 2x ETF","테슬라 2배 ETF"],MSTU:["MicroStrategy 2x ETF","마이크로스트래티지 2배 ETF"],MUU:["Micron 2x ETF","마이크론 2배 ETF"],MAGS:["Magnificent 7 ETF","매그니피센트7 ETF"],DJT:["Trump Media","트럼프미디어"],WEN:["Wendy's","웬디스"],BB:["BlackBerry","블랙베리"],KIOXIA:["Kioxia","키옥시아"],SOFTBANK:["SoftBank","소프트뱅크"],TENCENT:["Tencent","텐센트"],XIAOMI:["Xiaomi","샤오미"],MEITUAN:["Meituan","메이퇀"],PDD:["Pinduoduo (PDD)","핀둬둬"],KUAISHOU:["Kuaishou","콰이쇼우"],BYD:["BYD","비야디"],HK0700:["Tencent (HK)","텐센트"],HK0992:["Lenovo (HK)","레노버"],HK1810:["Xiaomi (HK)","샤오미"],CSOPSKHYNIX2L:["SK Hynix 2x ETF (CSOP)","SK하이닉스 2배 ETF"],CSOPSAMSUNG2L:["Samsung 2x ETF (CSOP)","삼성전자 2배 ETF"],POPMART:["Pop Mart","팝마트"],SHEIN:["Shein","쉬인"],UNITREE:["Unitree Robotics","유니트리"],ZHIPU:["Zhipu AI","즈푸AI"],MINIMAX:["MiniMax","미니맥스"],CAMBRICON:["Cambricon","캠브리콘"],GIGADEV:["GigaDevice","기가디바이스"],ZHONGJI:["Zhongji Innolight","중지이노라이트"],CXMT:["CXMT (ChangXin Memory)","창신메모리"],ANTHROPIC:["Anthropic","앤트로픽"],OPENAI:["OpenAI","오픈AI"],OURA:["Oura","오우라"],SKHY:["SK Hynix","SK하이닉스"],US100:["Nasdaq-100 Index","나스닥100 지수"],US500:["S&P 500 Index","S&P500 지수"],JP225:["Nikkei 225 Index","닛케이225 지수"],KR200:["KOSPI 200","코스피200"]};
+/* 이 사전은 원래 이 IIFE 안에서만 보였는데, 해외 탭 나스닥 행의 한글명 표시(nqShortName)도
+   같은 사전을 써야 해서 window에 노출한다. 노출이 없으면 나스닥 행에서 참조가 닿지 않아 영문명으로 폴백한다 */
+window.CMPNM=CMPNM;
 var CMPEX={
 GOLD:{tv:"TVC:GOLD",en:"Gold",ko:"금",dec:2},
 SILVER:{tv:"TVC:SILVER",en:"Silver",ko:"은",dec:2},
