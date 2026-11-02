@@ -156,6 +156,18 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 /* 티커와 한국어 이름 사이 간격: 이름 셀을 flex로 두고 gap으로 일정 간격 유지, 길면 이름 쪽이 말줄임 */
 #pb .nm>div{display:flex;align-items:baseline;gap:7px}
 #pb .nm b,#pb .nm small{min-width:0}
+/* 나스닥 모드 행 균일화: 나스닥 행(.nqrow)만 대상 — 티커는 절대 줄바꿈하지 않고, 회사명은 한 줄 말줄임으로 자르며,
+   이름 칸 너비를 고정(flex:1 1 0)해 로고·스파크라인·가격 열 위치가 행마다 흔들리지 않게 한다.
+   이름이 몇 줄로 늘어나든 행 높이가 달라지지 않도록 행 최소 높이를 정상 행(AAPL 기준)에 맞춘다. 다른 목록·탭에는 적용되지 않는다 */
+#pb .prow.nqrow{min-height:64px}
+#pb .prow.nqrow .nm>div{flex:1 1 0;min-width:0;overflow:hidden}
+#pb .prow.nqrow .nm b{flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal}
+#pb .prow.nqrow .nm small{flex:1 1 0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal}
+@media(max-width:520px){
+#pb .prow.nqrow{min-height:62px}
+#pb .prow.nqrow .nm b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;line-height:1.25}
+#pb .prow.nqrow .nm small{display:block;flex:none;width:100%;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;line-height:1.25}
+}
 #pb .av{width:25px;height:25px}
 #fetf[hidden]{display:none}
 #f[hidden]{display:none}
@@ -1520,7 +1532,7 @@ function nqRowHtml(it){
 var hs="",pp=[];if(it.hi>0)pp.push("고 "+f(it.hi,it.hi<10?3:2));if(it.lo>0)pp.push("저 "+f(it.lo,it.lo<10?3:2));if(pp.length===2)pp[0]+=" ·";if(pp.length)hs='<span class="hlw"><span class="hl1">'+pp.join('</span> <span class="hl1">')+"</span></span>";
 var pr=it.p>0?f(it.p,it.p<10?3:2):"—";
 var vol=it.vt>=1?"$"+it.vt.toFixed(1)+"M":it.vt>0?"$"+Math.round(it.vt*1000)+"K":"—";
-return"<div class=prow role=row><div role=cell><div class=nm>"+nqAv(it)+"<div><b>"+nqEsc(it.t)+"</b>"+(it.nm?" <small>"+nqEsc(it.nm)+"</small>":"")+"</div>"+spkHtml(it.t.replace(/\./g,""),"bn")+"</div></div><div role=cell><b class=pv>"+pr+"</b>"+nqDiff(it.t,it.p)+hs+"</div><div role=cell>"+(it.c==null?"—":pc(it.c))+"</div><div role=cell>"+vol+"</div></div>"}
+return"<div class=\"prow nqrow\" role=row><div role=cell><div class=nm>"+nqAv(it)+"<div><b>"+nqEsc(it.t)+"</b>"+(it.nm?" <small>"+nqEsc(it.nm)+"</small>":"")+"</div>"+spkHtml(it.t.replace(/\./g,""),"bn")+"</div></div><div role=cell><b class=pv>"+pr+"</b>"+nqDiff(it.t,it.p)+hs+"</div><div role=cell>"+(it.c==null?"—":pc(it.c))+"</div><div role=cell>"+vol+"</div></div>"}
 function nqRender(){
 el("tt").textContent="나스닥 주식 전체 ("+f(NQ.total||NQ.items.length)+")";
 var html;
