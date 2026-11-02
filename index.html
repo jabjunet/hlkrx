@@ -739,6 +739,22 @@ main{padding:0 12px 40px}
 <button data-f="sec:크립토" aria-pressed="false">크립토</button>
 <button data-f="sec:기타" aria-pressed="false">기타</button>
 </div>
+<div class="chips" id="fnq" hidden>
+<button type="button" data-nqsec="all" aria-pressed="true">전체</button>
+<button type="button" data-nqsec="semi" aria-pressed="false">반도체</button>
+<button type="button" data-nqsec="soft" aria-pressed="false">소프트웨어·AI</button>
+<button type="button" data-nqsec="plat" aria-pressed="false">플랫폼·인터넷</button>
+<button type="button" data-nqsec="hw" aria-pressed="false">하드웨어·전자</button>
+<button type="button" data-nqsec="ev" aria-pressed="false">전기차·자동차</button>
+<button type="button" data-nqsec="bio" aria-pressed="false">바이오·헬스</button>
+<button type="button" data-nqsec="fin" aria-pressed="false">금융·핀테크</button>
+<button type="button" data-nqsec="cons" aria-pressed="false">소비·유통</button>
+<button type="button" data-nqsec="ener" aria-pressed="false">에너지·소재</button>
+<button type="button" data-nqsec="ind" aria-pressed="false">산업·기계</button>
+<button type="button" data-nqsec="space" aria-pressed="false">우주·방산·로봇</button>
+<button type="button" data-nqsec="media" aria-pressed="false">미디어·엔터</button>
+<button type="button" data-nqsec="etc" aria-pressed="false">기타</button>
+</div>
 <div class="chips" id="fetf" hidden>
 <button type="button" data-t="all" aria-pressed="true">ETF 전체</button>
 <button type="button" data-t="US" aria-pressed="false">미국 상장</button>
@@ -907,7 +923,7 @@ main{padding:0 12px 40px}
 <p class="indmeta">날짜 규칙으로 계산 · 미국 매월 셋째 금요일, 한국 매월 둘째 목요일</p>
 </div>
 </section>
-<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-10-31), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 조회가 안 될 때는 마지막 스냅샷(2026-10-28 조회, KRX는 10/23 종가)을 보여줍니다.</p></details>
+<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-10-31), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 칩으로 업종별로 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 조회가 안 될 때는 마지막 스냅샷(2026-10-28 조회, KRX는 10/23 종가)을 보여줍니다.</p></details>
 <footer class="sitefoot">
 <nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button></nav>
 <p>© 2026 잡주넷 · 문의는 사이트 내 채팅을 이용해 주세요.</p>
@@ -1211,7 +1227,7 @@ if(us.length)html+=grp("미국 상장 ETF · 나스닥/NYSE",us);
 if(kr.length)html+=grp("국내 상장 ETF · 한국거래소(KRX)",kr);
 if(!r.length)html='<div class="pempty">검색 결과가 없습니다.</div>';
 el("tb").innerHTML=html}
-function draw(){el("hh").classList.toggle("nqhd",!etfOn&&v==="nq");if(!etfOn){el("f").hidden=(v==="nq");el("nqmore").hidden=(v!=="nq"||typeof NQ==="undefined"||NQ.done);el("q").placeholder=(v==="nq")?"나스닥 종목 검색 (티커·회사명)":"종목 검색";if(v==="nq"){if(typeof NQ!=="undefined")nqDraw();return}}
+function draw(){el("hh").classList.toggle("nqhd",!etfOn&&v==="nq");if(!etfOn){el("f").hidden=(v==="nq");el("fnq").hidden=(v!=="nq");el("nqmore").hidden=(v!=="nq"||typeof NQ==="undefined"||NQ.done);el("q").placeholder=(v==="nq")?"나스닥 종목 검색 (티커·회사명)":"종목 검색";if(v==="nq"){if(typeof NQ!=="undefined")nqDraw();return}}
 if(etfOn){drawEtf();return}
 var ex=EXN[v];if(!ex)return;
 var q=el("q").value.trim().toUpperCase(),qt=el("q").value.trim(),r=xlist(v).filter(function(x){var s=x[0];
@@ -1232,7 +1248,7 @@ el("f").addEventListener("click",function(e){var b=e.target.closest("button");if
 if(b.dataset.f){flt=b.dataset.f;sk={k:"mc",d:-1}}
 syncF();draw()});
 function syncEtfTh(){el("fetf").querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x.dataset.t===etfTh))})}
-function syncMode(){el("pmode").querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String((x.dataset.pm==="etf")===etfOn))});el("f").hidden=etfOn;el("fetf").hidden=!etfOn;el("xv").hidden=etfOn;el("hh").hidden=etfOn;el("etfnote").hidden=!etfOn;el("q").placeholder=etfOn?"ETF 검색 (이름·티커·종목코드·지수)":"종목 검색";el("q").setAttribute("aria-label",etfOn?"ETF 검색":"해외 종목 검색");if(etfOn)etfFetch()}
+function syncMode(){el("pmode").querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String((x.dataset.pm==="etf")===etfOn))});el("f").hidden=etfOn;el("fnq").hidden=true;el("fetf").hidden=!etfOn;el("xv").hidden=etfOn;el("hh").hidden=etfOn;el("etfnote").hidden=!etfOn;el("q").placeholder=etfOn?"ETF 검색 (이름·티커·종목코드·지수)":"종목 검색";el("q").setAttribute("aria-label",etfOn?"ETF 검색":"해외 종목 검색");if(etfOn)etfFetch()}
 el("pmode").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var on=b.dataset.pm==="etf";if(on===etfOn)return;etfOn=on;if(!etfOn){etfTh="all";syncEtfTh()}syncMode();draw()});
 el("fetf").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;etfTh=b.dataset.t;syncEtfTh();draw()});
 el("hh").addEventListener("click",function(e){var h=e.target.closest("[data-k]");if(!h||!h.dataset.k)return;var k=h.dataset.k;
@@ -1489,7 +1505,8 @@ setInterval(function(){if(!document.hidden&&!el("pf").hidden)fRefresh()},10000);
 /* ===== 해외 탭 기준 거래소 '나스닥' 모드 =====
    기준 거래소로 나스닥을 고르면 87개 고정 목록 대신 나스닥 상장 전체 종목을 TradingView 스캐너
    (america/scan, NASDAQ 거래소, 주식·펀드)로 실시간 조회한다. 기본 정렬은 시가총액 순이고
-   한 번에 60개씩 받아 스크롤하면 이어서 더 불러온다(스캐너 페이지네이션). 검색창에 입력하면
+   한 번에 60개씩 받아 스크롤하면 이어서 더 불러온다(스캐너 페이지네이션). 섹터 칩(#fnq)을 고르면
+   스캐너 조회에 그 섹터 필터를 걸어 시총순으로 다시 불러온다(검색과 함께 동작). 검색창에 입력하면
    티커·회사명 부분일치로 나스닥 전체에서 찾는다(티커 매치와 회사명 매치를 합쳐 시총순 정렬).
    행 형식은 기존 해외 행과 같되(로고·티커·회사명·가격·비교 거래소 선물 줄+차이 배지·24h·거래량),
    나스닥 행만 스파크라인 칸을 빼고 그 폭을 이름 열에 줘 티커·종목명이 잘리지 않게 한다(거래량은 B·M 단위 축약 표기).
@@ -1500,18 +1517,45 @@ var NQ={items:[],total:0,loading:false,done:false,pending:false,key:null,seq:0,t
 var NQCOLS=["name","description","close","change","Value.Traded","volume","high","low","market_cap_basic","logoid"];
 function nqEsc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function nqSortSpec(){if(sk.k==="c")return{by:"change",ord:sk.d===-1?"desc":"asc"};if(sk.k==="v")return{by:"Value.Traded",ord:sk.d===-1?"desc":"asc"};return{by:"market_cap_basic",ord:"desc"}}
-function nqKey(){var s=nqSortSpec();return el("q").value.trim()+"|"+s.by+"|"+s.ord}
+function nqKey(){var s=nqSortSpec();return el("q").value.trim()+"|"+s.by+"|"+s.ord+"|"+NQSEC}
 function nqMap(x){var d=x.d||[];var vt=(d[4]>0)?d[4]/1e6:((d[5]>0&&d[2]>0)?d[5]*d[2]/1e6:0);return{t:d[0]||"",nm:d[1]||"",p:d[2]>0?d[2]:null,c:(d[3]==null||isNaN(d[3]))?null:d[3],vt:vt,hi:d[6]>0?d[6]:0,lo:d[7]>0?d[7]:0,mc:d[8]>0?d[8]:0,lg:d[9]||""}}
 function nqSyncArr(){NQARR=NQ.items.map(function(it){return[it.t,it.p||0,it.c||0,it.vt,it.hi,it.lo]})}
 function nqScan(body){return fetch("https://scanner.tradingview.com/america/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw new Error("tv "+r.status);return r.json()})}
 function nqBaseFilter(){return[{left:"exchange",operation:"equal",right:"NASDAQ"},{left:"type",operation:"in_range",right:["stock","fund"]}]}
+/* 나스닥 모드 섹터 칩: 스캐너가 종목마다 주는 sector·industry 값으로 나눈다. 칩 이름은 기존 87개 목록의
+   섹터 표기를 우선 쓰고(반도체·소프트웨어·AI 등), 각 칩은 아래 필터 하나로 정의해 전 종목이 겹침 없이
+   정확히 한 칩에만 들어가게 했다(합계가 전체 종목 수와 일치하는지 조회로 검증함).
+   - 반도체/전기차·자동차/우주·방산·로봇은 sector 안에 섞여 있어 industry로 가른다
+     (우주·방산 Aerospace & Defense는 Electronic Technology 섹터 안에 있어 하드웨어·전자에서도 뺀다).
+   - 플랫폼·인터넷은 인터넷 소프트웨어·인터넷 리테일 industry를 sector를 가로질러 묶는다.
+   - 소프트웨어·AI/하드웨어·전자/소비·유통/산업·기계는 짝 칩에 들어간 industry를 빼는 방식으로 나눈다.
+   - 상업 서비스·유통 서비스·기타(Miscellaneous, 펀드 다수)는 '기타'로 묶는다. */
+var NQSEC="all";
+var NQSECNM={semi:"반도체",soft:"소프트웨어·AI",plat:"플랫폼·인터넷",hw:"하드웨어·전자",ev:"전기차·자동차",bio:"바이오·헬스",fin:"금융·핀테크",cons:"소비·유통",ener:"에너지·소재",ind:"산업·기계",space:"우주·방산·로봇",media:"미디어·엔터",etc:"기타"};
+var NQSECF={
+semi:[{left:"industry",operation:"equal",right:"Semiconductors"}],
+soft:[{left:"sector",operation:"equal",right:"Technology Services"},{left:"industry",operation:"not_in_range",right:["Internet Software/Services"]}],
+plat:[{left:"industry",operation:"in_range",right:["Internet Software/Services","Internet Retail"]}],
+hw:[{left:"sector",operation:"equal",right:"Electronic Technology"},{left:"industry",operation:"not_in_range",right:["Semiconductors","Aerospace & Defense"]}],
+ev:[{left:"industry",operation:"equal",right:"Motor Vehicles"}],
+bio:[{left:"sector",operation:"in_range",right:["Health Technology","Health Services"]}],
+fin:[{left:"sector",operation:"equal",right:"Finance"}],
+cons:[{left:"sector",operation:"in_range",right:["Retail Trade","Consumer Non-Durables","Consumer Durables"]},{left:"industry",operation:"not_in_range",right:["Motor Vehicles","Internet Retail"]}],
+ener:[{left:"sector",operation:"in_range",right:["Energy Minerals","Non-Energy Minerals","Process Industries","Utilities"]}],
+ind:[{left:"sector",operation:"in_range",right:["Producer Manufacturing","Industrial Services","Transportation"]},{left:"industry",operation:"not_in_range",right:["Aerospace & Defense"]}],
+space:[{left:"industry",operation:"equal",right:"Aerospace & Defense"}],
+media:[{left:"sector",operation:"in_range",right:["Consumer Services","Communications"]}],
+etc:[{left:"sector",operation:"in_range",right:["Commercial Services","Distribution Services","Miscellaneous"]}]};
+function nqFilter(){var fl=nqBaseFilter(),x=NQSECF[NQSEC];if(x)for(var i=0;i<x.length;i++)fl.push(x[i]);return fl}
+function syncNqF(){el("fnq").querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x.dataset.nqsec===NQSEC))})}
+el("fnq").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||!b.dataset.nqsec)return;NQSEC=b.dataset.nqsec;sk={k:"mc",d:-1};syncNqF();arw(el("hh"),sk);draw()});
 function nqLoad(){
 if(NQ.loading||NQ.done||NQ.key!==nqKey())return;NQ.loading=true;NQ.pending=false;var seq=NQ.seq;
 var qt=el("q").value.trim(),sp=nqSortSpec();
 function fin(){NQ.loading=false;if(NQ.key===nqKey()&&v==="nq"&&!etfOn)nqRender()}
 if(qt){
-var f1=nqBaseFilter();f1.push({left:"name",operation:"match",right:qt});
-var f2=nqBaseFilter();f2.push({left:"description",operation:"match",right:qt});
+var f1=nqFilter();f1.push({left:"name",operation:"match",right:qt});
+var f2=nqFilter();f2.push({left:"description",operation:"match",right:qt});
 var got={},list=[];
 function add(j){(j.data||[]).forEach(function(x){var it=nqMap(x);if(it.t&&!got[it.t]){got[it.t]=1;list.push(it)}})}
 Promise.all([nqScan({columns:NQCOLS,filter:f1,sort:{sortBy:"market_cap_basic",sortOrder:"desc"},range:[0,100]}),nqScan({columns:NQCOLS,filter:f2,sort:{sortBy:"market_cap_basic",sortOrder:"desc"},range:[0,100]})]).then(function(js){if(seq!==NQ.seq)return;add(js[0]);add(js[1]);
@@ -1521,7 +1565,7 @@ if(sk.k==="v")list.sort(function(a,b){return sk.d===-1?b.vt-a.vt:a.vt-b.vt});
 NQ.items=list.slice(0,200);NQ.total=NQ.items.length;NQ.done=true;nqSyncArr();fin()}).catch(function(){if(seq!==NQ.seq)return;NQ.done=true;fin()});
 return}
 var off=NQ.items.length;
-nqScan({columns:NQCOLS,filter:nqBaseFilter(),sort:{sortBy:sp.by,sortOrder:sp.ord},range:[off,off+NQPS]}).then(function(j){if(seq!==NQ.seq)return;
+nqScan({columns:NQCOLS,filter:nqFilter(),sort:{sortBy:sp.by,sortOrder:sp.ord},range:[off,off+NQPS]}).then(function(j){if(seq!==NQ.seq)return;
 NQ.total=j.totalCount||NQ.total;(j.data||[]).forEach(function(x){var it=nqMap(x);if(it.t)NQ.items.push(it)});
 if(!j.data||!j.data.length||NQ.items.length>=NQ.total)NQ.done=true;nqSyncArr();fin()}).catch(function(){if(seq!==NQ.seq)return;NQ.done=true;fin()})}
 function nqDiff(t,price){
@@ -1567,7 +1611,7 @@ var pr=it.p>0?f(it.p,it.p<10?3:2):"—";
 var vol=it.vt>=1000?"$"+(it.vt/1000).toFixed(1)+"B":it.vt>=1?"$"+it.vt.toFixed(1)+"M":it.vt>0?"$"+Math.round(it.vt*1000)+"K":"—";
 return"<div class=\"prow nqrow\" role=row><div role=cell><div class=nm>"+nqAv(it)+"<div><b>"+nqEsc(it.t)+"</b>"+(sn?" <small>"+nqEsc(sn)+"</small>":"")+"</div></div></div><div role=cell><b class=pv>"+pr+"</b>"+nqDiff(it.t,it.p)+hs+"</div><div role=cell>"+(it.c==null?"—":pc(it.c))+"</div><div role=cell>"+vol+"</div></div>"}
 function nqRender(){
-el("tt").textContent="나스닥 주식 전체 ("+f(NQ.total||NQ.items.length)+")";
+el("tt").textContent=NQSEC==="all"?"나스닥 주식 전체 ("+f(NQ.total||NQ.items.length)+")":"나스닥 · "+NQSECNM[NQSEC]+" ("+f(NQ.total||NQ.items.length)+")";
 var html;
 if(NQ.items.length)html=NQ.items.map(nqRowHtml).join("");
 else if(NQ.loading||NQ.pending)html='<div class="pempty">불러오는 중…</div>';
