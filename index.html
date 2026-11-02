@@ -282,8 +282,8 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hmvr .hn2 em{font-style:normal;font-weight:700;margin-left:5px}
 .hmvempty{padding:12px 12px;font-size:13px;color:var(--mut);border-bottom:1px solid var(--bd)}
 @media(max-width:520px){.hmvr{padding:8px 10px}.hmvempty{padding:12px 10px}}
-/* 홈 탭: 실시간 뉴스 — 실시간 차트 아래 작은 박스. [한국경제|매일경제|인베스팅] 전환으로 출처를 구분하고 출처별 최신 5개만
-   제목 한 줄 + 출처·지난 시간으로 컴팩트하게 보여준다 */
+/* 홈 탭: 실시간 뉴스 — 실시간 차트 아래 작은 박스. 세 출처 기사를 발행 시간 최신순으로 섞어 최대 10개를
+   제목 한 줄 + 지난 시간으로 컴팩트하게 보여준다. 출처명은 표시하지 않는다 */
 .hnw{margin-top:16px}
 .hnwr{display:block;padding:8px 12px;border-bottom:1px solid var(--bd);text-decoration:none;color:var(--tx)}
 .hnwr:last-child{border-bottom:0}
@@ -716,7 +716,7 @@ main{padding:0 12px 40px}
 <p class="note">등락률은 TradingView 기준 전일 종가 대비이며 1분마다 갱신합니다. 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준으로 표시됩니다.</p>
 </div>
 <div class="hnw">
-<div class="hmhd"><h2>실시간 뉴스</h2><div class="pair hmmk" id="hn-src"><button type="button" data-hn="hk" aria-pressed="true">한국경제</button><button type="button" data-hn="mk" aria-pressed="false">매일경제</button><button type="button" data-hn="iv" aria-pressed="false">인베스팅</button></div></div>
+<div class="hmhd"><h2>실시간 뉴스</h2></div>
 <div id="hn-list"><div class="hmvempty">불러오는 중…</div></div>
 </div>
 </section>
@@ -3013,9 +3013,10 @@ setInterval(function(){if(!document.hidden)load()},60000);
 })();
 </script>
 <script>
-/* 홈 탭: 실시간 뉴스 — 한국경제·매일경제·Investing.com 한국어판 공식 RSS를 브라우저에서 직접 불러와 출처별 최신 5개를 보여준다.
+/* 홈 탭: 실시간 뉴스 — 한국경제·매일경제·Investing.com 한국어판 공식 RSS를 브라우저에서 직접 불러와
+   세 출처 기사를 한 목록으로 합쳐 발행 시간 최신순으로 섞어 최대 10개를 보여준다. 출처명은 화면에 표시하지 않는다.
    피드 모두 CORS 헤더가 없어 직접 fetch가 막히면 공개 RSS 프록시를 순서대로 경유한다:
-   ① rss2json(JSON 변환) ② allorigins(raw XML). 끝내 실패한 출처는 다른 뉴스로 대체하지 않고 안내만 표시한다.
+   ① rss2json(JSON 변환) ② allorigins(raw XML). 일부 출처가 실패하면 성공한 출처 기사만으로 채우고, 전부 실패할 때만 안내를 표시한다.
    피드 주소는 빌드 시점에 실제 응답을 확인했다: 한국경제 https://www.hankyung.com/feed/all-news (200, RSS 2.0),
    매일경제 증권 https://www.mk.co.kr/rss/50200011/ (직접 호출은 403으로 막혀 rss2json 경유로 당일 증권 기사 응답 확인),
    인베스팅 한국어판 https://kr.investing.com/rss/news.rss (200, RSS 2.0).
@@ -3027,7 +3028,7 @@ var SRC={
 hk:{name:"한국경제",feed:"https://www.hankyung.com/feed/all-news"},
 mk:{name:"매일경제",feed:"https://www.mk.co.kr/rss/50200011/"},
 iv:{name:"인베스팅",feed:"https://kr.investing.com/rss/news.rss"}};
-var cur="hk",cache={};
+var cache={},settled={};
 function fetchT(url,ms){
 var ctl=("AbortController" in window)?new AbortController():null;
 var tm=ctl?setTimeout(function(){ctl.abort()},ms||12000):null;
@@ -3041,7 +3042,7 @@ function parseXml(txt){
 var doc=new DOMParser().parseFromString(txt,"text/xml"),out=[];
 if(doc.querySelector("parsererror"))throw new Error("xml");
 var items=doc.querySelectorAll("item");
-for(var i=0;i<items.length&&out.length<5;i++){
+for(var i=0;i<items.length&&out.length<12;i++){
 var tt=items[i].querySelector("title"),lk=items[i].querySelector("link"),pd=items[i].querySelector("pubDate");
 var title=tt?tt.textContent.trim():"",link=lk?lk.textContent.trim():"";
 if(title&&/^https?:\/\//.test(link))out.push({t:title,u:link,d:parseDate(pd?pd.textContent:"")})}
@@ -3050,7 +3051,7 @@ return out}
 function parseR2J(txt){
 var j=JSON.parse(txt),out=[];
 if(!j||j.status!=="ok"||!j.items)throw new Error("r2j");
-for(var i=0;i<j.items.length&&out.length<5;i++){
+for(var i=0;i<j.items.length&&out.length<12;i++){
 var it=j.items[i],title=String(it.title||"").trim(),link=String(it.link||"").trim();
 if(title&&/^https?:\/\//.test(link))out.push({t:title,u:link,d:parseDate(it.pubDate)})}
 if(!out.length)throw new Error("empty");
@@ -3060,8 +3061,8 @@ var feed=SRC[key].feed;
 return fetchT(feed).then(parseXml)
 .catch(function(){return fetchT("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(feed)).then(parseR2J)})
 .catch(function(){return fetchT("https://api.allorigins.win/raw?url="+encodeURIComponent(feed)).then(parseXml)})
-.then(function(rows){cache[key]=rows;if(cur===key)render()})
-.catch(function(){if(!cache[key])cache[key]="err";if(cur===key)render()})}
+.then(function(rows){cache[key]=rows;settled[key]=1;render()})
+.catch(function(){settled[key]=1;if(!cache[key])cache[key]="err";render()})}
 function ago(t){
 if(!t)return "";
 var m=Math.floor((Date.now()-t)/60000);
@@ -3070,16 +3071,23 @@ if(m<60)return m+"분 전";
 if(m<1440)return Math.floor(m/60)+"시간 전";
 return Math.floor(m/1440)+"일 전"}
 function render(){
-var box=$("hn-list"),rows=cache[cur];
-if(!rows){box.innerHTML='<div class="hmvempty">불러오는 중…</div>';return}
-if(rows==="err"){box.innerHTML='<div class="hmvempty">뉴스를 불러오지 못했어요</div>';return}
-var html="";
-for(var i=0;i<rows.length;i++){
-var a=ago(rows[i].d);
-html+='<a class="hnwr" href="'+esc(rows[i].u)+'" target="_blank" rel="noopener"><span class="nt1">'+esc(rows[i].t)+'</span><span class="nt2">'+SRC[cur].name+(a?" · "+a:"")+'</span></a>'}
+var box=$("hn-list"),merged=[],ready=0;
+["hk","mk","iv"].forEach(function(k){
+if(settled[k])ready++;
+var rows=cache[k];
+if(rows&&rows!=="err"){for(var i=0;i<rows.length;i++)merged.push(rows[i])}});
+if(!merged.length){
+if(ready<3){box.innerHTML='<div class="hmvempty">불러오는 중…</div>';return}
+box.innerHTML='<div class="hmvempty">뉴스를 불러오지 못했어요</div>';return}
+merged.sort(function(a,b){return (b.d||0)-(a.d||0)});
+var seen={},html="",n=0;
+for(var i=0;i<merged.length&&n<10;i++){
+if(seen[merged[i].u])continue;
+seen[merged[i].u]=1;n++;
+var a=ago(merged[i].d);
+html+='<a class="hnwr" href="'+esc(merged[i].u)+'" target="_blank" rel="noopener"><span class="nt1">'+esc(merged[i].t)+'</span>'+(a?'<span class="nt2">'+a+'</span>':"")+'</a>'}
 box.innerHTML=html||'<div class="hmvempty">표시할 뉴스가 없습니다</div>'}
 function load(){loadSrc("hk");loadSrc("mk");loadSrc("iv")}
-$("hn-src").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;cur=b.getAttribute("data-hn");this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});render()});
 render();load();
 setInterval(function(){if(!document.hidden)load()},7*60000);
 })();
