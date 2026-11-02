@@ -327,17 +327,22 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hmvr .hn2 em{font-style:normal;font-weight:700;margin-left:5px}
 .hmvempty{padding:12px 12px;font-size:13px;color:var(--mut);border-bottom:1px solid var(--bd)}
 @media(max-width:520px){.hmvr{padding:8px 10px}.hmvempty{padding:12px 10px}}
-/* 홈 탭: 실시간 뉴스 — 실시간 차트 아래 작은 박스. 세 출처 기사를 발행 시간 최신순으로 섞어 최대 10개를
+/* 홈 탭: 실시간 뉴스 — 실시간 차트 아래 작은 박스. 국내(한국경제·매일경제)와 해외(인베스팅) 두 그룹으로 나눠
+   좌우 2열로 나란히 보여주고(좁은 화면에서는 국내 위·해외 아래로 쌓음), 각 그룹 안에서 발행 시간 최신순으로
    제목 한 줄 + 지난 시간으로 컴팩트하게 보여준다. 출처명은 표시하지 않는다 */
 .hnw{margin-top:16px}
+.hngrid{display:grid;grid-template-columns:1fr 1fr;column-gap:20px;align-items:start}
+.hng{min-width:0}
+.hnghd{font-size:12.5px;font-weight:700;color:var(--mut);padding:2px 12px 6px}
+.hng .hmvempty{border-bottom:0}
 .hnwr{display:block;padding:8px 12px;border-bottom:1px solid var(--bd);text-decoration:none;color:var(--tx)}
-.hnwr:last-child{border-bottom:0}
+.hnwr:last-of-type{border-bottom:0}
 .hnwr:hover{background:var(--sf2)}
 .hnwr .nt1{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hnwr .nt2{display:block;margin-top:1px;font-size:11.5px;color:var(--mut)}
-@media(max-width:520px){.hnwr{padding:8px 10px}}
+@media(max-width:720px){.hngrid{grid-template-columns:1fr;row-gap:14px}}
+@media(max-width:520px){.hnwr{padding:8px 10px}.hnghd{padding-left:10px;padding-right:10px}}
 .hnmore{display:block;width:100%;min-height:44px;border:0;border-top:1px solid var(--bd);background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
-.hnmore[hidden]{display:none}
 .hnmore:hover{background:var(--sf2);color:var(--tx)}
 /* 안내 문구 */
 .note{color:var(--mut);font-size:12.5px;line-height:1.65;margin:12px 2px 0}
@@ -633,6 +638,15 @@ main{padding:0 12px 40px}
 .cmp-more-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:10px;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:12px}
 .cmp-more-btn:hover{background:var(--sf2)}
 #cmp2wrap[hidden]{display:none}
+/* 비교 탭: 전인구경제연구소 유튜브 최신 영상 — 채널 공식 RSS를 브라우저에서 직접 받아 최신순으로 보여준다 */
+.ytsec{margin-top:18px}
+.ytgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:720px){.ytgrid{grid-template-columns:repeat(2,1fr);gap:10px}}
+.ytcard{display:block;text-decoration:none;color:var(--tx);min-width:0}
+.ytcard img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;background:var(--sf2);border:1px solid var(--bd)}
+.ytcard .yt1{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:7px;font-size:13px;font-weight:600;line-height:1.4}
+.ytcard .yt2{display:block;margin-top:2px;font-size:11.5px;color:var(--mut)}
+.ytempty{padding:12px 2px;font-size:13px;color:var(--mut)}
 /* 지표 탭: 시장 심리 지표 카드 — 기존 카드(.c) 결에 맞춘 큰 숫자와 짧은 라벨 */
 .indb{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
 @media(min-width:1024px){.indb{font-size:34px}}
@@ -768,7 +782,6 @@ main{padding:0 12px 40px}
 <div class="hnw">
 <div class="hmhd"><h2>실시간 뉴스</h2></div>
 <div id="hn-list"><div class="hmvempty">불러오는 중…</div></div>
-<button type="button" class="hnmore" id="hn-more" hidden>더 보기</button>
 </div>
 </section>
 <section id="pa" hidden>
@@ -939,6 +952,10 @@ main{padding:0 12px 40px}
 <div class="cmp-chart" id="cmp-chart2" hidden></div>
 </div>
 </div>
+</div>
+<div class="ytsec">
+<h2>전인구 유튜브</h2>
+<div id="yt-list"><div class="ytempty">불러오는 중…</div></div>
 </div>
 </section>
 <section id="pi" hidden>
@@ -3136,9 +3153,12 @@ setInterval(function(){if(!document.hidden)load()},60000);
 </script>
 <script>
 /* 홈 탭: 실시간 뉴스 — 한국경제·매일경제·Investing.com 한국어판 공식 RSS를 브라우저에서 직접 불러와
-   세 출처 기사를 한 목록으로 합쳐 발행 시간 최신순으로 섞어 최대 10개를 불러오고, 처음에는 5개만 보여주며
-   아래 '더 보기' 버튼을 누르면 나머지가 전부 펼쳐지고 버튼은 숨는다. 7분 자동 갱신으로 새로 불러오면 다시 5개 접힌 상태로 돌아간다.
-   불러온 기사가 5개 이하면 버튼을 표시하지 않는다. 출처명은 화면에 표시하지 않는다.
+   국내(한국경제·매일경제)와 해외(인베스팅) 두 그룹으로 나눠 좌우 2열로 보여준다(좁은 화면에서는 위아래로 쌓음).
+   각 그룹은 발행 시간 최신순으로 최대 10개를 불러오고, 처음에는 5개만 보여주며 그룹 아래 '더 보기' 버튼 하나로
+   펼치고(최대 10개) 다시 접을 수 있다. 두 그룹의 펼침 상태는 서로 독립적이다.
+   7분 자동 갱신으로 새로 불러오면 두 그룹 모두 다시 5개 접힌 상태로 돌아간다.
+   가져온 기사가 5개 이하면 그 그룹의 버튼을 표시하지 않는다. 출처명은 화면에 표시하지 않는다.
+   한 그룹의 출처가 모두 실패하면 그 그룹에만 안내를 표시하고 다른 그룹은 정상 표시하며, 전부 실패할 때만 전체 안내를 표시한다.
    피드 모두 CORS 헤더가 없어 직접 fetch가 막히면 공개 RSS 프록시를 순서대로 경유한다:
    ① rss2json(JSON 변환) ② allorigins(raw XML). 일부 출처가 실패하면 성공한 출처 기사만으로 채우고, 전부 실패할 때만 안내를 표시한다.
    피드 주소는 빌드 시점에 실제 응답을 확인했다: 한국경제 https://www.hankyung.com/feed/all-news (200, RSS 2.0),
@@ -3194,32 +3214,118 @@ if(m<1)return "방금 전";
 if(m<60)return m+"분 전";
 if(m<1440)return Math.floor(m/60)+"시간 전";
 return Math.floor(m/1440)+"일 전"}
-var expanded=false;
-function render(){
-var box=$("hn-list"),btn=$("hn-more"),merged=[],ready=0;
-["hk","mk","iv"].forEach(function(k){
+var GROUPS=[
+{id:"dom",name:"국내",keys:["hk","mk"]},
+{id:"intl",name:"해외",keys:["iv"]}];
+var exp={dom:false,intl:false};
+function groupData(g){
+var merged=[],ready=0;
+g.keys.forEach(function(k){
 if(settled[k])ready++;
 var rows=cache[k];
 if(rows&&rows!=="err"){for(var i=0;i<rows.length;i++)merged.push(rows[i])}});
-if(!merged.length){
-btn.hidden=true;
-if(ready<3){box.innerHTML='<div class="hmvempty">불러오는 중…</div>';return}
-box.innerHTML='<div class="hmvempty">뉴스를 불러오지 못했어요</div>';return}
 merged.sort(function(a,b){return (b.d||0)-(a.d||0)});
 var seen={},list=[];
 for(var i=0;i<merged.length&&list.length<10;i++){
 if(seen[merged[i].u])continue;
 seen[merged[i].u]=1;list.push(merged[i])}
-var show=expanded?list:list.slice(0,5),html="";
+return{list:list,ready:ready,total:g.keys.length}}
+function render(){
+var box=$("hn-list");
+var parts=GROUPS.map(function(g){return{g:g,r:groupData(g)}});
+var anyData=parts.some(function(p){return p.r.list.length});
+var allSettled=parts.every(function(p){return p.r.ready===p.r.total});
+if(!anyData){
+if(!allSettled){box.innerHTML='<div class="hmvempty">불러오는 중…</div>';return}
+box.innerHTML='<div class="hmvempty">뉴스를 불러오지 못했어요</div>';return}
+var html='<div class="hngrid">';
+parts.forEach(function(p){
+html+='<div class="hng"><div class="hnghd">'+p.g.name+'</div>';
+if(p.r.list.length){
+var show=exp[p.g.id]?p.r.list:p.r.list.slice(0,5);
 for(var j=0;j<show.length;j++){
 var a=ago(show[j].d);
 html+='<a class="hnwr" href="'+esc(show[j].u)+'" target="_blank" rel="noopener"><span class="nt1">'+esc(show[j].t)+'</span>'+(a?'<span class="nt2">'+a+'</span>':"")+'</a>'}
-box.innerHTML=html||'<div class="hmvempty">표시할 뉴스가 없습니다</div>';
-btn.hidden=!(list.length>5&&!expanded)}
-function load(){expanded=false;loadSrc("hk");loadSrc("mk");loadSrc("iv")}
-$("hn-more").addEventListener("click",function(){expanded=true;render()});
+if(p.r.list.length>5)html+='<button type="button" class="hnmore" data-g="'+p.g.id+'" aria-expanded="'+String(!!exp[p.g.id])+'">'+(exp[p.g.id]?"접기":"더 보기")+'</button>';
+}else{
+html+='<div class="hmvempty">'+(p.r.ready<p.r.total?"불러오는 중…":"뉴스를 불러오지 못했어요")+'</div>'}
+html+='</div>'});
+html+='</div>';
+box.innerHTML=html}
+function load(){exp.dom=false;exp.intl=false;loadSrc("hk");loadSrc("mk");loadSrc("iv")}
+$("hn-list").addEventListener("click",function(e){var b=e.target.closest(".hnmore");if(!b)return;var id=b.getAttribute("data-g");if(!(id in exp))return;exp[id]=!exp[id];render()});
 render();load();
 setInterval(function(){if(!document.hidden)load()},7*60000);
+})();
+</script>
+<script>
+/* 비교 탭: 전인구 유튜브 — 전인구경제연구소 공식 채널(UCznImSIaxZR7fdLCICLdgaQ)의 유튜브 RSS를 브라우저에서 직접 불러와
+   최신순 영상 6개를 썸네일·제목·업로드 시간으로 보여주고, 클릭하면 유튜브 원본이 새 탭으로 열린다.
+   채널 ID는 빌드 시점에 실제 RSS 응답으로 검증했다(피드 제목 '전인구경제연구소', 최신 영상 정상 수신).
+   피드에 CORS 헤더가 없어 직접 fetch가 막히면 뉴스와 같은 공개 프록시를 순서대로 경유한다:
+   ① rss2json(JSON 변환) ② allorigins(raw XML). 전부 실패하면 섹션에 짧은 안내만 표시하고 비교 탭의 다른 기능에는 영향을 주지 않는다.
+   페이지가 열릴 때 불러오고 10분 간격으로 자동 갱신한다. */
+(function(){
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+var FEED="https://www.youtube.com/feeds/videos.xml?channel_id=UCznImSIaxZR7fdLCICLdgaQ";
+var cache=null;
+function fetchT(url,ms){
+var ctl=("AbortController" in window)?new AbortController():null;
+var tm=ctl?setTimeout(function(){ctl.abort()},ms||12000):null;
+return fetch(url,ctl?{signal:ctl.signal}:{}).then(function(r){if(tm)clearTimeout(tm);if(!r.ok)throw new Error("http "+r.status);return r.text()}).catch(function(e){if(tm)clearTimeout(tm);throw e})}
+function vidOf(link){var m=/[?&]v=([\w-]{6,})/.exec(link||"");return m?m[1]:""}
+function parseDate(s){
+if(!s)return 0;
+s=String(s).trim();
+if(/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}$/.test(s))return Date.parse(s.replace(" ","T")+"Z")||0;
+var t=Date.parse(s);return isNaN(t)?0:t}
+function parseXml(txt){
+var doc=new DOMParser().parseFromString(txt,"text/xml"),out=[];
+if(doc.querySelector("parsererror"))throw new Error("xml");
+var items=doc.querySelectorAll("entry");
+for(var i=0;i<items.length;i++){
+var e=items[i],tt=e.querySelector("title"),lk=e.querySelector("link"),pd=e.querySelector("published");
+var title=tt?tt.textContent.trim():"",link=lk?lk.getAttribute("href")||"":"";
+var vidEl=e.getElementsByTagName("yt:videoId")[0];
+var vid=vidEl?vidEl.textContent.trim():vidOf(link);
+var thEl=e.getElementsByTagName("media:thumbnail")[0];
+var th=thEl?thEl.getAttribute("url")||"":(vid?"https://i.ytimg.com/vi/"+vid+"/hqdefault.jpg":"");
+if(title&&/^https?:\/\//.test(link))out.push({t:title,u:link,d:parseDate(pd?pd.textContent:""),th:th})}
+if(!out.length)throw new Error("empty");
+return out}
+function parseR2J(txt){
+var j=JSON.parse(txt),out=[];
+if(!j||j.status!=="ok"||!j.items)throw new Error("r2j");
+for(var i=0;i<j.items.length;i++){
+var it=j.items[i],title=String(it.title||"").trim(),link=String(it.link||"").trim();
+var vid=vidOf(link),th=String(it.thumbnail||"")||(vid?"https://i.ytimg.com/vi/"+vid+"/hqdefault.jpg":"");
+if(title&&/^https?:\/\//.test(link))out.push({t:title,u:link,d:parseDate(it.pubDate),th:th})}
+if(!out.length)throw new Error("empty");
+return out}
+function ago(t){
+if(!t)return "";
+var m=Math.floor((Date.now()-t)/60000);
+if(m<1)return "방금 전";
+if(m<60)return m+"분 전";
+if(m<1440)return Math.floor(m/60)+"시간 전";
+return Math.floor(m/1440)+"일 전"}
+function render(){
+var box=$("yt-list");if(!box)return;
+if(!cache){box.innerHTML='<div class="ytempty">영상을 불러오지 못했어요</div>';return}
+var list=cache.slice().sort(function(a,b){return (b.d||0)-(a.d||0)}).slice(0,6),html='<div class="ytgrid">';
+for(var i=0;i<list.length;i++){
+var a=ago(list[i].d);
+html+='<a class="ytcard" href="'+esc(list[i].u)+'" target="_blank" rel="noopener">'+(list[i].th?'<img src="'+esc(list[i].th)+'" alt="" loading="lazy">':"")+'<span class="yt1">'+esc(list[i].t)+'</span>'+(a?'<span class="yt2">'+a+'</span>':"")+'</a>'}
+box.innerHTML=html+'</div>'}
+function load(){
+fetchT(FEED).then(parseXml)
+.catch(function(){return fetchT("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(FEED)).then(parseR2J)})
+.catch(function(){return fetchT("https://api.allorigins.win/raw?url="+encodeURIComponent(FEED)).then(parseXml)})
+.then(function(rows){cache=rows;render()})
+.catch(function(){if(!cache)render()})}
+load();
+setInterval(function(){if(!document.hidden)load()},10*60000);
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c6e8ab4e4ea4777bf54ca7e737337b9"}'></script><!-- End Cloudflare Web Analytics -->
