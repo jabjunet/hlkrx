@@ -282,7 +282,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hmvr .hn2 em{font-style:normal;font-weight:700;margin-left:5px}
 .hmvempty{padding:12px 12px;font-size:13px;color:var(--mut);border-bottom:1px solid var(--bd)}
 @media(max-width:520px){.hmvr{padding:8px 10px}.hmvempty{padding:12px 10px}}
-/* 홈 탭: 실시간 뉴스 — 실시간 차트 아래 작은 박스. [한국경제|인베스팅] 전환으로 출처를 구분하고 출처별 최신 5개만
+/* 홈 탭: 실시간 뉴스 — 실시간 차트 아래 작은 박스. [한국경제|매일경제|인베스팅] 전환으로 출처를 구분하고 출처별 최신 5개만
    제목 한 줄 + 출처·지난 시간으로 컴팩트하게 보여준다 */
 .hnw{margin-top:16px}
 .hnwr{display:block;padding:8px 12px;border-bottom:1px solid var(--bd);text-decoration:none;color:var(--tx)}
@@ -716,7 +716,7 @@ main{padding:0 12px 40px}
 <p class="note">등락률은 TradingView 기준 전일 종가 대비이며 1분마다 갱신합니다. 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준으로 표시됩니다.</p>
 </div>
 <div class="hnw">
-<div class="hmhd"><h2>실시간 뉴스</h2><div class="pair hmmk" id="hn-src"><button type="button" data-hn="hk" aria-pressed="true">한국경제</button><button type="button" data-hn="iv" aria-pressed="false">인베스팅</button></div></div>
+<div class="hmhd"><h2>실시간 뉴스</h2><div class="pair hmmk" id="hn-src"><button type="button" data-hn="hk" aria-pressed="true">한국경제</button><button type="button" data-hn="mk" aria-pressed="false">매일경제</button><button type="button" data-hn="iv" aria-pressed="false">인베스팅</button></div></div>
 <div id="hn-list"><div class="hmvempty">불러오는 중…</div></div>
 </div>
 </section>
@@ -3013,10 +3013,11 @@ setInterval(function(){if(!document.hidden)load()},60000);
 })();
 </script>
 <script>
-/* 홈 탭: 실시간 뉴스 — 한국경제·Investing.com 한국어판 공식 RSS를 브라우저에서 직접 불러와 출처별 최신 5개를 보여준다.
-   두 피드 모두 CORS 헤더가 없어 직접 fetch가 막히면 공개 RSS 프록시를 순서대로 경유한다:
+/* 홈 탭: 실시간 뉴스 — 한국경제·매일경제·Investing.com 한국어판 공식 RSS를 브라우저에서 직접 불러와 출처별 최신 5개를 보여준다.
+   피드 모두 CORS 헤더가 없어 직접 fetch가 막히면 공개 RSS 프록시를 순서대로 경유한다:
    ① rss2json(JSON 변환) ② allorigins(raw XML). 끝내 실패한 출처는 다른 뉴스로 대체하지 않고 안내만 표시한다.
    피드 주소는 빌드 시점에 실제 응답을 확인했다: 한국경제 https://www.hankyung.com/feed/all-news (200, RSS 2.0),
+   매일경제 증권 https://www.mk.co.kr/rss/50200011/ (직접 호출은 403으로 막혀 rss2json 경유로 당일 증권 기사 응답 확인),
    인베스팅 한국어판 https://kr.investing.com/rss/news.rss (200, RSS 2.0).
    인베스팅 pubDate는 오프셋 없는 UTC 표기라 타임존 없는 날짜 문자열은 UTC로 해석한다. 7분 간격 자동 갱신. */
 (function(){
@@ -3024,6 +3025,7 @@ function $(id){return document.getElementById(id)}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 var SRC={
 hk:{name:"한국경제",feed:"https://www.hankyung.com/feed/all-news"},
+mk:{name:"매일경제",feed:"https://www.mk.co.kr/rss/50200011/"},
 iv:{name:"인베스팅",feed:"https://kr.investing.com/rss/news.rss"}};
 var cur="hk",cache={};
 function fetchT(url,ms){
@@ -3076,7 +3078,7 @@ for(var i=0;i<rows.length;i++){
 var a=ago(rows[i].d);
 html+='<a class="hnwr" href="'+esc(rows[i].u)+'" target="_blank" rel="noopener"><span class="nt1">'+esc(rows[i].t)+'</span><span class="nt2">'+SRC[cur].name+(a?" · "+a:"")+'</span></a>'}
 box.innerHTML=html||'<div class="hmvempty">표시할 뉴스가 없습니다</div>'}
-function load(){loadSrc("hk");loadSrc("iv")}
+function load(){loadSrc("hk");loadSrc("mk");loadSrc("iv")}
 $("hn-src").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;cur=b.getAttribute("data-hn");this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});render()});
 render();load();
 setInterval(function(){if(!document.hidden)load()},7*60000);
