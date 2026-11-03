@@ -641,10 +641,8 @@ main{padding:0 12px 40px}
 .cmp-more-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:10px;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:12px}
 .cmp-more-btn:hover{background:var(--sf2)}
 #cmp2wrap[hidden]{display:none}
-/* 비교 탭: 전인구경제연구소 유튜브 최신 영상 — 채널 공식 RSS를 브라우저에서 직접 받아 최신순으로 보여준다 */
+/* 전인구 유튜브 카드 공통 스타일 (지표 탭 섹션에서 사용) */
 .ytsec{margin-top:18px}
-.ytgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-@media(max-width:720px){.ytgrid{grid-template-columns:repeat(2,1fr);gap:10px}}
 .ytcard{display:block;text-decoration:none;color:var(--tx);min-width:0}
 .ytcard img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;background:var(--sf2);border:1px solid var(--bd)}
 .ytcard .yt1{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:7px;font-size:13px;font-weight:600;line-height:1.4}
@@ -961,10 +959,6 @@ main{padding:0 12px 40px}
 <div class="cmp-chart" id="cmp-chart2" hidden></div>
 </div>
 </div>
-</div>
-<div class="ytsec">
-<h2>전인구 유튜브</h2>
-<div id="yt-list"><div class="ytempty">불러오는 중…</div></div>
 </div>
 </section>
 <section id="pi" hidden>
@@ -3272,77 +3266,7 @@ setInterval(function(){if(!document.hidden)load()},7*60000);
 })();
 </script>
 <script>
-/* 비교 탭: 전인구 유튜브 — 전인구경제연구소 공식 채널(UCznImSIaxZR7fdLCICLdgaQ)의 유튜브 RSS를 브라우저에서 직접 불러와
-   최신순 영상 6개를 썸네일·제목·업로드 시간으로 보여주고, 클릭하면 유튜브 원본이 새 탭으로 열린다.
-   채널 ID는 빌드 시점에 실제 RSS 응답으로 검증했다(피드 제목 '전인구경제연구소', 최신 영상 정상 수신).
-   피드에 CORS 헤더가 없어 직접 fetch가 막히면 뉴스와 같은 공개 프록시를 순서대로 경유한다:
-   ① rss2json(JSON 변환) ② allorigins(raw XML). 전부 실패하면 섹션에 짧은 안내만 표시하고 비교 탭의 다른 기능에는 영향을 주지 않는다.
-   페이지가 열릴 때 불러오고 10분 간격으로 자동 갱신한다. */
-(function(){
-function $(id){return document.getElementById(id)}
-function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-var FEED="https://www.youtube.com/feeds/videos.xml?channel_id=UCznImSIaxZR7fdLCICLdgaQ";
-var cache=null;
-function fetchT(url,ms){
-var ctl=("AbortController" in window)?new AbortController():null;
-var tm=ctl?setTimeout(function(){ctl.abort()},ms||12000):null;
-return fetch(url,ctl?{signal:ctl.signal}:{}).then(function(r){if(tm)clearTimeout(tm);if(!r.ok)throw new Error("http "+r.status);return r.text()}).catch(function(e){if(tm)clearTimeout(tm);throw e})}
-function vidOf(link){var m=/[?&]v=([\w-]{6,})/.exec(link||"");return m?m[1]:""}
-function parseDate(s){
-if(!s)return 0;
-s=String(s).trim();
-if(/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}$/.test(s))return Date.parse(s.replace(" ","T")+"Z")||0;
-var t=Date.parse(s);return isNaN(t)?0:t}
-function parseXml(txt){
-var doc=new DOMParser().parseFromString(txt,"text/xml"),out=[];
-if(doc.querySelector("parsererror"))throw new Error("xml");
-var items=doc.querySelectorAll("entry");
-for(var i=0;i<items.length;i++){
-var e=items[i],tt=e.querySelector("title"),lk=e.querySelector("link"),pd=e.querySelector("published");
-var title=tt?tt.textContent.trim():"",link=lk?lk.getAttribute("href")||"":"";
-var vidEl=e.getElementsByTagName("yt:videoId")[0];
-var vid=vidEl?vidEl.textContent.trim():vidOf(link);
-var thEl=e.getElementsByTagName("media:thumbnail")[0];
-var th=thEl?thEl.getAttribute("url")||"":(vid?"https://i.ytimg.com/vi/"+vid+"/hqdefault.jpg":"");
-if(title&&/^https?:\/\//.test(link))out.push({t:title,u:link,d:parseDate(pd?pd.textContent:""),th:th})}
-if(!out.length)throw new Error("empty");
-return out}
-function parseR2J(txt){
-var j=JSON.parse(txt),out=[];
-if(!j||j.status!=="ok"||!j.items)throw new Error("r2j");
-for(var i=0;i<j.items.length;i++){
-var it=j.items[i],title=String(it.title||"").trim(),link=String(it.link||"").trim();
-var vid=vidOf(link),th=String(it.thumbnail||"")||(vid?"https://i.ytimg.com/vi/"+vid+"/hqdefault.jpg":"");
-if(title&&/^https?:\/\//.test(link))out.push({t:title,u:link,d:parseDate(it.pubDate),th:th})}
-if(!out.length)throw new Error("empty");
-return out}
-function ago(t){
-if(!t)return "";
-var m=Math.floor((Date.now()-t)/60000);
-if(m<1)return "방금 전";
-if(m<60)return m+"분 전";
-if(m<1440)return Math.floor(m/60)+"시간 전";
-return Math.floor(m/1440)+"일 전"}
-function render(){
-var box=$("yt-list");if(!box)return;
-if(!cache){box.innerHTML='<div class="ytempty">영상을 불러오지 못했어요</div>';return}
-var list=cache.slice().sort(function(a,b){return (b.d||0)-(a.d||0)}).slice(0,6),html='<div class="ytgrid">';
-for(var i=0;i<list.length;i++){
-var a=ago(list[i].d);
-html+='<a class="ytcard" href="'+esc(list[i].u)+'" target="_blank" rel="noopener">'+(list[i].th?'<img src="'+esc(list[i].th)+'" alt="" loading="lazy">':"")+'<span class="yt1">'+esc(list[i].t)+'</span>'+(a?'<span class="yt2">'+a+'</span>':"")+'</a>'}
-box.innerHTML=html+'</div>'}
-function load(){
-fetchT(FEED).then(parseXml)
-.catch(function(){return fetchT("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(FEED)).then(parseR2J)})
-.catch(function(){return fetchT("https://api.allorigins.win/raw?url="+encodeURIComponent(FEED)).then(parseXml)})
-.then(function(rows){cache=rows;render()})
-.catch(function(){if(!cache)render()})}
-load();
-setInterval(function(){if(!document.hidden)load()},10*60000);
-})();
-</script>
-<script>
-/* 지표 탭: 전인구 유튜브 최신 영상 1개 — 비교 탭 섹션과 같은 방식으로 전인구경제연구소 공식 채널
+/* 지표 탭: 전인구 유튜브 최신 영상 1개 — 전인구경제연구소 공식 채널
    (UCznImSIaxZR7fdLCICLdgaQ)의 유튜브 RSS를 브라우저에서 직접 불러와 가장 최신 영상 딱 1개만
    작은 가로형 카드로 보여준다(왼쪽 작은 썸네일, 오른쪽 제목·업로드 시간). 클릭하면 유튜브 원본이 새 탭으로 열린다.
    CORS로 직접 fetch가 막히면 공개 프록시를 순서대로 경유한다: ① rss2json ② allorigins(raw XML).
