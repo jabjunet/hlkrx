@@ -413,6 +413,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .pfskip{display:block;margin:6px auto 0;border:0;background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer;min-height:36px;padding:6px 10px}
 .pfskip[hidden]{display:none}
 @media(max-width:520px){.lgov{align-items:flex-end;padding:0}.lgbox{max-width:none;border-radius:16px 16px 0 0;border-bottom:0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}}
+@media(max-width:720px){.tabs{flex-wrap:wrap}}
 /* 데스크톱 */
 @media(min-width:1024px){
 main{max-width:1120px;padding:4px 28px 56px}
@@ -753,6 +754,30 @@ main{padding:0 12px 40px}
 .chat-err{margin:8px 2px 0;font-size:12.5px;color:var(--up)}
 .chat-err[hidden]{display:none}
 @media(max-width:520px){.chatbtn{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}.chatpanel{right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px))}}
+/* 김프 계산기: 화면 오른쪽 아래 빈 공간에 뜨는 작은 패널. 채팅 버튼 위에 버튼을 쌓아 두고,
+   버튼을 눌러 패널을 넣었다 뺐다 할 수 있다. 패널 안에서는 국내 가격·해외 가격·환율로 김프를 바로 계산한다 */
+.kcbtn{position:fixed;right:16px;bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:120;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 16px;border:1px solid var(--bd);border-radius:999px;background:var(--sf);color:var(--tx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.18)}
+.kcbtn svg{flex:none;display:block}
+.kcpanel{position:fixed;right:16px;bottom:calc(128px + env(safe-area-inset-bottom,0px));z-index:122;width:min(276px,calc(100vw - 24px));max-height:calc(100dvh - 150px);overflow-y:auto;background:var(--sf);border:1px solid var(--bd);border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,.28);padding:14px;-webkit-overflow-scrolling:touch}
+.kcpanel[hidden]{display:none}
+.kc-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.kc-hd b{font-size:14.5px}
+.kc-x{margin-left:auto;width:32px;height:32px;border:0;background:none;color:var(--mut);font-size:20px;line-height:1;cursor:pointer;border-radius:8px;flex:none}
+.kcf{display:block;font-size:12px;font-weight:600;color:var(--mut);margin-bottom:9px}
+.kcf input{display:block;width:100%;margin-top:4px;min-height:38px;border-radius:9px;padding:7px 10px;font-size:14px}
+.kc-selrow{display:flex;gap:6px;margin-top:4px}
+.kc-selrow select{flex:1;min-width:0;min-height:38px;border-radius:9px;padding:7px 8px;font:inherit;font-size:13.5px;font-weight:600;color:var(--tx);background:var(--sf);border:1px solid var(--bd)}
+.kc-fill{flex:none;min-height:38px;padding:7px 11px;border:1px solid var(--bd);border-radius:9px;background:var(--sf2);color:var(--tx);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.kc-res{border-top:1px solid var(--bd);margin-top:2px;padding-top:10px}
+.kc-kp{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.kc-kp span{font-size:12.5px;font-weight:700;color:var(--mut);white-space:nowrap}
+.kc-kp b{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.kc-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:5px}
+.kc-row span{font-size:12px;color:var(--mut)}
+.kc-row b{font-size:13.5px;letter-spacing:-.01em;white-space:nowrap}
+.kc-row[hidden]{display:none}
+.kc-note{color:var(--mut);font-size:11.5px;line-height:1.5;margin:10px 0 0}
+@media(max-width:520px){.kcbtn{right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px))}.kcpanel{right:12px;bottom:calc(122px + env(safe-area-inset-bottom,0px))}}
 /* 푸터 · 약관 */
 .sitefoot{margin-top:28px;padding:18px 2px 6px;border-top:1px solid var(--bd);text-align:center}
 .sitefoot nav{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
@@ -1015,6 +1040,19 @@ main{padding:0 12px 40px}
 <p class="indmeta" id="ind-ix-m">TradingView · 1분마다 확인</p>
 </div>
 <div class="c">
+<div class="indlab">주식 선물 포지션</div>
+<p class="indsub" style="margin:0">미결제약정 · Hyperliquid 주식 선물 전체</p>
+<div class="fgrow" style="margin-top:2px"><span class="indb" id="ind-oi-v">—</span><span class="pill" id="ind-oi-n">—</span></div>
+<div class="indlab" style="margin-top:16px">롱·숏 비율 · Binance 주식 선물 (계정 기준)</div>
+<div class="lsnums">
+<div><small>롱</small><b id="ind-ls-l">—</b></div>
+<div><small>숏</small><b id="ind-ls-s">—</b></div>
+<div><small>롱/숏 비율</small><b id="ind-ls-r">—</b></div>
+</div>
+<div class="lsb"><i id="ind-ls-bl" style="background:var(--up);width:50%"></i><i id="ind-ls-bs" style="background:var(--dn);width:50%"></i></div>
+<p class="indmeta" id="ind-ft-m">Hyperliquid · Binance 선물 · 1분마다 확인</p>
+</div>
+<div class="c">
 <div class="indlab">옵션 만기일</div>
 <div class="ixrows">
 <div class="ixrow"><span>미국 옵션</span><span class="ixrv"><b id="ind-exp-us">—</b><span class="pill" id="ind-exp-us-d">—</span></span></div>
@@ -1031,7 +1069,7 @@ main{padding:0 12px 40px}
 <div id="yt1-list"><div class="ytempty">불러오는 중…</div></div>
 </div>
 </section>
-<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-02), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-10-28 조회, KRX는 10/23 종가)을 보여줍니다.</p></details>
+<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-02), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-10-28 조회, KRX는 10/23 종가)을 보여줍니다. 지표 탭의 주식 선물 포지션(미결제약정·롱숏 비율)은 Hyperliquid 미결제약정과 Binance 롱·숏 비율 데이터로 1분마다 확인합니다.</p></details>
 <footer class="sitefoot">
 <nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button></nav>
 <p>© 2026 김프원 · 문의는 사이트 내 채팅을 이용해 주세요.</p>
@@ -1050,6 +1088,22 @@ main{padding:0 12px 40px}
 <p class="chat-err" id="chat-err" role="alert" hidden></p>
 </div>
 </div>
+</div>
+<button type="button" class="kcbtn" id="kc-open" aria-expanded="false" aria-controls="kc-panel"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 15.5h.01M12 15.5h.01M15.5 15.5h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>김프 계산기</button>
+<div class="kcpanel" id="kc-panel" role="dialog" aria-label="김프 계산기" hidden>
+<div class="kc-hd"><b>김프 계산기</b><button type="button" class="kc-x" id="kc-x" aria-label="계산기 닫기">×</button></div>
+<label class="kcf">종목 · 실시간 값 채우기<span class="kc-selrow"><select id="kc-sym" aria-label="계산기 종목 선택"></select><button type="button" class="kc-fill" id="kc-fill">최신값</button></span></label>
+<label class="kcf">국내 가격 (원)<input id="kc-kr" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 215,500"></label>
+<label class="kcf">해외 가격 ($)<input id="kc-us" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 161.63"></label>
+<label class="kcf">환율 (원/$)<input id="kc-fx" type="text" inputmode="decimal" autocomplete="off"></label>
+<label class="kcf">투자 금액 (원 · 선택)<input id="kc-amt" type="text" inputmode="numeric" autocomplete="off" placeholder="예: 1,000,000"></label>
+<div class="kc-res">
+<div class="kc-kp"><span>김치프리미엄</span><b id="kc-p">—</b></div>
+<div class="kc-row"><span>해외 가격 원화 환산</span><b id="kc-conv">—</b></div>
+<div class="kc-row"><span>가격 차이 (국내 − 해외 환산)</span><b id="kc-diff">—</b></div>
+<div class="kc-row" id="kc-prof-row" hidden><span>예상 차익 (단순 계산)</span><b id="kc-prof">—</b></div>
+</div>
+<p class="kc-note" id="kc-note">종목을 고르면 지금 보고 있는 실시간 국내·해외 가격과 환율을 채워 넣어요. 값을 직접 입력해도 됩니다. 수수료·송금 비용은 빼고 계산합니다.</p>
 </div>
 <div class="lgov" id="lg-ov" hidden><div class="lgbox" role="dialog" aria-modal="true" aria-labelledby="lg-t">
 <button type="button" class="lgx" id="lg-x" aria-label="닫기">×</button>
@@ -3112,6 +3166,36 @@ list.forEach(function(s){var r=m[s+"USDT"];if(!isNaN(r)){sum+=r*100;n++}});
 if(n<3)throw new Error("short");
 applyFund(sum/n,n);
 }).catch(function(){fundFromCache()})}
+/* 주식 선물 포지션: 미결제약정은 Hyperliquid 선물(metaAndAssetCtxs)에서 이 사이트 종목 목록의
+   미결제약정 × 마크가격 합계(달러), 롱·숏 비율은 Binance 선물 데이터의 계정 기준 롱·숏 비율을
+   주요 주식 선물 종목 평균으로 낸다. 한쪽이 실패해도 다른 쪽은 그대로 표시한다. */
+var oiState=null,lsState=null;
+function futMeta(){if(oiState===null&&lsState===null)return;meta("ind-ft-m",!!(oiState||lsState),"Hyperliquid · Binance 선물 · 1분마다 확인")}
+function fmtOi(v){if(v>=1e12)return (v/1e12).toFixed(2).replace(/\.?0+$/,"")+"조 달러";if(v>=1e8)return (v/1e8).toFixed(1).replace(/\.0$/,"")+"억 달러";if(v>=1e4)return Math.round(v/1e4)+"만 달러";return Math.round(v)+"달러"}
+var LSSYMS=["NVDA","TSLA","AAPL","MSFT","AMZN","META","GOOGL","AMD","COIN","MSTR","PLTR","HOOD"];
+function loadFut(){
+fetch("https://api.hyperliquid.xyz/info",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"metaAndAssetCtxs",dex:"xyz"})}).then(function(r){if(!r.ok)throw new Error("hl "+r.status);return r.json()}).then(function(j){
+var u=j&&j[0]&&j[0].universe,c=j&&j[1];if(!u||!c||u.length!==c.length)throw new Error("bad");
+var want={};try{(window.D||[]).forEach(function(x){want[x[0]]=1})}catch(e){}
+var tot=0,n=0;
+for(var i=0;i<u.length;i++){var nm=String(u[i].name||"").replace(/^xyz:/,"");if(!want[nm])continue;var oi=parseFloat(c[i]&&c[i].openInterest),mp=parseFloat(c[i]&&c[i].markPx);if(oi>0&&mp>0){tot+=oi*mp;n++}}
+if(!(tot>0)||n<3)throw new Error("short");
+$("ind-oi-v").textContent=fmtOi(tot);
+$("ind-oi-n").textContent=n+"개 종목 합계";
+oiState=true;futMeta()}).catch(function(){oiState=false;futMeta()});
+var done=0,sum=0,cnt=0;
+LSSYMS.forEach(function(s){
+fetchJson("https://www.binance.com/futures/data/globalLongShortAccountRatio?symbol="+s+"USDT&period=5m&limit=1").then(function(j){
+var d=j&&j[0],la=parseFloat(d&&d.longAccount);if(la>0&&la<1){sum+=la;cnt++}}).catch(function(){}).then(function(){
+if(++done!==LSSYMS.length)return;
+if(cnt>=3){var la=sum/cnt,lp=la*100,sp=100-lp;
+$("ind-ls-l").textContent=lp.toFixed(1)+"%";
+$("ind-ls-s").textContent=sp.toFixed(1)+"%";
+$("ind-ls-r").textContent=(la/(1-la)).toFixed(2);
+$("ind-ls-bl").style.width=lp+"%";
+$("ind-ls-bs").style.width=sp+"%";
+lsState=true}else lsState=false;
+futMeta()})})}
 /* 옵션 만기일: 미국 옵션은 매월 셋째 금요일, 한국 파생상품은 매월 둘째 목요일.
    3·6·9·12월 만기는 미국은 '네 마녀의 날', 한국은 '선물·옵션 동시만기'로 표시한다. */
 function nthWday(y,m,wd,n){var off=(wd-new Date(y,m,1).getDay()+7)%7;return new Date(y,m,1+off+(n-1)*7)}
@@ -3127,7 +3211,7 @@ $(pre+"-n").textContent=(q0?tag+" · ":"")+"다음 만기 "+fmtExp(d1)+(q1?" · 
 function loadExp(){fillExp("ind-exp-us",nextExps(5,3),"네 마녀의 날");fillExp("ind-exp-kr",nextExps(4,2),"선물·옵션 동시만기")}
 /* 갱신 주기: 공포·탐욕·VIX는 8시간, 주요 지수·펀딩비·만기일은 1분 간격으로 확인한다. */
 var SLOWMS=8*60*60*1000,lastSlow=0;
-function refreshFast(){if(document.hidden)return;loadIx();loadFund();loadExp()}
+function refreshFast(){if(document.hidden)return;loadIx();loadFund();loadExp();loadFut()}
 function refreshSlow(){lastSlow=Date.now();loadFg();loadVix()}
 function slowIfDue(){if(Date.now()-lastSlow>=SLOWMS)refreshSlow()}
 var started=false;
@@ -3367,6 +3451,62 @@ fetchT(FEED).then(parseXml)
 .catch(function(){if(!cache)render()})}
 load();
 setInterval(function(){if(!document.hidden)load()},10*60000);
+})();
+</script>
+<script>
+/* 김프 계산기: 화면 오른쪽 아래 빈 공간에 뜨는 작은 패널. 국내 가격(원)·해외 가격($)·환율을 넣으면
+   김프 %, 원화 환산가, 가격 차이와 투자 금액 기준 단순 차익을 바로 계산한다.
+   종목 선택은 김프 탭이 쓰는 실시간 데이터(R=국내 KRX 가격, D=Hyperliquid 가격, BD=Binance 가격,
+   #fx=실시간 환율)를 그대로 읽어 채우며, 패널을 열어 둔 동안 값을 직접 고치지 않았으면
+   15초마다 최신값으로 따라간다. 직접 입력한 값은 덮어쓰지 않는다. */
+(function(){
+function $(id){return document.getElementById(id)}
+var panel=$("kc-panel"),openB=$("kc-open");if(!panel||!openB)return;
+function num(s){return parseFloat(String(s==null?"":s).replace(/,/g,""))}
+function fmt(n,d){return n.toLocaleString("ko-KR",{minimumFractionDigits:d||0,maximumFractionDigits:d||0})}
+var sel=$("kc-sym"),follow=true;
+function rows(){try{return window.R||[]}catch(e){return[]}}
+function buildSyms(){
+var rs=rows();sel.innerHTML="";
+var o0=document.createElement("option");o0.value="-1";o0.textContent="직접 입력";sel.appendChild(o0);
+rs.forEach(function(r,i){var o=document.createElement("option");o.value=String(i);o.textContent=r[0];sel.appendChild(o)});
+sel.value=rs.length?"0":"-1"}
+function overseas(r){
+try{
+if(r[1]){var D=window.D||[];for(var i=0;i<D.length;i++)if(D[i][0]===r[1]&&D[i][1]>0)return{p:D[i][1],src:"Hyperliquid"}}
+var bt=window.BR?window.BR[r[0]]:null,BD=window.BD||[];
+if(bt)for(var j=0;j<BD.length;j++)if(String(BD[j][0]).replace(/_$/,"")===bt&&BD[j][1]>0)return{p:BD[j][1],src:"Binance"}
+}catch(e){}
+return null}
+function fill(){
+var fxEl=$("fx"),fxv=fxEl?num(fxEl.value):NaN;
+if(fxv>0)$("kc-fx").value=fmt(fxv,1);
+var i=parseInt(sel.value,10),r=i>=0?rows()[i]:null;
+if(r){
+if(r[2]>0)$("kc-kr").value=fmt(r[2]);
+var ov=overseas(r);
+if(ov)$("kc-us").value=String(ov.p);
+$("kc-note").textContent=r[0]+" · 국내 KRX "+(r[2]>0?fmt(r[2])+"원":"—")+" · 해외 "+(ov?ov.src+" $"+ov.p:"—")+" · 환율 "+(fxv>0?fmt(fxv,1):"—")+"원 기준이에요. 값을 직접 바꿔도 됩니다."}
+follow=true;calc()}
+function calc(){
+var kr=num($("kc-kr").value),us=num($("kc-us").value),fxv=num($("kc-fx").value),amt=num($("kc-amt").value);
+var pEl=$("kc-p"),cv=$("kc-conv"),df=$("kc-diff"),pr=$("kc-prof"),prRow=$("kc-prof-row");
+if(!(kr>0&&us>0&&fxv>0)){pEl.textContent="—";pEl.className="";cv.textContent="—";df.textContent="—";df.className="";prRow.hidden=true;return}
+var conv=us*fxv,kp=(kr/conv-1)*100,diff=kr-conv;
+pEl.textContent=(kp>0?"+":"")+kp.toFixed(2)+"%";pEl.className=kp>0?"up":kp<0?"dn":"";
+cv.textContent=fmt(Math.round(conv))+"원";
+df.textContent=(diff>0?"+":diff<0?"−":"")+fmt(Math.abs(Math.round(diff)))+"원";df.className=diff>0?"up":diff<0?"dn":"";
+if(amt>0){var prof=amt*kp/100;pr.textContent=(prof>0?"+":prof<0?"−":"")+fmt(Math.abs(Math.round(prof)))+"원";pr.className=prof>0?"up":prof<0?"dn":"";prRow.hidden=false}
+else prRow.hidden=true}
+["kc-kr","kc-us","kc-fx"].forEach(function(id){$(id).addEventListener("input",function(){follow=false;calc()})});
+$("kc-amt").addEventListener("input",calc);
+sel.addEventListener("change",fill);
+$("kc-fill").addEventListener("click",fill);
+function setOpen(on){panel.hidden=!on;openB.setAttribute("aria-expanded",on?"true":"false");if(on){buildSyms();fill()}}
+openB.addEventListener("click",function(){setOpen(panel.hidden)});
+$("kc-x").addEventListener("click",function(){setOpen(false)});
+setInterval(function(){if(!panel.hidden&&follow&&parseInt(sel.value,10)>=0)fill()},15000);
+buildSyms();
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c6e8ab4e4ea4777bf54ca7e737337b9"}'></script><!-- End Cloudflare Web Analytics -->
