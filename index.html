@@ -111,6 +111,20 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .pair{display:inline-flex;gap:2px;background:var(--sf2);border:1px solid var(--bd);border-radius:999px;padding:3px;margin:0}
 .pair button{min-height:32px;padding:5px 13px;border:0;background:transparent;color:var(--mut);border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center}
 .pair button[aria-pressed="true"]{background:var(--ac);color:var(--acx);font-weight:700}
+/* 장 운영 시간 안내 (김프 탭 토글 줄 안, 왼쪽 토글과 오른쪽 토글 사이 빈 공간): 시장별 프리·정규·애프터 시간 + 현재 상태 점.
+   좁은 화면에서는 토글 두 그룹이 한 줄을 다 써서 들어갈 자리가 없으므로 토글 줄 바로 아래로 접어 보여준다 */
+.mhours{flex:1 1 auto;min-width:0;margin:0 4px;font-size:12.5px;color:var(--mut);line-height:1.5}
+.mhrow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:1px 0;justify-content:center}
+.mhnt{text-align:center}
+@media(max-width:720px){.mhours{flex:1 1 100%;order:3;margin:4px 2px 0}.mhrow{justify-content:flex-start}.mhnt{text-align:left}}
+.mhrow[hidden]{display:none}
+.mhnt span[hidden]{display:none}
+.mhrow b{color:var(--tx);font-size:12.5px;white-space:nowrap}
+.mhdot{width:8px;height:8px;border-radius:50%;background:#b7bfc9;flex:none}
+.mhdot.on{background:var(--ok)}
+.mhst{font-weight:700;white-space:nowrap}
+.mhst.on{color:var(--ok)}
+.mhnt{margin:2px 0 0;font-size:11.5px}
 /* 항목 선택 (원자재): 왼쪽 작은 드롭다운 버튼 */
 .pick{position:relative;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
 .pick .mtw{flex:0 1 132px}
@@ -792,7 +806,11 @@ main{padding:0 12px 40px}
 </div>
 </section>
 <section id="pa" hidden>
-<div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button><button data-m="us" aria-pressed="false">해외 주식</button></div><div class="pair" id="xc"><button data-x="hl" aria-pressed="true">Hyperliquid</button><button data-x="bn" aria-pressed="false">Binance</button></div></div>
+<div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button><button data-m="us" aria-pressed="false">해외 주식</button></div><div class="mhours" role="note" aria-label="장 운영 시간 안내">
+<div class="mhrow" id="mh-rkr"><span class="mhdot" id="mh-krd" aria-hidden="true"></span><b>국장</b><span>프리 08:00–08:50 · 정규 09:00–15:30 · 애프터 15:40–20:00</span><span class="mhst" id="mh-krs"></span></div>
+<div class="mhrow" id="mh-rus" hidden><span class="mhdot" id="mh-usd" aria-hidden="true"></span><b>미장</b><span id="mh-ust">프리 18:00–23:30 · 정규 23:30–06:00 · 애프터 06:00–10:00</span><span class="mhst" id="mh-uss"></span></div>
+<p class="mhnt"><span id="mh-nkr">한국 시간 기준 · 국내 프리·애프터는 넥스트레이드(NXT) 포함</span><span id="mh-nus" hidden>한국 시간 기준 · 미장은 서머타임 자동 반영</span></p>
+</div><div class="pair" id="xc"><button data-x="hl" aria-pressed="true">Hyperliquid</button><button data-x="bn" aria-pressed="false">Binance</button></div></div>
 <input id="fx" type="hidden" value="1,324.6">
 <div class="srch"><input id="qk" placeholder="종목 검색" aria-label="김프 종목 검색"></div>
 <div class="msort" id="msort"><span>정렬</span><button data-k="c" data-l="전일대비">전일대비</button><button data-k="hi" data-l="고가대비">고가대비</button><button data-k="lo" data-l="저가대비">저가대비</button><button data-k="v" data-l="거래량">거래량</button></div>
@@ -1417,6 +1435,7 @@ rkb();var cntEl=el("cnt");if(cntEl)cntEl.textContent="종목 총 "+rows.length+"
 el("mk").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;mk=b.dataset.m;var u=mk==="us";
 this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});
 el("nt").textContent=u?"해외 주식은 한국 거래소 가격이 없어, 선택한 거래소 가격을 원주 기준가(오라클)와 비교한 김프입니다. 역외 시세는 해외 거래소 파생 상품 기준이며 실제 주식 소유권과 무관합니다. 정보 제공 목적으로만 표시됩니다.":NT0;
+if(typeof mhSync==="function")mhSync();
 if(!u){var cntEl2=el("cnt");if(cntEl2)cntEl2.textContent="종목 총 8개"}calc()});
 /* 스냅샷 고/저 폴백: OKX·Bybit 스냅샷에 들어 있는 당일 고/저를 Hyperliquid·Binance 행에도 미리 채워 둔다.
    실시간(TradingView) 고/저가 도착하면 그 값으로 덮어쓰고, 조회가 늦거나 실패해도 고가대비·저가대비와 고/저 줄이 '—'로 비지 않는다. */
@@ -1604,6 +1623,22 @@ chunks.forEach(function(ch){fetch("https://scanner.tradingview.com/america/scan"
 var byCode={},kt=[];Object.keys(KCODE).forEach(function(can){if(seen[can]){var cd=KCODE[can];if(!byCode[cd]){byCode[cd]=[];kt.push("KRX:"+cd)}byCode[cd].push(can)}});
 if(kt.length)fetch("https://scanner.tradingview.com/korea/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:kt},columns:["close"]})}).then(function(r){return r.json()}).then(function(j){var fx=num(el("fx").value);if(!(fx>0))return;(j.data||[]).forEach(function(x){var cans=byCode[x.s.replace("KRX:","")];if(cans&&x.d&&x.d[0]>0){var vv=x.d[0]/fx;cans.forEach(function(can){if(PCC[can]!==vv){PCC[can]=vv;changed=true}})}});if(changed){calc();draw()}}).catch(function(){})}
 pcfetch();setInterval(function(){if(!document.hidden)pcfetch()},60000);
+/* ===== 장 운영 시간 안내 (김프 탭 토글↔검색 사이 스트립) =====
+   국장은 한국 시간 고정: 넥스트레이드(NXT) 프리마켓 08:00–08:50 · KRX 정규장 09:00–15:30 ·
+   애프터마켓 15:40–20:00(NXT 체결 기준, KRX 자체 애프터마켓은 16:00–20:00).
+   미장은 미국 동부(ET) 프리 04:00–09:30 · 정규 09:30–16:00 · 애프터 16:00–20:00을
+   한국 시간으로 환산해 표시한다. 시차는 지금 이 순간의 KST↔ET 분 차이로 계산하므로
+   서머타임 기간에는 모든 시간이 1시간씩 자동으로 앞당겨진다. 상태 문구와 점은 30초마다 갱신. */
+function mhFmt(m){m=((m%1440)+1440)%1440;var h=Math.floor(m/60),n=m%60;return (h<10?"0":"")+h+":"+(n<10?"0":"")+n}
+function mhSync(){var isUs=(typeof mk!=="undefined"&&mk==="us");var rkr=el("mh-rkr"),rus=el("mh-rus"),nkr=el("mh-nkr"),nus=el("mh-nus");if(rkr)rkr.hidden=isUs;if(rus)rus.hidden=!isUs;if(nkr)nkr.hidden=isUs;if(nus)nus.hidden=!isUs}
+function mhDraw(){mhSync();var k=krxClock(),u=usClock(),off=((k.mins-u.mins)+1440)%1440;
+var ust=el("mh-ust");if(ust)ust.textContent="프리 "+mhFmt(240+off)+"–"+mhFmt(570+off)+" · 정규 "+mhFmt(570+off)+"–"+mhFmt(960+off)+" · 애프터 "+mhFmt(960+off)+"–"+mhFmt(1200+off);
+var kwd=k.day>0&&k.day<6,uwd=u.day>0&&u.day<6;
+var ks=!kwd?"휴장":k.mins>=480&&k.mins<530?"프리마켓 중":k.mins>=540&&k.mins<930?"정규장 중":k.mins>=940&&k.mins<1200?"애프터마켓 중":"장외 시간";
+var us=!uwd?"휴장":u.mins>=240&&u.mins<570?"프리마켓 중":u.mins>=570&&u.mins<960?"정규장 중":u.mins>=960&&u.mins<1200?"애프터마켓 중":"장외 시간";
+function st(tid,did,txt){var on=/중$/.test(txt),e=el(tid),d=el(did);if(e){e.textContent=txt;e.classList.toggle("on",on)}if(d)d.classList.toggle("on",on)}
+st("mh-krs","mh-krd",ks);st("mh-uss","mh-usd",us)}
+mhDraw();setInterval(function(){if(!document.hidden)mhDraw()},30000);
 /* 펀딩비 탭: 해외 탭과 같은 종목 universe를 canonical 티커로 합쳐 4개 거래소 펀딩을 나란히 표시 */
 function fUniverse(){var seen={},list=[];function add(ex,arr){for(var i=0;i<arr.length;i++){var raw=String(arr[i][0]).replace(/_$/,"");var can=toCan(ex,raw);if(!seen[can]){seen[can]=1;list.push(can)}}}add("hl",D);add("bn",BD);add("okx",OD);add("by",YD);return list}
 function fName(can){try{if(NM[can])return NM[can];var bt=fromCan("bn",can);if(BNM[bt])return BNM[bt];var ot=fromCan("okx",can);if(ONM[ot])return ONM[ot];var yt=fromCan("by",can);if(YNM[yt])return YNM[yt]}catch(e){}return ""}
