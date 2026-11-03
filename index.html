@@ -783,7 +783,7 @@ main{padding:0 12px 40px}
 .kc-sug[hidden]{display:none}
 .kc-sug button{display:block;width:100%;text-align:left;border:0;background:none;color:var(--tx);font:inherit;font-size:13px;font-weight:600;padding:7px 9px;border-radius:6px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kc-sug button:hover{background:var(--sf2)}
-.kc-hist{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.kc-hist{margin:0 0 11px;border-top:1px solid var(--bd);padding-top:9px;display:flex;flex-direction:column;gap:6px}
 .kc-hist[hidden]{display:none}
 .kc-hist-lb{font-size:11px;font-weight:700;color:var(--mut)}
 .kc-hi{display:block;width:100%;padding:8px 10px;border:1px solid var(--bd);border-radius:9px;background:var(--sf2);font:inherit;text-align:left;cursor:pointer;color:var(--tx)}
@@ -1107,6 +1107,7 @@ main{padding:0 12px 40px}
 <div class="kcpanel" id="kc-panel" role="dialog" aria-label="김프 계산기" hidden>
 <div class="kc-hd"><b>김프 계산기</b><button type="button" class="kc-x" id="kc-x" aria-label="계산기 닫기">×</button></div>
 <label class="kcf">종목 이름<span class="kc-selrow"><span class="kc-nwrap"><input id="kc-name" type="text" autocomplete="off" placeholder="예: 삼성전자" aria-label="계산기 종목 이름"><span class="kc-sug" id="kc-sug" hidden></span></span><button type="button" class="kc-save" id="kc-save">저장</button></span></label>
+<div class="kc-hist" id="kc-hist" hidden></div>
 <label class="kcf">국내 가격 (원)<input id="kc-kr" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 215,500"></label>
 <label class="kcf">해외 가격 ($)<input id="kc-us" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 161.63"></label>
 <label class="kcf">환율 (원/$)<input id="kc-fx" type="text" inputmode="decimal" autocomplete="off"></label>
@@ -1117,7 +1118,6 @@ main{padding:0 12px 40px}
 <div class="kc-row"><span>가격 차이 (국내 − 해외 환산)</span><b id="kc-diff">—</b></div>
 <div class="kc-row" id="kc-prof-row" hidden><span>예상 차익 (단순 계산)</span><b id="kc-prof">—</b></div>
 </div>
-<div class="kc-hist" id="kc-hist" hidden></div>
 </div>
 <div class="lgov" id="lg-ov" hidden><div class="lgbox" role="dialog" aria-modal="true" aria-labelledby="lg-t">
 <button type="button" class="lgx" id="lg-x" aria-label="닫기">×</button>
@@ -3477,8 +3477,9 @@ setInterval(function(){if(!document.hidden)load()},10*60000);
    골랐을 때는 패널을 열어 둔 동안 값을 직접 고치지 않았으면 15초마다 최신값으로 따라간다.
    국내·해외 가격 입력칸과 아래 계산 방식은 그대로다.
    자동완성 후보는 브라우저 기본 목록 대신 입력칸 아래 작은 상자(높이 최대 132px, 스크롤)로 띄운다.
-   종목을 검색해 고르거나 '저장'을 누르면, 그 종목 이름과 그때 입력된 숫자·계산 결과가 패널 아래
-   '검색한 종목' 목록에 작은 칸으로 쌓이고(기기 저장, 최대 3개), 칸을 누르면 다시 불러온다. */
+   종목을 검색해 고르거나 '저장'을 누르면, 그 종목 이름과 그때 입력된 숫자·계산 결과가 종목 이름 칸
+   바로 아래 '저장한 종목' 목록에 작은 칸으로 쌓이고(기기 저장, 최대 3개), 칸을 누르면 다시 불러온다.
+   목록을 패널 위쪽에 둔 건 패널이 길어지면(내부 스크롤) 맨 아래 칸은 열자마자 안 보이기 때문이다. */
 (function(){
 function $(id){return document.getElementById(id)}
 var panel=$("kc-panel"),openB=$("kc-open");if(!panel||!openB)return;
@@ -3497,9 +3498,9 @@ var b=document.createElement("button");b.type="button";b.textContent=nm;
 b.addEventListener("mousedown",function(e){e.preventDefault();justPicked=Date.now();nameEl.value=nm;hideSug();var fr=findRow(nm);if(fr){fillRow(fr);recordHist()}});
 sug.appendChild(b);n++});
 sug.hidden=!n}
-/* 검색한 종목 기록: 종목을 골라(또는 저장 버튼을 눌러) 값이 채워지면 그 종목 이름과 함께
+/* 저장한 종목 기록: 종목을 골라(또는 저장 버튼을 눌러) 값이 채워지면 그 종목 이름과 함께
    그때의 국내·해외 가격·환율·투자 금액, 그리고 계산 결과(김프 %·환산가·가격 차이·예상 차익)를
-   패널 아래 목록에 쌓아 둔다(localStorage, hlkrx_kcalc_hist). 같은 종목은 한 칸만 유지하고
+   종목 이름 칸 바로 아래 목록에 쌓아 둔다(localStorage, hlkrx_kcalc_hist). 같은 종목은 한 칸만 유지하고
    값이 바뀌면 그 칸의 숫자도 같이 갱신한다. 칸을 누르면 그 값을 계산기에 다시 불러온다. */
 var HKEY="hlkrx_kcalc_hist";
 function histVal(){try{var h=JSON.parse(localStorage.getItem(HKEY)||"[]");return Array.isArray(h)?h.filter(function(x){return x&&x.n}).slice(0,3):[]}catch(e){return[]}}
@@ -3514,7 +3515,7 @@ function renderHist(){
 var box=$("kc-hist");if(!box)return;var h=histVal();
 if(!h.length){box.hidden=true;box.innerHTML="";return}
 box.hidden=false;box.innerHTML="";
-var lb=document.createElement("div");lb.className="kc-hist-lb";lb.textContent="검색한 종목";box.appendChild(lb);
+var lb=document.createElement("div");lb.className="kc-hist-lb";lb.textContent="저장한 종목";box.appendChild(lb);
 h.forEach(function(en,i){
 var b=document.createElement("button");b.type="button";b.className="kc-hi";b.setAttribute("data-i",String(i));b.title="누르면 이 값을 불러와요";
 var top=document.createElement("span");top.className="kc-hi-top";
