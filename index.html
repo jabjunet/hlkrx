@@ -3478,7 +3478,7 @@ setInterval(function(){if(!document.hidden)load()},10*60000);
    국내·해외 가격 입력칸과 아래 계산 방식은 그대로다.
    자동완성 후보는 브라우저 기본 목록 대신 입력칸 아래 작은 상자(높이 최대 132px, 스크롤)로 띄운다.
    종목을 검색해 고르거나 '저장'을 누르면, 그 종목 이름과 그때 입력된 숫자·계산 결과가 패널 아래
-   '검색한 종목' 목록에 작은 칸으로 쌓이고(기기 저장, 최대 8개), 칸을 누르면 다시 불러온다. */
+   '검색한 종목' 목록에 작은 칸으로 쌓이고(기기 저장, 최대 3개), 칸을 누르면 다시 불러온다. */
 (function(){
 function $(id){return document.getElementById(id)}
 var panel=$("kc-panel"),openB=$("kc-open");if(!panel||!openB)return;
@@ -3502,7 +3502,7 @@ sug.hidden=!n}
    패널 아래 목록에 쌓아 둔다(localStorage, hlkrx_kcalc_hist). 같은 종목은 한 칸만 유지하고
    값이 바뀌면 그 칸의 숫자도 같이 갱신한다. 칸을 누르면 그 값을 계산기에 다시 불러온다. */
 var HKEY="hlkrx_kcalc_hist";
-function histVal(){try{var h=JSON.parse(localStorage.getItem(HKEY)||"[]");return Array.isArray(h)?h.filter(function(x){return x&&x.n}):[]}catch(e){return[]}}
+function histVal(){try{var h=JSON.parse(localStorage.getItem(HKEY)||"[]");return Array.isArray(h)?h.filter(function(x){return x&&x.n}).slice(0,3):[]}catch(e){return[]}}
 function storeHist(h){try{localStorage.setItem(HKEY,JSON.stringify(h))}catch(e){}}
 function curEntry(){
 var n=nameEl.value.trim();if(!n)return null;
@@ -3531,7 +3531,7 @@ box.appendChild(b)})}
 function recordHist(){
 var en=curEntry();if(!en)return;
 var h=histVal().filter(function(x){return x.n!==en.n});
-h.unshift(en);if(h.length>8)h=h.slice(0,8);
+h.unshift(en);if(h.length>3)h=h.slice(0,3);
 storeHist(h);renderHist()}
 function syncHist(){
 var en=curEntry();if(!en)return;
