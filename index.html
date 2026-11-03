@@ -800,6 +800,8 @@ main{padding:0 12px 40px}
 .sitefoot nav i{color:var(--bd);font-style:normal}
 .sitefoot p{color:var(--mut);font-size:12px;margin:6px 0 0}
 .sitefoot .siteintro{color:var(--mut);font-size:11px;line-height:1.5;margin-top:10px;opacity:.8}
+.sitefoot .siteonline{color:var(--mut);font-size:11px;margin-top:5px;opacity:.75}
+.sitefoot .siteonline b{font-weight:600}
 .legalov{position:fixed;inset:0;z-index:210;background:rgba(10,12,14,.55);display:flex;align-items:center;justify-content:center;padding:16px}
 .legalov[hidden]{display:none}
 .legalbox{position:relative;background:var(--sf);border:1px solid var(--bd);border-radius:14px;width:100%;max-width:640px;max-height:calc(100dvh - 32px);display:flex;flex-direction:column;box-shadow:0 18px 44px rgba(0,0,0,.28)}
@@ -1089,6 +1091,7 @@ main{padding:0 12px 40px}
 <nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button></nav>
 <p>© 2026 김프원 · 문의는 사이트 내 채팅을 이용해 주세요.</p>
 <p class="siteintro">김프원(kimpwon.com)은 김치프리미엄(김프)과 펀딩비, 해외주식·ETF 가격을 실시간으로 비교하고 제공하는 공식 사이트입니다.</p>
+<p class="siteonline" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p>
 </footer>
 </main>
 <button type="button" class="chatbtn" id="chat-open" aria-expanded="false" aria-controls="chat-panel"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>채팅</button>
@@ -2416,6 +2419,44 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!panel.hidd
 initAuth();
 /* 구글 로그인 리다이렉트에서 돌아온 경우 채팅 패널을 자동으로 다시 열어 로그인 상태를 이어 보여준다 */
 try{if(sessionStorage.getItem("hlkrx_chat_redirect")==="1"){sessionStorage.removeItem("hlkrx_chat_redirect");window.__hlkrxRedirectReturn=true;open()}}catch(e){}
+})();
+</script>
+<script>
+/* 실시간 접속자 표시: 페이지가 열리면 Firebase Realtime Database의 presence 경로에 무작위 세션 아이디로
+   자기 노드({t: 서버시각})를 등록하고, 연결이 끊기면 onDisconnect로 자동 삭제되게 한다.
+   30초마다 t를 갱신해 살아 있음을 알리고, 표시 숫자는 presence 자식 수에서 t가 90초보다 오래된
+   노드(비정상 종료로 남은 찌꺼기)를 뺀 값이다. 로그인과 무관하게 모든 방문자를 센다. */
+(function(){
+var el=document.getElementById("site-online"),nel=document.getElementById("site-online-n");
+if(!el||!nel)return;
+function pCfgReady(){try{var c=(typeof FIREBASE_CONFIG!=="undefined")?FIREBASE_CONFIG:null;return !!(c&&typeof c.apiKey==="string"&&c.apiKey.trim()&&typeof c.databaseURL==="string"&&c.databaseURL.trim())}catch(e){return false}}
+if(!pCfgReady())return;
+if(typeof firebase==="undefined"||!firebase.initializeApp||!firebase.database)return;
+try{if(!firebase.apps||!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG)}catch(e){}
+var db;try{db=firebase.database()}catch(e){return}
+var sid="s"+Date.now().toString(36)+Math.random().toString(36).slice(2,10);
+var myRef=db.ref("presence/"+sid),presRef=db.ref("presence");
+var offset=0,lastSnap=null,shown=false;
+function render(){
+if(!lastSnap)return;
+var now=Date.now()+offset,n=0;
+lastSnap.forEach(function(ch){var v=ch.val();var t=(v&&typeof v.t==="number")?v.t:0;if(t&&now-t<=90000&&t-now<=30000)n++});
+nel.textContent=String(n);el.hidden=false;shown=true;
+}
+function beat(){
+try{var p=myRef.set({t:firebase.database.ServerValue.TIMESTAMP});if(p&&typeof p.catch==="function")p.catch(function(){})}catch(e){}
+}
+try{db.ref(".info/serverTimeOffset").on("value",function(s){var v=s.val();if(typeof v==="number"){offset=v;render()}})}catch(e){}
+try{db.ref(".info/connected").on("value",function(s){
+if(s.val()===true){
+try{myRef.onDisconnect().remove()}catch(e){}
+beat();
+}
+})}catch(e){}
+try{presRef.on("value",function(s){lastSnap=s;render()},function(){})}catch(e){}
+setInterval(function(){beat();render()},30000);
+/* 값 변경 이벤트가 없어도 90초를 넘긴 노드가 숫자에서 빠지도록 주기적으로 다시 센다 */
+setInterval(render,15000);
 })();
 </script>
 <script>
