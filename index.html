@@ -766,8 +766,9 @@ main{padding:0 12px 40px}
 .kcf{display:block;font-size:12px;font-weight:600;color:var(--mut);margin-bottom:9px}
 .kcf input{display:block;width:100%;margin-top:4px;min-height:38px;border-radius:9px;padding:7px 10px;font-size:14px}
 .kc-selrow{display:flex;gap:6px;margin-top:4px}
-.kc-selrow select{flex:1;min-width:0;min-height:38px;border-radius:9px;padding:7px 8px;font:inherit;font-size:13.5px;font-weight:600;color:var(--tx);background:var(--sf);border:1px solid var(--bd)}
-.kc-fill{flex:none;min-height:38px;padding:7px 11px;border:1px solid var(--bd);border-radius:9px;background:var(--sf2);color:var(--tx);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.kc-selrow input{flex:1;min-width:0;width:auto;margin-top:0;min-height:38px;border-radius:9px;padding:7px 10px;font-size:13.5px}
+.kc-save{flex:none;min-height:38px;padding:7px 11px;border:1px solid var(--bd);border-radius:9px;background:var(--sf2);color:var(--tx);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.kc-save.done{background:var(--ac);color:var(--acx);border-color:var(--ac)}
 .kc-res{border-top:1px solid var(--bd);margin-top:2px;padding-top:10px}
 .kc-kp{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
 .kc-kp span{font-size:12.5px;font-weight:700;color:var(--mut);white-space:nowrap}
@@ -1092,7 +1093,7 @@ main{padding:0 12px 40px}
 <button type="button" class="kcbtn" id="kc-open" aria-expanded="false" aria-controls="kc-panel"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 15.5h.01M12 15.5h.01M15.5 15.5h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>김프 계산기</button>
 <div class="kcpanel" id="kc-panel" role="dialog" aria-label="김프 계산기" hidden>
 <div class="kc-hd"><b>김프 계산기</b><button type="button" class="kc-x" id="kc-x" aria-label="계산기 닫기">×</button></div>
-<label class="kcf">종목 · 실시간 값 채우기<span class="kc-selrow"><select id="kc-sym" aria-label="계산기 종목 선택"></select><button type="button" class="kc-fill" id="kc-fill">최신값</button></span></label>
+<label class="kcf">종목 이름<span class="kc-selrow"><input id="kc-name" type="text" list="kc-list" autocomplete="off" placeholder="예: 삼성전자" aria-label="계산기 종목 이름"><datalist id="kc-list"></datalist><button type="button" class="kc-save" id="kc-save">저장</button></span></label>
 <label class="kcf">국내 가격 (원)<input id="kc-kr" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 215,500"></label>
 <label class="kcf">해외 가격 ($)<input id="kc-us" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 161.63"></label>
 <label class="kcf">환율 (원/$)<input id="kc-fx" type="text" inputmode="decimal" autocomplete="off"></label>
@@ -1103,7 +1104,7 @@ main{padding:0 12px 40px}
 <div class="kc-row"><span>가격 차이 (국내 − 해외 환산)</span><b id="kc-diff">—</b></div>
 <div class="kc-row" id="kc-prof-row" hidden><span>예상 차익 (단순 계산)</span><b id="kc-prof">—</b></div>
 </div>
-<p class="kc-note" id="kc-note">종목을 고르면 지금 보고 있는 실시간 국내·해외 가격과 환율을 채워 넣어요. 값을 직접 입력해도 됩니다. 수수료·송금 비용은 빼고 계산합니다.</p>
+<p class="kc-note" id="kc-note">종목 이름을 직접 적고 저장하면 다음에 열 때 그대로 불러와요. 수수료·송금 비용은 빼고 계산합니다.</p>
 </div>
 <div class="lgov" id="lg-ov" hidden><div class="lgbox" role="dialog" aria-modal="true" aria-labelledby="lg-t">
 <button type="button" class="lgx" id="lg-x" aria-label="닫기">×</button>
@@ -3456,21 +3457,24 @@ setInterval(function(){if(!document.hidden)load()},10*60000);
 <script>
 /* 김프 계산기: 화면 오른쪽 아래 빈 공간에 뜨는 작은 패널. 국내 가격(원)·해외 가격($)·환율을 넣으면
    김프 %, 원화 환산가, 가격 차이와 투자 금액 기준 단순 차익을 바로 계산한다.
-   종목 선택은 김프 탭이 쓰는 실시간 데이터(R=국내 KRX 가격, D=Hyperliquid 가격, BD=Binance 가격,
-   #fx=실시간 환율)를 그대로 읽어 채우며, 패널을 열어 둔 동안 값을 직접 고치지 않았으면
-   15초마다 최신값으로 따라간다. 직접 입력한 값은 덮어쓰지 않는다. */
+   종목 이름은 직접 적는 입력칸이다(실시간 종목 목록은 자동완성 후보로만 제안한다).
+   '저장'을 누르면 지금 적힌 종목 이름·국내 가격·해외 가격·환율·투자 금액을 이 기기에 저장해 두고
+   (localStorage, hlkrx_kcalc — 프로필 사진 등과 같은 기존 저장 방식), 다음에 패널을 열면 저장한 값을
+   그대로 불러온다. 저장한 값이 없을 때만 예전처럼 실시간 첫 종목 값으로 채우며, 실시간 종목 이름을
+   골랐을 때는 패널을 열어 둔 동안 값을 직접 고치지 않았으면 15초마다 최신값으로 따라간다.
+   국내·해외 가격 입력칸과 아래 계산 방식은 그대로다. */
 (function(){
 function $(id){return document.getElementById(id)}
 var panel=$("kc-panel"),openB=$("kc-open");if(!panel||!openB)return;
 function num(s){return parseFloat(String(s==null?"":s).replace(/,/g,""))}
 function fmt(n,d){return n.toLocaleString("ko-KR",{minimumFractionDigits:d||0,maximumFractionDigits:d||0})}
-var sel=$("kc-sym"),follow=true;
+var nameEl=$("kc-name"),follow=true;
+var SKEY="hlkrx_kcalc";
 function rows(){try{return window.R||[]}catch(e){return[]}}
-function buildSyms(){
-var rs=rows();sel.innerHTML="";
-var o0=document.createElement("option");o0.value="-1";o0.textContent="직접 입력";sel.appendChild(o0);
-rs.forEach(function(r,i){var o=document.createElement("option");o.value=String(i);o.textContent=r[0];sel.appendChild(o)});
-sel.value=rs.length?"0":"-1"}
+function buildList(){
+var dl=$("kc-list");if(!dl)return;dl.innerHTML="";
+rows().forEach(function(r){var o=document.createElement("option");o.value=r[0];dl.appendChild(o)})}
+function findRow(nm){var rs=rows();for(var i=0;i<rs.length;i++)if(rs[i][0]===nm)return rs[i];return null}
 function overseas(r){
 try{
 if(r[1]){var D=window.D||[];for(var i=0;i<D.length;i++)if(D[i][0]===r[1]&&D[i][1]>0)return{p:D[i][1],src:"Hyperliquid"}}
@@ -3478,16 +3482,30 @@ var bt=window.BR?window.BR[r[0]]:null,BD=window.BD||[];
 if(bt)for(var j=0;j<BD.length;j++)if(String(BD[j][0]).replace(/_$/,"")===bt&&BD[j][1]>0)return{p:BD[j][1],src:"Binance"}
 }catch(e){}
 return null}
-function fill(){
+function fillRow(r){
 var fxEl=$("fx"),fxv=fxEl?num(fxEl.value):NaN;
 if(fxv>0)$("kc-fx").value=fmt(fxv,1);
-var i=parseInt(sel.value,10),r=i>=0?rows()[i]:null;
-if(r){
 if(r[2]>0)$("kc-kr").value=fmt(r[2]);
 var ov=overseas(r);
 if(ov)$("kc-us").value=String(ov.p);
-$("kc-note").textContent=r[0]+" · 국내 KRX "+(r[2]>0?fmt(r[2])+"원":"—")+" · 해외 "+(ov?ov.src+" $"+ov.p:"—")+" · 환율 "+(fxv>0?fmt(fxv,1):"—")+"원 기준이에요. 값을 직접 바꿔도 됩니다."}
+$("kc-note").textContent=r[0]+" · 국내 KRX "+(r[2]>0?fmt(r[2])+"원":"—")+" · 해외 "+(ov?ov.src+" $"+ov.p:"—")+" · 환율 "+(fxv>0?fmt(fxv,1):"—")+"원 기준이에요. 값을 직접 바꿔도 됩니다.";
 follow=true;calc()}
+function savedVal(){try{var s=JSON.parse(localStorage.getItem(SKEY)||"null");return s&&typeof s==="object"&&(s.n||s.kr||s.us)?s:null}catch(e){return null}}
+function applySaved(s){
+nameEl.value=s.n||"";
+if(s.kr)$("kc-kr").value=s.kr;
+if(s.us)$("kc-us").value=s.us;
+if(s.fx)$("kc-fx").value=s.fx;
+if(s.amt)$("kc-amt").value=s.amt;
+follow=false;calc();
+$("kc-note").textContent="저장해 둔 값을 불러왔어요. 값을 바꾸고 저장하면 새로 덮어써요. 수수료·송금 비용은 빼고 계산합니다."}
+function save(){
+var s={n:nameEl.value.trim(),kr:$("kc-kr").value,us:$("kc-us").value,fx:$("kc-fx").value,amt:$("kc-amt").value};
+try{localStorage.setItem(SKEY,JSON.stringify(s))}catch(e){}
+follow=false;
+var b=$("kc-save");b.textContent="저장됨";b.classList.add("done");
+setTimeout(function(){b.textContent="저장";b.classList.remove("done")},1600);
+$("kc-note").textContent=(s.n?s.n+" · ":"")+"저장했어요. 다음에 열면 이 값이 그대로 나와요. 수수료·송금 비용은 빼고 계산합니다."}
 function calc(){
 var kr=num($("kc-kr").value),us=num($("kc-us").value),fxv=num($("kc-fx").value),amt=num($("kc-amt").value);
 var pEl=$("kc-p"),cv=$("kc-conv"),df=$("kc-diff"),pr=$("kc-prof"),prRow=$("kc-prof-row");
@@ -3500,13 +3518,14 @@ if(amt>0){var prof=amt*kp/100;pr.textContent=(prof>0?"+":prof<0?"−":"")+fmt(Ma
 else prRow.hidden=true}
 ["kc-kr","kc-us","kc-fx"].forEach(function(id){$(id).addEventListener("input",function(){follow=false;calc()})});
 $("kc-amt").addEventListener("input",calc);
-sel.addEventListener("change",fill);
-$("kc-fill").addEventListener("click",fill);
-function setOpen(on){panel.hidden=!on;openB.setAttribute("aria-expanded",on?"true":"false");if(on){buildSyms();fill()}}
+nameEl.addEventListener("input",function(){follow=false});
+nameEl.addEventListener("change",function(){var r=findRow(nameEl.value.trim());if(r)fillRow(r)});
+$("kc-save").addEventListener("click",save);
+function setOpen(on){panel.hidden=!on;openB.setAttribute("aria-expanded",on?"true":"false");if(on){buildList();var s=savedVal();if(s)applySaved(s);else{var rs=rows();if(rs.length){nameEl.value=rs[0][0];fillRow(rs[0])}else calc()}}}
 openB.addEventListener("click",function(){setOpen(panel.hidden)});
 $("kc-x").addEventListener("click",function(){setOpen(false)});
-setInterval(function(){if(!panel.hidden&&follow&&parseInt(sel.value,10)>=0)fill()},15000);
-buildSyms();
+setInterval(function(){if(!panel.hidden&&follow){var r=findRow(nameEl.value.trim());if(r)fillRow(r)}},15000);
+buildList();
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c6e8ab4e4ea4777bf54ca7e737337b9"}'></script><!-- End Cloudflare Web Analytics -->
