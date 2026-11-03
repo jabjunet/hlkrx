@@ -783,19 +783,13 @@ main{padding:0 12px 40px}
 .kc-sug[hidden]{display:none}
 .kc-sug button{display:block;width:100%;text-align:left;border:0;background:none;color:var(--tx);font:inherit;font-size:13px;font-weight:600;padding:7px 9px;border-radius:6px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kc-sug button:hover{background:var(--sf2)}
-.kc-ntop{display:flex;align-items:flex-start;gap:8px}
-.kc-nlb{flex:none;padding-top:2px}
+.kc-ntop{display:flex;align-items:center;gap:8px}
+.kc-nlb{flex:none}
 .kc-hist{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:4px}
 .kc-hist[hidden]{display:none}
-.kc-hi{display:inline-flex;align-items:baseline;gap:5px;max-width:100%;padding:3px 8px;border:1px solid var(--bd);border-radius:999px;background:var(--sf2);font:inherit;font-size:11px;font-weight:700;cursor:pointer;color:var(--tx)}
-.kc-hi-nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:88px}
+.kc-hi{display:inline-flex;align-items:center;max-width:100%;padding:2px 7px;border:1px solid var(--bd);border-radius:999px;background:var(--sf2);font:inherit;font-size:10.5px;line-height:1.5;font-weight:700;cursor:pointer;color:var(--tx)}
+.kc-hi-nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:76px}
 .kc-hi.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
-/* 저장 칩 상세: 칩을 누르면 이름 칸 아래에 펼쳐지는 작은 칸. 저장된 값 전부를 결과 칸과 같은 줄 형식으로 보여준다 */
-.kc-hdet{margin-top:8px;border:1px solid var(--bd);border-radius:9px;background:var(--sf2);padding:8px 10px 9px}
-.kc-hdet[hidden]{display:none}
-.kc-hdet .kc-row{margin-top:4px}
-.kc-hdet .kc-kp{margin-top:7px}
-.kc-hdet .kc-kp b{font-size:19px}
 @media(max-width:520px){.kcbtn{right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px))}.kcpanel{right:12px;bottom:calc(122px + env(safe-area-inset-bottom,0px))}}
 /* 푸터 · 약관 */
 .sitefoot{margin-top:28px;padding:18px 2px 6px;border-top:1px solid var(--bd);text-align:center}
@@ -1111,7 +1105,7 @@ main{padding:0 12px 40px}
 <button type="button" class="kcbtn" id="kc-open" aria-expanded="false" aria-controls="kc-panel"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 15.5h.01M12 15.5h.01M15.5 15.5h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>김프 계산기</button>
 <div class="kcpanel" id="kc-panel" role="dialog" aria-label="김프 계산기" hidden>
 <div class="kc-hd"><b>김프 계산기</b><button type="button" class="kc-x" id="kc-x" aria-label="계산기 닫기">×</button></div>
-<div class="kcf"><div class="kc-ntop"><span class="kc-nlb">종목 이름</span><div class="kc-hist" id="kc-hist" hidden></div></div><span class="kc-selrow"><span class="kc-nwrap"><input id="kc-name" type="text" autocomplete="off" placeholder="예: 삼성전자" aria-label="계산기 종목 이름"><span class="kc-sug" id="kc-sug" hidden></span></span><button type="button" class="kc-save" id="kc-save">저장</button></span><div class="kc-hdet" id="kc-hdet" hidden></div></div>
+<div class="kcf"><div class="kc-ntop"><span class="kc-nlb">종목 이름</span><div class="kc-hist" id="kc-hist" hidden></div></div><span class="kc-selrow"><span class="kc-nwrap"><input id="kc-name" type="text" autocomplete="off" placeholder="예: 삼성전자" aria-label="계산기 종목 이름"><span class="kc-sug" id="kc-sug" hidden></span></span><button type="button" class="kc-save" id="kc-save">저장</button></span></div>
 <label class="kcf">국내 가격 (원)<input id="kc-kr" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 215,500"></label>
 <label class="kcf">해외 가격 ($)<input id="kc-us" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 161.63"></label>
 <label class="kcf">환율 (원/$)<input id="kc-fx" type="text" inputmode="decimal" autocomplete="off"></label>
@@ -3505,10 +3499,10 @@ sug.appendChild(b);n++});
 sug.hidden=!n}
 /* 저장한 종목 기록: 종목을 골라(또는 저장 버튼을 눌러) 값이 채워지면 그 종목 이름과 함께
    그때의 국내·해외 가격·환율·투자 금액, 그리고 계산 결과(김프 %·환산가·가격 차이·예상 차익)를
-   '종목 이름' 글자 오른쪽에 작은 칩(종목 이름만 표시)으로 쌓아 둔다(localStorage, hlkrx_kcalc_hist).
+   '종목 이름' 글자 바로 옆에 작은 칩(종목 이름만 표시)으로 쌓아 둔다(localStorage, hlkrx_kcalc_hist).
    같은 종목은 칩 하나만 유지하고 값이 바뀌면 그 칩의 숫자도 같이 갱신한다.
-   칩을 누르면 그 값을 계산기에 다시 불러오고, 이름 칸 아래 상세 칸에 저장된 값 전부를 펼쳐 보여준다.
-   같은 칩을 다시 누르면 상세 칸이 접힌다. */
+   칩을 누르면 그 값이 계산기 입력칸과 결과 칸에 그대로 불러와져 저장된 값 전부가 보인다.
+   입력칸 아래에 별도의 큰 상세 박스는 두지 않는다. */
 var HKEY="hlkrx_kcalc_hist";
 var selName=null;
 function histVal(){try{var h=JSON.parse(localStorage.getItem(HKEY)||"[]");return Array.isArray(h)?h.filter(function(x){return x&&x.n}).slice(0,3):[]}catch(e){return[]}}
@@ -3521,37 +3515,13 @@ var conv=us*fxv,kp=(kr/conv-1)*100;
 return{n:n,kr:$("kc-kr").value,us:$("kc-us").value,fx:$("kc-fx").value,amt:$("kc-amt").value,kp:kp,conv:Math.round(conv),diff:Math.round(kr-conv),prof:amt>0?Math.round(amt*kp/100):null}}
 function renderHist(){
 var box=$("kc-hist");if(!box)return;var h=histVal();
-if(!h.length){box.hidden=true;box.innerHTML="";renderDetail();return}
+if(!h.length){box.hidden=true;box.innerHTML="";return}
 box.hidden=false;box.innerHTML="";
 h.forEach(function(en,i){
-var b=document.createElement("button");b.type="button";b.className="kc-hi"+(en.n===selName?" on":"");b.setAttribute("data-i",String(i));b.title="누르면 저장된 값을 전부 보여줘요";
+var b=document.createElement("button");b.type="button";b.className="kc-hi"+(en.n===selName?" on":"");b.setAttribute("data-i",String(i));b.title="누르면 저장된 값이 계산기에 불러와져요";
 var nm=document.createElement("span");nm.className="kc-hi-nm";nm.textContent=en.n;
 b.appendChild(nm);
-box.appendChild(b)});
-renderDetail()}
-/* 저장 칩 상세: 눌린 칩(selName)의 저장된 값 전부를 이름 칸 아래 작은 칸에 펼친다.
-   입력값(국내·해외 가격·환율·투자 금액)과 저장 당시 계산 결과(김프 %·환산가·가격 차이·예상 차익)를 모두 보여준다. */
-function renderDetail(){
-var box=$("kc-hdet");if(!box)return;
-if(!selName){box.hidden=true;box.innerHTML="";return}
-var h=histVal(),en=null;
-for(var i=0;i<h.length;i++)if(h[i].n===selName){en=h[i];break}
-if(!en){selName=null;box.hidden=true;box.innerHTML="";return}
-box.innerHTML="";
-function row(lb,val,cls,big){
-var d=document.createElement("div");d.className=big?"kc-kp":"kc-row";
-var s=document.createElement("span");s.textContent=lb;
-var b=document.createElement("b");b.textContent=val;if(cls)b.className=cls;
-d.appendChild(s);d.appendChild(b);box.appendChild(d)}
-if(en.kr)row("국내 가격",en.kr+"원");
-if(en.us)row("해외 가격","$"+en.us);
-if(en.fx)row("환율",en.fx+"원");
-if(en.amt)row("투자 금액",en.amt+"원");
-if(typeof en.kp==="number")row("김치프리미엄",(en.kp>0?"+":"")+en.kp.toFixed(2)+"%",en.kp>0?"up":en.kp<0?"dn":"",true);
-if(typeof en.conv==="number")row("해외 가격 원화 환산",fmt(en.conv)+"원");
-if(typeof en.diff==="number")row("가격 차이 (국내 − 해외 환산)",(en.diff>0?"+":en.diff<0?"−":"")+fmt(Math.abs(en.diff))+"원",en.diff>0?"up":en.diff<0?"dn":"");
-if(en.prof!=null)row("예상 차익 (단순 계산)",(en.prof>0?"+":en.prof<0?"−":"")+fmt(Math.abs(en.prof))+"원",en.prof>0?"up":en.prof<0?"dn":"");
-box.hidden=false}
+box.appendChild(b)})}
 function recordHist(){
 var en=curEntry();if(!en)return;
 var h=histVal().filter(function(x){return x.n!==en.n});
@@ -3616,11 +3586,10 @@ nameEl.addEventListener("focus",showSug);
 nameEl.addEventListener("keydown",function(e){if(e.key==="Escape")hideSug()});
 document.addEventListener("mousedown",function(e){if(sug&&e.target!==nameEl&&!sug.contains(e.target))hideSug()});
 $("kc-hist").addEventListener("click",function(e){var t=e.target;var b=t&&t.closest?t.closest(".kc-hi"):null;if(!b)return;var en=histVal()[Number(b.getAttribute("data-i"))];if(!en)return;
-if(selName===en.n){selName=null;renderHist();return}
 selName=en.n;applyEntry(en);renderHist()});
 nameEl.addEventListener("change",function(){var r=findRow(nameEl.value.trim());if(r){fillRow(r);recordHist()}});
 $("kc-save").addEventListener("click",save);
-function setOpen(on){panel.hidden=!on;openB.setAttribute("aria-expanded",on?"true":"false");if(!on){hideSug();selName=null;var hd=$("kc-hdet");if(hd){hd.hidden=true;hd.innerHTML=""}}if(on){var h=histVal();if(h.length){applyEntry(h[0]);renderHist()}else{var s=savedVal();if(s)applySaved(s);else{renderHist();var rs=rows();if(rs.length){nameEl.value=rs[0][0];fillRow(rs[0])}else calc()}}}}
+function setOpen(on){panel.hidden=!on;openB.setAttribute("aria-expanded",on?"true":"false");if(!on){hideSug();selName=null}if(on){var h=histVal();if(h.length){selName=h[0].n;applyEntry(h[0]);renderHist()}else{var s=savedVal();if(s)applySaved(s);else{renderHist();var rs=rows();if(rs.length){nameEl.value=rs[0][0];fillRow(rs[0])}else calc()}}}}
 openB.addEventListener("click",function(){setOpen(panel.hidden)});
 $("kc-x").addEventListener("click",function(){setOpen(false)});
 setInterval(function(){if(!panel.hidden&&follow){var r=findRow(nameEl.value.trim());if(r)fillRow(r)}},15000);
