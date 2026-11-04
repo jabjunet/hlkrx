@@ -52,6 +52,11 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .tabs{display:flex;position:relative;background:none;margin:0;padding:0;flex:none;align-items:stretch}
 .tabs button{flex:none;min-height:38px;border:0;background:none;color:var(--mut);padding:4px 10px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tabs button[aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
+/* 헤더 로고 칩: 탭 그룹 바로 앞 맨 왼쪽. 검은 배경·흰 얇은 소문자 영문만. 탭이 넘치면 칩은 고정되고 탭 영역만 가로 스크롤 */
+.hd-l{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto}
+.brand{flex:none;display:inline-flex;align-items:center;height:28px;padding:0 11px;background:#000;color:#fff;border-radius:8px;font-size:14.5px;font-weight:300;letter-spacing:.04em;line-height:1;white-space:nowrap;user-select:none;-webkit-user-select:none}
+.hd-l .tabs{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.hd-l .tabs::-webkit-scrollbar{display:none}
 /* 버튼·토글 공통 */
 .chips,.xch{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;align-items:center}
 .chips button,.xch button{min-height:36px;padding:7px 13px;border:1px solid var(--bd);background:var(--sf);color:var(--mut);border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
@@ -831,7 +836,7 @@ main{padding:0 12px 40px}
 </head>
 <body>
 <main>
-<div class="hd"><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button></div><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span></button><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p></div></div></div>
+<div class="hd"><div class="hd-l"><span class="brand" aria-hidden="true">kimpwon</span><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button></div></div><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span></button><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p></div></div></div>
 
 <section id="ph">
 <div class="ixtiles" aria-label="주요 지수">
@@ -940,7 +945,7 @@ main{padding:0 12px 40px}
 <span class="gsub" id="au-krw"></span>
 </div>
 <div class="sum" id="au-sum"></div>
-<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-02</span>
+<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-03</span>
 </div>
 <div id="mt-ag" hidden>
 <div class="tvbar"><button type="button" class="mt-tgl" id="ag-tgl" aria-expanded="false" aria-controls="ag-tvwrap">차트보기</button><span class="gread" id="ag-tv"></span></div>
@@ -951,7 +956,7 @@ main{padding:0 12px 40px}
 <span class="gsub" id="ag-krw"></span>
 </div>
 <div class="sum" id="ag-sum"></div>
-<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-02</span>
+<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-03</span>
 </div>
 <div id="mt-cu" hidden>
 <div class="tvbar"><button type="button" class="mt-tgl" id="cu-tgl" aria-expanded="false" aria-controls="cu-tvwrap">차트보기</button><span class="gread" id="cu-tv"></span></div>
@@ -1094,7 +1099,7 @@ main{padding:0 12px 40px}
 <div id="yt1-list"><div class="ytempty">불러오는 중…</div></div>
 </div>
 </section>
-<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-02), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-10-28 조회, KRX는 10/23 종가)을 보여줍니다. 지표 탭의 주식 선물 포지션(미결제약정·롱숏 비율)은 Hyperliquid 미결제약정과 Binance 롱·숏 비율 데이터로 1분마다 확인합니다.</p></details>
+<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-03), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-10-28 조회, KRX는 10/23 종가)을 보여줍니다. 지표 탭의 주식 선물 포지션(미결제약정·롱숏 비율)은 Hyperliquid 미결제약정과 Binance 롱·숏 비율 데이터로 1분마다 확인합니다.</p></details>
 <footer class="sitefoot">
 <nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button></nav>
 <p>© 2026 김프원 · 문의는 사이트 내 채팅을 이용해 주세요.</p>
@@ -1991,10 +1996,10 @@ window.addEventListener("resize",function(){clearTimeout(ncRzT);ncRzT=setTimeout
 function gd2(n){return f(n,n<10?3:2)}
 function tvtheme(){var t=document.documentElement.getAttribute("data-theme");if(t)return t;return window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}
 var MT={
-au:{sym:"XAU",dec:2,usd:4041.20,buy:737000,sell:635000,tv:"TVC:GOLD",live:false,
+au:{sym:"XAU",dec:2,usd:4041.20,buy:752000,sell:638000,tv:"TVC:GOLD",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
-ag:{sym:"XAG",dec:3,usd:54.078,buy:9000,sell:7650,tv:"TVC:SILVER",live:false,
+ag:{sym:"XAG",dec:3,usd:54.078,buy:9320,sell:7840,tv:"TVC:SILVER",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
 cu:{sym:"HG",dec:4,usd:6.6219,dom:21700,tv:"TVC:COPPER",live:false,
