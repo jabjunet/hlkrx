@@ -810,6 +810,16 @@ main{padding:2px 12px 40px}
 .chat-err{margin:8px 2px 0;font-size:12.5px;color:var(--up)}
 .chat-err[hidden]{display:none}
 @media(max-width:520px){.chatbtn{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}.chatpanel{right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px))}}
+.chatbtn[hidden]{display:none}
+/* 커뮤니티 탭 전체 화면 채팅: 같은 채팅 패널을 섹션 안으로 옮겨 크게 보여 준다.
+   높이는 탭을 열 때 스크립트가 헤더 아래 남은 화면만큼으로 맞추고, 그 동안 페이지 스크롤은 잠근다 */
+html.pkon,html.pkon body{overflow:hidden}
+#pk{margin:0}
+.chatpanel.inpage{position:static;width:100%;height:100%;border-radius:14px;box-shadow:none}
+.chatpanel.inpage .chat-x{display:none}
+.chatpanel.inpage .chat-hd{padding:13px 16px}
+.chatpanel.inpage .chat-msgs{padding:16px}
+.chatpanel.inpage .chat-ft{padding:12px 12px calc(12px + env(safe-area-inset-bottom,0px))}
 /* 김프 계산기: 화면 오른쪽 아래 빈 공간에 뜨는 작은 패널. 채팅 버튼 위에 버튼을 쌓아 두고,
    버튼을 눌러 패널을 넣었다 뺐다 할 수 있다. 패널 안에서는 국내 가격·해외 가격·환율로 김프를 바로 계산한다 */
 .kcbtn{position:fixed;right:16px;bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:120;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 16px;border:1px solid var(--bd);border-radius:999px;background:var(--sf);color:var(--tx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.18)}
@@ -2530,13 +2540,60 @@ if(gbtn)gbtn.addEventListener("click",function(){saveDraft();err.hidden=true;sta
 function open(){panel.hidden=false;btn.setAttribute("aria-expanded","true");initChat();if(lastSnap)render()}
 function close(){panel.hidden=true;btn.setAttribute("aria-expanded","false")}
 window.__closeChat=close;
+window.__openChat=open;
 btn.addEventListener("click",function(){if(!panel.hidden){close();return}open()});
 document.getElementById("chat-x").addEventListener("click",close);
-document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!panel.hidden)close()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!panel.hidden&&!panel.classList.contains("inpage"))close()});
 /* 페이지가 열리면 Firebase 로그인 상태를 미리 복원해 둔다 (채팅 패널을 열기 전에도 로그인 유지) */
 initAuth();
 /* 구글 로그인 리다이렉트에서 돌아온 경우 채팅 패널을 자동으로 다시 열어 로그인 상태를 이어 보여준다 */
 try{if(sessionStorage.getItem("hlkrx_chat_redirect")==="1"){sessionStorage.removeItem("hlkrx_chat_redirect");window.__hlkrxRedirectReturn=true;open()}}catch(e){}
+})();
+</script>
+<script>
+/* 커뮤니티 탭 = 전체 화면 채팅: 새 채팅을 만들지 않고 기존 채팅 패널(같은 Firebase messages·로그인·삭제 기능)을
+   커뮤니티 섹션 안으로 옮겨 헤더 아래 남은 화면 전체에 보여 준다. 탭을 벗어나면 패널을 원래 자리(플로팅)로
+   되돌리고 닫는다. 플로팅 '채팅' 버튼은 커뮤니티 탭이 열려 있는 동안만 숨긴다. */
+(function(){
+var tabs=document.getElementById("tabs"),pk=document.getElementById("pk"),
+panel=document.getElementById("chat-panel"),btn=document.getElementById("chat-open");
+if(!tabs||!pk||!panel||!btn)return;
+var homeParent=panel.parentNode,homeNext=panel.nextSibling;
+var inPk=false;
+function fit(){
+if(!inPk)return;
+var top=pk.getBoundingClientRect().top;
+var h=window.innerHeight-top;
+pk.style.height=Math.max(300,h)+"px";
+}
+function enter(){
+inPk=true;
+btn.hidden=true;
+document.documentElement.classList.add("pkon");
+pk.appendChild(panel);
+panel.classList.add("inpage");
+panel.removeAttribute("role");
+if(typeof window.__openChat==="function")window.__openChat();
+window.scrollTo(0,0);
+fit();
+}
+function leave(){
+inPk=false;
+btn.hidden=false;
+document.documentElement.classList.remove("pkon");
+pk.style.height="";
+if(typeof window.__closeChat==="function")window.__closeChat();
+panel.classList.remove("inpage");
+panel.setAttribute("role","dialog");
+if(homeNext&&homeNext.parentNode===homeParent)homeParent.insertBefore(panel,homeNext);
+else homeParent.appendChild(panel);
+}
+tabs.addEventListener("click",function(e){
+var b=e.target.closest("button");if(!b)return;
+if(b.dataset.t==="pk"){if(!inPk)enter()}
+else if(inPk)leave();
+});
+window.addEventListener("resize",fit);
 })();
 </script>
 <script>
