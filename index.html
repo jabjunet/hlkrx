@@ -377,6 +377,33 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 @media(max-width:520px){.hnwr{padding:8px 10px}.hnghd{padding-left:10px;padding-right:10px}}
 .hnmore{display:block;width:100%;min-height:44px;border:0;border-top:1px solid var(--bd);background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .hnmore:hover{background:var(--sf2);color:var(--tx)}
+/* 홈 탭: 실시간 차트 + 실적발표 2열 — 데스크톱에서는 좌우 절반씩 나란히, 720px 이하에서는 차트 위·실적발표 아래로 쌓는다.
+   오른쪽 실적발표 박스는 고정 높이에 안쪽 스크롤 — '발표 예정'과 '발표 완료' 두 그룹으로 나눠 보여준다 */
+.hmcols{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;margin-top:6px}
+.hmcols .hmv{margin-top:0;min-width:0}
+.hew{min-width:0}
+.hew .hmhd .heupd{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap}
+.hewbox{height:460px;border:1px solid var(--bd);border-radius:10px;background:var(--sf);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.heghd{position:sticky;top:0;z-index:2;background:var(--sf2);font-size:12px;font-weight:700;color:var(--mut);padding:7px 12px;border-bottom:1px solid var(--bd)}
+.heghd b{color:var(--tx)}
+.herow{padding:8px 12px;border-bottom:1px solid var(--bd)}
+.herow:last-child{border-bottom:0}
+.herow .he1{display:flex;align-items:baseline;gap:7px;min-width:0}
+.herow .he1 b{font-size:13.5px;font-weight:700;white-space:nowrap}
+.herow .he1 .henm{color:var(--mut);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.herow .he1 .hedt{margin-left:auto;flex:none;font-size:12px;font-weight:700;white-space:nowrap}
+.herow .he1 .hetm{flex:none;font-size:11px;font-weight:700;color:var(--mut);border:1px solid var(--bd);border-radius:5px;padding:1px 5px;white-space:nowrap}
+.herow .he2{display:block;margin-top:2px;font-size:12.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.herow .he2 b{color:var(--tx);font-weight:700}
+.herow .he2 em{font-style:normal;font-weight:700}
+.herow .he2 em.beat{color:var(--ok)}
+.herow .he2 em.miss{color:var(--up)}
+.heempty{padding:12px;font-size:13px;color:var(--mut)}
+.heerr{padding:16px 12px;font-size:13px;color:var(--mut);line-height:1.6}
+.heerr b{display:block;color:var(--tx);font-size:13.5px;margin-bottom:4px}
+.heerr button{margin-top:10px;min-height:38px;padding:7px 16px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:9px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+@media(max-width:720px){.hmcols{grid-template-columns:1fr;gap:0}.hew{margin-top:8px}.hewbox{height:520px}}
+@media(max-width:520px){.herow{padding:8px 10px}.heghd{padding-left:10px;padding-right:10px}}
 /* 안내 문구 */
 .note{color:var(--mut);font-size:12.5px;line-height:1.65;margin:8px 2px 0}
 .dnote{margin:8px 0}
@@ -860,6 +887,7 @@ main{padding:2px 12px 40px}
 <div class="ixt"><small><i id="ixt-fx-d"></i>달러/원</small><b id="ixt-fx-v">—</b><span class="ixc na" id="ixt-fx-c">—</span></div>
 <div class="ixt"><small><i id="ixt-oil-d"></i>원유</small><b id="ixt-oil-v">—</b><span class="ixc na" id="ixt-oil-c">—</span></div>
 </div>
+<div class="hmcols">
 <div class="hmv">
 <div class="hmhd"><h2>실시간 차트</h2><div class="pair hmmk" id="hm-mk"><button type="button" data-hm="kr" aria-pressed="true">한국</button><button type="button" data-hm="us" aria-pressed="false">미국</button></div></div>
 <div class="segrow hmseg">
@@ -867,6 +895,12 @@ main{padding:2px 12px 40px}
 </div>
 <div id="hm-list"><div class="hmvempty">불러오는 중…</div></div>
 <p class="note">등락률은 TradingView 기준 전일 종가 대비이며 1분마다 갱신합니다. 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준으로 표시됩니다.</p>
+</div>
+<div class="hew">
+<div class="hmhd"><h2>주요 종목 실적발표</h2><span class="heupd" id="he-upd"></span></div>
+<div class="hewbox" id="hew-box"><div id="he-list"><div class="hmvempty">불러오는 중…</div></div></div>
+<p class="note">미국 주요 종목만 표시합니다. 한국 종목은 무료로 쓸 수 있는 실적 일정 소스가 없어 포함하지 않았습니다. 일정·예상 EPS는 Nasdaq 실적 캘린더 기준이며 1시간마다 갱신합니다. EPS는 분기 주당순이익으로, 발표 완료 종목은 실제 EPS와 예상 대비 차이(%)를 함께 보여줍니다.</p>
+</div>
 </div>
 <div class="hnw">
 <div class="hmhd"><h2>실시간 뉴스</h2></div>
@@ -3465,6 +3499,122 @@ function load(){exp.dom=false;exp.intl=false;loadSrc("hk");loadSrc("mk");loadSrc
 $("hn-list").addEventListener("click",function(e){var b=e.target.closest(".hnmore");if(!b)return;var id=b.getAttribute("data-g");if(!(id in exp))return;exp[id]=!exp[id];render()});
 render();load();
 setInterval(function(){if(!document.hidden)load()},7*60000);
+})();
+</script>
+<script>
+/* 홈 탭: 주요 종목 실적발표 (실시간 차트 오른쪽 열) — Nasdaq 공식 실적 캘린더 API
+   (api.nasdaq.com/api/calendar/earnings?date=YYYY-MM-DD&assetclass=stocks)를 날짜별로 불러와
+   미국 주요 종목 워치리스트만 추려 '발표 예정'(날짜순)과 '발표 완료'(최근순)로 나눠 보여준다.
+   조회 범위는 미국 동부 기준 오늘 -3일 ~ +14일(날짜별 조회라 18일을 각각 요청한다).
+   과거·당일 발표분 응답에는 실제 EPS(eps)와 서프라이즈(surprise %)가, 미래 일정 응답에는
+   예상 EPS(epsForecast)와 장전/장후(time) 구분이 들어 있다. 매출 필드는 이 API가 제공하지 않아
+   EPS 중심으로 표시한다. 예상도 시간도 없는 행(추정치 없음)은 정보가 없어 제외한다.
+   Nasdaq API는 CORS 헤더(Access-Control-Allow-Origin)가 없어 브라우저 직접 fetch가 막히므로,
+   사이트의 다른 소스와 같은 공개 프록시를 순서대로 경유한다(빌드 시점 실측: allorigins raw가
+   정상 JSON 응답, cors.lol은 400, codetabs는 응답 잘림이 있어 후순위로 둔다).
+   처음 한 날짜로 되는 프록시를 찾은 뒤 나머지 날짜는 그 프록리로 병렬 조회하고, 실패하면
+   날짜별로 전체 순서를 다시 시도한다. 페이지 로드 시 불러오고 1시간 간격으로 자동 갱신한다.
+   한국 종목(삼성전자·SK하이닉스 등)은 무료로 쓸 수 있는 실적 일정 소스가 없어 포함하지 않는다. */
+(function(){
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+var WATCH={AAPL:"애플",MSFT:"마이크로소프트",NVDA:"엔비디아",GOOGL:"알파벳 A",GOOG:"알파벳 C",AMZN:"아마존",META:"메타",TSLA:"테슬라",AVGO:"브로드컴",AMD:"AMD",NFLX:"넷플릭스",CRM:"세일즈포스",ORCL:"오라클",COST:"코스트코",JPM:"JP모건",BAC:"뱅크오브아메리카",WMT:"월마트",LLY:"일라이릴리",UNH:"유나이티드헬스",MA:"마스터카드",V:"비자",HD:"홈디포",ABBV:"애브비",XOM:"엑슨모빌",QCOM:"퀄컴",ARM:"Arm",PLTR:"팔란티어",UBER:"우버",COIN:"코인베이스",SHOP:"쇼피파이"};
+function fetchT(url,ms){
+var ctl=("AbortController" in window)?new AbortController():null;
+var tm=ctl?setTimeout(function(){ctl.abort()},ms||12000):null;
+return fetch(url,ctl?{signal:ctl.signal}:{}).then(function(r){if(tm)clearTimeout(tm);if(!r.ok)throw new Error("http "+r.status);return r.text()}).catch(function(e){if(tm)clearTimeout(tm);throw e})}
+function parseApi(txt){
+var j=JSON.parse(txt);
+if(j&&typeof j.contents==="string")j=JSON.parse(j.contents);
+var rows=j&&j.data&&j.data.rows;
+if(!rows)throw new Error("empty");
+return rows}
+var TRANSPORTS=[
+function(u){return "https://api.allorigins.win/raw?url="+encodeURIComponent(u)},
+function(u){return "https://corsproxy.io/?url="+encodeURIComponent(u)},
+function(u){return "https://api.allorigins.win/get?url="+encodeURIComponent(u)},
+function(u){return "https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(u)},
+function(u){return "https://api.cors.lol/?url="+encodeURIComponent(u)}];
+var activeT=-1;
+function fetchDate(ds,preferActive){
+var api="https://api.nasdaq.com/api/calendar/earnings?date="+ds+"&assetclass=stocks";
+var order=[],i;
+if(preferActive&&activeT>=0)order.push(activeT);
+for(i=0;i<TRANSPORTS.length;i++)if(order.indexOf(i)<0)order.push(i);
+var p=Promise.reject(new Error("start"));
+order.forEach(function(idx){
+p=p.catch(function(){return fetchT(TRANSPORTS[idx](api),12000).then(parseApi).then(function(rows){activeT=idx;return rows})})});
+return p}
+function nyToday(){
+try{
+var parts=new Intl.DateTimeFormat("en-US",{timeZone:"America/New_York",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date()),y=0,m=0,d=0;
+parts.forEach(function(p){if(p.type==="year")y=+p.value;else if(p.type==="month")m=+p.value;else if(p.type==="day")d=+p.value});
+if(y&&m&&d)return new Date(Date.UTC(y,m-1,d))}catch(e){}
+var n=new Date();return new Date(Date.UTC(n.getFullYear(),n.getMonth(),n.getDate()))}
+function dsOf(dt){return dt.toISOString().slice(0,10)}
+var WD=["일","월","화","수","목","금","토"];
+function dateLbl(ds){var dt=new Date(ds+"T00:00:00Z");return (dt.getUTCMonth()+1)+"월 "+dt.getUTCDate()+"일 ("+WD[dt.getUTCDay()]+")"}
+function money(s){
+if(s==null)return null;
+s=String(s).replace(/[$,]/g,"").trim();
+if(!s)return null;
+var neg=/^\(.*\)$/.test(s);s=s.replace(/[()]/g,"");
+var v=parseFloat(s);if(isNaN(v))return null;
+return neg?-v:v}
+var state=null,failed=false;
+function collect(ds,rows,out,seen){
+for(var i=0;i<rows.length;i++){
+var r=rows[i],sym=String(r.symbol||"").toUpperCase();
+if(!(sym in WATCH))continue;
+var key=sym+"|"+ds;if(seen[key])continue;seen[key]=1;
+var epsV=money(r.eps),fcV=money(r.epsForecast),tm=String(r.time||"");
+if(epsV==null&&fcV==null&&tm==="time-not-supplied")continue;
+var sp=(r.surprise==null||r.surprise==="")?null:parseFloat(r.surprise);
+out.push({sym:sym,dt:ds,time:tm,eps:r.eps==null?"":String(r.eps),fc:r.epsForecast==null?"":String(r.epsForecast),sp:(sp!=null&&!isNaN(sp))?sp:null,cap:money(r.marketCap)||0,reported:epsV!=null})}}
+function timeLbl(t){if(t==="time-pre-market")return "장전";if(t==="time-after-hours")return "장후";if(!t||t==="time-not-supplied")return "";return t}
+function rowHtml(x,todayMs){
+var diff=Math.round((Date.parse(x.dt+"T00:00:00Z")-todayMs)/86400000);
+var dl=x.reported?dateLbl(x.dt):(diff===0?"오늘 "+dateLbl(x.dt):diff===1?"내일 "+dateLbl(x.dt):dateLbl(x.dt));
+var tm=timeLbl(x.time);
+var head='<div class="he1"><b>'+esc(x.sym)+'</b><span class="henm">'+esc(WATCH[x.sym])+'</span>'+(tm?'<span class="hetm">'+esc(tm)+'</span>':"")+'<span class="hedt">'+esc(dl)+'</span></div>';
+var body;
+if(x.reported){
+body='EPS 실제 <b>'+esc(x.eps||"—")+'</b> · 예상 '+esc(x.fc||"—");
+if(x.sp!=null)body+=' · <em class="'+(x.sp>=0?"beat":"miss")+'">'+(x.sp>0?"+":"")+x.sp.toFixed(2)+'% '+(x.sp>=0?"상회":"하회")+'</em>';
+}else{
+body='EPS 예상 <b>'+esc(x.fc||"—")+'</b>'}
+return '<div class="herow">'+head+'<span class="he2">'+body+'</span></div>'}
+function render(){
+var box=$("he-list");if(!box)return;
+if(failed){
+box.innerHTML='<div class="heerr"><b>실적 일정을 불러오지 못했어요</b>연결 문제로 Nasdaq 실적 캘린더에 닿지 못했어요.<br><button type="button" id="he-retry">다시 시도</button></div>';
+var b=$("he-retry");if(b)b.addEventListener("click",function(){failed=false;state=null;render();load()});
+return}
+if(!state){box.innerHTML='<div class="hmvempty">불러오는 중…</div>';return}
+if(!state.up.length&&!state.dn.length){box.innerHTML='<div class="heempty">최근 3일 ~ 앞으로 14일 안에 주요 종목 실적발표가 없습니다</div>';return}
+var html="";
+if(state.up.length){html+='<div class="heghd">발표 예정 <b>'+state.up.length+'</b></div>';state.up.forEach(function(x){html+=rowHtml(x,state.today)})}
+if(state.dn.length){html+='<div class="heghd">발표 완료 <b>'+state.dn.length+'</b></div>';state.dn.forEach(function(x){html+=rowHtml(x,state.today)})}
+box.innerHTML=html}
+function load(){
+var base=nyToday(),dates=[],i;
+for(i=-3;i<=14;i++)dates.push(dsOf(new Date(base.getTime()+i*86400000)));
+var all=[],seen={},got=0;
+function grab(ds,prefer){return fetchDate(ds,prefer).then(function(rows){got++;collect(ds,rows,all,seen)}).catch(function(){})}
+grab(dates[3],false).then(function(){
+var jobs=[];
+for(var k=0;k<dates.length;k++){if(k!==3)jobs.push(grab(dates[k],true))}
+return Promise.all(jobs)}).then(function(){
+if(!got){if(!state){failed=true;render()}return}
+failed=false;
+var up=all.filter(function(x){return !x.reported}).sort(function(a,b){return a.dt<b.dt?-1:a.dt>b.dt?1:b.cap-a.cap}).slice(0,20);
+var dn=all.filter(function(x){return x.reported}).sort(function(a,b){return a.dt>b.dt?-1:a.dt<b.dt?1:b.cap-a.cap}).slice(0,20);
+state={up:up,dn:dn,today:base.getTime()};
+render();
+var n=new Date(),e=$("he-upd");
+if(e)e.textContent=("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)+" 갱신"})}
+render();load();
+setInterval(function(){if(!document.hidden)load()},3600000);
 })();
 </script>
 <script>
