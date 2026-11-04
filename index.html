@@ -39,7 +39,7 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .sub{color:var(--mut);font-size:13px;margin:3px 0 0}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 /* 상단 헤더 */
-.hd{display:flex;justify-content:space-between;align-items:stretch;gap:10px;flex-wrap:wrap;position:sticky;top:8px;z-index:35;background:var(--bg);border-bottom:1px solid var(--bd);margin:8px 0 24px;padding-bottom:6px}
+.hd{display:flex;flex-direction:column;gap:6px;position:sticky;top:8px;z-index:35;background:var(--bg);border-bottom:1px solid var(--bd);margin:8px 0 24px;padding-bottom:6px}
 .live{display:inline-flex;align-items:center;gap:7px;padding:1px 2px;font-size:12px;color:var(--mut);white-space:nowrap;margin-top:0}
 .dot{width:9px;height:9px;border-radius:50%;background:var(--warn);flex:none}
 .dot.ok{background:var(--ok)}
@@ -52,11 +52,11 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .tabs{display:flex;position:relative;background:none;margin:0;padding:0;flex:none;align-items:stretch}
 .tabs button{flex:none;min-height:38px;border:0;background:none;color:var(--mut);padding:4px 10px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tabs button[aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
-/* 헤더 로고 칩: 탭 그룹 바로 앞 맨 왼쪽. 검은 배경·흰 얇은 소문자 영문만. 탭이 넘치면 칩은 고정되고 탭 영역만 가로 스크롤 */
-.hd-l{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto}
-.brand{flex:none;display:inline-flex;align-items:center;height:28px;padding:0 11px;background:#000;color:#fff;border-radius:8px;font-size:14.5px;font-weight:300;letter-spacing:.04em;line-height:1;white-space:nowrap;user-select:none;-webkit-user-select:none}
-.hd-l .tabs{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.hd-l .tabs::-webkit-scrollbar{display:none}
+/* 헤더 두 줄 구조: 윗줄 왼쪽은 배경 없는 얇은 소문자 영문 로고 글자만, 오른쪽 끝은 실시간 상태·로그인(아래 접속자 표시). 아랫줄은 탭 한 줄 — 넘치면 탭 영역만 가로 스크롤 */
+.hd-t{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
+.brand{flex:none;display:inline-flex;align-items:center;background:none;color:var(--tx);font-size:14.5px;font-weight:300;letter-spacing:.04em;line-height:1;white-space:nowrap;user-select:none;-webkit-user-select:none}
+.hd .tabs{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.hd .tabs::-webkit-scrollbar{display:none}
 /* 버튼·토글 공통 */
 .chips,.xch{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;align-items:center}
 .chips button,.xch button{min-height:36px;padding:7px 13px;border:1px solid var(--bd);background:var(--sf);color:var(--mut);border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
@@ -530,10 +530,8 @@ main{padding:0 12px 40px}
 #nqsecbtn{grid-area:sec;align-self:center}
 #xswap{grid-area:sw;justify-self:center;width:26px;height:44px}
 .xsel{font-size:13.5px}
-/* 모바일: 로그인 버튼은 제목 줄 오른쪽 끝으로, 연결 상태는 설명 아래 줄에 그대로 */
-.hd-r{display:contents}
-.acct{order:2}
-.live{order:3;flex:0 0 100%}
+/* 모바일: 윗줄 배치 그대로 유지 — 로고 왼쪽, 실시간 상태·로그인은 오른쪽 끝에 한 줄로 */
+.hd-r{flex-wrap:nowrap}
 }
 /* 펀딩비 탭: 종목 + 거래소 4곳 고정 열 */
 #pf .flive{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--mut);margin:0 0 10px}
@@ -836,7 +834,7 @@ main{padding:0 12px 40px}
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-l"><span class="brand" aria-hidden="true">kimpwon</span><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button></div></div><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span></button><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p></div></div></div>
+<div class="hd"><div class="hd-t"><span class="brand" aria-hidden="true">kimpwon</span><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span></button><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button></div></div>
 
 <section id="ph">
 <div class="ixtiles" aria-label="주요 지수">
