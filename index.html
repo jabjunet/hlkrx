@@ -846,6 +846,23 @@ main{padding:2px 12px 40px}
 .kc-hi{display:inline-flex;align-items:center;max-width:100%;padding:2px 7px;border:1px solid var(--bd);border-radius:999px;background:var(--sf2);font:inherit;font-size:10.5px;line-height:1.5;font-weight:700;cursor:pointer;color:var(--tx)}
 .kc-hi-nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:76px}
 .kc-hi.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+/* 계산기 패널 상단 탭: [김프 계산기 | 평단 계산기] — 누르면 패널 안에서 바로 전환된다. 기존 김프 계산기가 기본 탭 */
+.kctabwrap{display:flex;align-items:center;gap:6px;margin-bottom:12px}
+.kctabs{flex:1;min-width:0;display:flex;gap:2px;background:var(--sf2);border:1px solid var(--bd);border-radius:999px;padding:3px;margin:0}
+.kctabs button{flex:1;min-width:0;min-height:32px;padding:5px 6px;border:0;background:transparent;color:var(--mut);border-radius:999px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+.kctabs button[aria-pressed="true"]{background:var(--ac);color:var(--acx);font-weight:700}
+.kctabwrap .kc-x{margin-left:0}
+.kcbody[hidden]{display:none}
+/* 평단 계산기: 김프 계산기와 같은 입력·결과 톤. 방향 토글과 레버리지는 한 줄에 나란히 둔다 */
+.ac-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0}
+.ac-grid .kcf{margin-bottom:9px}
+.ac-dir{display:flex;width:100%;margin-top:4px}
+.ac-dir button{flex:1;padding:5px 6px;min-height:38px;font-size:13px}
+.ac-addqty{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:-2px 0 10px;font-size:12px;color:var(--mut)}
+.ac-addqty b{font-size:12.5px;color:var(--tx);letter-spacing:-.01em;white-space:nowrap}
+.ac-res .kc-kp b{font-size:19px}
+.ac-liq b{white-space:normal;text-align:right;line-height:1.4}
+.ac-note{color:var(--mut);font-size:11px;line-height:1.55;margin:10px 0 0}
 @media(max-width:520px){.kcbtn{right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px))}.kcpanel{right:12px;bottom:calc(122px + env(safe-area-inset-bottom,0px))}}
 /* 푸터 · 약관 */
 .sitefoot{margin-top:16px;padding:14px 2px 6px;border-top:1px solid var(--bd);text-align:center}
@@ -1169,8 +1186,9 @@ main{padding:2px 12px 40px}
 </div>
 </div>
 <button type="button" class="kcbtn" id="kc-open" aria-expanded="false" aria-controls="kc-panel"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 15.5h.01M12 15.5h.01M15.5 15.5h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>김프 계산기</button>
-<div class="kcpanel" id="kc-panel" role="dialog" aria-label="김프 계산기" hidden>
-<div class="kc-hd"><b>김프 계산기</b><button type="button" class="kc-x" id="kc-x" aria-label="계산기 닫기">×</button></div>
+<div class="kcpanel" id="kc-panel" role="dialog" aria-label="계산기" hidden>
+<div class="kctabwrap"><div class="kctabs" role="group" aria-label="계산기 종류"><button type="button" id="kc-tab-kimp" aria-pressed="true">김프 계산기</button><button type="button" id="kc-tab-avg" aria-pressed="false">평단 계산기</button></div><button type="button" class="kc-x" id="kc-x" aria-label="계산기 닫기">×</button></div>
+<div class="kcbody" id="kc-body-kimp">
 <div class="kcf"><div class="kc-ntop"><span class="kc-nlb">종목 이름</span><div class="kc-hist" id="kc-hist" hidden></div></div><span class="kc-selrow"><span class="kc-nwrap"><input id="kc-name" type="text" autocomplete="off" placeholder="예: 삼성전자" aria-label="계산기 종목 이름"><span class="kc-sug" id="kc-sug" hidden></span></span><button type="button" class="kc-save" id="kc-save">저장</button></span></div>
 <label class="kcf">국내 가격 (원)<input id="kc-kr" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 215,500"></label>
 <label class="kcf">해외 가격 ($)<input id="kc-us" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 161.63"></label>
@@ -1181,6 +1199,26 @@ main{padding:2px 12px 40px}
 <div class="kc-row"><span>해외 가격 원화 환산</span><b id="kc-conv">—</b></div>
 <div class="kc-row"><span>가격 차이 (국내 − 해외 환산)</span><b id="kc-diff">—</b></div>
 <div class="kc-row" id="kc-prof-row" hidden><span>예상 차익 (단순 계산)</span><b id="kc-prof">—</b></div>
+</div>
+</div>
+<div class="kcbody" id="kc-body-avg" hidden>
+<div class="ac-grid">
+<div class="kcf">포지션 방향<span class="pair ac-dir"><button type="button" id="ac-long" aria-pressed="true">롱</button><button type="button" id="ac-short" aria-pressed="false">숏</button></span></div>
+<label class="kcf">레버리지 (배)<input id="ac-lev" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 10"></label>
+</div>
+<label class="kcf">현재 평단가<input id="ac-cur-price" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 100,000"></label>
+<label class="kcf">현재 보유 수량<input id="ac-cur-qty" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 0.5"></label>
+<label class="kcf">추가 매수 가격<input id="ac-add-price" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 90,000"></label>
+<label class="kcf">추가 투자 금액<input id="ac-add-amt" type="text" inputmode="decimal" autocomplete="off" placeholder="예: 1,000,000"></label>
+<div class="ac-addqty"><span>추가 수량 (자동 계산)</span><b id="ac-add-qty">—</b></div>
+<div class="kc-res ac-res">
+<div class="kc-kp"><span>새 평단가</span><b id="ac-new-avg">—</b></div>
+<div class="kc-row"><span>평단 변화</span><b id="ac-diff">—</b></div>
+<div class="kc-row ac-liq"><span>청산가 (추가 전 → 후)</span><b id="ac-liq">—</b></div>
+<div class="kc-row"><span>총 수량</span><b id="ac-tqty">—</b></div>
+<div class="kc-row"><span>총 투자금</span><b id="ac-tamt">—</b></div>
+</div>
+<p class="ac-note">청산가는 격리 기준 단순 계산(롱: 평단×(1−1/레버리지), 숏: 평단×(1+1/레버리지))이라 실제 거래소 청산가와는 유지증거금 때문에 차이가 있을 수 있어요.</p>
 </div>
 </div>
 <div class="lgov" id="lg-ov" hidden><div class="lgbox" role="dialog" aria-modal="true" aria-labelledby="lg-t">
@@ -3789,6 +3827,68 @@ function setOpen(on){panel.hidden=!on;openB.setAttribute("aria-expanded",on?"tru
 openB.addEventListener("click",function(){setOpen(panel.hidden)});
 $("kc-x").addEventListener("click",function(){setOpen(false)});
 setInterval(function(){if(!panel.hidden&&follow){var r=findRow(nameEl.value.trim());if(r)fillRow(r)}},15000);
+})();
+</script>
+<script>
+/* 평단 계산기: 김프 계산기 패널 상단 탭으로 전환한다. 추가는 금액 기준으로 입력받고 수량은 추가 가격으로 나눠 자동 계산한다.
+   새 평단가 = (현재 평단가×현재 수량 + 추가 금액) ÷ 총 수량. 청산가는 격리 단순 계산(롱 평단×(1−1/레버리지), 숏 평단×(1+1/레버리지))으로
+   추가 전·후를 나란히 보여준다. 입력하면 즉시 다시 계산한다. */
+(function(){
+function $(id){return document.getElementById(id)}
+var tabK=$("kc-tab-kimp"),tabA=$("kc-tab-avg"),bodyK=$("kc-body-kimp"),bodyA=$("kc-body-avg");
+if(!tabK||!tabA||!bodyK||!bodyA)return;
+function showAvg(avg){
+tabK.setAttribute("aria-pressed",avg?"false":"true");
+tabA.setAttribute("aria-pressed",avg?"true":"false");
+bodyK.hidden=avg;bodyA.hidden=!avg;
+if(avg)calc()}
+tabK.addEventListener("click",function(){showAvg(false)});
+tabA.addEventListener("click",function(){showAvg(true)});
+function num(s){return parseFloat(String(s==null?"":s).replace(/,/g,""))}
+function fmtP(n){
+if(!isFinite(n))return "—";
+var d=n>=1000?0:n>=100?2:n>=1?4:6;
+return n.toLocaleString("ko-KR",{minimumFractionDigits:0,maximumFractionDigits:d})}
+function fmtQ(n){
+if(!isFinite(n))return "—";
+return n.toLocaleString("ko-KR",{minimumFractionDigits:0,maximumFractionDigits:8})}
+function fmtM(n){
+if(!isFinite(n))return "—";
+return Math.round(n).toLocaleString("ko-KR")}
+var isLong=true;
+var bL=$("ac-long"),bS=$("ac-short");
+function setDir(long){
+isLong=long;
+bL.setAttribute("aria-pressed",long?"true":"false");
+bS.setAttribute("aria-pressed",long?"false":"true");
+calc()}
+bL.addEventListener("click",function(){setDir(true)});
+bS.addEventListener("click",function(){setDir(false)});
+function liq(avg,lev){
+if(!(avg>0&&lev>0))return NaN;
+return isLong?avg*(1-1/lev):avg*(1+1/lev)}
+function calc(){
+var lev=num($("ac-lev").value),curP=num($("ac-cur-price").value),curQ=num($("ac-cur-qty").value),addP=num($("ac-add-price").value),addAmt=num($("ac-add-amt").value);
+var addQ=(addP>0&&addAmt>0)?addAmt/addP:0;
+$("ac-add-qty").textContent=addQ>0?fmtQ(addQ):"—";
+var elAvg=$("ac-new-avg"),elDiff=$("ac-diff"),elLiq=$("ac-liq"),elTQ=$("ac-tqty"),elTA=$("ac-tamt");
+if(!(curP>0&&curQ>0)){
+elAvg.textContent="—";elAvg.className="";elDiff.textContent="—";elDiff.className="";elLiq.textContent="—";elTQ.textContent="—";elTA.textContent="—";return}
+var curAmt=curP*curQ,totalQ=curQ+addQ,totalAmt=curAmt+(addQ>0?addAmt:0),newAvg=totalAmt/totalQ;
+elAvg.textContent=fmtP(newAvg);
+var diff=newAvg-curP,diffPct=curP>0?diff/curP*100:0;
+if(addQ>0){
+elDiff.textContent=(diff>0?"+":diff<0?"−":"")+fmtP(Math.abs(diff))+" ("+(diff>0?"+":diff<0?"−":"")+Math.abs(diffPct).toFixed(2)+"%)";
+elDiff.className=diff<0?"dn":diff>0?"up":"";
+elAvg.className=diff<0?"dn":diff>0?"up":"";
+}else{
+elDiff.textContent="—";elDiff.className="";elAvg.className=""}
+var lb=liq(curP,lev),la=liq(newAvg,lev);
+elLiq.textContent=(isFinite(lb)?fmtP(lb):"—")+" → "+(isFinite(la)?fmtP(la):"—");
+elTQ.textContent=fmtQ(totalQ);
+elTA.textContent=fmtM(totalAmt)}
+["ac-lev","ac-cur-price","ac-cur-qty","ac-add-price","ac-add-amt"].forEach(function(id){var el=$(id);if(el)el.addEventListener("input",calc)});
+calc();
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c6e8ab4e4ea4777bf54ca7e737337b9"}'></script><!-- End Cloudflare Web Analytics -->
