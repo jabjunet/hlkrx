@@ -460,21 +460,28 @@ main{padding:0 12px 40px}
 .xsum div{padding:10px 12px}
 .xsum b{font-size:16px}
 .kp7 th .hd7{display:none}
-/* 김프 표 모바일: 두 줄 행 — 1줄 이름·현재가·김프, 2줄 전일대비·고가대비·저가대비·거래량 */
-.kp7 thead tr{display:flex;width:100%}
+/* 김프 표 모바일: 두 줄 행 — 1줄 이름·현재가·김프, 2줄 전일대비·고가대비·저가대비·거래량.
+   행은 고정 그리드(100열 minmax(0,1fr))로 셀 위치를 못 박는다: 예전 flex-wrap 구조에서는 현재가 칸의
+   최소 너비가 정해진 비율을 넘는 행(종가 1,396,000처럼 자릿수가 긴 SK하이닉스)만 현재가 칸이 넓어지며
+   김프 배지가 둘째 줄로 밀리고 거래량이 셋째 줄로 떨어졌다. 그리드 트랙은 내용 길이에 영향받지 않고
+   셀마다 min-width:0이라, 어떤 행도 다른 셀을 밀어낼 수 없어 모든 행이 같은 두 줄 배치를 유지한다 */
+.kp7 thead tr{display:grid;grid-template-columns:repeat(100,minmax(0,1fr));width:100%}
 .kp7 thead th{position:sticky;top:0;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
-.kp7 tbody tr{display:flex;flex-wrap:wrap;width:100%;align-items:flex-start;border-bottom:1px solid var(--bd)}
+.kp7 tbody tr{display:grid;grid-template-columns:repeat(100,minmax(0,1fr));width:100%;align-items:start;border-bottom:1px solid var(--bd)}
 .kp7 tbody tr:last-child{border-bottom:0}
 .kp7 th,.kp7 td{border-bottom:0}
 .kp7 th{font-size:11.5px;padding:7px 0;letter-spacing:0;min-width:0}
-.kp7 th:nth-child(1){flex:0 0 54%;text-align:left;padding-left:10px;padding-right:4px}
-.kp7 th:nth-child(2){flex:0 0 25%;padding-left:6px;text-align:right}
-.kp7 th:nth-child(3){flex:0 0 21%;padding-left:6px;padding-right:10px;text-align:right}
+.kp7 th:nth-child(1){grid-column:1/51;text-align:left;padding-left:10px;padding-right:4px}
+.kp7 th:nth-child(2){grid-column:51/80;padding-left:6px;text-align:right}
+.kp7 th:nth-child(3){grid-column:80/101;padding-left:6px;padding-right:10px;text-align:right}
 .kp7 th:nth-child(n+4){display:none}
-.kp7 td{padding:7px 0 1px;font-size:12.5px}
-.kp7 td:nth-child(1){flex:0 0 54%;min-width:0;padding-left:10px;padding-right:4px}
-.kp7 td:nth-child(2){flex:0 0 25%;padding-left:6px}
-.kp7 td:nth-child(3){flex:0 0 21%;padding-left:6px;padding-right:10px}
+.kp7 td{padding:7px 0 1px;font-size:12.5px;min-width:0}
+.kp7 td:nth-child(1){grid-column:1/51;grid-row:1;padding-left:10px;padding-right:4px}
+.kp7 td:nth-child(2){grid-column:51/80;grid-row:1;padding-left:6px;overflow:hidden}
+.kp7 td:nth-child(3){grid-column:80/101;grid-row:1;padding-left:6px;padding-right:10px;overflow:hidden}
+/* 종가 값 모바일 크기: 기본 규칙(.kp td .cln .cvv 14.5px)과 같은 특이성으로 뒤에 선언해 실제로 12.5px이 적용되게 한다.
+   예전 12.5px 규칙(.kp7 .cln .cvv)은 특이성에서 져서 종가가 14.5px로 커졌고, 긴 종가가 현재가 칸을 밀어내는 원인이었다 */
+.kp7 td .cln .cvv{font-size:12.5px}
 .kp7 td b{font-size:14px}
 .kp7 .l{font-size:11px}
 .kp7 .nm{gap:7px}
@@ -483,14 +490,18 @@ main{padding:0 12px 40px}
 .kp7 .nm b{font-size:13.5px}
 .kp7 .av{width:28px;height:28px;font-size:11px}
 .kp7 .pill{padding:2px 6px;font-size:12px}
-.kp7 td:nth-child(n+4){display:flex;align-items:baseline;gap:4px;flex:1 1 0;padding:1px 0 7px;font-size:11.5px;text-align:left;white-space:nowrap}
-.kp7 td:nth-child(7){flex:0 0 auto}
+.kp7 td:nth-child(n+4){display:flex;align-items:baseline;gap:3px;padding:1px 0 7px;font-size:11.5px;text-align:left;white-space:nowrap;overflow:hidden;letter-spacing:-.02em}
+.kp7 td:nth-child(4){grid-column:1/30;grid-row:2}
+.kp7 td:nth-child(5){grid-column:30/54;grid-row:2}
+.kp7 td:nth-child(6){grid-column:54/78;grid-row:2}
+.kp7 td:nth-child(7){grid-column:78/101;grid-row:2}
 .kp7 td:nth-child(4)::before{content:"전일대비"}
 .kp7 td:nth-child(5)::before{content:"고가대비"}
 .kp7 td:nth-child(6)::before{content:"저가대비"}
 .kp7 td:nth-child(7)::before{content:"거래량"}
-.kp7 td:nth-child(n+4)::before{font-size:10px;color:var(--mut)}
-.kp7 td:nth-child(n+4) b{font-size:11.5px}
+.kp7 td:nth-child(n+4)::before{font-size:9.5px;color:var(--mut)}
+.kp7 td:nth-child(n+4) b{font-size:11px}
+.kp7 td:nth-child(4) .pill{font-size:11px;padding:1px 5px}
 .kp7 td:nth-child(4){padding-left:10px}
 .kp7 td:nth-child(7){padding-right:10px}
 .kp7 td[colspan]{padding-left:10px;padding-right:10px}
@@ -498,7 +509,7 @@ main{padding:0 12px 40px}
 .kp7 tr.na td{padding-top:5px;padding-bottom:5px}
 .kp7 tr.na td:nth-child(n+4){display:none}
 .kp7 tr.na .nm b{font-size:12.5px}
-.kp7 td[colspan]{flex:1 1 100%}
+.kp7 tbody td[colspan]{grid-column:1/-1;grid-row:1}
 .msort{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px}
 .msort span{font-size:11.5px;color:var(--mut)}
 .msort button{min-height:30px;padding:4px 10px;border:1px solid var(--bd);background:var(--sf);color:var(--mut);border-radius:999px;font:inherit;font-size:12px;font-weight:600;cursor:pointer}
