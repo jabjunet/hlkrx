@@ -863,6 +863,25 @@ main{padding:2px 12px 40px}
 .ac-res .kc-kp b{font-size:19px}
 .ac-liq b{white-space:normal;text-align:right;line-height:1.4}
 .ac-note{color:var(--mut);font-size:11px;line-height:1.55;margin:10px 0 0}
+/* 평단 계산기만 살짝 축소: 탭 버튼·방향 토글·라벨·입력칸·결과 숫자를 약 15% 작게 한다.
+   탭 버튼 축소는 평단 탭이 열려 있을 때만 적용하고, 김프 계산기 본문 크기는 건드리지 않는다 */
+.kcpanel:has(#kc-body-avg:not([hidden])) .kctabs{padding:2px}
+.kcpanel:has(#kc-body-avg:not([hidden])) .kctabs button{min-height:27px;padding:4px 5px;font-size:11px}
+#kc-body-avg .kcf{font-size:10.5px;margin-bottom:8px}
+#kc-body-avg .kcf input{min-height:32px;padding:6px 9px;font-size:12px;border-radius:8px}
+#kc-body-avg .ac-grid{gap:7px}
+#kc-body-avg .ac-grid .kcf{margin-bottom:8px}
+#kc-body-avg .ac-dir{padding:2px;margin-top:3px}
+#kc-body-avg .ac-dir button{min-height:32px;padding:4px 5px;font-size:11px}
+#kc-body-avg .ac-addqty{font-size:10.5px;margin:-2px 0 8px}
+#kc-body-avg .ac-addqty b{font-size:11px}
+#kc-body-avg .ac-res{padding-top:8px}
+#kc-body-avg .kc-kp span{font-size:11px}
+#kc-body-avg .ac-res .kc-kp b{font-size:16px}
+#kc-body-avg .kc-row{margin-top:4px}
+#kc-body-avg .kc-row span{font-size:10.5px}
+#kc-body-avg .kc-row b{font-size:10px}
+#kc-body-avg .ac-note{font-size:10px;margin-top:8px}
 @media(max-width:520px){.kcbtn{right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px))}.kcpanel{right:12px;bottom:calc(122px + env(safe-area-inset-bottom,0px))}}
 /* 푸터 · 약관 */
 .sitefoot{margin-top:16px;padding:14px 2px 6px;border-top:1px solid var(--bd);text-align:center}
