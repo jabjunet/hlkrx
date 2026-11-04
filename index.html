@@ -415,7 +415,8 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .opbdg{display:inline-flex;align-items:center;flex:none;padding:2px 8px;border-radius:999px;background:var(--ac);color:var(--acx);font-size:11px;font-weight:700;line-height:1.5;letter-spacing:.01em;vertical-align:2px}
 .opbdg[hidden]{display:none}
 /* 프로필 */
-.who{appearance:none;-webkit-appearance:none;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:50%;min-height:32px;padding:2px;font:inherit;cursor:pointer}
+.who{appearance:none;-webkit-appearance:none;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;min-height:32px;padding:5px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;max-width:min(180px,42vw)}
+.wnick{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .pav{width:28px;height:28px;border-radius:50%;background:var(--ac);color:var(--acx);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;overflow:hidden;flex:none}
 .pav img{width:100%;height:100%;object-fit:cover;display:block}
 .pav img[hidden]{display:none}
@@ -845,7 +846,7 @@ main{padding:0 12px 40px}
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-t"><span class="brand" aria-hidden="true">kimpwon</span><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden aria-label="프로필 설정"><span class="pav" aria-hidden="true"><span id="lg-pav-t"></span><img id="lg-pav-img" alt="" hidden></span></button><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤</button></div></div>
+<div class="hd"><div class="hd-t"><span class="brand" aria-hidden="true">kimpwon</span><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤니티</button></div></div>
 
 <section id="ph">
 <div class="ixtiles" aria-label="주요 지수">
@@ -2205,7 +2206,7 @@ function firstCh(s){var a=Array.from(String(s||""));return a.length?a[0]:"?"}
 function setAv(t,im,nick,img){if(img){im.src=img;im.hidden=false;t.hidden=true}else{im.hidden=true;im.removeAttribute("src");t.hidden=false;t.textContent=firstCh(nick)}}
 function isOp(){var oe=typeof OPERATOR_EMAIL!=="undefined"?String(OPERATOR_EMAIL||"").trim().toLowerCase():"";if(!oe)return false;var u=saved().trim().toLowerCase();if(u&&u===oe)return true;var pe=String(prof().email||"").trim().toLowerCase();return !!pe&&pe===oe}
 function syncOp(){var b=el("pf-op");if(b)b.hidden=!isOp()}
-function show(){var u=saved();openB.hidden=!!u;who.hidden=!u;if(u){var p=prof();var nick=p.nick||u;setAv(el("lg-pav-t"),el("lg-pav-img"),nick,effImg(p))}syncOp()}
+function show(){var u=saved();openB.hidden=!!u;who.hidden=!u;if(u){var p=prof();var nick=p.nick||u;var wn=el("lg-who-nick");if(wn)wn.textContent=nick}syncOp()}
 function open(){el("lg-msg").hidden=true;ov.hidden=false}
 el("lg-g").addEventListener("click",function(){var m=el("lg-msg");if(typeof window.__hlkrxFbSignIn==="function"){m.hidden=true;window.__hlkrxFbSignIn(false)}else{m.textContent="로그인을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.";m.hidden=false}});
 /* 채팅 쪽 로그인 흐름이 실패를 알릴 때 쓰는 공용 창구: 사이트 로그인으로 시작한 실패는 채팅 패널이 아니라
