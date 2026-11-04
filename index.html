@@ -42,7 +42,7 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .sub{color:var(--mut);font-size:13px;margin:3px 0 0}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 /* 상단 헤더 */
-.hd{display:flex;flex-direction:column;gap:6px;background:var(--bg);border-bottom:1px solid var(--bd);margin:4px 0 24px;padding-bottom:6px}
+.hd{display:flex;flex-direction:column;gap:6px;background:var(--bg);border-bottom:1px solid var(--bd);margin:4px 0 12px;padding-bottom:6px}
 .live{display:inline-flex;align-items:center;gap:7px;padding:1px 2px;font-size:12px;color:var(--mut);white-space:nowrap;margin-top:0}
 .dot{width:9px;height:9px;border-radius:50%;background:var(--warn);flex:none}
 .dot.ok{background:var(--ok)}
@@ -281,12 +281,12 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .etfx .pill{font-size:10.5px;padding:1px 5px}
 @media(max-width:520px){.etfx{gap:2px 9px}.etfp b{font-size:15.5px}}
 /* 카드·요약 타일 (금·코스피) */
-.c{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:12px}
-.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.c{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:10px}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
 .sum div{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;min-width:0}
 .sum small{display:block;color:var(--mut);font-size:12px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sum b{font-size:18px;letter-spacing:-.02em;white-space:nowrap}
-.xsum{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+.xsum{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
 .xsum div{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;min-width:0}
 .xsum small{display:block;color:var(--mut);font-size:12px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .xsum b{font-size:18px;letter-spacing:-.02em;white-space:nowrap}
@@ -341,8 +341,8 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 /* 홈 탭: 실시간 차트 (토스 발견 화면 결) — '실시간 차트' 제목 바로 옆에 작은 [한국|미국] 전환 칸을 같은 줄에 붙이고,
    [급상승|급하락] 전환은 목록 위 기존 줄에 그대로 둔다. 행은 김프 탭 행에 가까운 컴팩트 크기(로고 28px·작은 글자).
    행 양쪽 안쪽 여백은 다른 표와 동일하게 데스크톱 12px·모바일 10px */
-.hmv{margin-top:14px}
-.hmhd{display:flex;align-items:center;gap:10px;margin:8px 0 10px}
+.hmv{margin-top:6px}
+.hmhd{display:flex;align-items:center;gap:10px;margin:4px 0 8px}
 .hmhd h2{margin:0}
 .hmmk{padding:2px}
 .hmmk button{min-height:26px;padding:3px 11px;font-size:12px}
@@ -363,7 +363,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 /* 홈 탭: 실시간 뉴스 — 실시간 차트 아래 작은 박스. 국내(한국경제·매일경제)와 해외(인베스팅) 두 그룹으로 나눠
    좌우 2열로 나란히 보여주고(좁은 화면에서는 국내 위·해외 아래로 쌓음), 각 그룹 안에서 발행 시간 최신순으로
    제목 한 줄 + 지난 시간으로 컴팩트하게 보여준다. 출처명은 표시하지 않는다 */
-.hnw{margin-top:16px}
+.hnw{margin-top:8px}
 .hngrid{display:grid;grid-template-columns:1fr 1fr;column-gap:20px;align-items:start}
 .hng{min-width:0}
 .hnghd{font-size:12.5px;font-weight:700;color:var(--mut);padding:2px 12px 6px}
@@ -373,13 +373,13 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hnwr:hover{background:var(--sf2)}
 .hnwr .nt1{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hnwr .nt2{display:block;margin-top:1px;font-size:11.5px;color:var(--mut)}
-@media(max-width:720px){.hngrid{grid-template-columns:1fr;row-gap:14px}}
+@media(max-width:720px){.hngrid{grid-template-columns:1fr;row-gap:10px}}
 @media(max-width:520px){.hnwr{padding:8px 10px}.hnghd{padding-left:10px;padding-right:10px}}
 .hnmore{display:block;width:100%;min-height:44px;border:0;border-top:1px solid var(--bd);background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .hnmore:hover{background:var(--sf2);color:var(--tx)}
 /* 안내 문구 */
-.note{color:var(--mut);font-size:12.5px;line-height:1.65;margin:12px 2px 0}
-.dnote{margin:14px 0}
+.note{color:var(--mut);font-size:12.5px;line-height:1.65;margin:8px 2px 0}
+.dnote{margin:8px 0}
 .dnote summary{cursor:pointer;padding:12px 2px;min-height:44px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--mut);list-style:none}
 .dnote summary::-webkit-details-marker{display:none}
 .dnote summary::after{content:"▾";margin-left:auto}
@@ -821,7 +821,7 @@ main{padding:2px 12px 40px}
 .kc-hi.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
 @media(max-width:520px){.kcbtn{right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px))}.kcpanel{right:12px;bottom:calc(122px + env(safe-area-inset-bottom,0px))}}
 /* 푸터 · 약관 */
-.sitefoot{margin-top:28px;padding:18px 2px 6px;border-top:1px solid var(--bd);text-align:center}
+.sitefoot{margin-top:16px;padding:14px 2px 6px;border-top:1px solid var(--bd);text-align:center}
 .sitefoot nav{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
 .sitefoot nav button{border:0;background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:8px 6px;min-height:36px}
 .sitefoot nav button:hover{color:var(--tx);text-decoration:underline}
