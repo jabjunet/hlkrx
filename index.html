@@ -1068,13 +1068,13 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <div class="hmhd"><h2>주요 경제지표</h2><span class="heupd" id="hec-upd"></span></div>
 <div class="hecbox" id="hec-box"><div id="hec-list">
 <div class="heghd">발표 예정 <b>8</b></div>
-<div class="herow"><div class="he1"><b>신규 실업수당 청구</b><span class="hedt">오늘 11월 5일 (목)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>19.6만</b> · 이전 19.4만</span></div>
 <div class="herow"><div class="he1"><b>비농업 고용</b><span class="hedt">11월 6일 (금)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>6.5만</b> · 이전 2.9만</span></div>
 <div class="herow"><div class="he1"><b>실업률</b><span class="hedt">11월 6일 (금)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>4.2%</b> · 이전 4.2%</span></div>
 <div class="herow"><div class="he1"><b>평균 시간당 임금 (전월비)</b><span class="hedt">11월 6일 (금)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>0.3%</b> · 이전 0.1%</span></div>
 <div class="herow"><div class="he1"><b>미시간대 소비자심리지수 (예비)</b><span class="hedt">11월 7일 (토)</span><span class="hetm">00:00</span></div><span class="he2">예상 <b>48.0</b> · 이전 46.3</span></div>
 <div class="herow"><div class="he1"><b>소비자물가 (전월비)</b><span class="hedt">11월 10일 (화)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>0.3%</b> · 이전 0.6%</span></div>
 <div class="herow"><div class="he1"><b>근원 소비자물가 (전월비)</b><span class="hedt">11월 10일 (화)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>0.2%</b> · 이전 0.3%</span></div>
+<div class="herow"><div class="he1"><b>신규 실업수당 청구</b><span class="hedt">11월 12일 (목)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>–</b> · 이전 18.9만</span></div>
 <div class="herow"><div class="he1"><b>생산자물가 (전월비)</b><span class="hedt">11월 13일 (금)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>0.4%</b> · 이전 1.3%</span></div>
 </div></div>
 <p class="note">미국 주요 경제지표의 발표 예정 일정입니다. 발표 시각은 한국 시간 기준이고, 예상치는 시장 전망치입니다.</p>
@@ -4170,7 +4170,7 @@ setInterval(function(){if(!document.hidden)load()},3600000);
    데이터 기준 시각은 아래 HEC_BAKED_AT 한 곳에만 적고, 제목 옆 '갱신' 표시는 거기서 뽑아 보여준다.
    갱신할 때는 #hec-list의 행들과 이 값만 함께 바꾸면 된다. */
 (function(){
-var HEC_BAKED_AT="2026-11-05 20:05";
+var HEC_BAKED_AT="2026-11-05 23:57";
 var e=document.getElementById("hec-upd");
 if(e){var p=HEC_BAKED_AT.split(/[- :]/);e.textContent=(+p[3])+":"+p[4]+" 갱신"}
 })();
