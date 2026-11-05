@@ -726,7 +726,7 @@ main{padding:2px 12px 40px}
 .steady-hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;min-width:0}
 .steady-hd b{font-size:14px;white-space:nowrap}
 .steady-sub{color:var(--mut);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.steady-chart{height:300px;margin-top:8px;position:relative;min-width:0}
+.steady-chart{height:300px;margin-top:8px;position:relative;min-width:0;overflow:hidden}
 /* 비교 4분할 TradingView 위젯: 칸 높이를 그대로 채우고, 로딩 문구는 위젯 위에 겹쳐 둔다 */
 .steady-tvw iframe{width:100%!important;height:100%!important;border:0;display:block;border-radius:6px;background:var(--sf)}
 .steady-tvw>div[id$="-in"]{height:100%}
@@ -3646,9 +3646,28 @@ if(w._tvTok!==tok)return;
 if(!ok){fail();return}
 try{
 var widget=new TradingView.widget({container_id:"steady-"+key+"-tvw-in",symbol:sym,interval:"240",theme:(typeof tvtheme==="function"?tvtheme():"light"),style:"1",timezone:"Asia/Seoul",locale:"kr",hide_top_toolbar:false,hide_side_toolbar:false,allow_symbol_change:true,save_image:false,autosize:true});
-if(widget&&typeof widget.onChartReady==="function")widget.onChartReady(function(){done();hookSym(widget,key,tok,w)});
+if(widget&&typeof widget.onChartReady==="function")widget.onChartReady(function(){done();hookSym(widget,key,tok,w);setTimeout(function(){if(w._tvTok===tok)refit(key)},350);setTimeout(function(){if(w._tvTok===tok)refit(key)},1600)});
 }catch(e){fail()}})}
-function mountCharts(){["btc","oil","gold","ndx"].forEach(mountTv)}
+function mountCharts(){["btc","oil","gold","ndx"].forEach(function(k,i){setTimeout(function(){mountTv(k)},i*200)})}
+/* 위젯 내부 배치 재측정: 네 칸 위젯이 한꺼번에 만들어지면 TradingView가
+   칸 크기를 잘못 재는 경우가 있어, 가격 축이 칸 오른쪽 밖으로 밀려 나가고
+   캔들이 아래로 눌려 보인다(비트코인·유가 칸에서 실제로 발생). iframe 크기를
+   1px 줄였다가 다음 프레임에 칸 크기로 되돌리면 위젯이 내부 배치를 다시
+   계산해 가격 축과 캔들이 칸 안으로 돌아온다. */
+function refit(key){
+var w=$("steady-chart-"+key);if(!w)return;
+var fr=w.querySelector("iframe");if(!fr)return;
+var H=w.clientHeight,Wd=w.clientWidth;if(H<50||Wd<50)return;
+var n=fr.parentElement;while(n&&n!==w){n.style.setProperty("height","100%","important");n=n.parentElement}
+fr.style.setProperty("width",(Wd-1)+"px","important");
+fr.style.setProperty("height",(H-1)+"px","important");
+requestAnimationFrame(function(){requestAnimationFrame(function(){
+if(!w.isConnected)return;
+var H2=w.clientHeight,W2=w.clientWidth;if(H2<50||W2<50)return;
+fr.style.setProperty("width",W2+"px","important");
+fr.style.setProperty("height",H2+"px","important");
+setTimeout(function(){fr.style.removeProperty("width");fr.style.removeProperty("height")},600)})})}
+function refitAll(){["btc","oil","gold","ndx"].forEach(function(k,i){setTimeout(function(){refit(k)},i*120)})}
 var started=false;
 function start(){
 if(!pcOpen())return;
@@ -3656,7 +3675,9 @@ if(started)return;
 started=true;
 mountCharts()}
 var tabs=$("tabs");
-if(tabs)tabs.addEventListener("click",function(e){var b=e.target.closest?e.target.closest("button"):null;if(b&&b.dataset.t==="pc")start()});
+if(tabs)tabs.addEventListener("click",function(e){var b=e.target.closest?e.target.closest("button"):null;if(b&&b.dataset.t==="pc"){var was=started;start();if(was)setTimeout(refitAll,80)}});
+var rzT=null;
+window.addEventListener("resize",function(){if(!started||!pcOpen())return;clearTimeout(rzT);rzT=setTimeout(refitAll,350)});
 if(pcOpen())start();
 var btn=$("cmp-more-btn"),wrap=$("cmp2wrap");
 if(btn&&wrap)btn.addEventListener("click",function(){
