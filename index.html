@@ -385,14 +385,15 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hew .hmhd .heupd{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap}
 .hewbox{max-height:460px;border:1px solid var(--bd);border-radius:10px;background:var(--sf);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 /* 홈 탭: 실적발표 박스 아래 주요 경제지표 박스 — 실적발표와 같은 틀(테두리·둥근 모서리·배경)을 쓰고 위에 간격만 둔다.
-   실적발표처럼 데이터를 코드에 직접 박아 넣고(발표 일정·실제/예상/이전 값) 주기적으로 손으로 갱신한다:
+   실적발표처럼 데이터를 코드에 직접 박아 넣고(발표 예정 일정·예상/이전 값) 주기적으로 손으로 갱신한다:
    브라우저에서 경제 캘린더를 직접 fetch 하면 소스가 타 도메인 요청을 막아(403) 못 읽고, 공식 임베드
-   위젯은 흰 배경·영문 표기라 사이트 디자인과 어울리지 않아서다. 박스 안은 안쪽 스크롤이고,
-   높이는 실적발표 박스와 같은 기본값에 최대 높이를 둔다. 행 스타일은 실적발표의 .heghd/.herow를 그대로 쓴다 */
+   위젯은 흰 배경·영문 표기라 사이트 디자인과 어울리지 않아서다. 발표 완료(결과)는 넣지 않고 앞으로 나올
+   '발표 예정'만 보여준다. 박스 안은 안쪽 스크롤이고, 높이는 실적발표 박스보다 작게 잡는다.
+   행 스타일은 실적발표의 .heghd/.herow를 그대로 쓴다 */
 .hecwrap{margin-top:20px}
 .hecwrap .hmhd .heupd{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap}
-.hecbox{max-height:460px;border:1px solid var(--bd);border-radius:10px;background:var(--sf);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
-@media(max-width:720px){.hecbox{max-height:520px}}
+.hecbox{max-height:300px;border:1px solid var(--bd);border-radius:10px;background:var(--sf);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+@media(max-width:720px){.hecbox{max-height:340px}}
 .heghd{position:sticky;top:0;z-index:2;background:var(--sf2);font-size:12px;font-weight:700;color:var(--mut);padding:7px 12px;border-bottom:1px solid var(--bd)}
 .heghd b{color:var(--tx)}
 .herow{padding:8px 12px;border-bottom:1px solid var(--bd)}
@@ -1048,11 +1049,6 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <div class="hecwrap">
 <div class="hmhd"><h2>주요 경제지표</h2><span class="heupd" id="hec-upd"></span></div>
 <div class="hecbox" id="hec-box"><div id="hec-list">
-<div class="heghd">발표 완료 <b>4</b></div>
-<div class="herow"><div class="he1"><b>ISM 비제조업 PMI</b><span class="hedt">11월 5일 (목)</span><span class="hetm">00:00</span></div><span class="he2">실제 <b>54.5</b> · 예상 54.8 · 이전 54.9</span></div>
-<div class="herow"><div class="he1"><b>ADP 민간고용</b><span class="hedt">11월 4일 (수)</span><span class="hetm">22:15</span></div><span class="he2">실제 <b>8.6만</b> · 예상 6.9만 · 이전 8.6만</span></div>
-<div class="herow"><div class="he1"><b>무역수지</b><span class="hedt">11월 4일 (수)</span><span class="hetm">22:30</span></div><span class="he2">실제 <b>-1,050억 달러</b> · 예상 -1,080억 달러 · 이전 -1,057억 달러</span></div>
-<div class="herow"><div class="he1"><b>JOLTS 구인 건수</b><span class="hedt">11월 4일 (수)</span><span class="hetm">00:00</span></div><span class="he2">실제 <b>752.3만 건</b> · 예상 710만 건 · 이전 719만 건</span></div>
 <div class="heghd">발표 예정 <b>8</b></div>
 <div class="herow"><div class="he1"><b>신규 실업수당 청구</b><span class="hedt">오늘 11월 5일 (목)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>19.6만</b> · 이전 19.4만</span></div>
 <div class="herow"><div class="he1"><b>비농업 고용</b><span class="hedt">11월 6일 (금)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>6.5만</b> · 이전 2.9만</span></div>
@@ -1063,7 +1059,7 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <div class="herow"><div class="he1"><b>근원 소비자물가 (전월비)</b><span class="hedt">11월 10일 (화)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>0.2%</b> · 이전 0.3%</span></div>
 <div class="herow"><div class="he1"><b>생산자물가 (전월비)</b><span class="hedt">11월 13일 (금)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>0.4%</b> · 이전 1.3%</span></div>
 </div></div>
-<p class="note">미국 주요 경제지표의 발표 일정과 결과입니다. 발표 시각은 한국 시간 기준이고, 예상치는 시장 전망치입니다.</p>
+<p class="note">미국 주요 경제지표의 발표 예정 일정입니다. 발표 시각은 한국 시간 기준이고, 예상치는 시장 전망치입니다.</p>
 </div>
 </div>
 </div>
@@ -4158,7 +4154,8 @@ setInterval(function(){if(!document.hidden)load()},3600000);
 /* 홈 탭: 주요 경제지표 (실적발표 박스 아래) — 실적발표처럼 데이터를 코드에 직접 박아 넣고 주기적으로
    손으로 갱신한다. 브라우저에서 경제 캘린더 API를 직접 fetch 하면 소스가 타 도메인 요청을 막아(403)
    못 읽고, TradingView 공식 임베드 위젯은 흰 배경·영문 표기라 사이트 디자인과 어울리지 않아서
-   위젯을 걷어내고 박스 마크업(#hec-list)에 일정·실제/예상/이전 값을 직접 적는다.
+   위젯을 걷어내고 박스 마크업(#hec-list)에 일정·예상/이전 값을 직접 적는다.
+   표시 범위: 발표 완료(결과)는 넣지 않고 앞으로 나올 '발표 예정' 일정만 넣는다.
    데이터 기준 시각은 아래 HEC_BAKED_AT 한 곳에만 적고, 제목 옆 '갱신' 표시는 거기서 뽑아 보여준다.
    갱신할 때는 #hec-list의 행들과 이 값만 함께 바꾸면 된다. */
 (function(){
