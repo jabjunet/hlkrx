@@ -483,6 +483,8 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .pfcard .pfout{background:var(--sf2);border-radius:12px;min-height:38px;margin-top:8px}
 .pfcard .lgnote{margin-top:8px}
 @media(max-width:520px){#pf-ov{align-items:center;padding:16px}#pf-ov .lgbox{max-width:320px;border-radius:16px;border-bottom:1px solid var(--bd);padding-bottom:12px}}
+/* 글 보기 팝업도 프로필 설정처럼 바텀시트가 아니라 화면 가운데 둥근 카드로 띄운다 */
+@media(max-width:520px){#pv-ov{align-items:center;padding:16px}#pv-ov .lgbox{max-width:560px;border-radius:16px;border-bottom:1px solid var(--bd);padding-bottom:18px}}
 @media(max-width:520px){.lgov{align-items:flex-end;padding:0}.lgbox{max-width:none;border-radius:16px 16px 0 0;border-bottom:0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}}
 @media(max-width:720px){.tabs{flex-wrap:wrap}}
 /* 데스크톱 */
@@ -2546,9 +2548,15 @@ function saveProf(p){try{localStorage.setItem(PKEY,JSON.stringify(p));return tru
    로그인 동기화·구글 계정 사진·기본값이 이 사진을 덮어쓰지 못한다 */
 function uImg(){try{var v=localStorage.getItem(IKEY);return v===null?null:v}catch(e){return null}}
 function setUImg(v){try{localStorage.setItem(IKEY,v||"")}catch(e){}}
-function effImg(p){var u=uImg();return u!==null?u:((p&&p.img)||"")}
+function effImg(p){var u=uImg();var v=u!==null?u:((p&&p.img)||"");return (typeof v==="string"&&v.indexOf("data:")===0)?v:""}
+/* 사이트 프로필 사진은 사용자가 직접 고른 사진(data URL)만 인정한다.
+   예전 동기화가 구글 계정 사진(http 주소)을 프로필 사진 자리에 넣어 둔 경우가 있는데,
+   그건 사이트에서 고른 사진이 아니므로 지워서, 구글 사진이 사이트 프로필처럼
+   채팅·게시글에 실리거나 프로필 팝업에 다시 나타나지 않게 한다 */
+function isWebImg(v){return typeof v==="string"&&/^https?:\/\//i.test(v)}
+(function(){var p=prof();if(isWebImg(p.img)){p.img="";saveProf(p)}var ui=uImg();if(ui!==null&&isWebImg(ui)){try{localStorage.removeItem(IKEY)}catch(e){}}})();
 /* 예전에 프로필 팝업에서 직접 저장한 사진(custom 표시)이 있으면 별도 키로 옮겨 보호한다 */
-(function(){if(uImg()===null){var p=prof();if(p.custom&&typeof p.img==="string")setUImg(p.img)}})();
+(function(){if(uImg()===null){var p=prof();if(p.custom&&typeof p.img==="string"&&p.img)setUImg(p.img)}})();
 function firstCh(s){var a=Array.from(String(s||""));return a.length?a[0]:"?"}
 function setAv(t,im,nick,img){if(img){im.src=img;im.hidden=false;t.hidden=true}else{im.hidden=true;im.removeAttribute("src");t.hidden=false;t.textContent=firstCh(nick)}}
 function isOp(){var oe=typeof OPERATOR_EMAIL!=="undefined"?String(OPERATOR_EMAIL||"").trim().toLowerCase():"";if(!oe)return false;var u=saved().trim().toLowerCase();if(u&&u===oe)return true;var pe=String(prof().email||"").trim().toLowerCase();return !!pe&&pe===oe}
@@ -2573,15 +2581,21 @@ function srvPull(u){
 var r=srvRef(u);if(!r)return;
 try{r.once("value").then(function(snap){
 var s=snap?snap.val():null;var p=prof();
-var hasSrv=!!(s&&(String(s.nick||"").trim()||String(s.img||"")));
-if(hasSrv&&!p.custom){
+/* 계정에 저장된 사진도 직접 고른 사진(data URL)일 때만 복원한다:
+   http 주소(구글 계정 사진)가 저장돼 있으면 사이트 프로필 사진으로 치지 않는다 */
+var sImg=(s&&typeof s.img==="string"&&s.img.indexOf("data:")===0)?s.img:"";
+var sn=s?String(s.nick||"").trim():"";
+if((sn||sImg)&&!p.custom){
 /* 이 기기에서 직접 저장한 프로필이 없을 때만 계정 프로필로 복원한다:
    직접 저장한 프로필이 있으면 그쪽이 최신이므로 계정 쪽을 그 값으로 되려 갱신한다 */
-var sn=String(s.nick||"").trim();if(sn)p.nick=sn;
-if(typeof s.img==="string"){p.img=s.img;setUImg(s.img)}
+if(sn)p.nick=sn;
+if(sImg){p.img=sImg;setUImg(sImg)}
 p.custom=1;p.done=1;saveProf(p);show();
-}else if(p.custom&&(String(p.nick||"").trim()||effImg(p))){
-srvPush(u);
+}else if(p.custom){
+/* 이 기기에 직접 고른 사진이 없고(팝업에서 지운 경우는 제외) 계정에 고른 사진이 있으면
+   사진만 채워 넣고, 그 외에는 이 기기의 프로필로 계정 쪽을 갱신한다 */
+if(uImg()===null&&!String(p.img||"").trim()&&sImg){p.img=sImg;setUImg(sImg);saveProf(p);show()}
+else if(String(p.nick||"").trim()||effImg(p)||uImg()!==null){srvPush(u)}
 }
 }).catch(function(){})}catch(e){}
 }
@@ -2604,13 +2618,13 @@ try{localStorage.setItem(KEY,email)}catch(e){}
 var p=prof();
 /* 사용자가 직접 골라 저장한 사진(hlkrx_uimg)이 있으면 그 사진이 항상 우선한다:
    동기화가 프로필을 다시 쓸 때도 저장된 사진으로 되돌려 놓고, 구글 계정 사진으로는
-   절대 바꾸지 않는다. 저장된 사진이 없을 때만, 직접 저장한 적이 없는 경우에 한해
-   구글 기본값으로 빈 칸을 채운다 */
+   절대 바꾸지 않는다. 구글 계정 사진은 사이트 프로필 사진이 아니므로, 저장된 사진이
+   없을 때 빈 칸을 구글 사진으로 채우는 일도 하지 않는다 */
 var ui=uImg();
 if(ui!==null){p.img=ui}
-else if(!p.custom){
-if(!String(p.nick||"").trim()&&u.displayName)p.nick=String(u.displayName);
-if(!p.img&&u.photoURL)p.img=String(u.photoURL);
+else{
+if(isWebImg(p.img))p.img="";
+if(!p.custom&&!String(p.nick||"").trim()&&u.displayName)p.nick=String(u.displayName);
 }
 p.email=email;p.done=1;saveProf(p);
 srvPull(u);
@@ -2664,7 +2678,7 @@ var loginSrc="chat";
 function cfgReady(){try{var c=(typeof FIREBASE_CONFIG!=="undefined")?FIREBASE_CONFIG:null;return !!(c&&typeof c.apiKey==="string"&&c.apiKey.trim()&&typeof c.databaseURL==="string"&&c.databaseURL.trim())}catch(e){return false}}
 function opEmail(){return (typeof OPERATOR_EMAIL!=="undefined"?String(OPERATOR_EMAIL||""):"").trim().toLowerCase()}
 function isOpEmail(em){var oe=opEmail();return !!oe&&String(em||"").trim().toLowerCase()===oe}
-function chatProf(){try{var p=JSON.parse(localStorage.getItem("hlkrx_prof")||"{}");if(!p||typeof p!=="object")p={};var ui=localStorage.getItem("hlkrx_uimg");if(ui!==null)p.img=ui;return p}catch(e){return{}}}
+function chatProf(){try{var p=JSON.parse(localStorage.getItem("hlkrx_prof")||"{}");if(!p||typeof p!=="object")p={};var ui=localStorage.getItem("hlkrx_uimg");if(ui!==null)p.img=ui;/* 직접 고른 사진(data URL)만 사이트 프로필로 인정한다: 구글 계정 사진(http 주소)은 버린다 */if(typeof p.img!=="string"||p.img.indexOf("data:")!==0)p.img="";return p}catch(e){return{}}}
 function initial(nm){var a=Array.from(String(nm||""));return a.length?a[0]:"?"}
 function fmtTime(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts),now=new Date();var hm=d.toLocaleTimeString("ko-KR",{hour:"numeric",minute:"2-digit"});return d.toDateString()===now.toDateString()?hm:(d.getMonth()+1)+"/"+d.getDate()+" "+hm}
 function syncFt(){var logged=!!fbUser;form.hidden=false;
@@ -2802,8 +2816,8 @@ if(!msgRef){err.textContent="채팅 연결이 아직 준비되지 않았어요. 
 var t=input.value.trim();if(!t)return;
 if(t.length>500)t=t.slice(0,500);
 var profNow=chatProf();var profNick=String(profNow.nick||"").trim();var profImg=String(profNow.img||"").trim();
-var uSaved=false;try{uSaved=localStorage.getItem("hlkrx_uimg")!==null}catch(e){}
-var pushRef=msgRef.push({name:profNick||fbUser.displayName||"익명",photo:uSaved?profImg:(profImg||fbUser.photoURL||""),text:t,ts:firebase.database.ServerValue.TIMESTAMP,uid:fbUser.uid||"",op:isOpEmail(fbUser.email)});
+/* 사진은 사이트에서 직접 고른 프로필 사진만 싣는다: 없을 때 구글 계정 사진으로 대신하지 않는다 */
+var pushRef=msgRef.push({name:profNick||fbUser.displayName||"익명",photo:profImg,text:t,ts:firebase.database.ServerValue.TIMESTAMP,uid:fbUser.uid||"",op:isOpEmail(fbUser.email)});
 if(pushRef&&typeof pushRef.catch==="function")pushRef.catch(function(){err.textContent="전송에 실패했어요. 다시 시도해 주세요.";err.hidden=false});
 try{sessionStorage.removeItem("hlkrx_chat_draft")}catch(e){}
 input.value="";input.focus();
@@ -2890,7 +2904,7 @@ var started=false,postsRef=null,fbUser=null,authKnown=false,posts=[],curKey=null
 function cfgReady(){try{var c=(typeof FIREBASE_CONFIG!=="undefined")?FIREBASE_CONFIG:null;return !!(c&&typeof c.apiKey==="string"&&c.apiKey.trim()&&typeof c.databaseURL==="string"&&c.databaseURL.trim())}catch(e){return false}}
 function isOp(){if(!fbUser)return false;var oe=(typeof OPERATOR_EMAIL!=="undefined"?String(OPERATOR_EMAIL||""):"").trim().toLowerCase();return !!oe&&String(fbUser.email||"").trim().toLowerCase()===oe}
 function myNick(){try{var p=JSON.parse(localStorage.getItem("hlkrx_prof")||"{}");var n=String((p&&p.nick)||"").trim();if(n)return n}catch(e){}return (fbUser&&fbUser.displayName)||"익명"}
-function myPhoto(){try{var p=JSON.parse(localStorage.getItem("hlkrx_prof")||"{}");if(!p||typeof p!=="object")p={};var ui=localStorage.getItem("hlkrx_uimg");if(ui!==null)p.img=ui;var s=String(p.img||"").trim();if(s)return s}catch(e){}return (fbUser&&fbUser.photoURL)||""}
+function myPhoto(){try{var p=JSON.parse(localStorage.getItem("hlkrx_prof")||"{}");if(!p||typeof p!=="object")p={};var ui=localStorage.getItem("hlkrx_uimg");if(ui!==null)p.img=ui;var s=String(p.img||"").trim();/* 직접 고른 사진(data URL)만 사이트 프로필로 인정한다: 구글 계정 사진(http 주소)은 글에 싣지 않는다 */if(s&&s.indexOf("data:")===0)return s}catch(e){}return ""}
 function fmtD(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts),now=new Date();if(d.toDateString()===now.toDateString())return d.toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit",hour12:false});function p2(n){return (n<10?"0":"")+n}if(d.getFullYear()!==now.getFullYear())return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate());return p2(d.getMonth()+1)+"-"+p2(d.getDate())}
 function fmtT(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts),now=new Date();var hm=d.toLocaleTimeString("ko-KR",{hour:"numeric",minute:"2-digit"});if(d.toDateString()===now.toDateString())return hm;var ymd=d.getFullYear()!==now.getFullYear()?d.getFullYear()+". ":"";return ymd+(d.getMonth()+1)+"/"+d.getDate()+" "+hm}
 function emptyMsg(el,msg){el.textContent="";var p=document.createElement("p");p.className="cm-empty";p.textContent=msg;el.appendChild(p)}
