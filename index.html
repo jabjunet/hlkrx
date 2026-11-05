@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <script>if(location.hostname==="jabjunet.pages.dev"){location.replace("https://kimpwon.com"+location.pathname+location.search+location.hash);}</script>
+<script>(function(){try{var t=localStorage.getItem("hlkrx_theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);var l=localStorage.getItem("hlkrx_lang");if(l==="en"){document.documentElement.setAttribute("lang","en");document.documentElement.setAttribute("data-lang","en")}}catch(e){}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>김프원</title>
@@ -32,6 +33,17 @@
 --bg:#0b0d10;--sf:#14171b;--sf2:#1d2126;--tx:#eceff3;--mut:#8f99a6;--bd:#262b31;
 --up:#ff5f6b;--dn:#5ea0ff;--upbg:rgba(255,95,107,.13);--dnbg:rgba(94,160,255,.13);
 --ac:#eceff3;--acx:#0b0d10;--adsh:rgba(0,0,0,.65);color-scheme:dark}
+/* 헤더 다크/라이트·언어 전환 버튼: 라이트에서는 달(눌러 다크), 다크에서는 해(눌러 라이트) 아이콘 표시 */
+.hd-ctl{display:flex;align-items:center;gap:6px;flex:none}
+.thbtn{width:32px;height:32px;padding:0;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.thbtn svg{display:block}
+.thbtn .ic-sun{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .thbtn .ic-sun{display:block}:root:not([data-theme="light"]) .thbtn .ic-moon{display:none}}
+:root[data-theme="dark"] .thbtn .ic-sun{display:block}
+:root[data-theme="dark"] .thbtn .ic-moon{display:none}
+:root[data-theme="light"] .thbtn .ic-sun{display:none}
+:root[data-theme="light"] .thbtn .ic-moon{display:block}
+.lgbtn{min-height:32px;padding:5px 11px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;flex:none;line-height:1}
 
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 "Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;font-variant-numeric:tabular-nums}
@@ -1048,8 +1060,175 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-t"><span class="brand" aria-hidden="true">kimpwon</span><div class="hd-r"><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤니티</button></div></div>
+<div class="hd"><div class="hd-t"><span class="brand" aria-hidden="true">kimpwon</span><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤니티</button></div></div>
 
+<script>
+/* ===== 헤더 테마(다크/라이트)·언어(한/영) 전환 =====
+   테마: 저장값(hlkrx_theme)이 없으면 기기 설정을 따르고, 버튼을 누르면 그 선택을 저장해 다음 방문에도 유지한다.
+   라이트에서는 달 아이콘(누르면 다크), 다크에서는 해 아이콘(누르면 라이트)이 보인다(아이콘 전환은 CSS가 담당).
+   언어: 저장값(hlkrx_lang)이 없으면 한국어. 영어로 바꾸면 메뉴·탭·버튼·제목 등 UI 문구만 번역하고
+   종목명·뉴스 제목·게시글 같은 데이터는 그대로 둔다. 동적으로 그려지는 UI 문구는 MutationObserver로 계속 번역한다. */
+(function(){
+var root=document.documentElement;
+var LANG="ko";try{if(localStorage.getItem("hlkrx_lang")==="en")LANG="en"}catch(e){}
+function effTheme(){var t=root.getAttribute("data-theme");if(t==="dark"||t==="light")return t;return window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}
+var thBtn=document.getElementById("th-btn"),langBtn=document.getElementById("lang-btn");
+function syncThBtn(){if(!thBtn)return;var d=effTheme()==="dark";var lb=LANG==="en"?(d?"Switch to light mode":"Switch to dark mode"):(d?"라이트 모드로 전환":"다크 모드로 전환");thBtn.setAttribute("aria-label",lb);thBtn.title=lb}
+if(thBtn)thBtn.addEventListener("click",function(){var nx=effTheme()==="dark"?"light":"dark";root.setAttribute("data-theme",nx);try{localStorage.setItem("hlkrx_theme",nx)}catch(e){}syncThBtn()});
+if(window.matchMedia){var mm=window.matchMedia("(prefers-color-scheme: dark)");if(mm.addEventListener)mm.addEventListener("change",syncThBtn)}
+var D={
+"홈":"Home","김프":"Kimchi Prem.","해외":"Global","원자재":"Commodities","펀딩비":"Funding","비교":"Compare","지표":"Indicators","커뮤니티":"Community",
+"연결 중…":"Connecting…","로그인":"Log in","접속자":"Online","명":"","프로필 설정":"Profile settings",
+"코스피":"KOSPI","코스닥":"KOSDAQ","나스닥":"NASDAQ","다우":"Dow","달러/원":"USD/KRW","원유":"Crude Oil",
+"실시간 차트":"Live Chart","한국":"Korea","미국":"US","급상승":"Top Gainers","급하락":"Top Losers","불러오는 중…":"Loading…",
+"주요 종목 실적발표":"Key Earnings","주요 경제지표":"Key Economic Indicators","실시간 뉴스":"Live News","국내":"Domestic",
+"발표 예정":"Upcoming","예상":"Forecast","이전":"Prev.","더 보기":"Show more","접기":"Show less","뉴스를 불러오지 못했어요":"Could not load news","불러오지 못했습니다":"Failed to load","표시할 종목이 없습니다":"No stocks to display",
+"등락률은 TradingView 기준 전일 종가 대비이며 1분마다 갱신합니다. 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준으로 표시됩니다.":"Changes are vs. the previous close (TradingView) and refresh every minute. Low-volume stocks are excluded. When the market is closed, figures are based on the last close.",
+"미국 주요 경제지표의 발표 예정 일정입니다. 발표 시각은 한국 시간 기준이고, 예상치는 시장 전망치입니다.":"Upcoming release schedule for major US economic indicators. Times are Korea Standard Time; forecasts are market consensus.",
+"비농업 고용":"Nonfarm Payrolls","실업률":"Unemployment Rate","평균 시간당 임금":"Avg Hourly Earnings","미시간대 소비자심리지수 (예비)":"Michigan Consumer Sentiment (Prel.)","소비자심리지수":"Consumer Sentiment","소비자물가":"CPI","근원 소비자물가":"Core CPI","신규 실업수당 청구":"Initial Jobless Claims","생산자물가":"PPI","근원 생산자물가":"Core PPI","근원 소매판매":"Core Retail Sales","소매판매":"Retail Sales","국내총생산":"GDP","FOMC 기준금리":"FOMC Rate Decision","소비자신뢰지수":"Consumer Confidence","ISM 제조업":"ISM Manufacturing","ISM 서비스업":"ISM Services","무역수지":"Trade Balance","내구재 주문":"Durable Goods Orders","주택착공":"Housing Starts","기존주택판매":"Existing Home Sales","신규주택판매":"New Home Sales","JOLTS 구인":"JOLTS Job Openings",
+"한국 주식":"Korean Stocks","해외 주식":"Global Stocks","국장":"KR Market","미장":"US Market",
+"한국 시간 기준 · 국내 프리·애프터는 넥스트레이드(NXT) 포함":"KST · KR pre/after-market includes Nextrade (NXT)","한국 시간 기준 · 미장은 서머타임 자동 반영":"KST · US hours adjust for daylight saving time automatically",
+"휴장":"Closed","프리마켓 중":"Pre-market","정규장 중":"Market Open","애프터마켓 중":"After-hours","장외 시간":"Off-hours",
+"종목 검색":"Search stocks","정렬":"Sort","전일대비":"vs Prev Close","고가대비":"vs High","저가대비":"vs Low","거래량":"Volume",
+"이름":"Name","현재가":"Price","종가":"Close","(당일)":"(Today)","(일)":"(1D)","미상장":"Not Listed","검색 결과가 없습니다.":"No results found.",
+"역외 시세는 해외 거래소 파생 상품 기준이며 실제 주식 소유권과 무관합니다. 정보 제공 목적으로만 표시됩니다.":"Offshore prices are based on overseas exchange derivatives and are unrelated to actual share ownership. Shown for information only.",
+"해외 주식은 한국 거래소 가격이 없어, 선택한 거래소 가격을 원주 기준가(오라클)와 비교한 김프입니다. 역외 시세는 해외 거래소 파생 상품 기준이며 실제 주식 소유권과 무관합니다. 정보 제공 목적으로만 표시됩니다.":"Global stocks have no Korean exchange price, so the Kimchi Premium compares the selected exchange price with the oracle reference price. Offshore prices are based on overseas exchange derivatives and are unrelated to actual share ownership. Shown for information only.",
+"주식":"Stocks","전체":"All","한국 관련":"Korea-related","반도체":"Semiconductors","소프트웨어·AI":"Software & AI","플랫폼·인터넷":"Platform & Internet","하드웨어·전자":"Hardware & Electronics","전기차·자동차":"EV & Autos","바이오·헬스":"Bio & Health","금융·핀테크":"Finance & Fintech","소비·유통":"Consumer & Retail","에너지·소재":"Energy & Materials","산업·기계":"Industrials","우주·방산·로봇":"Space, Defense & Robotics","미디어·엔터":"Media & Entertainment","크립토":"Crypto","기타":"Other",
+"ETF 전체":"All ETFs","미국 상장":"US-listed","국내 상장":"KR-listed","지수":"Index","레버리지":"Leveraged","채권":"Bonds","배당":"Dividends","테마":"Theme",
+"나스닥 주식 전체":"All NASDAQ Stocks","기준 거래소":"Base exchange","비교 거래소":"Compare exchange","종목":"Symbol","가격(USD)":"Price (USD)","스크롤하면 더 불러옵니다":"Scroll to load more",
+"나스닥 종목 검색 (티커·회사명)":"Search NASDAQ (ticker or name)","ETF 검색 (이름·티커·종목코드·지수)":"Search ETFs (name, ticker, code, index)","ETF 검색":"Search ETFs",
+"실제 거래소에 상장된 ETF입니다. 가격은 TradingView 기준으로 불러와 표시하고 1분마다 갱신합니다(미국 ETF는 달러, 국내 ETF는 원). 조회가 안 될 때는 2026-11-05 조회 스냅샷을 보여줍니다. 같은 종목이나 같은 지수를 추종하는 ETF는 행 아래에 하이퍼리퀴드(HL)·바이낸스(BN)·OKX·바이비트(BY) 선물 가격도 함께 표시하고, 티커가 같은 선물은 실제 가격과의 차이도 보여줍니다. 선물 가격은 각 거래소 시세로 15초마다 갱신됩니다. 레버리지·인버스 ETF는 일일 수익률을 배율로 추종해 장기 보유 시 기초지수 수익률과 크게 달라질 수 있습니다.":"These are ETFs listed on real exchanges. Prices come from TradingView and refresh every minute (USD for US ETFs, KRW for Korean ETFs). If loading fails, a snapshot from Nov 5, 2026 is shown. For ETFs tracking the same underlying, futures prices from Hyperliquid (HL), Binance (BN), OKX and Bybit (BY) are also shown below each row, with the difference from the real price where tickers match. Futures prices refresh every 15 seconds. Leveraged and inverse ETFs track daily returns at a multiple, so long-term returns can differ greatly from the underlying index.",
+"금":"Gold","은":"Silver","구리":"Copper","유가":"Oil","차트보기":"Show Chart","차트접기":"Hide Chart",
+"금 (GOLD)":"Gold (GOLD)","은 (SILVER)":"Silver (SILVER)","구리 (COPPER)":"Copper (COPPER)","유가 (WTI 원유)":"Oil (WTI Crude)",
+"국제 현물 · 트로이온스(oz) 기준 · gold-api.com":"Intl spot · per troy ounce (oz) · gold-api.com","국제 현물 · 파운드(lb) 기준 · gold-api.com":"Intl spot · per pound (lb) · gold-api.com","국제 선물 · 배럴(bbl) 기준 · NYMEX WTI":"Intl futures · per barrel (bbl) · NYMEX WTI",
+"국내시세 출처: 한국금거래소 고시 · 2026-11-04":"Domestic prices: Korea Gold Exchange notice · 2026-11-04","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 9월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Sep 2026 (monthly notice)",
+"유가는 국내 고시 가격이 없어 김프를 표시하지 않습니다. 국제 시세(WTI) 기준입니다.":"Oil has no domestic posted price, so no Kimchi Premium is shown. Based on international (WTI) prices.",
+"김프 (국내 vs 국제 환산)":"Kimchi Prem. (Domestic vs Intl)","국내 유통가 (1kg)":"Domestic price (1kg)","국제 환산가 (1kg)":"Intl converted price (1kg)","국내 살 때 (1돈)":"Domestic buy (1 don)","국내 팔 때 (1돈)":"Domestic sell (1 don)","국제 원화 환산 (1배럴)":"Intl conversion (1 barrel)","당일 고가 (1배럴)":"Day high (1 barrel)","당일 저가 (1배럴)":"Day low (1 barrel)","국내 · 1kg":"Domestic · 1kg","국제 환산 · 1kg":"Intl conv. · 1kg","국내 · 팔 때 1돈":"Domestic · Sell 1 don","국제 환산 · 1돈":"Intl conv. · 1 don",
+"김프 = (국내 가격 ÷ 국제 환산가 − 1) × 100":"Kimchi Prem. = (Domestic price ÷ Intl converted price − 1) × 100","+면 국내가 더 비싸고, −면 국내가 더 쌉니다.":"Positive means the domestic price is higher; negative means it is cheaper.",
+"펀딩비 비교":"Funding Rates","펀딩비 불러오는 중…":"Loading funding rates…","HL 펀딩":"HL Funding","BN 펀딩":"BN Funding","OKX 펀딩":"OKX Funding","BY 펀딩":"BY Funding",
+"종목별 펀딩비를 거래소 4곳 나란히 비교합니다. 거래소마다 부과 주기가 달라 값 뒤에 주기를 함께 표시합니다. (하이퍼리퀴드 1시간, 나머지는 보통 8시간)":"Compare funding rates for each symbol across 4 exchanges side by side. Funding intervals differ by exchange, so the interval is shown next to each value. (Hyperliquid: 1 hour; others usually 8 hours)",
+"펀딩비는 각 거래소가 공시하는 펀딩 금리입니다. 양수면 롱 포지션이 숏 포지션에게, 음수면 숏이 롱에게 비용을 지급하는 구조입니다. OKX는 종목별 조회라 거래량 상위 40개 위주로 불러오며, 나머지와 미상장 종목은 —로 표시됩니다.":"Funding rates are the rates published by each exchange. When positive, longs pay shorts; when negative, shorts pay longs. OKX is loaded per symbol, focusing on the top 40 by volume; the rest and unlisted symbols are shown as —.",
+"비트코인":"Bitcoin","WTI 원유":"WTI Crude Oil","GOLD · 국제 금":"GOLD · Intl Gold","다른 주식과 비교":"Compare Other Stocks","첫 번째 종목 검색":"Search first stock","두 번째 종목 검색":"Search second stock","바이낸스":"Binance",
+"시장 심리 지표":"Market Sentiment","평균 펀딩비":"Avg Funding Rate",
+"주식 시장의 공포·탐욕과 자금 쏠림처럼, 시장 분위기를 한눈에 보는 지표입니다.":"Gauges of market mood at a glance, like fear and greed and fund flows in the stock market.",
+"주식 공포·탐욕 지수 · CNN":"Stock Fear & Greed Index · CNN","극단적 공포":"Extreme Fear","공포":"Fear","중립":"Neutral","탐욕":"Greed","극단적 탐욕":"Extreme Greed","0 · 극단적 공포":"0 · Extreme Fear","100 · 극단적 탐욕":"100 · Extreme Greed",
+"어제":"Yesterday","1주 전":"1W ago","1달 전":"1M ago","VIX 공포지수":"VIX Fear Index",
+"20 아래 · 시장이 안정적인 편이에요":"Below 20 · Markets are relatively calm","20~30 · 불안이 커지는 구간이에요":"20-30 · Anxiety is rising","30 위 · 공포가 큰 구간이에요":"Above 30 · Fear is high",
+"S&P 500 옵션 가격으로 본 향후 30일 변동성 기대치입니다.":"Expected 30-day volatility implied by S&P 500 option prices.",
+"주요 지수 등락":"Major Indices","옵션 만기일":"Options Expiry","미국 옵션":"US Options","한국 파생상품":"KR Derivatives","오늘 만기":"Expires Today","네 마녀의 날":"Quadruple Witching","선물·옵션 동시만기":"Futures & Options Expiry",
+"날짜 규칙으로 계산 · 미국 매월 셋째 금요일, 한국 매월 둘째 목요일":"Calculated by date rule · US: 3rd Friday of each month, KR: 2nd Thursday",
+"전인구 유튜브":"Jeon In-gu YouTube","영상을 불러오지 못했어요":"Could not load videos","워뇨띠 주식 포지션":"Wonyotti Stock Positions","디시 원글 보기":"View Original Post",
+"주식 평가금액 · 2026년 11월 5일 본인 공개":"Stock valuation · Self-disclosed Nov 5, 2026","보유 종목 접기":"Hide Holdings","공개 당시":"At disclosure",
+"실시간 보유 현황이 아니라 11월 5일 공개 시점 기준입니다. 본인이 5억 원 이상 보유 종목만 공개해 그보다 작은 보유 종목은 빠져 있고, 종목별 평가금액은 공개된 평가손익·수익률로 계산한 대략적인 값입니다.":"This reflects the positions as disclosed on Nov 5, not live holdings. Only holdings of 500M KRW or more were disclosed, so smaller positions are omitted, and per-stock valuations are approximate figures calculated from the disclosed P&L and returns.",
+"디시인사이드 코스피 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인":"Self-disclosed on DC Inside KOSPI Gallery · Prices via TradingView · Checked every 1 min",
+"최신글":"Latest Posts","글쓰기":"Write","구글 로그인":"Google Sign-in",
+"글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.":"You need to sign in with Google to write a post. Once signed in, you can post right away.",
+"제목을 입력하세요":"Enter a title","내용을 입력하세요":"Enter content","사진 첨부":"Attach Photo","사진 1장까지 넣을 수 있어요":"You can attach up to 1 photo","사진 지우기":"Remove Photo","취소":"Cancel","등록":"Post","삭제":"Delete","닫기":"Close",
+"아직 글이 없습니다. 첫 글을 남겨 보세요.":"No posts yet. Write the first post.","글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to write. Press the Google sign-in button above.","아직 연결이 준비되지 않았어요. 잠시 후 다시 시도해 주세요.":"The connection is not ready yet. Please try again shortly.","제목을 입력해 주세요.":"Please enter a title.","내용을 입력하거나 사진을 넣어 주세요.":"Please enter content or add a photo.","등록에 실패했어요. 다시 시도해 주세요.":"Failed to post. Please try again.","이미지를 불러오지 못했어요.":"Could not load the image.",
+"데이터 갱신 안내":"Data Update Notes","개인정보처리방침":"Privacy Policy","이용약관":"Terms of Service","문의":"Contact","가이드":"Guide",
+"김프원은 국내외 금융시장 데이터와 김치프리미엄, 펀딩비 및 주식·ETF 정보를 비교하고 제공하는 독립 금융 정보 플랫폼입니다.":"Kimpwon is an independent financial information platform that compares and provides domestic and global market data, Kimchi Premium, funding rates, and stock and ETF information.",
+"채팅":"Chat","오픈 채팅":"Open Chat","방문자들이 함께 이야기하는 공간":"A place for visitors to chat together","채팅 준비 중이에요":"Chat is getting ready","메시지를 입력하세요":"Type a message","전송":"Send","구글 로그인하고 글쓰기":"Sign in with Google to Write",
+"로그인 상태를 확인하고 있어요. 잠시만 기다려 주세요.":"Checking your sign-in status. Please wait a moment.","글을 쓰려면 구글 로그인이 필요해요. 아래 버튼으로 로그인하면 바로 글을 쓸 수 있어요. 로그인 전에는 메시지를 읽을 수만 있어요.":"You need to sign in with Google to write. Sign in with the button below to post right away. Before signing in, you can only read messages.",
+"아직 메시지가 없어요. 첫 메시지를 남겨 보세요.":"No messages yet. Leave the first message.","채팅을 불러오는 중…":"Loading chat…","채팅을 불러오지 못했어요. 패널을 닫았다가 다시 열어 주세요.":"Could not load chat. Close the panel and open it again.","채팅을 불러오지 못했어요.":"Could not load chat.","운영자":"Operator","익명":"Anonymous",
+"전송에 실패했어요. 다시 시도해 주세요.":"Failed to send. Please try again.","로그인 창이 닫혔어요. 버튼을 눌러 다시 시도해 주세요.":"The sign-in window was closed. Press the button to try again.","로그인에 실패했어요. 앱 안 브라우저(카카오톡 등)에서는 구글 로그인이 막힐 수 있어요. 크롬이나 사파리에서 열면 더 잘 돼요.":"Sign-in failed. Google sign-in may be blocked in in-app browsers (such as KakaoTalk). Opening this page in Chrome or Safari works better.","이 주소에서는 구글 로그인이 허용되지 않아요. jabjunet.pages.dev 주소로 접속해 다시 시도해 주세요.":"Google sign-in is not allowed at this address. Please open the jabjunet.pages.dev address and try again.","로그인 상태를 확인하고 있어요. 잠시 후 다시 눌러 주세요.":"Checking your sign-in status. Please press again in a moment.","글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 누르면 쓰던 글이 그대로 남아 있어요.":"You need to sign in to write. Press the Google sign-in button above and your draft will stay as it is.","채팅 연결이 아직 준비되지 않았어요. 패널을 닫았다가 다시 열어 주세요.":"Chat is not connected yet. Close the panel and open it again.","로그인을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.":"Could not load sign-in. Please try again shortly.",
+"계산기":"Calculator","김프 계산기":"Kimchi Premium Calculator","평단 계산기":"Average Price Calculator","종목 이름":"Stock Name","저장":"Save",
+"국내 가격 (원)":"Korean Price (KRW)","해외 가격 ($)":"Overseas Price ($)","환율 (원/$)":"Exchange Rate (KRW/$)","투자 금액 (원 · 선택)":"Investment Amount (KRW · Optional)",
+"김치프리미엄":"Kimchi Premium","해외 가격 원화 환산":"Overseas Price in KRW","가격 차이 (국내 − 해외 환산)":"Price Difference (KR - Converted)","예상 차익 (단순 계산)":"Expected Profit (Simple Calc)",
+"예: 삼성전자":"e.g. Samsung Electronics","포지션 방향":"Position Direction","롱":"Long","숏":"Short","레버리지 (배)":"Leverage (x)","현재 평단가":"Current Avg Price","현재 보유 수량":"Current Quantity","추가 매수 가격":"Add Price","추가 투자 금액":"Add Amount","추가 수량 (자동 계산)":"Added Quantity (Auto)","새 평단가":"New Avg Price","평단 변화":"Avg Price Change","청산가 (추가 전 → 후)":"Liquidation Price (Before → After)","총 수량":"Total Quantity","총 투자금":"Total Invested",
+"청산가는 격리 기준 단순 계산(롱: 평단×(1−1/레버리지), 숏: 평단×(1+1/레버리지))이라 실제 거래소 청산가와는 유지증거금 때문에 차이가 있을 수 있어요.":"The liquidation price is a simple isolated-margin estimate (Long: avg x (1 - 1/leverage), Short: avg x (1 + 1/leverage)) and may differ from actual exchange liquidation prices because of maintenance margin.",
+"Google로 계속하기":"Continue with Google","로그인하면 채팅도 바로 쓸 수 있어요. 로그인 상태는 이 기기에만 저장됩니다.":"Signing in also enables chat right away. Your sign-in is stored only on this device.",
+"사진 고르기":"Choose Photo","닉네임":"Nickname","닉네임을 입력하세요":"Enter a nickname","건너뛰기":"Skip","로그아웃":"Log Out","프로필은 이 기기에만 저장됩니다.":"Your profile is stored only on this device.","닉네임을 입력해 주세요.":"Please enter a nickname.","저장에 실패했어요. 사진 없이 다시 시도해 보세요.":"Failed to save. Please try again without a photo.",
+"문의는 트위터로만 받습니다.":"Inquiries are accepted via Twitter only.","트위터":"Twitter","카카오톡":"KakaoTalk","쓰레드":"Threads","네이버 블로그":"Naver Blog","다른 링크":"Other Links",
+"주요 지수":"Key Indices","장 운영 시간 안내":"Market Hours","김프 종목 검색":"Search Kimchi Premium Stocks","해외 종목 검색":"Search Global Stocks","펀딩비 종목 검색":"Search Funding Symbols","비교 첫 번째 종목 검색":"Search First Stock","비교 두 번째 종목 검색":"Search Second Stock","원자재 선택":"Select Commodity","ETF 테마 선택 열기·닫기":"Toggle ETF Theme Picker","나스닥 섹터 선택 열기·닫기":"Toggle NASDAQ Sector Picker","가격·차트 출처":"Price & Chart Source","계산기 종류":"Calculator Type","오픈 채팅방":"Open Chat Room","채팅 닫기":"Close Chat","계산기 닫기":"Close Calculator","이 메시지 삭제":"Delete This Message","글 제목":"Post Title","글 내용":"Post Content","첨부한 사진 미리보기":"Attached Photo Preview","채팅 메시지 입력":"Chat Message Input","계산기 종목 이름":"Calculator Stock Name","약관 및 방침":"Terms and Policies",
+"장전":"Pre-market","장후":"After-hours","EPS 예상":"EPS Forecast","실적 일정을 불러오지 못했어요":"Could not load the earnings schedule","연결 문제로 실적 데이터를 불러오지 못했어요.":"Could not load earnings data due to a connection problem.","다시 시도":"Retry","앞으로 30일 안에 예정된 주요 종목 실적발표가 없습니다":"No key earnings are scheduled in the next 30 days",
+"차트를 불러오지 못했어요":"Could not load the chart","차트 데이터를 가져오지 못했어요. 연결 문제일 수 있으니 다시 시도하거나 TradingView에서 확인해 보세요.":"Could not fetch chart data. It may be a connection issue - please try again or check on TradingView.","차트 불러오는 중…":"Loading chart…","TradingView에서 열기":"Open in TradingView","차트 다시 걸기":"Reload Chart","방금 전":"Just now",
+"구글 로그인을 마쳤는데 로그인 상태가 돌아오지 않았어요. 이 브라우저에서는 로그인 저장이 막혀 있을 수 있어요. 사파리나 크롬에서 jabjunet.pages.dev를 직접 열어 다시 로그인해 주세요.":"You finished Google sign-in, but the signed-in state did not come back. Sign-in storage may be blocked in this browser. Please open jabjunet.pages.dev directly in Safari or Chrome and sign in again."
+};
+var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],WD={"일":"Sun","월":"Mon","화":"Tue","수":"Wed","목":"Thu","금":"Fri","토":"Sat"};
+function bn(x){var v=parseFloat(String(x).replace(/,/g,""))*0.1;return (Math.round(v*100)/100).toString()}
+function trList(s){return s.split(", ").map(function(p){return trCore(p)}).join(", ")}
+function trCore(c){
+if(Object.prototype.hasOwnProperty.call(D,c))return D[c];
+var m;
+if(m=c.match(/^(.*) (▼|▲)$/)){var b=trCore(m[1]);return b+" "+m[2]}
+if(m=c.match(/^실시간 · (.+) 업데이트$/))return "Live · "+m[1]+" updated";
+if(m=c.match(/^([\d:]+) 갱신$/))return "Updated "+m[1];
+if(m=c.match(/^오늘 (.+)$/))return "Today "+m[1];
+if(m=c.match(/^내일 (.+)$/))return "Tomorrow "+m[1];
+if(m=c.match(/^(\d+)년 (\d+)월 (\d+)일 \(([일월화수목금토])\)$/))return MON[+m[2]-1]+" "+m[3]+", "+m[1]+" ("+WD[m[4]]+")";
+if(m=c.match(/^(\d+)월 (\d+)일 \(([일월화수목금토])\)$/))return MON[+m[1]-1]+" "+m[2]+" ("+WD[m[3]]+")";
+if(m=c.match(/^(\d+)분 전$/))return m[1]+"m ago";
+if(m=c.match(/^(\d+)시간 전$/))return m[1]+"h ago";
+if(m=c.match(/^(\d+)일 전$/))return m[1]+"d ago";
+if(m=c.match(/^([\d,]+(?:\.\d+)?)만$/)){var kv=parseFloat(m[1].replace(/,/g,""))*10;return (Math.round(kv*10)/10).toString()+"K"}
+if(m=c.match(/^약 ([\d,.]+)억$/))return "≈ ₩"+bn(m[1])+"B";
+if(m=c.match(/^([\d,.]+)억 원$/))return "₩"+bn(m[1])+"B";
+if(m=c.match(/^([\d,]+)원$/))return "₩"+m[1];
+if(m=c.match(/^([+\-−][\d,]+)원$/))return m[1]+" KRW";
+if(m=c.match(/^예상 (.+)$/))return "Forecast "+trCore(m[1]);
+if(m=c.match(/^· 이전 (.+)$/))return "· Prev. "+trCore(m[1]);
+if(m=c.match(/^테마: (.+)$/))return "Theme: "+trList(m[1]);
+if(m=c.match(/^섹터: (.+)$/))return "Sector: "+trList(m[1]);
+if(m=c.match(/^(.+) 외 (\d+)개$/))return trCore(m[1])+" +"+m[2]+" more";
+if(m=c.match(/^나스닥 주식 전체 \((.+)\)$/))return "All NASDAQ Stocks ("+m[1]+")";
+if(m=c.match(/^나스닥 · (.+) \((.+)\)$/))return "NASDAQ · "+trCore(m[1])+" ("+m[2]+")";
+if(m=c.match(/^실제 상장 ETF \((.+)\)$/))return "Listed ETFs ("+m[1]+")";
+if(m=c.match(/^(.+) 주식 전체 \((.+)\)$/))return m[1]+" Stocks ("+m[2]+")";
+if(m=c.match(/^보유 종목 (\d+)개 보기$/))return "View "+m[1]+" Holdings";
+if(m=c.match(/^평가손익 \+([\d.]+)억 원 · 순자산 ([\d.]+)억 원 \(예수금 ([\d.]+)억 원 포함\)$/))return "P&L +₩"+bn(m[1])+"B · Net assets ₩"+bn(m[2])+"B (incl. ₩"+bn(m[3])+"B cash)";
+if(m=c.match(/^평가손익 (.+)$/))return "P&L "+m[1];
+if(m=c.match(/^(.+) · (\d+)시간마다 확인$/))return m[1]+" · Checked every "+m[2]+"h";
+if(m=c.match(/^(.+) · (\d+)분마다 확인$/))return m[1]+" · Checked every "+m[2]+" min";
+if(m=c.match(/^(.+) · 4시간봉 · 최근 14일$/))return m[1]+" · 4h candles · Last 14 days";
+if(m=c.match(/^스냅샷 · (.+) 조회$/))return "Snapshot · as of "+m[1];
+if(m=c.match(/^실시간 · (.+) 기준$/))return "Live · "+m[1];
+if(m=c.match(/^(.+) · (1oz|1lb|1배럴) 가격$/))return m[1]+" · "+(m[2]==="1배럴"?"1 barrel":m[2])+" price";
+if(m=c.match(/^국제 원화 환산 1돈\(3\.75g\) 약 ([\d,]+)원 · 1g 약 ([\d,]+)원$/))return "Intl conversion: 1 don (3.75g) ≈ ₩"+m[1]+" · 1g ≈ ₩"+m[2];
+if(m=c.match(/^국제 원화 환산 1kg 약 ([\d,]+)원 · 1lb 약 ([\d,]+)원$/))return "Intl conversion: 1kg ≈ ₩"+m[1]+" · 1lb ≈ ₩"+m[2];
+if(m=c.match(/^국제 원화 환산 1배럴 약 ([\d,]+)원$/))return "Intl conversion: 1 barrel ≈ ₩"+m[1];
+if(m=c.match(/^(.+) 선물$/))return trCore(m[1].replace(/나스닥/g,"NASDAQ"))+" Futures";
+if(m=c.match(/^(.+) \(전월비\)$/))return trCore(m[1])+" (MoM)";
+if(m=c.match(/^(.+) \(예비\)$/))return trCore(m[1])+" (Prel.)";
+if(m=c.match(/^예: (.+)$/))return "e.g. "+m[1];
+if(m=c.match(/^(.+)님으로 로그인돼 있어요\. 아래 칸에 메시지를 쓰고 전송을 누르면 바로 올라가요\.$/))return "You are signed in as "+m[1]+". Write a message below and press Send to post it right away.";
+if(m=c.match(/^(.+) 저장 삭제$/))return "Delete saved "+m[1];
+if(m=c.match(/^(.+) 선택 해제$/))return "Remove "+trCore(m[1]);
+if(m=c.match(/^다음 만기 (.+)$/))return "Next expiry "+trCore(m[1]);
+if(c.indexOf("프리")>=0&&c.indexOf("–")>=0)return c.replace(/프리/g,"Pre").replace(/정규/g,"Regular").replace(/애프터/g,"After");
+if(c.length<70&&(c.indexOf("오전 ")>=0||c.indexOf("오후 ")>=0||c.indexOf("조회 ")>=0||c.indexOf("만기")>=0)){
+var o=c.replace(/오전 /g,"AM ").replace(/오후 /g,"PM ").replace(/조회 ([\d,]+)/g,"Views $1").replace(/^익명/,"Anonymous").replace(/네 마녀의 날/g,"Quadruple Witching").replace(/선물·옵션 동시만기/g,"Futures & Options Expiry").replace(/다음 만기 /g,"Next expiry ").replace(/(\d+)년 (\d+)월 (\d+)일 \(([일월화수목금토])\)/g,function(_,y,mo,d,w){return MON[+mo-1]+" "+d+", "+y+" ("+WD[w]+")"});
+if(o!==c)return o}
+return c}
+function trStr(s){var m=s.match(/^(\s*)([\s\S]*?)(\s*)$/);if(!m||!m[2])return s;return m[1]+trCore(m[2])+m[3]}
+var TM=new WeakMap(),AM=new WeakMap(),ATTRS=["placeholder","title","aria-label","alt"];
+function excluded(n){var e=n.nodeType===3?n.parentElement:n;if(!e||!e.closest)return true;if(e.closest("script,style,.cmsg-tx,.cm-rt,#pv-title,#pv-text,#th-btn,#lang-btn"))return true;return false}
+function procText(n){var v=n.nodeValue;if(v==null||!/[가-힣]/.test(v))return;var rec=TM.get(n);if(rec&&v===rec.en)return;var en=trStr(v);TM.set(n,{ko:v,en:en});if(LANG==="en"&&en!==v)n.nodeValue=en}
+function procAttrs(el){if(!el.getAttribute)return;var rec=AM.get(el);for(var i=0;i<ATTRS.length;i++){var a=ATTRS[i],v=el.getAttribute(a);if(v==null||!/[가-힣]/.test(v))continue;if(rec&&rec[a]&&v===rec[a].en)continue;var en=trStr(v);if(!rec)rec={};if(!rec[a]||rec[a].ko!==v)rec[a]={ko:v,en:en};AM.set(el,rec);if(LANG==="en"&&en!==v)el.setAttribute(a,en)}}
+function walk(node){
+if(!node||excluded(node))return;
+if(node.nodeType===3){procText(node);return}
+if(node.nodeType!==1)return;
+procAttrs(node);
+var tw=document.createTreeWalker(node,NodeFilter.SHOW_TEXT,{acceptNode:function(n){return excluded(n)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
+var t;while(t=tw.nextNode())procText(t);
+var els=node.querySelectorAll?node.querySelectorAll("[placeholder],[title],[aria-label],[alt]"):[];
+for(var i=0;i<els.length;i++)if(!excluded(els[i]))procAttrs(els[i])}
+function restoreAll(){
+var tw=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){return excluded(n)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
+var t;while(t=tw.nextNode()){var rec=TM.get(t);if(rec&&t.nodeValue===rec.en)t.nodeValue=rec.ko}
+document.querySelectorAll("[placeholder],[title],[aria-label],[alt]").forEach(function(el){var rec=AM.get(el);if(!rec)return;for(var a in rec){if(el.getAttribute(a)===rec[a].en)el.setAttribute(a,rec[a].ko)}})}
+function applyLang(){
+root.setAttribute("lang",LANG==="en"?"en":"ko");
+if(LANG==="en")root.setAttribute("data-lang","en");else root.removeAttribute("data-lang");
+if(langBtn){langBtn.textContent=LANG==="en"?"한":"EN";var lb=LANG==="en"?"한국어로 전환":"Switch to English";langBtn.setAttribute("aria-label",lb);langBtn.title=lb}
+syncThBtn();
+if(LANG==="en")walk(document.body);else restoreAll()}
+if(langBtn)langBtn.addEventListener("click",function(){LANG=LANG==="en"?"ko":"en";try{localStorage.setItem("hlkrx_lang",LANG)}catch(e){}applyLang()});
+var mo=new MutationObserver(function(ms){if(LANG!=="en")return;for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData")procText(m.target);else if(m.type==="attributes")procAttrs(m.target);else for(var j=0;j<m.addedNodes.length;j++)walk(m.addedNodes[j])}});
+mo.observe(root,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:ATTRS});
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){syncThBtn();if(LANG==="en")applyLang()});else{syncThBtn();if(LANG==="en")applyLang()}
+})();
+</script>
 <section id="ph">
 <div class="ixtiles" aria-label="주요 지수">
 <div class="ixt"><small><i id="ixt-ks-d"></i>코스피</small><b id="ixt-ks-v">—</b><span class="ixc na" id="ixt-ks-c">—</span></div>
