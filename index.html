@@ -451,7 +451,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .pav img{width:100%;height:100%;object-fit:cover;display:block}
 .pav img[hidden]{display:none}
 .pav span[hidden]{display:none}
-.pfav{width:84px;height:84px;border-radius:50%;background:var(--ac);color:var(--acx);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:700;overflow:hidden;margin:2px auto 12px}
+.pfav{width:64px;height:64px;border-radius:50%;background:var(--ac);color:var(--acx);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;overflow:hidden;margin:2px auto 10px}
 .pfav img{width:100%;height:100%;object-fit:cover;display:block}
 .pfav img[hidden]{display:none}
 .pfav span[hidden]{display:none}
@@ -460,16 +460,18 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .pfskip{display:block;margin:6px auto 0;border:0;background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer;min-height:36px;padding:6px 10px}
 .pfskip[hidden]{display:none}
 /* 프로필 설정 카드: 바텀시트가 아니라 둥근 카드로 띄우고, 사진 영역을 안쪽 카드로 묶는다 */
-.pfcard{border-radius:18px;padding:20px 18px 16px;box-shadow:0 20px 48px rgba(0,0,0,.32)}
-.pfcard h2{margin:0 36px 14px 2px}
-.pfhero{background:var(--sf2);border:1px solid var(--bd);border-radius:14px;padding:18px 14px 4px;margin-bottom:16px}
-.pfhero .pfav{margin:0 auto 12px;box-shadow:0 0 0 3px var(--sf),0 0 0 4px var(--bd),0 4px 12px rgba(0,0,0,.16)}
-.pfhero .pfrow{margin-bottom:10px}
+.pfcard{border-radius:16px;padding:16px 14px 12px;box-shadow:0 20px 48px rgba(0,0,0,.32);max-width:320px}
+.pfcard h2{margin:0 32px 10px 2px;font-size:16.5px}
+.pfhero{background:var(--sf2);border:1px solid var(--bd);border-radius:12px;padding:12px 12px 2px;margin-bottom:12px}
+.pfhero .pfav{margin:0 auto 10px;box-shadow:0 0 0 3px var(--sf),0 0 0 4px var(--bd),0 4px 12px rgba(0,0,0,.16)}
+.pfhero .pfrow{margin-bottom:8px}
 .pfhero .lgb{background:var(--sf)}
-.pfcard .lgf input{background:var(--sf2);border-radius:12px}
-.pfcard .lgsub{border-radius:12px}
-.pfcard .pfout{background:var(--sf2);border-radius:12px}
-@media(max-width:520px){#pf-ov{align-items:center;padding:16px}#pf-ov .lgbox{max-width:380px;border-radius:18px;border-bottom:1px solid var(--bd);padding-bottom:16px}}
+.pfcard .lgf{margin-bottom:10px}
+.pfcard .lgf input{background:var(--sf2);border-radius:12px;min-height:40px}
+.pfcard .lgsub{border-radius:12px;min-height:42px;font-size:14px}
+.pfcard .pfout{background:var(--sf2);border-radius:12px;min-height:38px;margin-top:8px}
+.pfcard .lgnote{margin-top:8px}
+@media(max-width:520px){#pf-ov{align-items:center;padding:16px}#pf-ov .lgbox{max-width:320px;border-radius:16px;border-bottom:1px solid var(--bd);padding-bottom:12px}}
 @media(max-width:520px){.lgov{align-items:flex-end;padding:0}.lgbox{max-width:none;border-radius:16px 16px 0 0;border-bottom:0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}}
 @media(max-width:720px){.tabs{flex-wrap:wrap}}
 /* 데스크톱 */
