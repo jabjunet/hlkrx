@@ -934,6 +934,10 @@ main{padding:2px 12px 40px}
 #kc-body-avg .kc-row b{font-size:10px}
 #kc-body-avg .ac-note{font-size:10px;margin-top:8px}
 @media(max-width:520px){.kcbtn{right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px))}.kcpanel{right:12px;bottom:calc(122px + env(safe-area-inset-bottom,0px))}}
+/* 커뮤니티 탭: 채팅 버튼이 숨고 채팅 패널이 본문으로 들어가므로, 계산기 버튼을 원래 채팅 버튼 자리(맨 아래)로 내리고 패널도 그만큼 함께 내린다. 다른 탭에서는 원래 위치(채팅 버튼 위)로 돌아간다 */
+body.cm-on .kcbtn{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+@media(max-width:520px){body.cm-on .kcbtn{bottom:calc(12px + env(safe-area-inset-bottom,0px))}body.cm-on .kcpanel{bottom:calc(66px + env(safe-area-inset-bottom,0px))}}
 /* 푸터 · 약관 */
 .sitefoot{margin-top:16px;padding:14px 2px 6px;border-top:1px solid var(--bd);text-align:center}
 .sitefoot nav{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
@@ -1279,7 +1283,7 @@ main{padding:2px 12px 40px}
 </div>
 </div>
 </div>
-<button type="button" class="kcbtn" id="kc-open" aria-expanded="false" aria-controls="kc-panel"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 15.5h.01M12 15.5h.01M15.5 15.5h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>김프 계산기</button>
+<button type="button" class="kcbtn" id="kc-open" aria-expanded="false" aria-controls="kc-panel"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 15.5h.01M12 15.5h.01M15.5 15.5h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>계산기</button>
 <div class="kcpanel" id="kc-panel" role="dialog" aria-label="계산기" hidden>
 <div class="kctabwrap"><div class="kctabs" role="group" aria-label="계산기 종류"><button type="button" id="kc-tab-kimp" aria-pressed="true">김프 계산기</button><button type="button" id="kc-tab-avg" aria-pressed="false">평단 계산기</button></div><button type="button" class="kc-x" id="kc-x" aria-label="계산기 닫기">×</button></div>
 <div class="kcbody" id="kc-body-kimp">
@@ -2630,6 +2634,7 @@ var inPk=false;
 function enter(){
 inPk=true;
 btn.hidden=true;
+document.body.classList.add("cm-on");
 slot.appendChild(panel);
 panel.classList.add("inpage");
 panel.removeAttribute("role");
@@ -2638,6 +2643,7 @@ if(typeof window.__openChat==="function")window.__openChat();
 function leave(){
 inPk=false;
 btn.hidden=false;
+document.body.classList.remove("cm-on");
 if(typeof window.__closeChat==="function")window.__closeChat();
 panel.classList.remove("inpage");
 panel.setAttribute("role","dialog");
