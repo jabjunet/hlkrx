@@ -1015,7 +1015,6 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .gdoc .gnote{color:var(--mut);font-size:12.5px;line-height:1.7;margin-top:18px}
 .gdoc .gfoot{margin-top:20px;text-align:center}
 .gdoc .gfoot .gback{margin-left:0}
-.legalbox-bd .gopenguide{display:block;width:100%;border:1px solid var(--bd);background:var(--sf2,var(--sf));color:var(--tx);font:inherit;font-size:13px;font-weight:700;border-radius:10px;padding:11px 14px;cursor:pointer;text-align:center;margin:4px 0 10px}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
@@ -1330,65 +1329,65 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <section id="pab" hidden>
 <div class="gdoc">
 <div class="gdoc-hd"><h2>김프·펀딩비 가이드</h2><button type="button" class="gback" id="guide-back">← 홈으로</button></div>
-<p class="gdoc-lead">김프원은 국내외 금융시장 데이터와 김치프리미엄, 펀딩비 및 주식·ETF 정보를 비교하고 제공하는 독립 금융 정보 플랫폼입니다. 이 페이지에서는 김프원의 핵심 지표인 김치프리미엄(김프)과 펀딩비가 무엇인지, 어떻게 계산하고 어떻게 읽어야 하는지 설명합니다.</p>
+<p class="gdoc-lead">김프원은 국내외 가격 차이(김프)와 펀딩비, 주식·ETF 시세를 한곳에서 비교해 보여주는 사이트입니다. 이 페이지에서는 김프와 펀딩비가 무엇인지, 어떻게 계산하고 읽으면 되는지 쉽게 설명합니다.</p>
 <nav class="gtoc" aria-label="가이드 목차"><button type="button" data-g="g-kimp">김치프리미엄이란</button><button type="button" data-g="g-calc">김프 계산 방법</button><button type="button" data-g="g-fund">펀딩비란</button><button type="button" data-g="g-data">데이터 출처와 갱신 주기</button><button type="button" data-g="g-faq">자주 묻는 질문</button></nav>
 <h3 id="g-kimp">김치프리미엄(김프)이란</h3>
-<p>김치프리미엄은 같은 종목이 국내에서 해외보다 얼마나 비싸게(또는 싸게) 거래되는지를 나타내는 가격 차이입니다. 국내 가격이 해외 가격(원화 환산 기준)보다 높으면 김프가 플러스, 낮으면 마이너스가 되는데 마이너스인 경우를 역프리미엄(역프)이라고 부릅니다.</p>
-<p>김프는 국내 수요와 공급, 국내외 시장 사이의 자금 이동 제한, 환율 변동 같은 요인으로 생깁니다. 국내 매수세가 몰리면 김프가 벌어지고, 국내 시장이 식으면 김프가 줄거나 역프가 나타나기도 합니다. 그래서 김프는 국내 투자 심리를 가늠하는 보조 지표로도 읽힙니다.</p>
-<p>다만 김프 수치 자체가 곧 수익 기회는 아닙니다. 가격 차이가 있어도 실제로 옮겨 팔기까지의 제약과 비용, 그사이의 가격 변동을 함께 봐야 합니다. 자세한 주의점은 아래 계산 방법에서 함께 설명합니다.</p>
+<p>김프는 같은 종목이 국내에서 해외보다 얼마나 비싸게 거래되는지를 나타낸 숫자입니다. 국내 가격이 더 비싸면 플러스(+), 더 싸면 마이너스(−)가 되는데, 마이너스인 경우를 역프리미엄(역프)이라고 합니다.</p>
+<p>김프는 국내에서 사려는 사람이 몰리면 커지고, 시장이 식으면 줄어듭니다. 그래서 국내 투자 심리를 가늠하는 지표로도 쓰입니다.</p>
+<p>다만 김프가 크다고 해서 그만큼 벌 수 있는 것은 아닙니다. 실제로 옮겨 팔려면 수수료와 걸리는 시간, 그사이의 가격 변동까지 함께 봐야 합니다.</p>
 <h3 id="g-calc">김프 계산 방법</h3>
 <p class="gformula">김프(%) = (국내 가격 ÷ (해외 가격 × 환율) − 1) × 100</p>
-<p>계산은 세 단계로 이루어집니다.</p>
+<p>계산은 세 단계면 됩니다.</p>
 <ol>
-<li>해외 가격에 달러/원 환율을 곱해 원화 환산가를 구합니다.</li>
+<li>해외 가격에 환율을 곱해 원화로 바꾼 가격(원화 환산가)을 구합니다.</li>
 <li>국내 가격을 원화 환산가로 나눕니다.</li>
 <li>1을 빼고 100을 곱하면 김프(%)가 됩니다.</li>
 </ol>
 <div class="gex">
 <p><b>예시 1 · 김프가 플러스인 경우</b></p>
-<p>국내 가격이 100,000원이고 해외 가격이 70달러, 환율이 1,400원이면 원화 환산가는 70 × 1,400 = 98,000원이 되고, 김프는 (100,000 ÷ 98,000 − 1) × 100 ≈ <b>+2.04%</b>입니다. 국내에서 해외보다 약 2% 비싸게 거래되고 있다는 뜻입니다.</p>
+<p>국내 가격 100,000원, 해외 가격 70달러, 환율 1,400원이면 원화 환산가는 70 × 1,400 = 98,000원입니다. 김프는 (100,000 ÷ 98,000 − 1) × 100 ≈ <b>+2.04%</b>로, 국내가 해외보다 약 2% 비싼 상태입니다.</p>
 <p><b>예시 2 · 역프인 경우</b></p>
-<p>국내 가격이 95,000원이고 해외 가격이 70달러, 환율이 1,400원이면 원화 환산가는 98,000원으로 같고, 김프는 (95,000 ÷ 98,000 − 1) × 100 ≈ <b>−3.06%</b>입니다. 국내 가격이 해외보다 싸게 거래되는 역프리미엄 상태입니다.</p>
+<p>국내 가격이 95,000원이면 김프는 (95,000 ÷ 98,000 − 1) × 100 ≈ <b>−3.06%</b>로, 국내가 해외보다 싼 역프 상태입니다.</p>
 </div>
-<p>김프원의 김프 탭과 김프 계산기는 모두 이 방식으로 계산합니다. 계산기에 종목 이름을 입력하면 국내·해외 가격과 환율을 자동으로 불러와 같은 계산을 해 주고, 투자금을 넣으면 김프 기준 예상 차익까지 보여줍니다.</p>
+<p>김프원의 김프 탭과 계산기는 이 방식으로 계산합니다. 계산기에 종목 이름만 넣으면 가격과 환율을 자동으로 불러오고, 투자금을 넣으면 예상 차익도 보여줍니다.</p>
 <h4>김프를 볼 때 주의할 점</h4>
 <ul>
-<li>김프는 두 시장의 가격 차이를 보여주는 지표일 뿐이고, 실제 차익거래에는 송금·출금 제한, 거래 수수료, 입출금에 걸리는 시간 동안의 가격 변동 같은 제약과 위험이 따릅니다. 김프 수치만으로 수익을 보장할 수는 없습니다.</li>
-<li>국내 장이 닫힌 동안에는 국내 가격이 최근 거래일 종가로 고정되고 해외 거래소 가격만 움직이기 때문에, 김프도 그에 따라 변합니다.</li>
-<li>환율이 움직여도 김프가 변합니다. 김프만 보지 말고 환율과 해외 가격을 함께 확인하는 것이 좋습니다.</li>
+<li>김프는 가격 차이를 보여주는 숫자일 뿐입니다. 실제 거래에는 송금·출금 제한, 수수료, 시간이 걸리는 동안의 가격 변동 같은 위험이 있어 수익을 보장하지 않습니다.</li>
+<li>국내 장이 닫힌 동안에는 국내 가격이 마지막 종가로 고정되고 해외 가격만 움직여서, 김프도 따라 변합니다.</li>
+<li>환율이 변해도 김프가 변합니다. 김프와 함께 환율·해외 가격도 확인하세요.</li>
 </ul>
 <h3 id="g-fund">펀딩비란</h3>
-<p>펀딩비는 무기한 선물 계약에서 롱(매수)·숏(매도) 포지션을 가진 사람들이 정해진 주기마다 서로 주고받는 비용으로, 선물 가격이 기초자산 가격에서 크게 벗어나지 않도록 맞추는 장치입니다.</p>
+<p>펀딩비는 무기한 선물에서 롱(매수)과 숏(매도) 포지션이 정해진 시간마다 서로 주고받는 비용입니다. 선물 가격이 실제 가격에서 너무 벌어지지 않게 맞추는 역할을 합니다.</p>
 <h4>펀딩비 읽는 법</h4>
 <ul>
-<li><b>양수</b>이면 롱 포지션이 숏 포지션에 비용을 지급합니다. 롱 쪽 수요가 우세한 상황으로 읽히는 경우가 많습니다.</li>
-<li><b>음수</b>이면 숏 포지션이 롱 포지션에 지급합니다. 숏 쪽 수요가 우세한 상황으로 읽히는 경우가 많습니다.</li>
-<li>절대값이 클수록 포지션이 한쪽으로 쏠려 있다는 신호로 해석되기도 하지만, 펀딩비만으로 이후 가격 방향을 단정할 수는 없습니다.</li>
+<li><b>양수</b>이면 롱이 숏에게 비용을 냅니다. 사려는 쪽(롱)이 많다는 뜻으로 읽히는 경우가 많습니다.</li>
+<li><b>음수</b>이면 숏이 롱에게 비용을 냅니다. 팔려는 쪽(숏)이 많다는 뜻으로 읽히는 경우가 많습니다.</li>
+<li>숫자가 클수록 한쪽으로 쏠렸다는 신호일 수 있지만, 펀딩비만으로 가격이 오를지 내릴지는 알 수 없습니다.</li>
 </ul>
-<p>정산 주기는 거래소마다 다릅니다(예: Hyperliquid 1시간, Binance 기본 8시간). 김프원 펀딩비 탭에서 거래소별 펀딩비를 나란히 비교할 수 있습니다.</p>
+<p>내는 주기는 거래소마다 다릅니다. Hyperliquid는 1시간, Binance는 기본 8시간입니다. 김프원 펀딩비 탭에서 거래소별로 비교할 수 있습니다.</p>
 <div class="gex">
 <p><b>예시 · 펀딩비로 내는 비용</b></p>
-<p>1,000만 원 규모의 롱 포지션을 잡고 있고 펀딩비가 +0.01%라면, 정산 시점마다 1,000만 × 0.01% = <b>1,000원</b>을 상대 쪽에 지급합니다. 정산 주기가 짧은 거래소에서는 이 비용이 자주 쌓이므로, 포지션을 오래 들고 있을수록 펀딩비를 함께 확인해야 합니다.</p>
+<p>1,000만 원어치 롱 포지션을 잡고 펀딩비가 +0.01%라면, 정산 때마다 1,000만 × 0.01% = <b>1,000원</b>을 냅니다. 주기가 짧을수록 자주 쌓이니, 포지션을 오래 들고 있을수록 펀딩비를 확인하세요.</p>
 </div>
 <h3 id="g-data">데이터 출처와 갱신 주기</h3>
 <ul>
-<li>해외 가격·펀딩비: Hyperliquid·Binance·OKX·Bybit에서 실시간으로 불러와 15초마다 갱신합니다(펀딩비 탭을 열어 두면 10초마다).</li>
-<li>달러/원 환율(USD/KRW): 실시간으로 불러와 15초마다 갱신하며, 김프 계산과 원화 환산에 그대로 반영합니다.</li>
-<li>국내 가격(KRX): 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다.</li>
-<li>실제 상장 ETF와 나스닥 종목: TradingView 기준으로 불러와 1분마다 갱신합니다.</li>
-<li>원자재 국제 시세(금·은·구리 현물, WTI 유가)는 15초마다 갱신합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-04), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다.</li>
-<li>조회가 안 될 때는 마지막 스냅샷(2026-11-05 조회, KRX는 11/05 종가)을 보여줍니다.</li>
+<li>해외 가격·펀딩비: Hyperliquid·Binance·OKX·Bybit에서 실시간으로 받아 15초마다 갱신합니다(펀딩비 탭에서는 10초마다).</li>
+<li>환율(달러/원): 실시간으로 받아 15초마다 갱신하고, 김프 계산에 그대로 씁니다.</li>
+<li>국내 가격(KRX): 장이 열린 시간(평일 09:00–15:30)에는 30초마다 갱신하고, 장이 닫히면 마지막 종가를 보여줍니다.</li>
+<li>ETF·나스닥 종목: TradingView 기준으로 1분마다 갱신합니다.</li>
+<li>원자재 국제 시세(금·은·구리·WTI 유가)는 15초마다 갱신합니다. 다만 국내 금·은은 한국금거래소 고시(2026-11-04), 국내 구리는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 변하지 않습니다.</li>
+<li>조회가 안 되면 마지막으로 저장된 값(2026-11-05 조회, KRX는 11/05 종가)을 보여줍니다.</li>
 </ul>
 <h3 id="g-faq">자주 묻는 질문</h3>
 <h4>김프가 높으면 그만큼 차익을 얻을 수 있나요?</h4>
-<p>그렇지 않습니다. 김프는 두 시장의 가격 차이를 보여주는 지표일 뿐이고, 실제 차익거래에는 송금·출금 제한, 거래 수수료, 입출금에 걸리는 시간 동안의 가격 변동 같은 제약과 위험이 따릅니다. 김프 수치만으로 수익을 보장할 수는 없습니다.</p>
+<p>아닙니다. 김프는 가격 차이일 뿐이고, 실제로는 송금·출금 제한, 수수료, 시간이 걸리는 동안의 가격 변동 같은 위험이 있어 수익을 보장하지 않습니다.</p>
 <h4>장이 닫혀 있는데 김프가 계속 변해요.</h4>
-<p>국내 시장이 닫힌 동안에는 국내 가격이 최근 거래일 종가로 고정되고 해외 거래소 가격만 움직이기 때문에, 김프도 그에 따라 변합니다.</p>
+<p>장이 닫힌 동안 국내 가격은 마지막 종가로 고정되고 해외 가격만 움직이기 때문입니다.</p>
 <h4>해외주식 김프는 실제 주식을 기준으로 하나요?</h4>
-<p>아닙니다. 해외 탭의 역외 시세는 해외 거래소의 파생상품 가격 기준이며, 실제 주식 소유권과는 무관합니다. 실제 상장된 ETF와 나스닥 종목 가격은 TradingView 기준으로 따로 표시합니다.</p>
+<p>아닙니다. 해외 탭의 가격은 해외 거래소의 파생상품 가격이며, 실제 주식을 가진 것과는 다릅니다. 실제 ETF와 나스닥 종목 가격은 TradingView 기준으로 따로 보여줍니다.</p>
 <h4>여기에 표시되는 가격이 공식 시세인가요?</h4>
-<p>아닙니다. 김프원의 모든 시세는 각 거래소·기관이 공개하는 데이터를 바탕으로 계산한 참고 정보이며, 거래소의 공식 시세가 아닙니다.</p>
-<p class="gnote">이 페이지의 정보는 참고용으로만 제공되며, 특정 종목의 매수·매도를 권유하지 않습니다. 투자 판단과 그 결과에 대한 책임은 이용자 본인에게 있습니다.</p>
+<p>아닙니다. 각 거래소·기관이 공개한 데이터를 바탕으로 계산한 참고용 가격입니다.</p>
+<p class="gnote">이 페이지의 정보는 참고용이며, 특정 종목을 사거나 팔라고 권유하지 않습니다. 투자 판단과 결과에 대한 책임은 본인에게 있습니다.</p>
 <div class="gfoot"><button type="button" class="gback" id="guide-back2">← 홈으로 돌아가기</button></div>
 </div>
 </section>
@@ -1400,7 +1399,7 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 </div></div>
 <details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-04), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-05 조회, KRX는 11/05 종가)을 보여줍니다. 지표 탭의 주식 선물 포지션(미결제약정·롱숏 비율)은 Hyperliquid 미결제약정과 Binance 롱·숏 비율 데이터로 1분마다 확인합니다.</p></details>
 <footer class="sitefoot">
-<nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button><i aria-hidden="true">·</i><button type="button" id="legal-contact-open">문의</button><i aria-hidden="true">·</i><button type="button" id="legal-about-open">소개</button><i aria-hidden="true">·</i><button type="button" id="guide-open">가이드</button></nav>
+<nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button><i aria-hidden="true">·</i><button type="button" id="legal-contact-open">문의</button><i aria-hidden="true">·</i><button type="button" id="guide-open">가이드</button></nav>
 <p>© 2026 kimpwon</p>
 <p class="siteintro">김프원은 국내외 금융시장 데이터와 김치프리미엄, 펀딩비 및 주식·ETF 정보를 비교하고 제공하는 독립 금융 정보 플랫폼입니다.</p>
 </footer>
@@ -1583,38 +1582,6 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <li><a href="https://www.threads.com/@kimpwon_1?igshid=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener noreferrer"><span class="ctlbl">쓰레드</span><span class="cturl">threads.com/@kimpwon_1</span></a></li>
 <li><a href="https://m.blog.naver.com/kimpwon1" target="_blank" rel="noopener noreferrer"><span class="ctlbl">네이버 블로그</span><span class="cturl">blog.naver.com/kimpwon1</span></a></li>
 </ul>
-</div></div></div>
-<div class="legalov" id="legal-about-ov" hidden><div class="legalbox" role="dialog" aria-modal="true" aria-labelledby="legal-about-t">
-<div class="legalbox-hd"><h2 id="legal-about-t">소개</h2><button type="button" class="lgx" id="legal-about-x" aria-label="닫기" style="position:static;margin-left:auto">×</button></div>
-<div class="legalbox-bd">
-<p>김프원(kimpwon.com)은 국내 가격과 해외 가격의 차이인 김치프리미엄(김프)과 펀딩비, 해외주식·ETF 가격을 실시간으로 비교해 보여주는 정보 제공 사이트입니다. 홈·김프·해외·원자재·펀딩비·비교·지표·커뮤니티 8개 탭으로 시세와 지표를 나누어 보여주고, 김프·평단 계산기와 채팅·커뮤니티를 함께 제공합니다.</p>
-<h3>김치프리미엄(김프)이란</h3>
-<p>김치프리미엄은 같은 종목이 국내에서 해외보다 얼마나 비싸게(또는 싸게) 거래되는지를 나타내는 가격 차이입니다. 국내 수요와 공급, 국내외 시장 사이의 자금 이동 제한 같은 요인으로 생기며, 국내 가격이 해외 가격보다 높으면 김프가 플러스, 낮으면 마이너스가 되는데 마이너스인 경우를 역프리미엄(역프)이라고 부릅니다.</p>
-<h3>김프 계산 방법</h3>
-<p>김프(%) = (국내 가격 ÷ (해외 가격 × 환율) − 1) × 100</p>
-<p>먼저 해외 가격에 달러/원 환율을 곱해 원화 환산가를 구한 뒤, 국내 가격과 비교합니다. 예를 들어 국내 가격이 100,000원이고 해외 가격이 70달러, 환율이 1,400원이면 원화 환산가는 70 × 1,400 = 98,000원이 되고, 김프는 (100,000 ÷ 98,000 − 1) × 100 ≈ +2.04%입니다. 김프원의 김프 계산기도 같은 방식으로 계산합니다.</p>
-<h3>펀딩비란</h3>
-<p>펀딩비는 무기한 선물 계약에서 롱(매수)·숏(매도) 포지션을 가진 사람들이 정해진 주기마다 서로 주고받는 비용으로, 선물 가격이 기초자산 가격에서 크게 벗어나지 않도록 맞추는 장치입니다. 펀딩비가 양수이면 롱 포지션이 숏 포지션에 비용을 지급하는데, 이는 롱 쪽 수요가 우세한 상황으로 읽히는 경우가 많습니다. 반대로 음수이면 숏 포지션이 롱 포지션에 지급합니다. 정산 주기는 거래소마다 다르며(예: Hyperliquid 1시간, Binance 기본 8시간), 김프원 펀딩비 탭에서 거래소별 펀딩비를 비교할 수 있습니다.</p>
-<h3>데이터 출처와 갱신 주기</h3>
-<ul>
-<li>해외 가격·펀딩비: Hyperliquid·Binance·OKX·Bybit에서 실시간으로 불러와 15초마다 갱신합니다(펀딩비 탭을 열어 두면 10초마다).</li>
-<li>달러/원 환율(USD/KRW): 실시간으로 불러와 15초마다 갱신하며, 김프 계산과 원화 환산에 그대로 반영합니다.</li>
-<li>국내 가격(KRX): 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다.</li>
-<li>실제 상장 ETF와 나스닥 종목: TradingView 기준으로 불러와 1분마다 갱신합니다.</li>
-<li>원자재 국제 시세(금·은·구리 현물, WTI 유가)는 15초마다 갱신합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-04), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다.</li>
-<li>조회가 안 될 때는 마지막 스냅샷(2026-11-05 조회, KRX는 11/05 종가)을 보여줍니다.</li>
-</ul>
-<h3>자주 묻는 질문</h3>
-<h3>김프가 높으면 그만큼 차익을 얻을 수 있나요?</h3>
-<p>그렇지 않습니다. 김프는 두 시장의 가격 차이를 보여주는 지표일 뿐이고, 실제 차익거래에는 송금·출금 제한, 거래 수수료, 입출금에 걸리는 시간 동안의 가격 변동 같은 제약과 위험이 따릅니다. 김프 수치만으로 수익을 보장할 수는 없습니다.</p>
-<h3>장이 닫혀 있는데 김프가 계속 변해요.</h3>
-<p>국내 시장이 닫힌 동안에는 국내 가격이 최근 거래일 종가로 고정되고 해외 거래소 가격만 움직이기 때문에, 김프도 그에 따라 변합니다.</p>
-<h3>해외주식 김프는 실제 주식을 기준으로 하나요?</h3>
-<p>아닙니다. 해외 탭의 역외 시세는 해외 거래소의 파생상품 가격 기준이며, 실제 주식 소유권과는 무관합니다. 실제 상장된 ETF와 나스닥 종목 가격은 TradingView 기준으로 따로 표시합니다.</p>
-<h3>여기에 표시되는 가격이 공식 시세인가요?</h3>
-<p>아닙니다. 김프원의 모든 시세는 각 거래소·기관이 공개하는 데이터를 바탕으로 계산한 참고 정보이며, 거래소의 공식 시세가 아닙니다.</p>
-<button type="button" class="gopenguide" id="legal-about-guide">김프·펀딩비 가이드 페이지에서 자세히 보기</button>
-<p>이 사이트의 정보는 참고용으로만 제공되며, 특정 종목의 매수·매도를 권유하지 않습니다. 투자 판단과 그 결과에 대한 책임은 이용자 본인에게 있습니다.</p>
 </div></div></div>
 <script>
 /* ===== 설정: 아래 값들을 채우면 켜집니다 =====
@@ -3716,8 +3683,7 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!ov.hidden)
 wire("legal-priv-open","legal-priv-ov","legal-priv-x");
 wire("legal-terms-open","legal-terms-ov","legal-terms-x");
 wire("legal-contact-open","legal-contact-ov","legal-contact-x");
-wire("legal-about-open","legal-about-ov","legal-about-x");
-/* 가이드(설명) 페이지: 푸터 '가이드' 버튼과 소개 팝업 안 링크로 여는 전용 화면.
+/* 가이드(설명) 페이지: 푸터 '가이드' 버튼으로 여는 전용 화면.
    탭 섹션들과 같은 숨김 방식으로 동작하고, 탭을 누르면 가이드가 닫히며 해당 탭이 열린다. */
 var GSECS=["ph","pa","pb","pg","pf","pc","pi","pk"];
 var guideEl=document.getElementById("pab");
@@ -3742,8 +3708,6 @@ var gBackBtn=document.getElementById("guide-back");
 if(gBackBtn)gBackBtn.addEventListener("click",closeGuide);
 var gBackBtn2=document.getElementById("guide-back2");
 if(gBackBtn2)gBackBtn2.addEventListener("click",closeGuide);
-var abGuideBtn=document.getElementById("legal-about-guide");
-if(abGuideBtn)abGuideBtn.addEventListener("click",function(){var ov=document.getElementById("legal-about-ov");if(ov)ov.hidden=true;openGuide()});
 var tabsEl2=document.getElementById("tabs");
 if(tabsEl2)tabsEl2.addEventListener("click",function(){if(guideEl)guideEl.hidden=true});
 var gReduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
