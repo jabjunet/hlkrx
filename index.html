@@ -2949,7 +2949,9 @@ else if(inPk)leave();
    (별도 스토리지 없이 프로필 사진과 같은 방식). 사진은 한 글에 한 장까지.
    최신글은 작성 시각 최신순으로 왼쪽 넓은 칸에 보여 준다. 목록 행은 디시인사이드처럼
    왼쪽 작은 썸네일(첨부 사진이 있으면 그 사진, 없으면 프로필 사진) · 제목 · 오른쪽 작성자 | 날짜 순서로 놓는다.
-   글을 열면 조회수가 1 오르고, 글쓰기는 채팅과 같은 구글 로그인 사용자만,
+   조회수는 한 사람당 한 번만 오른다: 이 기기에서 이미 연 글은 다시 열어도 오르지 않고
+   (기기 기록 hlkrx_pviewed), 로그인한 사람은 posts/{글}/viewers/{uid}에 기록이 남아
+   다른 기기에서 다시 열어도 오르지 않는다. 글쓰기는 채팅과 같은 구글 로그인 사용자만,
    삭제는 운영자(OPERATOR_EMAIL)와 글쓴이 본인만 할 수 있다.
    커뮤니티 탭을 처음 열 때 초기화한다. */
 (function(){
@@ -3005,17 +3007,40 @@ gateEl.hidden=!(authKnown&&!logged);
 if(logged)errEl.hidden=true;
 else form.hidden=true;
 }
+var VIEWED_KEY="hlkrx_pviewed",ANON_KEY="hlkrx_vid",anonVid="",sessionCounted={};
+function viewedMap(){try{var o=JSON.parse(localStorage.getItem(VIEWED_KEY)||"{}");return (o&&typeof o==="object")?o:{}}catch(e){return{}}}
+function hasViewed(key){return !!viewedMap()[key]}
+function markViewed(key){try{var o=viewedMap();o[key]=Date.now();var ks=Object.keys(o);if(ks.length>500){ks.sort(function(a,b){return (o[a]||0)-(o[b]||0)});for(var i=0;i<ks.length-500;i++)delete o[ks[i]]}localStorage.setItem(VIEWED_KEY,JSON.stringify(o))}catch(e){}}
+function viewerKey(){if(fbUser&&fbUser.uid)return "u_"+String(fbUser.uid).replace(/[.#$\[\]\/]/g,"_");try{var id=localStorage.getItem(ANON_KEY);if(id)return id;id="a_"+Date.now().toString(36)+Math.random().toString(36).slice(2,12);localStorage.setItem(ANON_KEY,id);return id}catch(e){if(!anonVid)anonVid="a_"+Date.now().toString(36)+Math.random().toString(36).slice(2,12);return anonVid}}
+function bumpViews(key){if(!postsRef)return;try{var pr=postsRef.child(key).child("views").transaction(function(v){return (typeof v==="number"?v:0)+1});if(pr&&typeof pr.catch==="function")pr.catch(function(){})}catch(e){}}
 function openPost(key){
 var p=null;for(var i=0;i<posts.length;i++){if(posts[i].key===key){p=posts[i];break}}
 if(!p)return;
 curKey=key;
+var baseViews=(typeof p.views==="number"?p.views:0);
+var already=hasViewed(key);
+var showViews=already?(sessionCounted[key]&&sessionCounted[key]>baseViews?sessionCounted[key]:baseViews):(baseViews+1);
 pvTitle.textContent=p.title||"(제목 없음)";
-pvMeta.textContent=(p.name||"익명")+" · "+fmtT(p.ts)+" · 조회 "+((p.views||0)+1);
+pvMeta.textContent=(p.name||"익명")+" · "+fmtT(p.ts)+" · 조회 "+showViews;
 if(p.img){pvImg.src=p.img;pvImg.hidden=false}else{pvImg.hidden=true;pvImg.removeAttribute("src")}
 pvText.textContent=p.body||"";
 pvDel.hidden=!canDel(p);
 ov.hidden=false;
-if(postsRef){try{var pr=postsRef.child(key).child("views").transaction(function(v){return (typeof v==="number"?v:0)+1});if(pr&&typeof pr.catch==="function")pr.catch(function(){})}catch(e){}}
+if(already)return;
+markViewed(key);sessionCounted[key]=baseViews+1;
+if(!postsRef)return;
+var vk="";try{vk=viewerKey()}catch(e){vk=""}
+if(!vk){bumpViews(key);return}
+try{
+var tr=postsRef.child(key).child("viewers").child(vk).transaction(function(cur){if(cur)return;return Date.now()});
+if(tr&&typeof tr.then==="function"){
+tr.then(function(res){
+if(res&&res.committed){bumpViews(key);return}
+delete sessionCounted[key];
+if(curKey===key){var q=null;for(var i=0;i<posts.length;i++){if(posts[i].key===key){q=posts[i];break}}pvMeta.textContent=(p.name||"익명")+" · "+fmtT(p.ts)+" · 조회 "+((q&&typeof q.views==="number")?q.views:baseViews)}
+}).catch(function(){bumpViews(key)});
+}else{bumpViews(key)}
+}catch(e){bumpViews(key)}
 }
 function closePost(){ov.hidden=true;curKey=null}
 pvClose.addEventListener("click",closePost);
