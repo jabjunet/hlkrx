@@ -737,23 +737,23 @@ main{padding:2px 12px 40px}
 .cmp-more-btn:hover{background:var(--sf2)}
 #cmp2wrap[hidden]{display:none}
 /* 전인구 유튜브 카드 공통 스타일 (지표 탭 섹션에서 사용) */
-.ytsec{margin-top:18px}
+.ytsec{margin-top:14px}
 .ytcard{display:block;text-decoration:none;color:var(--tx);min-width:0}
 .ytcard img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;background:var(--sf2);border:1px solid var(--bd)}
 .ytcard .yt1{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:7px;font-size:13px;font-weight:600;line-height:1.4}
 .ytcard .yt2{display:block;margin-top:2px;font-size:11.5px;color:var(--mut)}
 .ytempty{padding:12px 2px;font-size:13px;color:var(--mut)}
 /* 지표 탭: 전인구 유튜브 최신 영상 1개 — 작은 가로형 카드 (왼쪽 작은 썸네일 약 160px 16:9, 오른쪽 제목 + 업로드 시간) */
-.ytrow .ytcard{display:flex;gap:12px;align-items:flex-start}
-.ytrow .ytcard img{width:160px;flex:none}
+.ytrow .ytcard{display:flex;gap:10px;align-items:flex-start}
+.ytrow .ytcard img{width:128px;flex:none}
 .ytrow .ytcard .ytxt{display:block;min-width:0;flex:1}
-.ytrow .ytcard .yt1{margin-top:0}
-@media(max-width:520px){.ytrow .ytcard img{width:120px}}
+.ytrow .ytcard .yt1{margin-top:0;font-size:12.5px}
+@media(max-width:520px){.ytrow .ytcard img{width:104px}}
 /* 지표 탭 맨 아래 줄: 왼쪽 전인구 유튜브, 오른쪽 워뇨띠 주식 포지션 칸 — 720px 이하에서는 위아래로 쌓는다 */
-.ytwrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.ytwrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
 .ytwrap .ytsec{min-width:0}
 @media(max-width:720px){.ytwrap{grid-template-columns:1fr}}
-.wnrow{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--bd)}
+.wnrow{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid var(--bd)}
 .wnrow:last-of-type{border-bottom:0}
 .wnnm b{font-size:13.5px;font-weight:700}
 .wnnm small{color:var(--mut);font-size:11px;margin-left:5px}
@@ -765,17 +765,28 @@ main{padding:2px 12px 40px}
 .wnrt small{color:var(--mut);font-size:11px}
 .wnrt small span{font-weight:700}
 .wnmeta a{color:inherit;text-decoration:underline;font-weight:600}
-/* 지표 탭: 시장 심리 지표 카드 — 기존 카드(.c) 결에 맞춘 큰 숫자와 짧은 라벨 */
-.indb{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
-@media(min-width:1024px){.indb{font-size:34px}}
-.indlab{font-size:12.5px;color:var(--mut);font-weight:700;margin-bottom:3px}
-.indsub{color:var(--mut);font-size:12px;margin:4px 0 0;line-height:1.5}
-.indmeta{color:var(--mut);font-size:11.5px;margin:10px 0 0}
+/* 워뇨띠 카드: 제목 줄 오른쪽에 디시 원글 링크를 붙이고, 요약(평가금액·평가손익)은 항상 보이게 둔 채
+   종목 목록만 버튼으로 접고 펼친다. 큰 숫자도 이 카드 안에서만 한 단계 작게 쓴다 */
+.wnhd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 10px}
+.wnhd h2{margin:0}
+.wnsrc{flex:none;font-size:12.5px;font-weight:700;color:var(--tx);text-decoration:none;background:var(--sf2);border:1px solid var(--bd);border-radius:999px;padding:5px 11px}
+.wncard .indb{font-size:23px}
+.wntg{display:flex;width:100%;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;padding:8px 11px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.wntg svg{flex:none;transition:transform .18s ease}
+.wntg[aria-expanded="true"] svg{transform:rotate(180deg)}
+@media(prefers-reduced-motion:reduce){.wntg svg{transition:none}}
+/* 지표 탭: 시장 심리 지표 카드 — 워뇨띠 칸에 맞춰 전체 칸을 한 단계 작게 줄인 큰 숫자와 짧은 라벨 */
+#pi .c{padding:12px}
+.indb{font-size:24px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
+@media(min-width:1024px){.indb{font-size:26px}}
+.indlab{font-size:12px;color:var(--mut);font-weight:700;margin-bottom:3px}
+.indsub{color:var(--mut);font-size:12px;margin:3px 0 0;line-height:1.45}
+.indmeta{color:var(--mut);font-size:11.5px;margin:8px 0 0}
 .indgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .indgrid .c{margin-bottom:0}
 /* 지표 탭 상단 두 카드(공포·탐욕 왼쪽, VIX 오른쪽)를 한 줄 2열 1:1로 나란히 놓고 높이를 맞춘다.
    720px 이하에서는 위아래로 쌓고, 공포·탐욕 카드가 숨는 폴백 상태에서는 VIX가 전체 너비를 쓴다 */
-.indpair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;align-items:stretch}
+.indpair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;align-items:stretch}
 .indpair .c{margin-bottom:0}
 .indpair:has(>[hidden]){grid-template-columns:1fr}
 @media(max-width:720px){.indpair{grid-template-columns:1fr}}
@@ -784,37 +795,32 @@ main{padding:2px 12px 40px}
 .indfd{font-size:12.5px;color:var(--mut);white-space:nowrap}
 .indfd b{color:var(--tx);font-size:13.5px;letter-spacing:-.01em}
 .indfd b.up{color:var(--up)}.indfd b.dn{color:var(--dn)}
-.fgrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.fgrow .pill{font-size:12.5px;padding:3px 9px}
-.fgg{position:relative;height:12px;border-radius:999px;margin:16px 2px 6px;background:linear-gradient(90deg,#d02a38 0%,#e07b39 25%,#d9b62a 50%,#5da24a 75%,#1d9e57 100%)}
-.fgg i{position:absolute;top:50%;left:0;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--tx);transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.25);box-sizing:border-box}
+.fgrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fgrow .pill{font-size:12px;padding:2px 8px}
+.fgg{position:relative;height:10px;border-radius:999px;margin:12px 2px 5px;background:linear-gradient(90deg,#d02a38 0%,#e07b39 25%,#d9b62a 50%,#5da24a 75%,#1d9e57 100%)}
+.fgg i{position:absolute;top:50%;left:0;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid var(--tx);transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.25);box-sizing:border-box}
 .fgg i[hidden]{display:none}
 .fgs{display:flex;justify-content:space-between;font-size:11px;color:var(--mut)}
-.fgh{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.fgh>div{background:var(--sf2);border-radius:8px;padding:8px 10px;min-width:0}
+.fgh{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.fgh>div{background:var(--sf2);border-radius:8px;padding:7px 9px;min-width:0}
 .fgh small{display:block;color:var(--mut);font-size:11px;font-weight:600}
-.fgh b{font-size:17px;letter-spacing:-.02em}
+.fgh b{font-size:15px;letter-spacing:-.02em}
 .fgh span{font-size:11px;color:var(--mut);margin-left:3px}
-.lsnums{display:flex;gap:22px}
-.lsnums small{display:block;color:var(--mut);font-size:11.5px;font-weight:700}
-.lsnums b{font-size:24px;letter-spacing:-.02em;line-height:1.25}
-.lsb{display:flex;height:12px;border-radius:999px;overflow:hidden;background:var(--sf2);margin-top:10px}
-.lsb i{display:block;height:100%}
-.indrow2{display:flex;align-items:baseline;gap:8px;margin-top:6px;color:var(--mut);font-size:12.5px;flex-wrap:wrap}
-.indrow2 b{color:var(--tx);font-size:17px;letter-spacing:-.02em}
+.indrow2{display:flex;align-items:baseline;gap:8px;margin-top:5px;color:var(--mut);font-size:12.5px;flex-wrap:wrap}
+.indrow2 b{color:var(--tx);font-size:15.5px;letter-spacing:-.02em}
 .fundint{font-size:13px;font-weight:700;margin:5px 0 0}
 /* 지표 탭: 주요 지수 등락 행 — 이름 왼쪽, 현재가·등락 배지 오른쪽 */
 .ixrows{margin-top:2px}
-.ixrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd)}
+.ixrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--bd)}
 .ixrow:last-child{border-bottom:0}
-.ixrow>span:first-child{font-size:13.5px;font-weight:600;white-space:nowrap}
-.ixrv{display:flex;align-items:center;gap:8px;white-space:nowrap}
-.ixrv b{font-size:15.5px;letter-spacing:-.02em}
-.ixrv .pill{font-size:11.5px}
+.ixrow>span:first-child{font-size:13px;font-weight:600;white-space:nowrap}
+.ixrv{display:flex;align-items:center;gap:7px;white-space:nowrap}
+.ixrv b{font-size:14.5px;letter-spacing:-.02em}
+.ixrv .pill{font-size:11px}
 /* CNN 공포·탐욕을 불러오지 못하면 VIX 카드가 메인 공포 지표로 승격된다 */
-#ind-vix-card.indmain .indb{font-size:38px}
-@media(min-width:1024px){#ind-vix-card.indmain .indb{font-size:44px}}
-@media(max-width:520px){.indb{font-size:26px}.lsnums{gap:16px}.lsnums b{font-size:21px}.fgh b{font-size:15.5px}}
+#ind-vix-card.indmain .indb{font-size:30px}
+@media(min-width:1024px){#ind-vix-card.indmain .indb{font-size:34px}}
+@media(max-width:520px){.indb{font-size:22px}.fgh b{font-size:14px}}
 /* 자체 채팅 (Firebase): 우하단 버튼 + 작은 패널, 패널을 열 때 초기화 */
 .chatbtn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:120;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 16px;border:1px solid var(--bd);border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.22)}
 .chatbtn svg{flex:none;display:block}
@@ -1290,19 +1296,6 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <p class="indmeta" id="ind-ix-m">TradingView · 1분마다 확인</p>
 </div>
 <div class="c">
-<div class="indlab">주식 선물 포지션</div>
-<p class="indsub" style="margin:0">미결제약정 · Hyperliquid 주식 선물 전체</p>
-<div class="fgrow" style="margin-top:2px"><span class="indb" id="ind-oi-v">—</span><span class="pill" id="ind-oi-n">—</span></div>
-<div class="indlab" style="margin-top:16px">롱·숏 비율 · Gate.io 주식 선물 (계정 기준)</div>
-<div class="lsnums">
-<div><small>롱</small><b id="ind-ls-l">—</b></div>
-<div><small>숏</small><b id="ind-ls-s">—</b></div>
-<div><small>롱/숏 비율</small><b id="ind-ls-r">—</b></div>
-</div>
-<div class="lsb"><i id="ind-ls-bl" style="background:var(--up);width:50%"></i><i id="ind-ls-bs" style="background:var(--dn);width:50%"></i></div>
-<p class="indmeta" id="ind-ft-m">Hyperliquid · Gate.io 선물 · 1분마다 확인</p>
-</div>
-<div class="c">
 <div class="indlab">옵션 만기일</div>
 <div class="ixrows">
 <div class="ixrow"><span>미국 옵션</span><span class="ixrv"><b id="ind-exp-us">—</b><span class="pill" id="ind-exp-us-d">—</span></span></div>
@@ -1320,12 +1313,14 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <div id="yt1-list"><div class="ytempty">불러오는 중…</div></div>
 </div>
 <div class="ytsec">
-<h2>워뇨띠 주식 포지션</h2>
-<div class="c">
+<div class="wnhd"><h2>워뇨띠 주식 포지션</h2><a class="wnsrc" href="https://m.dcinside.com/board/kospi/5643045" target="_blank" rel="noopener">디시 원글 보기</a></div>
+<div class="c wncard">
 <div class="indlab">주식 평가금액 · 2026년 11월 5일 본인 공개</div>
 <div class="fgrow"><span class="indb">159.8억 원</span><span class="pill up">평가손익 +3.50%</span></div>
 <p class="indsub">평가손익 +5.4억 원 · 순자산 175.5억 원 (예수금 15.7억 원 포함)</p>
-<div style="margin-top:10px">
+<button type="button" class="wntg" id="wn-toggle" aria-expanded="false" aria-controls="wn-body"><span id="wn-toggle-tx">보유 종목 18개 보기</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<div id="wn-body" hidden>
+<div style="margin-top:6px">
 <div class="wnrow"><div><div class="wnnm"><b>클래시스</b><small>214150</small></div><span class="wnlive">현재가 <b id="wn-p-214150">—</b><span class="pill" id="wn-c-214150">—</span></span></div><div class="wnrt"><b>약 15.9억</b><small>공개 당시 <span class="dn">-3.55%</span></small></div></div>
 <div class="wnrow"><div><div class="wnnm"><b>크래프톤</b><small>259960</small></div><span class="wnlive">현재가 <b id="wn-p-259960">—</b><span class="pill" id="wn-c-259960">—</span></span></div><div class="wnrt"><b>약 13.1억</b><small>공개 당시 <span class="up">+14.00%</span></small></div></div>
 <div class="wnrow"><div><div class="wnnm"><b>경동나비엔</b><small>009450</small></div><span class="wnlive">현재가 <b id="wn-p-009450">—</b><span class="pill" id="wn-c-009450">—</span></span></div><div class="wnrt"><b>약 12.5억</b><small>공개 당시 <span class="up">+0.89%</span></small></div></div>
@@ -1346,7 +1341,8 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <div class="wnrow"><div><div class="wnnm"><b>영원무역</b><small>111770</small></div><span class="wnlive">현재가 <b id="wn-p-111770">—</b><span class="pill" id="wn-c-111770">—</span></span></div><div class="wnrt"><b>약 5.0억</b><small>공개 당시 <span class="up">+3.97%</span></small></div></div>
 </div>
 <p class="indsub">실시간 보유 현황이 아니라 11월 5일 공개 시점 기준입니다. 본인이 5억 원 이상 보유 종목만 공개해 그보다 작은 보유 종목은 빠져 있고, 종목별 평가금액은 공개된 평가손익·수익률로 계산한 대략적인 값입니다.</p>
-<p class="indmeta wnmeta"><span id="wn-m">디시인사이드 코스피 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인</span> · <a href="https://m.dcinside.com/board/kospi/5643045" target="_blank" rel="noopener">원글 보기</a></p>
+<p class="indmeta wnmeta"><span id="wn-m">디시인사이드 코스피 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인</span></p>
+</div>
 </div>
 </div>
 </div>
@@ -1437,7 +1433,7 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <div class="pv-body" id="pv-body"></div>
 <div class="pv-row"><button type="button" class="pv-del" id="pv-del" hidden>삭제</button><button type="button" class="cm-submit" id="pv-close">닫기</button></div>
 </div></div>
-<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-04), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-05 조회, KRX는 11/05 종가)을 보여줍니다. 지표 탭의 주식 선물 포지션(미결제약정·롱숏 비율)은 Hyperliquid 미결제약정과 Gate.io 롱·숏 비율 데이터로 1분마다 확인합니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률도 TradingView 기준으로 1분마다 확인합니다.</p></details>
+<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-04), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-05 조회, KRX는 11/05 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
 <footer class="sitefoot">
 <nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button><i aria-hidden="true">·</i><button type="button" id="legal-contact-open">문의</button><i aria-hidden="true">·</i><button type="button" id="guide-open">가이드</button></nav>
 <p>© 2026 kimpwon</p>
@@ -3865,39 +3861,6 @@ list.forEach(function(s){var r=m[s+"USDT"];if(!isNaN(r)){sum+=r*100;n++}});
 if(n<3)throw new Error("short");
 applyFund(sum/n,n);
 }).catch(function(){fundFromCache()})}
-/* 주식 선물 포지션: 미결제약정은 Hyperliquid 선물(metaAndAssetCtxs)에서 이 사이트 종목 목록의
-   미결제약정 × 마크가격 합계(달러), 롱·숏 비율은 Gate.io 선물 통계(contract_stats)의 계정 기준
-   롱·숏 비율(lsr_account)을 주요 주식 선물 종목 평균으로 낸다.
-   (이전 소스인 Binance www.binance.com/futures/data 경로는 CORS 헤더가 없어 브라우저에서
-   항상 차단돼 값이 비어 있었다. Gate.io api.gateio.ws는 Access-Control-Allow-Origin: * 를 준다.)
-   한쪽이 실패해도 다른 쪽은 그대로 표시한다. */
-var oiState=null,lsState=null;
-function futMeta(){if(oiState===null&&lsState===null)return;meta("ind-ft-m",!!(oiState||lsState),"Hyperliquid · Gate.io 선물 · 1분마다 확인")}
-function fmtOi(v){if(v>=1e12)return (v/1e12).toFixed(2).replace(/\.?0+$/,"")+"조 달러";if(v>=1e8)return (v/1e8).toFixed(1).replace(/\.0$/,"")+"억 달러";if(v>=1e4)return Math.round(v/1e4)+"만 달러";return Math.round(v)+"달러"}
-var LSSYMS=["NVDA","TSLA","AAPL","MSFT","AMZN","META","GOOGL","AMD","COIN","MSTR","PLTR","HOOD"];
-function loadFut(){
-fetch("https://api.hyperliquid.xyz/info",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"metaAndAssetCtxs",dex:"xyz"})}).then(function(r){if(!r.ok)throw new Error("hl "+r.status);return r.json()}).then(function(j){
-var u=j&&j[0]&&j[0].universe,c=j&&j[1];if(!u||!c||u.length!==c.length)throw new Error("bad");
-var want={};try{(window.D||[]).forEach(function(x){want[x[0]]=1})}catch(e){}
-var tot=0,n=0;
-for(var i=0;i<u.length;i++){var nm=String(u[i].name||"").replace(/^xyz:/,"");if(!want[nm])continue;var oi=parseFloat(c[i]&&c[i].openInterest),mp=parseFloat(c[i]&&c[i].markPx);if(oi>0&&mp>0){tot+=oi*mp;n++}}
-if(!(tot>0)||n<3)throw new Error("short");
-$("ind-oi-v").textContent=fmtOi(tot);
-$("ind-oi-n").textContent=n+"개 종목 합계";
-oiState=true;futMeta()}).catch(function(){oiState=false;futMeta()});
-var done=0,sum=0,cnt=0;
-LSSYMS.forEach(function(s){
-fetchJson("https://api.gateio.ws/api/v4/futures/usdt/contract_stats?contract="+s+"_USDT&interval=5m&limit=1").then(function(j){
-var d=j&&j.length?j[j.length-1]:null,r=parseFloat(d&&d.lsr_account);if(r>0){sum+=r/(1+r);cnt++}}).catch(function(){}).then(function(){
-if(++done!==LSSYMS.length)return;
-if(cnt>=3){var la=sum/cnt,lp=la*100,sp=100-lp;
-$("ind-ls-l").textContent=lp.toFixed(1)+"%";
-$("ind-ls-s").textContent=sp.toFixed(1)+"%";
-$("ind-ls-r").textContent=(la/(1-la)).toFixed(2);
-$("ind-ls-bl").style.width=lp+"%";
-$("ind-ls-bs").style.width=sp+"%";
-lsState=true}else lsState=false;
-futMeta()})})}
 /* 옵션 만기일: 미국 옵션은 매월 셋째 금요일, 한국 파생상품은 매월 둘째 목요일.
    3·6·9·12월 만기는 미국은 '네 마녀의 날', 한국은 '선물·옵션 동시만기'로 표시한다. */
 function nthWday(y,m,wd,n){var off=(wd-new Date(y,m,1).getDay()+7)%7;return new Date(y,m,1+off+(n-1)*7)}
@@ -3913,7 +3876,7 @@ $(pre+"-n").textContent=(q0?tag+" · ":"")+"다음 만기 "+fmtExp(d1)+(q1?" · 
 function loadExp(){fillExp("ind-exp-us",nextExps(5,3),"네 마녀의 날");fillExp("ind-exp-kr",nextExps(4,2),"선물·옵션 동시만기")}
 /* 갱신 주기: 공포·탐욕·VIX는 8시간, 주요 지수·펀딩비·만기일은 1분 간격으로 확인한다. */
 var SLOWMS=8*60*60*1000,lastSlow=0;
-function refreshFast(){if(document.hidden)return;loadIx();loadFund();loadExp();loadFut()}
+function refreshFast(){if(document.hidden)return;loadIx();loadFund();loadExp()}
 function refreshSlow(){lastSlow=Date.now();loadFg();loadVix()}
 function slowIfDue(){if(Date.now()-lastSlow>=SLOWMS)refreshSlow()}
 var started=false;
@@ -3950,6 +3913,8 @@ if(ok){okAny=true;m.textContent="디시인사이드 코스피 갤러리 본인 �
 else if(!okAny)m.textContent="현재가를 불러오지 못했어요 · 잠시 후 다시 시도해요"}
 scan("korea",KR.map(function(c){return "KRX:"+c})).then(function(j){var got=false;(j.data||[]).forEach(function(x){if(x.d&&x.d[0]>0){setP(x.s.replace("KRX:",""),x.d[0],parseFloat(x.d[1]),false);got=true}});if(got)ok=true;fin()}).catch(fin);
 scan("america",US.map(function(t){return "NASDAQ:"+t})).then(function(j){var got=false;(j.data||[]).forEach(function(x){if(x.d&&x.d[0]>0){setP(x.s.replace("NASDAQ:",""),x.d[0],parseFloat(x.d[1]),true);got=true}});if(got)ok=true;fin()}).catch(fin)}
+var tg=$("wn-toggle"),bd=$("wn-body");
+if(tg&&bd)tg.addEventListener("click",function(){var open=bd.hidden;bd.hidden=!open;tg.setAttribute("aria-expanded",open?"true":"false");var tx=$("wn-toggle-tx");if(tx)tx.textContent=open?"보유 종목 접기":"보유 종목 18개 보기"});
 var started=false;
 function start(){if(!started){started=true;load();setInterval(function(){var s=$("pi");if(s&&!s.hidden&&!document.hidden)load()},60000)}else if(!document.hidden)load()}
 var tabs=$("tabs");
