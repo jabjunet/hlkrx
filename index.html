@@ -383,7 +383,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hmcols .hmv{margin-top:0;min-width:0}
 .hew{min-width:0}
 .hew .hmhd .heupd{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap}
-.hewbox{height:460px;border:1px solid var(--bd);border-radius:10px;background:var(--sf);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.hewbox{max-height:460px;border:1px solid var(--bd);border-radius:10px;background:var(--sf);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .heghd{position:sticky;top:0;z-index:2;background:var(--sf2);font-size:12px;font-weight:700;color:var(--mut);padding:7px 12px;border-bottom:1px solid var(--bd)}
 .heghd b{color:var(--tx)}
 .herow{padding:8px 12px;border-bottom:1px solid var(--bd)}
@@ -402,7 +402,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .heerr{padding:16px 12px;font-size:13px;color:var(--mut);line-height:1.6}
 .heerr b{display:block;color:var(--tx);font-size:13.5px;margin-bottom:4px}
 .heerr button{margin-top:10px;min-height:38px;padding:7px 16px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:9px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
-@media(max-width:720px){.hmcols{grid-template-columns:1fr;gap:0}.hew{margin-top:8px}.hewbox{height:520px}}
+@media(max-width:720px){.hmcols{grid-template-columns:1fr;gap:0}.hew{margin-top:8px}.hewbox{max-height:520px}}
 @media(max-width:520px){.herow{padding:8px 10px}.heghd{padding-left:10px;padding-right:10px}}
 /* 안내 문구 */
 .note{color:var(--mut);font-size:12.5px;line-height:1.65;margin:8px 2px 0}
@@ -986,7 +986,6 @@ main{padding:2px 12px 40px}
 <div class="hew">
 <div class="hmhd"><h2>주요 종목 실적발표</h2><span class="heupd" id="he-upd"></span></div>
 <div class="hewbox" id="hew-box"><div id="he-list"><div class="hmvempty">불러오는 중…</div></div></div>
-<p class="note">미국 주요 종목의 앞으로 나올 실적발표만 표시합니다. 한국 종목은 무료로 쓸 수 있는 실적 일정 소스가 없어 포함하지 않았습니다. 일정·예상 EPS는 TradingView 기준이며 1시간마다 갱신합니다. EPS는 분기 주당순이익입니다.</p>
 </div>
 </div>
 <div class="hnw">
