@@ -749,6 +749,22 @@ main{padding:2px 12px 40px}
 .ytrow .ytcard .ytxt{display:block;min-width:0;flex:1}
 .ytrow .ytcard .yt1{margin-top:0}
 @media(max-width:520px){.ytrow .ytcard img{width:120px}}
+/* 지표 탭 맨 아래 줄: 왼쪽 전인구 유튜브, 오른쪽 워뇨띠 주식 포지션 칸 — 720px 이하에서는 위아래로 쌓는다 */
+.ytwrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.ytwrap .ytsec{min-width:0}
+@media(max-width:720px){.ytwrap{grid-template-columns:1fr}}
+.wnrow{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--bd)}
+.wnrow:last-of-type{border-bottom:0}
+.wnnm b{font-size:13.5px;font-weight:700}
+.wnnm small{color:var(--mut);font-size:11px;margin-left:5px}
+.wnlive{display:flex;align-items:center;gap:6px;margin-top:2px;font-size:12px;color:var(--mut);white-space:nowrap}
+.wnlive b{color:var(--tx);font-size:12.5px}
+.wnlive .pill{font-size:11px;padding:1px 6px}
+.wnrt{flex:none;text-align:right}
+.wnrt b{display:block;font-size:13.5px;letter-spacing:-.02em}
+.wnrt small{color:var(--mut);font-size:11px}
+.wnrt small span{font-weight:700}
+.wnmeta a{color:inherit;text-decoration:underline;font-weight:600}
 /* 지표 탭: 시장 심리 지표 카드 — 기존 카드(.c) 결에 맞춘 큰 숫자와 짧은 라벨 */
 .indb{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
 @media(min-width:1024px){.indb{font-size:34px}}
@@ -835,24 +851,26 @@ main{padding:2px 12px 40px}
 .chat-err[hidden]{display:none}
 @media(max-width:520px){.chatbtn{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}.chatpanel{right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px))}}
 .chatbtn[hidden]{display:none}
-/* 커뮤니티 탭 레이아웃: 위 2열(왼쪽 채팅 · 오른쪽 인기글), 아래 전체 폭 최신글.
-   모바일에서는 채팅 → 인기글 → 최신글 순서로 세로로 쌓인다.
+/* 커뮤니티 탭 레이아웃: 2열(왼쪽 채팅 · 오른쪽 최신글).
+   모바일에서는 채팅 → 최신글 순서로 세로로 쌓인다.
    채팅은 새 창이 아니라 기존 플로팅 채팅 패널을 왼쪽 칸으로 옮겨 보여 준다 */
 #pk{margin:0}
 .cm-top{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-bottom:12px}
 .cm-chat{height:480px}
-@media(min-width:861px){.cm-top{grid-template-columns:minmax(0,1fr) 330px}.cm-chat{height:560px}}
+@media(min-width:861px){.cm-top{grid-template-columns:minmax(0,1fr) 330px}.cm-chat{height:560px}.cm-latest{max-height:560px}}
 .chatpanel.inpage{position:static;width:100%;height:100%;border-radius:14px;box-shadow:none}
 .chatpanel.inpage .chat-x{display:none}
 .chatpanel.inpage .chat-hd{padding:13px 16px}
 .chatpanel.inpage .chat-msgs{padding:16px}
 .chatpanel.inpage .chat-ft{padding:12px 12px calc(12px + env(safe-area-inset-bottom,0px))}
-/* 커뮤니티 게시글 박스 (인기글·최신글): 사이트 카드와 같은 톤 */
+/* 커뮤니티 게시글 박스 (최신글): 사이트 카드와 같은 톤.
+   채팅 칸과 높이를 맞추고(모바일 480px·데스크톱 560px) 목록은 박스 안에서 스크롤한다 */
 .cmbox{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:16px}
-.cm-latest{margin-bottom:10px}
+.cm-latest{display:flex;flex-direction:column;max-height:480px}
+.cm-latest .cm-hd,.cm-latest .cm-gate,.cm-latest .cm-form{flex:none}
+#cm-list{overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch}
 .cm-hd{display:flex;align-items:center;gap:8px;margin-bottom:4px}
 .cm-hd h2{margin:0;font-size:16px;font-weight:700}
-.cm-hd .cm-sub{font-size:12px;color:var(--mut)}
 .cm-empty{margin:0;padding:22px 4px;text-align:center;color:var(--mut);font-size:13px;line-height:1.55}
 .cm-wbtn{margin-left:auto;flex:none;min-height:36px;padding:7px 14px;border:0;border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .cm-wbtn[hidden]{display:none}
@@ -873,11 +891,6 @@ main{padding:2px 12px 40px}
 .cm-row:last-child{border-bottom:0}
 .cm-rt{display:block;font-size:14.5px;font-weight:600;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cm-rm{display:block;margin-top:2px;font-size:12px;color:var(--mut)}
-.cm-prow{display:flex;align-items:center;gap:9px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--bd);background:none;color:var(--tx);font:inherit;padding:9px 2px;cursor:pointer}
-.cm-prow:last-child{border-bottom:0}
-.cm-rk{flex:none;width:20px;text-align:center;font-size:13.5px;font-weight:800;color:var(--mut)}
-.cm-pt{flex:1;min-width:0;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cm-pv{flex:none;font-size:12px;color:var(--mut)}
 /* 글 보기 팝업: 로그인 팝업(.lgov/.lgbox)과 같은 틀, 본문만 더 넓고 길게 */
 .pvbox{max-width:560px}
 .pv-meta{margin:-6px 0 12px;font-size:12.5px;color:var(--mut)}
@@ -1280,14 +1293,14 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <div class="indlab">주식 선물 포지션</div>
 <p class="indsub" style="margin:0">미결제약정 · Hyperliquid 주식 선물 전체</p>
 <div class="fgrow" style="margin-top:2px"><span class="indb" id="ind-oi-v">—</span><span class="pill" id="ind-oi-n">—</span></div>
-<div class="indlab" style="margin-top:16px">롱·숏 비율 · Binance 주식 선물 (계정 기준)</div>
+<div class="indlab" style="margin-top:16px">롱·숏 비율 · Gate.io 주식 선물 (계정 기준)</div>
 <div class="lsnums">
 <div><small>롱</small><b id="ind-ls-l">—</b></div>
 <div><small>숏</small><b id="ind-ls-s">—</b></div>
 <div><small>롱/숏 비율</small><b id="ind-ls-r">—</b></div>
 </div>
 <div class="lsb"><i id="ind-ls-bl" style="background:var(--up);width:50%"></i><i id="ind-ls-bs" style="background:var(--dn);width:50%"></i></div>
-<p class="indmeta" id="ind-ft-m">Hyperliquid · Binance 선물 · 1분마다 확인</p>
+<p class="indmeta" id="ind-ft-m">Hyperliquid · Gate.io 선물 · 1분마다 확인</p>
 </div>
 <div class="c">
 <div class="indlab">옵션 만기일</div>
@@ -1301,19 +1314,46 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <p class="indsub" id="ind-exp-kr-n">—</p>
 <p class="indmeta">날짜 규칙으로 계산 · 미국 매월 셋째 금요일, 한국 매월 둘째 목요일</p>
 </div>
+<div class="ytwrap">
 <div class="ytsec">
 <h2>전인구 유튜브</h2>
 <div id="yt1-list"><div class="ytempty">불러오는 중…</div></div>
+</div>
+<div class="ytsec">
+<h2>워뇨띠 주식 포지션</h2>
+<div class="c">
+<div class="indlab">주식 평가금액 · 2026년 11월 5일 본인 공개</div>
+<div class="fgrow"><span class="indb">159.8억 원</span><span class="pill up">평가손익 +3.50%</span></div>
+<p class="indsub">평가손익 +5.4억 원 · 순자산 175.5억 원 (예수금 15.7억 원 포함)</p>
+<div style="margin-top:10px">
+<div class="wnrow"><div><div class="wnnm"><b>클래시스</b><small>214150</small></div><span class="wnlive">현재가 <b id="wn-p-214150">—</b><span class="pill" id="wn-c-214150">—</span></span></div><div class="wnrt"><b>약 15.9억</b><small>공개 당시 <span class="dn">-3.55%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>크래프톤</b><small>259960</small></div><span class="wnlive">현재가 <b id="wn-p-259960">—</b><span class="pill" id="wn-c-259960">—</span></span></div><div class="wnrt"><b>약 13.1억</b><small>공개 당시 <span class="up">+14.00%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>경동나비엔</b><small>009450</small></div><span class="wnlive">현재가 <b id="wn-p-009450">—</b><span class="pill" id="wn-c-009450">—</span></span></div><div class="wnrt"><b>약 12.5억</b><small>공개 당시 <span class="up">+0.89%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>삼양식품</b><small>003230</small></div><span class="wnlive">현재가 <b id="wn-p-003230">—</b><span class="pill" id="wn-c-003230">—</span></span></div><div class="wnrt"><b>약 12.4억</b><small>공개 당시 <span class="up">+8.56%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>실리콘투</b><small>257720</small></div><span class="wnlive">현재가 <b id="wn-p-257720">—</b><span class="pill" id="wn-c-257720">—</span></span></div><div class="wnrt"><b>약 11.9억</b><small>공개 당시 <span class="dn">-2.42%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>코웨이</b><small>021240</small></div><span class="wnlive">현재가 <b id="wn-p-021240">—</b><span class="pill" id="wn-c-021240">—</span></span></div><div class="wnrt"><b>약 10.7억</b><small>공개 당시 <span class="up">+3.83%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>어도비</b><small>ADBE</small></div><span class="wnlive">현재가 <b id="wn-p-ADBE">—</b><span class="pill" id="wn-c-ADBE">—</span></span></div><div class="wnrt"><b>약 8.3억</b><small>공개 당시 <span class="up">+0.44%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>페이팔 홀딩스</b><small>PYPL</small></div><span class="wnlive">현재가 <b id="wn-p-PYPL">—</b><span class="pill" id="wn-c-PYPL">—</span></span></div><div class="wnrt"><b>약 8.1억</b><small>공개 당시 <span class="up">+4.89%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>SK바이오팜</b><small>326030</small></div><span class="wnlive">현재가 <b id="wn-p-326030">—</b><span class="pill" id="wn-c-326030">—</span></span></div><div class="wnrt"><b>약 7.3억</b><small>공개 당시 <span class="up">+32.99%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>다우기술</b><small>023590</small></div><span class="wnlive">현재가 <b id="wn-p-023590">—</b><span class="pill" id="wn-c-023590">—</span></span></div><div class="wnrt"><b>약 6.4억</b><small>공개 당시 <span class="dn">-3.05%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>현대그린푸드</b><small>453340</small></div><span class="wnlive">현재가 <b id="wn-p-453340">—</b><span class="pill" id="wn-c-453340">—</span></span></div><div class="wnrt"><b>약 6.1억</b><small>공개 당시 <span class="up">+6.26%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>한국타이어앤테크놀로지</b><small>161390</small></div><span class="wnlive">현재가 <b id="wn-p-161390">—</b><span class="pill" id="wn-c-161390">—</span></span></div><div class="wnrt"><b>약 6.1억</b><small>공개 당시 <span class="dn">-2.88%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>오리온</b><small>271560</small></div><span class="wnlive">현재가 <b id="wn-p-271560">—</b><span class="pill" id="wn-c-271560">—</span></span></div><div class="wnrt"><b>약 6.0억</b><small>공개 당시 <span class="up">+14.54%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>대웅제약</b><small>069620</small></div><span class="wnlive">현재가 <b id="wn-p-069620">—</b><span class="pill" id="wn-c-069620">—</span></span></div><div class="wnrt"><b>약 5.7억</b><small>공개 당시 <span class="up">+7.39%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>DB손해보험</b><small>005830</small></div><span class="wnlive">현재가 <b id="wn-p-005830">—</b><span class="pill" id="wn-c-005830">—</span></span></div><div class="wnrt"><b>약 5.5억</b><small>공개 당시 <span class="dn">-0.75%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>현대로템</b><small>064350</small></div><span class="wnlive">현재가 <b id="wn-p-064350">—</b><span class="pill" id="wn-c-064350">—</span></span></div><div class="wnrt"><b>약 5.4억</b><small>공개 당시 <span class="up">+0.29%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>에스티팜</b><small>237690</small></div><span class="wnlive">현재가 <b id="wn-p-237690">—</b><span class="pill" id="wn-c-237690">—</span></span></div><div class="wnrt"><b>약 5.3억</b><small>공개 당시 <span class="up">+4.86%</span></small></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>영원무역</b><small>111770</small></div><span class="wnlive">현재가 <b id="wn-p-111770">—</b><span class="pill" id="wn-c-111770">—</span></span></div><div class="wnrt"><b>약 5.0억</b><small>공개 당시 <span class="up">+3.97%</span></small></div></div>
+</div>
+<p class="indsub">실시간 보유 현황이 아니라 11월 5일 공개 시점 기준입니다. 본인이 5억 원 이상 보유 종목만 공개해 그보다 작은 보유 종목은 빠져 있고, 종목별 평가금액은 공개된 평가손익·수익률로 계산한 대략적인 값입니다.</p>
+<p class="indmeta wnmeta"><span id="wn-m">디시인사이드 코스피 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인</span> · <a href="https://m.dcinside.com/board/kospi/5643045" target="_blank" rel="noopener">원글 보기</a></p>
+</div>
+</div>
 </div>
 </section>
 <section id="pk" hidden>
 <div class="cm-top">
 <div class="cm-chat" id="cm-chat-slot"></div>
-<div class="cmbox cm-pop">
-<div class="cm-hd"><h2>인기글</h2><span class="cm-sub">조회수 높은 순</span></div>
-<div id="cm-pop-list"><p class="cm-empty">불러오는 중…</p></div>
-</div>
-</div>
 <div class="cmbox cm-latest">
 <div class="cm-hd"><h2>최신글</h2><button type="button" class="cm-wbtn" id="cm-write-btn" hidden>글쓰기</button></div>
 <div class="cm-gate" id="cm-gate" hidden><p>글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.</p><button type="button" class="cm-login" id="cm-login-btn">구글 로그인</button></div>
@@ -1324,6 +1364,7 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <div class="cm-frow"><button type="button" class="cm-cancel" id="cm-cancel">취소</button><button type="submit" class="cm-submit">등록</button></div>
 </form>
 <div id="cm-list"><p class="cm-empty">불러오는 중…</p></div>
+</div>
 </div>
 </section>
 <section id="pab" hidden>
@@ -1396,7 +1437,7 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <div class="pv-body" id="pv-body"></div>
 <div class="pv-row"><button type="button" class="pv-del" id="pv-del" hidden>삭제</button><button type="button" class="cm-submit" id="pv-close">닫기</button></div>
 </div></div>
-<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-04), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-05 조회, KRX는 11/05 종가)을 보여줍니다. 지표 탭의 주식 선물 포지션(미결제약정·롱숏 비율)은 Hyperliquid 미결제약정과 Binance 롱·숏 비율 데이터로 1분마다 확인합니다.</p></details>
+<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-04), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-05 조회, KRX는 11/05 종가)을 보여줍니다. 지표 탭의 주식 선물 포지션(미결제약정·롱숏 비율)은 Hyperliquid 미결제약정과 Gate.io 롱·숏 비율 데이터로 1분마다 확인합니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률도 TradingView 기준으로 1분마다 확인합니다.</p></details>
 <footer class="sitefoot">
 <nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button><i aria-hidden="true">·</i><button type="button" id="legal-contact-open">문의</button><i aria-hidden="true">·</i><button type="button" id="guide-open">가이드</button></nav>
 <p>© 2026 kimpwon</p>
@@ -2846,7 +2887,7 @@ try{if(sessionStorage.getItem("hlkrx_chat_redirect")==="1"){sessionStorage.remov
 /* 커뮤니티 탭: 새 채팅을 만들지 않고 기존 채팅 패널(같은 Firebase messages·로그인·삭제 기능)을
    커뮤니티 상단 왼쪽 칸으로 옮겨 보여 준다. 탭을 벗어나면 패널을 원래 자리(플로팅)로 되돌리고 닫는다.
    플로팅 '채팅' 버튼은 커뮤니티 탭이 열려 있는 동안만 숨긴다. 페이지는 예전처럼 잠그지 않아
-   인기글·최신글까지 그대로 스크롤해 볼 수 있다. */
+   최신글까지 그대로 스크롤해 볼 수 있다. */
 (function(){
 var tabs=document.getElementById("tabs"),pk=document.getElementById("pk"),
 panel=document.getElementById("chat-panel"),btn=document.getElementById("chat-open"),
@@ -2883,13 +2924,13 @@ else if(inPk)leave();
 <script>
 /* 커뮤니티 게시판: Firebase Realtime Database의 posts 경로를 쓴다.
    글 구조 {title, body, name(닉네임), uid, ts(서버시각), views(조회수)}.
-   최신글은 작성 시각 최신순, 인기글은 조회수 높은 순 상위 10개.
+   최신글은 작성 시각 최신순으로 채팅 오른쪽 칸에 보여 준다.
    글을 열면 조회수가 1 오르고, 글쓰기는 채팅과 같은 구글 로그인 사용자만,
    삭제는 운영자(OPERATOR_EMAIL)와 글쓴이 본인만 할 수 있다.
    커뮤니티 탭을 처음 열 때 초기화한다. */
 (function(){
 var tabs=document.getElementById("tabs");
-var listEl=document.getElementById("cm-list"),popEl=document.getElementById("cm-pop-list"),
+var listEl=document.getElementById("cm-list"),
 gateEl=document.getElementById("cm-gate"),loginBtn=document.getElementById("cm-login-btn"),
 writeBtn=document.getElementById("cm-write-btn"),form=document.getElementById("cm-form"),
 titleIn=document.getElementById("cm-title"),bodyIn=document.getElementById("cm-body"),
@@ -2897,7 +2938,7 @@ errEl=document.getElementById("cm-err"),cancelBtn=document.getElementById("cm-ca
 ov=document.getElementById("pv-ov"),pvTitle=document.getElementById("pv-title"),
 pvMeta=document.getElementById("pv-meta"),pvBody=document.getElementById("pv-body"),
 pvDel=document.getElementById("pv-del"),pvClose=document.getElementById("pv-close");
-if(!tabs||!listEl||!popEl||!form||!ov)return;
+if(!tabs||!listEl||!form||!ov)return;
 var started=false,postsRef=null,fbUser=null,authKnown=false,posts=[],curKey=null;
 function cfgReady(){try{var c=(typeof FIREBASE_CONFIG!=="undefined")?FIREBASE_CONFIG:null;return !!(c&&typeof c.apiKey==="string"&&c.apiKey.trim()&&typeof c.databaseURL==="string"&&c.databaseURL.trim())}catch(e){return false}}
 function isOp(){if(!fbUser)return false;var oe=(typeof OPERATOR_EMAIL!=="undefined"?String(OPERATOR_EMAIL||""):"").trim().toLowerCase();return !!oe&&String(fbUser.email||"").trim().toLowerCase()===oe}
@@ -2906,7 +2947,7 @@ function fmtT(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts),now=
 function emptyMsg(el,msg){el.textContent="";var p=document.createElement("p");p.className="cm-empty";p.textContent=msg;el.appendChild(p)}
 function canDel(p){return !!fbUser&&(isOp()||(p.uid&&p.uid===fbUser.uid))}
 function renderLists(){
-if(!posts.length){emptyMsg(listEl,"아직 글이 없습니다. 첫 글을 남겨 보세요.");emptyMsg(popEl,"아직 글이 없습니다.");return}
+if(!posts.length){emptyMsg(listEl,"아직 글이 없습니다. 첫 글을 남겨 보세요.");return}
 listEl.textContent="";
 posts.forEach(function(p){
 var b=document.createElement("button");b.type="button";b.className="cm-row";
@@ -2914,16 +2955,6 @@ var t=document.createElement("span");t.className="cm-rt";t.textContent=p.title||
 var m=document.createElement("span");m.className="cm-rm";m.textContent=(p.name||"익명")+" · "+fmtT(p.ts)+" · 조회 "+(p.views||0);b.appendChild(m);
 b.addEventListener("click",function(){openPost(p.key)});
 listEl.appendChild(b);
-});
-var pop=posts.slice().sort(function(a,b){return (b.views||0)-(a.views||0)||(b.ts||0)-(a.ts||0)}).slice(0,10);
-popEl.textContent="";
-pop.forEach(function(p,i){
-var b=document.createElement("button");b.type="button";b.className="cm-prow";
-var rk=document.createElement("span");rk.className="cm-rk";rk.textContent=String(i+1);b.appendChild(rk);
-var t=document.createElement("span");t.className="cm-pt";t.textContent=p.title||"(제목 없음)";b.appendChild(t);
-var v=document.createElement("span");v.className="cm-pv";v.textContent="조회 "+(p.views||0);b.appendChild(v);
-b.addEventListener("click",function(){openPost(p.key)});
-popEl.appendChild(b);
 });
 }
 function syncGate(){
@@ -2970,7 +3001,7 @@ else done();
 });
 function start(){
 if(started)return;started=true;
-if(!cfgReady()||typeof firebase==="undefined"||!firebase.initializeApp||!firebase.database){emptyMsg(listEl,"글을 불러오지 못했어요.");emptyMsg(popEl,"글을 불러오지 못했어요.");return}
+if(!cfgReady()||typeof firebase==="undefined"||!firebase.initializeApp||!firebase.database){emptyMsg(listEl,"글을 불러오지 못했어요.");return}
 try{if(!firebase.apps||!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG)}catch(e){}
 try{firebase.auth().onAuthStateChanged(function(u){fbUser=u||null;authKnown=true;syncGate();if(!ov.hidden&&curKey)openPostRefresh()})}catch(e){}
 function openPostRefresh(){var p=null;for(var i=0;i<posts.length;i++){if(posts[i].key===curKey){p=posts[i];break}}if(p)pvDel.hidden=!canDel(p)}
@@ -2980,8 +3011,8 @@ postsRef.orderByChild("ts").limitToLast(100).on("value",function(snap){
 var arr=[];snap.forEach(function(ch){var v=ch.val()||{};arr.push({key:ch.key,title:String(v.title||""),body:String(v.body||""),name:String(v.name||"익명"),uid:String(v.uid||""),ts:(typeof v.ts==="number"?v.ts:0),views:(typeof v.views==="number"?v.views:0)})});
 arr.sort(function(a,b){return (b.ts||0)-(a.ts||0)});
 posts=arr;renderLists();
-},function(){emptyMsg(listEl,"글을 불러오지 못했어요.");emptyMsg(popEl,"글을 불러오지 못했어요.")});
-}catch(e){emptyMsg(listEl,"글을 불러오지 못했어요.");emptyMsg(popEl,"글을 불러오지 못했어요.")}
+},function(){emptyMsg(listEl,"글을 불러오지 못했어요.")});
+}catch(e){emptyMsg(listEl,"글을 불러오지 못했어요.")}
 }
 tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.t==="pk")start()});
 })();
@@ -3835,10 +3866,13 @@ if(n<3)throw new Error("short");
 applyFund(sum/n,n);
 }).catch(function(){fundFromCache()})}
 /* 주식 선물 포지션: 미결제약정은 Hyperliquid 선물(metaAndAssetCtxs)에서 이 사이트 종목 목록의
-   미결제약정 × 마크가격 합계(달러), 롱·숏 비율은 Binance 선물 데이터의 계정 기준 롱·숏 비율을
-   주요 주식 선물 종목 평균으로 낸다. 한쪽이 실패해도 다른 쪽은 그대로 표시한다. */
+   미결제약정 × 마크가격 합계(달러), 롱·숏 비율은 Gate.io 선물 통계(contract_stats)의 계정 기준
+   롱·숏 비율(lsr_account)을 주요 주식 선물 종목 평균으로 낸다.
+   (이전 소스인 Binance www.binance.com/futures/data 경로는 CORS 헤더가 없어 브라우저에서
+   항상 차단돼 값이 비어 있었다. Gate.io api.gateio.ws는 Access-Control-Allow-Origin: * 를 준다.)
+   한쪽이 실패해도 다른 쪽은 그대로 표시한다. */
 var oiState=null,lsState=null;
-function futMeta(){if(oiState===null&&lsState===null)return;meta("ind-ft-m",!!(oiState||lsState),"Hyperliquid · Binance 선물 · 1분마다 확인")}
+function futMeta(){if(oiState===null&&lsState===null)return;meta("ind-ft-m",!!(oiState||lsState),"Hyperliquid · Gate.io 선물 · 1분마다 확인")}
 function fmtOi(v){if(v>=1e12)return (v/1e12).toFixed(2).replace(/\.?0+$/,"")+"조 달러";if(v>=1e8)return (v/1e8).toFixed(1).replace(/\.0$/,"")+"억 달러";if(v>=1e4)return Math.round(v/1e4)+"만 달러";return Math.round(v)+"달러"}
 var LSSYMS=["NVDA","TSLA","AAPL","MSFT","AMZN","META","GOOGL","AMD","COIN","MSTR","PLTR","HOOD"];
 function loadFut(){
@@ -3853,8 +3887,8 @@ $("ind-oi-n").textContent=n+"개 종목 합계";
 oiState=true;futMeta()}).catch(function(){oiState=false;futMeta()});
 var done=0,sum=0,cnt=0;
 LSSYMS.forEach(function(s){
-fetchJson("https://www.binance.com/futures/data/globalLongShortAccountRatio?symbol="+s+"USDT&period=5m&limit=1").then(function(j){
-var d=j&&j[0],la=parseFloat(d&&d.longAccount);if(la>0&&la<1){sum+=la;cnt++}}).catch(function(){}).then(function(){
+fetchJson("https://api.gateio.ws/api/v4/futures/usdt/contract_stats?contract="+s+"_USDT&interval=5m&limit=1").then(function(j){
+var d=j&&j.length?j[j.length-1]:null,r=parseFloat(d&&d.lsr_account);if(r>0){sum+=r/(1+r);cnt++}}).catch(function(){}).then(function(){
 if(++done!==LSSYMS.length)return;
 if(cnt>=3){var la=sum/cnt,lp=la*100,sp=100-lp;
 $("ind-ls-l").textContent=lp.toFixed(1)+"%";
@@ -3889,6 +3923,38 @@ else{refreshFast();slowIfDue()}}
 var tabs=$("tabs");
 if(tabs)tabs.addEventListener("click",function(e){var b=e.target.closest?e.target.closest("button"):null;if(b&&b.dataset.t==="pi")start()});
 document.addEventListener("visibilitychange",function(){if(!document.hidden){var s=$("pi");if(s&&!s.hidden&&started){refreshFast();slowIfDue()}}});
+})();
+</script>
+<script>
+/* 지표 탭: 워뇨띠 주식 포지션 현재가 — 보유 종목·금액은 2026-11-05 디시인사이드 본인 공개 기준으로
+   고정해 두고, 현재가·등락률만 사이트의 다른 국내·미국 주식과 같은 TradingView 스캐너
+   (korea/scan·america/scan)로 불러와 1분마다 갱신한다. 지표 탭을 처음 열 때 시작하고,
+   한쪽 시장이 실패해도 다른 쪽 가격은 그대로 채운다. */
+(function(){
+function $(id){return document.getElementById(id)}
+function pad(n){return (n<10?"0":"")+n}
+function stamp(){var d=new Date();return pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds())}
+var KR=["214150","259960","009450","003230","257720","021240","326030","023590","453340","161390","271560","069620","005830","064350","237690","111770"];
+var US=["ADBE","PYPL"];
+function scan(market,tickers){return fetch("https://scanner.tradingview.com/"+market+"/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:tickers},columns:["close","change"]})}).then(function(r){if(!r.ok)throw new Error("tv "+r.status);return r.json()})}
+function setP(key,price,chg,usd){
+var p=$("wn-p-"+key);if(!p||!(price>0))return;
+p.textContent=usd?("$"+Number(price).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})):(Math.round(price).toLocaleString("ko-KR")+"원");
+var pill=$("wn-c-"+key);
+if(pill&&chg!=null&&!isNaN(chg)){pill.textContent=(chg>0?"+":"")+Number(chg).toFixed(2)+"%";pill.className="pill "+(chg>0?"up":chg<0?"dn":"")}}
+var okAny=false;
+function load(){
+var done=0,ok=false;
+function fin(){if(++done!==2)return;var m=$("wn-m");if(!m)return;
+if(ok){okAny=true;m.textContent="디시인사이드 코스피 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인 · 확인 "+stamp()}
+else if(!okAny)m.textContent="현재가를 불러오지 못했어요 · 잠시 후 다시 시도해요"}
+scan("korea",KR.map(function(c){return "KRX:"+c})).then(function(j){var got=false;(j.data||[]).forEach(function(x){if(x.d&&x.d[0]>0){setP(x.s.replace("KRX:",""),x.d[0],parseFloat(x.d[1]),false);got=true}});if(got)ok=true;fin()}).catch(fin);
+scan("america",US.map(function(t){return "NASDAQ:"+t})).then(function(j){var got=false;(j.data||[]).forEach(function(x){if(x.d&&x.d[0]>0){setP(x.s.replace("NASDAQ:",""),x.d[0],parseFloat(x.d[1]),true);got=true}});if(got)ok=true;fin()}).catch(fin)}
+var started=false;
+function start(){if(!started){started=true;load();setInterval(function(){var s=$("pi");if(s&&!s.hidden&&!document.hidden)load()},60000)}else if(!document.hidden)load()}
+var tabs=$("tabs");
+if(tabs)tabs.addEventListener("click",function(e){var b=e.target.closest?e.target.closest("button"):null;if(b&&b.dataset.t==="pi")start()});
+document.addEventListener("visibilitychange",function(){if(!document.hidden){var s=$("pi");if(s&&!s.hidden&&started)load()}});
 })();
 </script>
 <script>
