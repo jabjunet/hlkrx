@@ -384,8 +384,17 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hew{min-width:0}
 .hew .hmhd .heupd{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap}
 .hewbox{max-height:460px;border:1px solid var(--bd);border-radius:10px;background:var(--sf);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
-/* 홈 탭: 실적발표 박스 아래 주요 경제지표 박스 — 실적발표와 같은 .hewbox 틀을 쓰고 위에 간격만 둔다 */
+/* 홈 탭: 실적발표 박스 아래 주요 경제지표 박스 — 실적발표와 같은 틀(테두리·둥근 모서리·배경)을 쓰고 위에 간격만 둔다.
+   안에는 TradingView 공식 경제 캘린더 위젯 iframe이 박스 높이를 그대로 채우고, 로딩·실패 안내는 박스 위에 겹쳐 둔다 */
 .hecwrap{margin-top:20px}
+.hecbox{position:relative;height:460px;border:1px solid var(--bd);border-radius:10px;background:var(--sf);overflow:hidden}
+@media(max-width:720px){.hecbox{height:520px}}
+.hecw{height:100%}
+.hecw .tradingview-widget-container{height:100%}
+.hecw iframe{width:100%!important;height:100%!important;border:0;display:block}
+.hecmsg{position:absolute;inset:0;z-index:2;background:var(--sf)}
+.hecmsg[hidden]{display:none}
+.hecmsg .hmvempty{border-bottom:0}
 .heghd{position:sticky;top:0;z-index:2;background:var(--sf2);font-size:12px;font-weight:700;color:var(--mut);padding:7px 12px;border-bottom:1px solid var(--bd)}
 .heghd b{color:var(--tx)}
 .herow{padding:8px 12px;border-bottom:1px solid var(--bd)}
@@ -1018,8 +1027,8 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <div class="hmhd"><h2>주요 종목 실적발표</h2><span class="heupd" id="he-upd"></span></div>
 <div class="hewbox" id="hew-box"><div id="he-list"><div class="hmvempty">불러오는 중…</div></div></div>
 <div class="hecwrap">
-<div class="hmhd"><h2>주요 경제지표</h2><span class="heupd" id="hec-upd"></span></div>
-<div class="hewbox" id="hec-box"><div id="hec-list"><div class="hmvempty">불러오는 중…</div></div></div>
+<div class="hmhd"><h2>주요 경제지표</h2></div>
+<div class="hecbox" id="hec-box"><div class="hecmsg" id="hec-msg"><div class="hmvempty">불러오는 중…</div></div><div class="hecw" id="hec-w"></div></div>
 <p class="note">미국 주요 경제지표의 발표 일정과 결과입니다. 발표 시각은 한국 시간 기준이고, 예상치는 시장 전망치입니다.</p>
 </div>
 </div>
@@ -4015,115 +4024,52 @@ setInterval(function(){if(!document.hidden)load()},3600000);
 })();
 </script>
 <script>
-/* 홈 탭: 주요 경제지표 (실적발표 박스 아래) — TradingView 경제 캘린더
-   (economic-calendar.tradingview.com/events, CORS 허용을 빌드 시점에 확인)에서 미국 주요 지표만
-   고정 목록으로 골라 '발표 예정' 일정과 '최근 발표 결과'를 보여준다. 지표마다 예정은 가장 가까운
-   1건, 결과는 실제값이 있는 가장 최근 1건만 쓴다. 값 표기는 지표 성격에 맞춘다
-   (물가·금리=% / 고용=만 명 / 실업수당 청구·JOLTS 구인=만 건 / PMI·심리지수=지수값).
-   발표 시각은 한국 시간으로 환산해 표시한다. 조회 범위는 최근 30일~앞으로 45일,
-   페이지 로드 시 불러오고 30분마다 자동 갱신한다. */
+/* 홈 탭: 주요 경제지표 (실적발표 박스 아래) — TradingView 공식 경제 캘린더 위젯.
+   예전에는 economic-calendar.tradingview.com/events 를 직접 fetch 했는데, 그 엔드포인트는
+   Origin이 tradingview.com 도메인인 요청만 허용하고 그 외에는 403을 돌려줘서(브라우저는 Origin을
+   바꿀 수 없다) 사이트에서 직접 읽는 방식으로는 데이터를 가져올 수 없었다. 그래서 TradingView가
+   외부 사이트 임베드용으로 제공하는 공식 위젯(embed-widget-events.js)을 쓴다: 위젯 iframe
+   안에서는 TradingView 기준으로 데이터가 로드돼 발표 일정·실제/예상/이전 값이 그대로 표시된다.
+   미국(us) 지표 중 중요도 중간 이상(0,1)만 골라 보여주고, 색 테마는 사이트 테마를 따른다.
+   위젯 스크립트를 넣은 뒤 12초 안에 iframe이 생기지 않으면 실패로 보고 안내와 다시 시도
+   버튼을 보여준다(다른 탭의 TradingView 차트와 같은 방식). */
 (function(){
 function $(id){return document.getElementById(id)}
-function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-function norm(s){return String(s||"").toLowerCase().replace(/\s+/g," ").replace(/\s*\*$/,"").trim()}
-/* [표시 이름, 단위 종류, TradingView indicator·title 별칭(소문자·끝의 * 제거한 형태)] */
-var DEFS=[
-["소비자물가 CPI (전년비)","pct",["cpi yy, nsa","inflation rate yoy"]],
-["소비자물가 CPI (전월비)","pct",["cpi mm, sa","inflation rate mom"]],
-["근원 CPI (전년비)","pct",["core cpi yy, nsa","core inflation rate yoy"]],
-["근원 CPI (전월비)","pct",["core cpi mm, sa","core inflation rate mom"]],
-["생산자물가 PPI (전월비)","pct",["ppi final demand mm","ppi mom"]],
-["근원 PPI (전월비)","pct",["ppi exfood/energy mm","core ppi mom"]],
-["근원 PCE (전년비)","pct",["core pce price index yy","core pce price index yoy"]],
-["근원 PCE (전월비)","pct",["core pce price index mm","core pce price index mom"]],
-["FOMC 기준금리","rate",["fomc decision fed funds tgt rate"]],
-["비농업 고용","jobs",["non-farm payrolls","non farm payrolls"]],
-["실업률","pct",["unemployment rate"]],
-["시간당 임금 (전월비)","pct",["average earnings mm","average hourly earnings mom"]],
-["소매판매 (전월비)","pct",["retail sales mm","retail sales mom"]],
-["GDP 성장률 (속보)","pct",["gdp advance","gdp growth rate qoq adv"]],
-["GDP 성장률 (잠정)","pct",["gdp 2nd estimate","gdp growth rate qoq 2nd est"]],
-["ISM 제조업 PMI","num",["ism manufacturing pmi"]],
-["ISM 서비스업 PMI","num",["ism n-mfg pmi","ism services pmi"]],
-["신규 실업수당 청구","claims",["initial jobless clm","initial jobless claims"]],
-["JOLTS 구인건수","jolts",["jolts job openings"]],
-["ADP 민간고용","jobs",["adp national employment","adp employment change"]],
-["미시간대 소비자심리 (예비)","num",["u mich sentiment prelim","michigan consumer sentiment prel"]],
-["미시간대 소비자심리 (확정)","num",["u mich sentiment final","michigan consumer sentiment final"]],
-["개인소비지출 (전월비)","pct",["consumption, adjusted mm","personal spending mom"]],
-["내구재 주문 (전월비)","pct",["durable goods","durable goods orders mom"]],
-["소비자신뢰지수","num",["consumer confidence","cb consumer confidence"]]
-];
-var ALIAS={};
-DEFS.forEach(function(d,i){d[2].forEach(function(a){ALIAS[a]=i})});
-function defOf(e){var i=ALIAS[norm(e.indicator)];if(i==null)i=ALIAS[norm(e.title)];return i==null?null:{i:i,n:DEFS[i][0],t:DEFS[i][1]}}
-function fetchT(url,ms){
-var ctl=("AbortController" in window)?new AbortController():null;
-var tm=ctl?setTimeout(function(){ctl.abort()},ms||12000):null;
-return fetch(url,ctl?{signal:ctl.signal}:{}).then(function(r){if(tm)clearTimeout(tm);if(!r.ok)throw new Error("http "+r.status);return r.json()}).catch(function(e){if(tm)clearTimeout(tm);throw e})}
-function numOf(v){if(v==null||v==="")return null;var n=parseFloat(String(v).replace(/,/g,""));return isNaN(n)?null:n}
-function trimN(n,d){var s=n.toFixed(d==null?2:d);if(s.indexOf(".")>=0)s=s.replace(/0+$/,"").replace(/\.$/,"");return s}
-function fmtVal(t,v,raw){
-var n=numOf(v);if(n==null)return null;
-if(t==="pct")return trimN(n)+"%";
-if(t==="rate")return n.toFixed(2)+"%";
-if(t==="num")return trimN(n);
-var p=numOf(raw);
-if(p==null)p=(t==="jolts")?n*1000000:n*1000;
-var man=p/10000,s=Math.abs(man)>=100?String(Math.round(man)):trimN(man,1);
-return s+(t==="jobs"?"만 명":"만 건")}
-var WD=["일","월","화","수","목","금","토"];
-function kstParts(ts){
-var parts=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date(ts)),o={y:0,m:0,d:0,hh:0,mm:0};
-parts.forEach(function(p){if(p.type==="year")o.y=+p.value;else if(p.type==="month")o.m=+p.value;else if(p.type==="day")o.d=+p.value;else if(p.type==="hour")o.hh=+p.value%24;else if(p.type==="minute")o.mm=+p.value});
-o.day=Date.UTC(o.y,o.m-1,o.d)/86400000;return o}
-function dateLbl(o,diff,withTime){
-var s=(diff===0?"오늘 ":diff===1?"내일 ":diff===-1?"어제 ":"")+o.m+"월 "+o.d+"일 ("+WD[new Date(Date.UTC(o.y,o.m-1,o.d)).getUTCDay()]+")";
-if(withTime)s+=" "+("0"+o.hh).slice(-2)+":"+("0"+o.mm).slice(-2);
-return s}
-var state=null,failed=false;
-function rowHtml(x,isRes,tDay){
-var o=kstParts(x.ts),diff=o.day-tDay;
-var head='<div class="he1"><b>'+esc(x.def.n)+'</b><span class="hedt">'+esc(dateLbl(o,diff,!isRes))+'</span></div>';
-var body;
-if(isRes){
-var a=fmtVal(x.def.t,x.a,x.ar),f=fmtVal(x.def.t,x.f,x.fr),pv=fmtVal(x.def.t,x.p,x.pr);
-body='실제 <b>'+a+'</b>';if(f)body+=' · 예상 '+f;if(pv)body+=' · 이전 '+pv;
-}else{
-var f2=fmtVal(x.def.t,x.f,x.fr),pv2=fmtVal(x.def.t,x.p,x.pr),ps=[];
-if(f2)ps.push('예상 <b>'+f2+'</b>');if(pv2)ps.push('이전 '+pv2);
-body=ps.length?ps.join(' · '):'발표 예정'}
-return '<div class="herow">'+head+'<span class="he2">'+body+'</span></div>'}
-function render(){
-var box=$("hec-list");if(!box)return;
-if(failed){
-box.innerHTML='<div class="heerr"><b>경제지표를 불러오지 못했어요</b>연결 문제로 경제지표 데이터를 불러오지 못했어요.<br><button type="button" id="hec-retry">다시 시도</button></div>';
-var b=$("hec-retry");if(b)b.addEventListener("click",function(){failed=false;state=null;render();load()});
-return}
-if(!state){box.innerHTML='<div class="hmvempty">불러오는 중…</div>';return}
-if(!state.up.length&&!state.res.length){box.innerHTML='<div class="heempty">표시할 주요 경제지표 일정이 없습니다</div>';return}
-var html='';
-if(state.up.length){html+='<div><div class="heghd">발표 예정 <b>'+state.up.length+'</b></div>';state.up.forEach(function(x){html+=rowHtml(x,false,state.tDay)});html+='</div>'}
-if(state.res.length){html+='<div><div class="heghd">최근 발표 결과 <b>'+state.res.length+'</b></div>';state.res.forEach(function(x){html+=rowHtml(x,true,state.tDay)});html+='</div>'}
-box.innerHTML=html}
+var timer=null,watch=null;
+function fail(){
+var m=$("hec-msg");if(!m)return;
+m.innerHTML='<div class="heerr"><b>경제지표를 불러오지 못했어요</b>연결 문제로 경제지표 위젯을 불러오지 못했어요.<br><button type="button" id="hec-retry">다시 시도</button></div>';
+m.hidden=false;
+var b=$("hec-retry");if(b)b.addEventListener("click",function(){load()})}
 function load(){
-var now=Date.now();
-var url="https://economic-calendar.tradingview.com/events?from="+encodeURIComponent(new Date(now-30*86400000).toISOString())+"&to="+encodeURIComponent(new Date(now+45*86400000).toISOString())+"&countries=US";
-fetchT(url,12000).then(function(j){
-var tDay=kstParts(now).day,past={},next={};
-(j.result||[]).forEach(function(e){
-var def=defOf(e);if(!def)return;
-var ts=Date.parse(e.date);if(isNaN(ts))return;
-var rec={def:def,ts:ts,a:e.actual,ar:e.actualRaw,f:e.forecast,fr:e.forecastRaw,p:e.previous,pr:e.previousRaw};
-if(ts<=now){if(numOf(e.actual)!=null&&(!past[def.i]||ts>past[def.i].ts))past[def.i]=rec}
-else if(!next[def.i]||ts<next[def.i].ts)next[def.i]=rec});
-var res=Object.keys(past).map(function(k){return past[k]}).sort(function(a,b){return b.ts-a.ts}).slice(0,10);
-var up=Object.keys(next).map(function(k){return next[k]}).sort(function(a,b){return a.ts-b.ts}).slice(0,12);
-state={res:res,up:up,tDay:tDay};failed=false;render();
-var n=new Date(),el=$("hec-upd");
-if(el)el.textContent=("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)+" 갱신"}).catch(function(){if(!state){failed=true;render()}})}
-render();load();
-setInterval(function(){if(!document.hidden)load()},1800000);
+var host=$("hec-w"),m=$("hec-msg");if(!host)return;
+if(timer){clearTimeout(timer);timer=null}
+if(watch){clearInterval(watch);watch=null}
+host.innerHTML="";
+if(m){m.hidden=false;m.innerHTML='<div class="hmvempty">불러오는 중…</div>'}
+var theme="light";
+try{theme=tvtheme()}catch(e){}
+var box=document.createElement("div");
+box.className="tradingview-widget-container";
+box.style.height="100%";
+var inner=document.createElement("div");
+inner.className="tradingview-widget-container__widget";
+inner.style.height="100%";
+box.appendChild(inner);
+var s=document.createElement("script");
+s.type="text/javascript";
+s.async=true;
+s.src="https://s3.tradingview.com/external-embedding/embed-widget-events.js";
+s.textContent=JSON.stringify({width:"100%",height:"100%",colorTheme:theme,isTransparent:true,locale:"kr",importanceFilter:"0,1",countryFilter:"us"});
+box.appendChild(s);
+host.appendChild(box);
+watch=setInterval(function(){
+if(host.querySelector("iframe")){if(m)m.hidden=true;clearInterval(watch);watch=null}},500);
+timer=setTimeout(function(){
+if(watch){clearInterval(watch);watch=null}
+if(!host.querySelector("iframe"))fail();
+else if(m)m.hidden=true},12000)}
+load();
 })();
 </script>
 <script>
