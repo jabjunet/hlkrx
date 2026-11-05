@@ -385,10 +385,11 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hew .hmhd .heupd{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap}
 .hewbox{max-height:460px;border:1px solid var(--bd);border-radius:10px;background:var(--sf);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 /* 홈 탭: 실적발표 박스 아래 주요 경제지표 박스 — 실적발표와 같은 틀(테두리·둥근 모서리·배경)을 쓰고 위에 간격만 둔다.
+   높이는 아래 스크립트가 실적발표 박스의 실제 렌더링 높이에 맞춰 동기화하고, 여기 값은 동기화 전 기본값이다.
    안에는 TradingView 공식 경제 캘린더 위젯 iframe이 박스 높이를 그대로 채우고, 로딩·실패 안내는 박스 위에 겹쳐 둔다 */
 .hecwrap{margin-top:20px}
 .hecbox{position:relative;height:460px;border:1px solid var(--bd);border-radius:10px;background:var(--sf);overflow:hidden}
-@media(max-width:720px){.hecbox{height:520px}}
+@media(max-width:720px){.hecbox{height:460px}}
 .hecw{height:100%}
 .hecw .tradingview-widget-container{height:100%}
 .hecw iframe{width:100%!important;height:100%!important;border:0;display:block}
@@ -4030,12 +4031,22 @@ setInterval(function(){if(!document.hidden)load()},3600000);
    바꿀 수 없다) 사이트에서 직접 읽는 방식으로는 데이터를 가져올 수 없었다. 그래서 TradingView가
    외부 사이트 임베드용으로 제공하는 공식 위젯(embed-widget-events.js)을 쓴다: 위젯 iframe
    안에서는 TradingView 기준으로 데이터가 로드돼 발표 일정·실제/예상/이전 값이 그대로 표시된다.
-   미국(us) 지표 중 중요도 중간 이상(0,1)만 골라 보여주고, 색 테마는 사이트 테마를 따른다.
+   미국(us) 지표 중 중요도 중간 이상(0,1)만 골라 보여준다. 색 테마는 검은색(다크)으로
+   고정한다: 위젯 배경을 투명(isTransparent)으로 두면 박스 배경인 var(--sf)가 그대로
+   비쳐서, 페이지 배경·옆의 다른 박스들과 같은 톤으로 자연스럽게 어울린다.
+   박스 높이는 바로 위 실적발표 박스(.hewbox)의 실제 렌더링 높이에 맞춰 동기화한다 —
+   실적 목록이 로드·갱신돼 박스 높이가 바뀌면 MutationObserver가 따라가고, 너무 짧거나
+   길어지지 않게 260~520px 사이로 제한한다(동기화 전 기본값은 CSS의 460px).
    위젯 스크립트를 넣은 뒤 12초 안에 iframe이 생기지 않으면 실패로 보고 안내와 다시 시도
    버튼을 보여준다(다른 탭의 TradingView 차트와 같은 방식). */
 (function(){
 function $(id){return document.getElementById(id)}
 var timer=null,watch=null;
+function syncH(){
+var hb=$("hew-box"),cb=$("hec-box");if(!hb||!cb)return;
+var h=hb.offsetHeight;if(!h)return;
+if(h<260)h=260;if(h>520)h=520;
+cb.style.height=h+"px"}
 function fail(){
 var m=$("hec-msg");if(!m)return;
 m.innerHTML='<div class="heerr"><b>경제지표를 불러오지 못했어요</b>연결 문제로 경제지표 위젯을 불러오지 못했어요.<br><button type="button" id="hec-retry">다시 시도</button></div>';
@@ -4047,8 +4058,7 @@ if(timer){clearTimeout(timer);timer=null}
 if(watch){clearInterval(watch);watch=null}
 host.innerHTML="";
 if(m){m.hidden=false;m.innerHTML='<div class="hmvempty">불러오는 중…</div>'}
-var theme="light";
-try{theme=tvtheme()}catch(e){}
+var theme="dark";
 var box=document.createElement("div");
 box.className="tradingview-widget-container";
 box.style.height="100%";
@@ -4070,6 +4080,10 @@ if(watch){clearInterval(watch);watch=null}
 if(!host.querySelector("iframe"))fail();
 else if(m)m.hidden=true},12000)}
 load();
+syncH();
+setTimeout(syncH,300);setTimeout(syncH,1500);setTimeout(syncH,4000);
+if(window.MutationObserver){var hb0=$("hew-box");if(hb0)new MutationObserver(syncH).observe(hb0,{childList:true,subtree:true})}
+window.addEventListener("resize",syncH);
 })();
 </script>
 <script>
