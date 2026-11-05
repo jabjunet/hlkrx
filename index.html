@@ -459,6 +459,17 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .pfout{width:100%;margin-top:10px;min-height:42px;border:1px solid var(--bd);background:none;color:var(--mut);border-radius:10px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
 .pfskip{display:block;margin:6px auto 0;border:0;background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer;min-height:36px;padding:6px 10px}
 .pfskip[hidden]{display:none}
+/* 프로필 설정 카드: 바텀시트가 아니라 둥근 카드로 띄우고, 사진 영역을 안쪽 카드로 묶는다 */
+.pfcard{border-radius:18px;padding:20px 18px 16px;box-shadow:0 20px 48px rgba(0,0,0,.32)}
+.pfcard h2{margin:0 36px 14px 2px}
+.pfhero{background:var(--sf2);border:1px solid var(--bd);border-radius:14px;padding:18px 14px 4px;margin-bottom:16px}
+.pfhero .pfav{margin:0 auto 12px;box-shadow:0 0 0 3px var(--sf),0 0 0 4px var(--bd),0 4px 12px rgba(0,0,0,.16)}
+.pfhero .pfrow{margin-bottom:10px}
+.pfhero .lgb{background:var(--sf)}
+.pfcard .lgf input{background:var(--sf2);border-radius:12px}
+.pfcard .lgsub{border-radius:12px}
+.pfcard .pfout{background:var(--sf2);border-radius:12px}
+@media(max-width:520px){#pf-ov{align-items:center;padding:16px}#pf-ov .lgbox{max-width:380px;border-radius:18px;border-bottom:1px solid var(--bd);padding-bottom:16px}}
 @media(max-width:520px){.lgov{align-items:flex-end;padding:0}.lgbox{max-width:none;border-radius:16px 16px 0 0;border-bottom:0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}}
 @media(max-width:720px){.tabs{flex-wrap:wrap}}
 /* 데스크톱 */
@@ -1328,11 +1339,11 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <p class="lgmsg" id="lg-msg" role="status" hidden></p>
 <p class="lgnote">로그인하면 채팅도 바로 쓸 수 있어요. 로그인 상태는 이 기기에만 저장됩니다.</p>
 </form></div></div>
-<div class="lgov" id="pf-ov" hidden><div class="lgbox" role="dialog" aria-modal="true" aria-labelledby="pf-t">
+<div class="lgov" id="pf-ov" hidden><div class="lgbox pfcard" role="dialog" aria-modal="true" aria-labelledby="pf-t">
 <button type="button" class="lgx" id="pf-x" aria-label="닫기">×</button>
 <h2 id="pf-t">프로필 설정 <span class="opbdg" id="pf-op" hidden>운영자</span></h2>
-<div class="pfav" aria-hidden="true"><span id="pf-av-t"></span><img id="pf-av-img" alt="" hidden></div>
-<div class="pfrow"><button type="button" class="lgb" id="pf-pick">사진 고르기</button><button type="button" class="lgb ghost" id="pf-del" hidden>사진 지우기</button></div>
+<div class="pfhero"><div class="pfav" aria-hidden="true"><span id="pf-av-t"></span><img id="pf-av-img" alt="" hidden></div>
+<div class="pfrow"><button type="button" class="lgb" id="pf-pick">사진 고르기</button><button type="button" class="lgb ghost" id="pf-del" hidden>사진 지우기</button></div></div>
 <input type="file" id="pf-file" accept="image/*" hidden>
 <label class="lgf">닉네임<input id="pf-nick" type="text" maxlength="20" autocomplete="nickname" placeholder="닉네임을 입력하세요"></label>
 <p class="lgerr" id="pf-err" role="alert" hidden></p>
