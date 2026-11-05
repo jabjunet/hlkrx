@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jabjunet.pages.dev/sitemap.xml
-
-
+Sitemap: https://kimpwon.com/sitemap.xml

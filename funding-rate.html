@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>펀딩비란 | 김프원 가이드</title>
+<meta name="description" content="펀딩비의 정의와 양수·음수 읽는 법, 정산 주기, 금액으로 환산한 비용 예시를 쉽게 설명합니다.">
+<link rel="canonical" href="https://kimpwon.com/funding-rate.html">
+<link rel="icon" href="/favicon.ico">
+<style>
+:root{--bg:#f7f8fa;--card:#ffffff;--text:#191c20;--muted:#6b7280;--line:#e4e7ec;--accent:#2563eb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif;line-height:1.7;-webkit-text-size-adjust:100%}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+header{padding:8px 0 20px}
+.logo{font-size:22px;font-weight:600;letter-spacing:-.5px;color:var(--text);text-decoration:none}
+article{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 20px}
+h1{font-size:23px;margin:0 0 16px;line-height:1.4}
+h2{font-size:17px;margin:28px 0 8px}
+p{margin:0 0 14px}
+ul{margin:0 0 14px;padding-left:20px}
+li{margin-bottom:6px}
+footer{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);font-size:14px}
+footer nav{display:flex;flex-wrap:wrap;gap:8px 16px;margin-bottom:12px}
+footer a{color:var(--accent);text-decoration:none}
+.copy{color:var(--muted);font-size:13px}
+@media (prefers-color-scheme: dark){
+:root{--bg:#14161a;--card:#1e2126;--text:#e9ebee;--muted:#9aa1ab;--line:#2d3138;--accent:#7aa2ff}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="https://kimpwon.com">kimpwon</a></header>
+<main>
+<article>
+<h1>펀딩비란</h1>
+
+<p>펀딩비는 무기한 선물 거래에서 롱(매수) 포지션과 숏(매도) 포지션을 가진 사람들이 정해진 시간마다 서로 주고받는 비용입니다. 무기한 선물은 만기가 없어 선물 가격이 현물 가격에서 너무 벌어질 수 있는데, 펀딩비는 그 간격을 좁히는 역할을 합니다.</p>
+
+<h2>읽는 법</h2>
+<ul>
+<li>펀딩비가 양수(+)이면 롱 포지션이 숏 포지션에게 비용을 냅니다. 롱 쪽 수요가 많을 때 양수가 되는 경우가 많습니다.</li>
+<li>펀딩비가 음수(−)이면 반대로 숏 포지션이 롱 포지션에게 비용을 냅니다.</li>
+<li>0에 가까울수록 롱과 숏의 균형이 맞는 상태로 볼 수 있습니다.</li>
+</ul>
+
+<h2>정산 주기</h2>
+<p>펀딩비는 한 번에 몰아서 내는 것이 아니라 정산 시점마다 조금씩 정산됩니다. 정산 주기는 거래소마다 다르고, 보통 8시간마다 정산하는 곳이 많습니다. 정산 시점에 포지션을 가지고 있을 때만 적용되고, 그 전에 포지션을 닫으면 해당 회차의 펀딩비는 주고받지 않습니다.</p>
+
+<h2>비용 예시</h2>
+<p>금액으로 바꾸면 감이 잡힙니다. 1,000만 원짜리 롱 포지션을 들고 있고 펀딩비가 0.01%라면, 정산 한 번에 1,000만 원 × 0.01% = 1,000원을 숏 쪽에 내게 됩니다. 펀딩비가 양수인 상태가 오래 이어지면 이 비용이 회차마다 쌓이므로, 포지션을 오래 유지할 때는 펀딩비도 함께 확인하는 것이 좋습니다.</p>
+
+<p>김프원의 펀딩비 탭에서는 주요 거래소의 펀딩비를 한곳에서 비교해 볼 수 있습니다.</p>
+</article>
+</main>
+<footer>
+<nav>
+<a href="/guide.html">가이드</a>
+<a href="/kimchi-premium.html">김치프리미엄이란</a>
+<a href="/funding-rate.html">펀딩비란</a>
+<a href="/data.html">데이터 출처와 산출 기준</a>
+</nav>
+<div class="copy">© 2026 kimpwon</div>
+</footer>
+</div>
+</body>
+</html>

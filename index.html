@@ -1013,7 +1013,8 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .sitefoot{margin-top:16px;padding:14px 2px 6px;border-top:1px solid var(--bd);text-align:center}
 .sitefoot nav{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
 .sitefoot nav button{border:0;background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:8px 6px;min-height:36px}
-.sitefoot nav button:hover{color:var(--tx);text-decoration:underline}
+.sitefoot nav a{color:var(--mut);font-size:13px;font-weight:600;text-decoration:none;padding:8px 6px;min-height:36px;display:inline-flex;align-items:center}
+.sitefoot nav button:hover,.sitefoot nav a:hover{color:var(--tx);text-decoration:underline}
 .sitefoot nav i{color:var(--bd);font-style:normal}
 .sitefoot p{color:var(--mut);font-size:12px;margin:6px 0 0}
 .sitefoot .siteintro{color:var(--mut);font-size:11px;line-height:1.5;margin-top:10px;opacity:.8}
@@ -1037,26 +1038,6 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .legalbox-bd .ctlist .ctlbl{font-size:14px;font-weight:700;flex:none}
 .legalbox-bd .ctlist .cturl{font-size:12.5px;color:var(--mut);word-break:break-all;text-align:right}
 @media(max-width:520px){.legalov{padding:0;align-items:flex-end}.legalbox{max-width:none;max-height:92dvh;border-radius:16px 16px 0 0;border-bottom:0}}
-/* 가이드(설명) 페이지: 탭 섹션과 같은 방식으로 여닫는 전용 화면. 본문 타이포는 소개 팝업(.legalbox-bd)과 같은 결로 맞춘다 */
-.gdoc{padding:10px 2px 4px}
-.gdoc-hd{display:flex;align-items:center;gap:10px}
-.gdoc-hd h2{margin:0;font-size:19px}
-.gback{margin-left:auto;flex:none;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font:inherit;font-size:12.5px;font-weight:600;border-radius:999px;padding:7px 13px;min-height:36px;cursor:pointer}
-.gdoc-lead{color:var(--mut);font-size:13.5px;line-height:1.7;margin:10px 0 14px}
-.gtoc{display:flex;flex-wrap:wrap;gap:8px;margin:0}
-.gtoc button{border:1px solid var(--bd);background:var(--sf2,var(--sf));color:var(--tx);font:inherit;font-size:12.5px;font-weight:600;border-radius:999px;padding:7px 12px;min-height:34px;cursor:pointer}
-.gdoc h3{font-size:15.5px;font-weight:700;margin:26px 0 8px;padding-top:20px;border-top:1px solid var(--bd)}
-.gdoc h4{font-size:14px;font-weight:700;margin:16px 0 6px}
-.gdoc p,.gdoc li{font-size:13.5px;line-height:1.75;color:var(--tx)}
-.gdoc p{margin:0 0 9px}
-.gdoc ul,.gdoc ol{margin:0 0 10px;padding-left:19px}
-.gdoc li{margin-bottom:5px}
-.gdoc .gformula{background:var(--sf2,var(--sf));border:1px solid var(--bd);border-radius:10px;padding:12px 14px;font-weight:700;text-align:center}
-.gdoc .gex{background:var(--sf2,var(--sf));border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin:0 0 10px}
-.gdoc .gex p:last-child{margin-bottom:0}
-.gdoc .gnote{color:var(--mut);font-size:12.5px;line-height:1.7;margin-top:18px}
-.gdoc .gfoot{margin-top:20px;text-align:center}
-.gdoc .gfoot .gback{margin-left:0}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
@@ -1388,70 +1369,6 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <div class="cm-chat" id="cm-chat-slot"></div>
 </div>
 </section>
-<section id="pab" hidden>
-<div class="gdoc">
-<div class="gdoc-hd"><h2>김프·펀딩비 가이드</h2></div>
-<p class="gdoc-lead">김프원은 국내외 가격 차이(김프)와 펀딩비, 주식·ETF 시세를 한곳에서 비교해 보여주는 사이트입니다. 이 페이지에서는 김프와 펀딩비가 무엇인지, 어떻게 계산하고 읽으면 되는지 쉽게 설명합니다.</p>
-<nav class="gtoc" aria-label="가이드 목차"><button type="button" data-g="g-kimp">김치프리미엄이란</button><button type="button" data-g="g-calc">김프 계산 방법</button><button type="button" data-g="g-fund">펀딩비란</button><button type="button" data-g="g-data">데이터 출처와 갱신 주기</button><button type="button" data-g="g-faq">자주 묻는 질문</button></nav>
-<h3 id="g-kimp">김치프리미엄(김프)이란</h3>
-<p>김프는 같은 종목이 국내에서 해외보다 얼마나 비싸게 거래되는지를 나타낸 숫자입니다. 국내 가격이 더 비싸면 플러스(+), 더 싸면 마이너스(−)가 되는데, 마이너스인 경우를 역프리미엄(역프)이라고 합니다.</p>
-<p>김프는 국내에서 사려는 사람이 몰리면 커지고, 시장이 식으면 줄어듭니다. 그래서 국내 투자 심리를 가늠하는 지표로도 쓰입니다.</p>
-<p>다만 김프가 크다고 해서 그만큼 벌 수 있는 것은 아닙니다. 실제로 옮겨 팔려면 수수료와 걸리는 시간, 그사이의 가격 변동까지 함께 봐야 합니다.</p>
-<h3 id="g-calc">김프 계산 방법</h3>
-<p class="gformula">김프(%) = (국내 가격 ÷ (해외 가격 × 환율) − 1) × 100</p>
-<p>계산은 세 단계면 됩니다.</p>
-<ol>
-<li>해외 가격에 환율을 곱해 원화로 바꾼 가격(원화 환산가)을 구합니다.</li>
-<li>국내 가격을 원화 환산가로 나눕니다.</li>
-<li>1을 빼고 100을 곱하면 김프(%)가 됩니다.</li>
-</ol>
-<div class="gex">
-<p><b>예시 1 · 김프가 플러스인 경우</b></p>
-<p>국내 가격 100,000원, 해외 가격 70달러, 환율 1,400원이면 원화 환산가는 70 × 1,400 = 98,000원입니다. 김프는 (100,000 ÷ 98,000 − 1) × 100 ≈ <b>+2.04%</b>로, 국내가 해외보다 약 2% 비싼 상태입니다.</p>
-<p><b>예시 2 · 역프인 경우</b></p>
-<p>국내 가격이 95,000원이면 김프는 (95,000 ÷ 98,000 − 1) × 100 ≈ <b>−3.06%</b>로, 국내가 해외보다 싼 역프 상태입니다.</p>
-</div>
-<p>김프원의 김프 탭과 계산기는 이 방식으로 계산합니다. 계산기에 종목 이름만 넣으면 가격과 환율을 자동으로 불러오고, 투자금을 넣으면 예상 차익도 보여줍니다.</p>
-<h4>김프를 볼 때 주의할 점</h4>
-<ul>
-<li>김프는 가격 차이를 보여주는 숫자일 뿐입니다. 실제 거래에는 송금·출금 제한, 수수료, 시간이 걸리는 동안의 가격 변동 같은 위험이 있어 수익을 보장하지 않습니다.</li>
-<li>국내 장이 닫힌 동안에는 국내 가격이 마지막 종가로 고정되고 해외 가격만 움직여서, 김프도 따라 변합니다.</li>
-<li>환율이 변해도 김프가 변합니다. 김프와 함께 환율·해외 가격도 확인하세요.</li>
-</ul>
-<h3 id="g-fund">펀딩비란</h3>
-<p>펀딩비는 무기한 선물에서 롱(매수)과 숏(매도) 포지션이 정해진 시간마다 서로 주고받는 비용입니다. 선물 가격이 실제 가격에서 너무 벌어지지 않게 맞추는 역할을 합니다.</p>
-<h4>펀딩비 읽는 법</h4>
-<ul>
-<li><b>양수</b>이면 롱이 숏에게 비용을 냅니다. 사려는 쪽(롱)이 많다는 뜻으로 읽히는 경우가 많습니다.</li>
-<li><b>음수</b>이면 숏이 롱에게 비용을 냅니다. 팔려는 쪽(숏)이 많다는 뜻으로 읽히는 경우가 많습니다.</li>
-<li>숫자가 클수록 한쪽으로 쏠렸다는 신호일 수 있지만, 펀딩비만으로 가격이 오를지 내릴지는 알 수 없습니다.</li>
-</ul>
-<p>내는 주기는 거래소마다 다릅니다. Hyperliquid는 1시간, Binance는 기본 8시간입니다. 김프원 펀딩비 탭에서 거래소별로 비교할 수 있습니다.</p>
-<div class="gex">
-<p><b>예시 · 펀딩비로 내는 비용</b></p>
-<p>1,000만 원어치 롱 포지션을 잡고 펀딩비가 +0.01%라면, 정산 때마다 1,000만 × 0.01% = <b>1,000원</b>을 냅니다. 주기가 짧을수록 자주 쌓이니, 포지션을 오래 들고 있을수록 펀딩비를 확인하세요.</p>
-</div>
-<h3 id="g-data">데이터 출처와 갱신 주기</h3>
-<ul>
-<li>해외 가격·펀딩비: Hyperliquid·Binance·OKX·Bybit에서 실시간으로 받아 15초마다 갱신합니다(펀딩비 탭에서는 10초마다).</li>
-<li>환율(달러/원): 실시간으로 받아 15초마다 갱신하고, 김프 계산에 그대로 씁니다.</li>
-<li>국내 가격(KRX): 장이 열린 시간(평일 09:00–15:30)에는 30초마다 갱신하고, 장이 닫히면 마지막 종가를 보여줍니다.</li>
-<li>ETF·나스닥 종목: TradingView 기준으로 1분마다 갱신합니다.</li>
-<li>원자재 국제 시세(금·은·구리·WTI 유가)는 15초마다 갱신합니다. 다만 국내 금·은은 한국금거래소 고시(2026-11-04), 국내 구리는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 변하지 않습니다.</li>
-<li>조회가 안 되면 마지막으로 저장된 값(2026-11-05 조회, KRX는 11/05 종가)을 보여줍니다.</li>
-</ul>
-<h3 id="g-faq">자주 묻는 질문</h3>
-<h4>김프가 높으면 그만큼 차익을 얻을 수 있나요?</h4>
-<p>아닙니다. 김프는 가격 차이일 뿐이고, 실제로는 송금·출금 제한, 수수료, 시간이 걸리는 동안의 가격 변동 같은 위험이 있어 수익을 보장하지 않습니다.</p>
-<h4>장이 닫혀 있는데 김프가 계속 변해요.</h4>
-<p>장이 닫힌 동안 국내 가격은 마지막 종가로 고정되고 해외 가격만 움직이기 때문입니다.</p>
-<h4>해외주식 김프는 실제 주식을 기준으로 하나요?</h4>
-<p>아닙니다. 해외 탭의 가격은 해외 거래소의 파생상품 가격이며, 실제 주식을 가진 것과는 다릅니다. 실제 ETF와 나스닥 종목 가격은 TradingView 기준으로 따로 보여줍니다.</p>
-<h4>여기에 표시되는 가격이 공식 시세인가요?</h4>
-<p>아닙니다. 각 거래소·기관이 공개한 데이터를 바탕으로 계산한 참고용 가격입니다.</p>
-<p class="gnote">이 페이지의 정보는 참고용이며, 특정 종목을 사거나 팔라고 권유하지 않습니다. 투자 판단과 결과에 대한 책임은 본인에게 있습니다.</p>
-</div>
-</section>
 <div class="lgov" id="pv-ov" hidden><div class="lgbox pvbox" role="dialog" aria-modal="true" aria-labelledby="pv-title">
 <h2 id="pv-title"></h2>
 <p class="pv-meta" id="pv-meta"></p>
@@ -1460,7 +1377,7 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 </div></div>
 <details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-04), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-05 조회, KRX는 11/05 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
 <footer class="sitefoot">
-<nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button><i aria-hidden="true">·</i><button type="button" id="legal-contact-open">문의</button><i aria-hidden="true">·</i><button type="button" id="guide-open">가이드</button></nav>
+<nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button><i aria-hidden="true">·</i><button type="button" id="legal-contact-open">문의</button><i aria-hidden="true">·</i><a href="guide.html">가이드</a></nav>
 <p>© 2026 kimpwon</p>
 <p class="siteintro">김프원은 국내외 금융시장 데이터와 김치프리미엄, 펀딩비 및 주식·ETF 정보를 비교하고 제공하는 독립 금융 정보 플랫폼입니다.</p>
 </footer>
@@ -3830,31 +3747,7 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!ov.hidden)
 wire("legal-priv-open","legal-priv-ov","legal-priv-x");
 wire("legal-terms-open","legal-terms-ov","legal-terms-x");
 wire("legal-contact-open","legal-contact-ov","legal-contact-x");
-/* 가이드(설명) 페이지: 푸터 '가이드' 버튼으로 여는 전용 화면.
-   탭 섹션들과 같은 숨김 방식으로 동작하고, 탭을 누르면 가이드가 닫히며 해당 탭이 열린다. */
-var GSECS=["ph","pa","pb","pg","pf","pc","pi","pk"];
-var guideEl=document.getElementById("pab");
-function openGuide(){
-if(!guideEl)return;
-GSECS.forEach(function(id){var s=document.getElementById(id);if(s)s.hidden=true});
-guideEl.hidden=false;
-document.querySelectorAll("#tabs button").forEach(function(b){b.setAttribute("aria-pressed","false")});
-document.querySelectorAll(".dnote,.sitefoot").forEach(function(n){n.hidden=false});
-window.scrollTo(0,0);
-}
-function closeGuide(){
-if(!guideEl)return;
-guideEl.hidden=true;
-var home=document.getElementById("ph");if(home)home.hidden=false;
-document.querySelectorAll("#tabs button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.t==="ph"))});
-window.scrollTo(0,0);
-}
-var gOpenBtn=document.getElementById("guide-open");
-if(gOpenBtn)gOpenBtn.addEventListener("click",openGuide);
-var tabsEl2=document.getElementById("tabs");
-if(tabsEl2)tabsEl2.addEventListener("click",function(){if(guideEl)guideEl.hidden=true});
-var gReduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-document.querySelectorAll(".gtoc button").forEach(function(b){b.addEventListener("click",function(){var t=document.getElementById(b.dataset.g);if(t)t.scrollIntoView({behavior:gReduce?"auto":"smooth",block:"start"})})});
+/* 가이드(설명 콘텐츠)는 별도 페이지 guide.html로 분리했다. 푸터 '가이드'는 그 페이지로 이동하는 링크다. */
 })();
 </script>
 <script>
