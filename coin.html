@@ -204,7 +204,17 @@ function loadFx(){
 }
 function loadKimchi(){
   var markets=COINS.map(function(c){return "KRW-"+c[0];}).join(",");
-  var upP=getJSON("https://api.upbit.com/v1/ticker?markets="+markets).catch(function(){return null;});
+  var upUrl="https://api.upbit.com/v1/ticker?markets="+markets;
+  /* 업비트 직접 조회가 일부 환경에서 막히거나 배열이 아닌 응답이면 프록시 경유로 재시도 */
+  var upP=getJSON(upUrl).then(function(j){
+    if(!Array.isArray(j))throw new Error("bad");
+    return j;
+  }).catch(function(){
+    return getJSON("https://api.allorigins.win/raw?url="+encodeURIComponent(upUrl)).then(function(j){
+      if(!Array.isArray(j))throw new Error("bad");
+      return j;
+    });
+  }).catch(function(){return null;});
   /* 바이낸스 본 API가 지역 제한 등으로 배열이 아닌 응답을 줄 때도 미러로 폴백 */
   var bnP=getJSON("https://api.binance.com/api/v3/ticker/24hr").then(function(j){
     if(!Array.isArray(j))throw new Error("geo");
