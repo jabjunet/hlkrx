@@ -247,12 +247,14 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 #pb .prow.nqrow .xtag{flex:none;font-size:11px;font-weight:800;color:var(--tx);background:var(--sf2);border:1px solid var(--bd);border-radius:5px;padding:1px 5px;letter-spacing:-.02em}
 #pb .prow.nqrow .xpr{font-size:13.5px;font-weight:800;color:var(--tx);letter-spacing:-.02em}
 #pb .prow.nqrow .xpr.xnone{color:var(--mut);font-weight:600}
+#pb .prow.nqrow .xpr.xonly{margin-right:-6px}
 #pb .prow.nqrow .xcol .pill{font-size:11px;padding:2px 6px}
 @media(max-width:520px){
 /* 모바일 5열: 비교 칸은 칩·가격·pill을 세로로 쌓고, 가격 칸의 고/저는 두 줄로 감아 잘리지 않게 한다 */
 #pb .prow.nqrow .xcol{flex-direction:column;align-items:flex-end;flex-wrap:nowrap;gap:2px}
 #pb .prow.nqrow .xtag{font-size:10px;padding:1px 4px}
 #pb .prow.nqrow .xpr{font-size:12.5px}
+#pb .prow.nqrow .xpr.xonly{margin-right:-3px}
 #pb .prow.nqrow .xcol .pill{font-size:10.5px;padding:1px 4px}
 #pb .prow.nqrow>div:nth-child(4) .pill{font-size:10.5px;padding:1px 4px}
 #pb .prow.nqrow .hlw{white-space:normal}
@@ -2483,7 +2485,8 @@ if(!j.data||!j.data.length||NQ.items.length>=NQ.total)NQ.done=true;NQ.err=0;nqSy
 function nqDiff(t,price){
 if(cv===v||!(price>0))return"";
 var can=t.replace(/\./g,""),r=xrow(cv,fromCan(cv,can))||xrow(cv,can)||xrow(cv,t);
-if(!r||!(r[1]>0))return'<span class="xtag">'+XTAG[cv]+'</span><span class="xpr xnone">—</span>';
+/* 비교 가격이 없는 종목은 거래소 칩 없이 '—'만 표시하고, 칩이 빠진 만큼 오른쪽으로 붙인다(사용자 지시 2026-11-06) */
+if(!r||!(r[1]>0))return'<span class="xpr xnone xonly">—</span>';
 var other=r[1],d=(price/other-1)*100,c=d>0?"up":d<0?"dn":"";
 return'<span class="xtag">'+XTAG[cv]+'</span><span class="xpr">'+f(other,other<10?3:2)+'</span><span class="pill '+c+'">'+(d>0?"+":"")+d.toFixed(2)+'%</span>'}
 function nqAv(it){
