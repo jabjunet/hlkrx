@@ -438,7 +438,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hnmore{display:block;width:100%;min-height:44px;border:0;border-top:1px solid var(--bd);background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .hnmore:hover{background:var(--sf2);color:var(--tx)}
 /* 홈 탭: 실시간 차트 + 실적발표 2열 — 데스크톱에서는 좌우 절반씩 나란히, 720px 이하에서는 차트 위·실적발표 아래로 쌓는다.
-   오른쪽 실적발표 박스는 고정 높이에 안쪽 스크롤 — 최근 30일 '발표 완료'(실제 EPS·서프라이즈)를 위에, 앞으로 나올 '발표 예정'을 아래에 보여준다 */
+   오른쪽 실적발표 박스는 고정 높이에 안쪽 스크롤 — 발표한 지 24시간이 안 지난 '발표 완료'(실제 EPS·서프라이즈)만 위에, 앞으로 나올 '발표 예정'을 아래에 보여준다 */
 .hmcols{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;margin-top:6px}
 .hmcols .hmv{margin-top:0;min-width:0}
 .hew{min-width:0}
@@ -979,6 +979,12 @@ main{padding:2px 12px 40px}
 .cm-frow{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
 .cm-cancel{min-height:40px;padding:8px 14px;border:1px solid var(--bd);border-radius:999px;background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .cm-submit{min-height:40px;padding:8px 18px;border:0;border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
+/* 글쓰기 폼이 열려 있을 때: 폼(제목·본문·사진 미리보기·취소/등록 버튼)이 최신글 박스의
+   높이 제한(480/560px)에 잘려 등록 버튼이 안 보이는 문제가 있었다.
+   폼이 열린 동안에는 박스가 폼 높이에 맞게 늘어나게 하고, 글 목록은 자체 높이를 갖고
+   그 안에서 스크롤하게 해서 취소·등록 버튼이 항상 보이게 한다 */
+.cm-latest:has(> .cm-form:not([hidden])){max-height:none}
+.cm-latest:has(> .cm-form:not([hidden])) #cm-list{flex:none;height:220px}
 /* 글 목록 행: 디시인사이드 목록처럼 왼쪽 작은 썸네일(첨부 사진이 있으면 그 사진, 없으면 글쓴이 프로필 사진, 그것도 없으면 닉네임 첫 글자),
    가운데 제목, 오른쪽 끝에 작성자 | 날짜를 한 줄로 보여 준다. 조회수는 제목 아래 작은 글씨 */
 .cm-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--bd);background:none;color:var(--tx);font:inherit;padding:9px 2px;cursor:pointer}
@@ -4607,7 +4613,7 @@ setInterval(function(){if(!document.hidden)load()},7*60000);
 </script>
 <script>
 /* 홈 탭: 주요 종목 실적발표 (실시간 차트 오른쪽 열) — TradingView 스캐너(america/scan)의 실적 필드를
-   미국 주요 종목 워치리스트 30종목 한 번의 요청으로 불러와, 최근 30일 안에 발표가 끝난 종목의
+   미국 주요 종목 워치리스트 30종목 한 번의 요청으로 불러와, 발표한 지 24시간이 안 지난 종목의
    결과('발표 완료': 실제 EPS·예상 EPS·서프라이즈 %)를 위에, 앞으로 나올 '발표 예정'을 아래에 보여준다.
    필드: earnings_release_next_date=다음 발표 시각(초),
    earnings_per_share_forecast_next_fq=다음 발표의 예상 EPS,
@@ -4618,7 +4624,9 @@ setInterval(function(){if(!document.hidden)load()},7*60000);
    날짜 옆에는 같은 발표 시각을 한국 시간(Asia/Seoul)으로 환산한 시각도 함께 표시한다. 장후 발표처럼
    한국 날짜가 미국 날짜보다 하루 늦어지면 시각 앞에 '다음날'을 붙여 헷갈리지 않게 한다.
    발표 시각이 미국 동부 자정(00:00)으로만 들어온 경우에는 시각이 정해지지 않은 것으로 보고 표시하지 않는다.
-   표시 범위: 발표 완료는 최근 30일, 발표 예정은 앞으로 30일. 페이지 로드 시 불러오고 1시간마다 자동 갱신한다.
+   표시 범위: 발표 완료는 발표한 시각으로부터 24시간 안(경제지표 '최근 발표'와 같은 규칙 — 24시간이 지나면
+   자동으로 사라지고, 해당 결과가 없으면 '발표 완료' 섹션 자체를 보여주지 않는다), 발표 예정은 앞으로 30일.
+   페이지 로드 시 불러오고 1시간마다 자동 갱신한다.
    이전에는 Nasdaq 실적 캘린더 API를 공개 프록시로 경유해 불러왔으나 프록시 장애(타임아웃·401·429)가 잦아
    이 페이지의 다른 데이터와 같은 TradingView 스캐너로 교체했다(빌드 시점 실측).
    한국 종목(삼성전자·SK하이닉스 등)은 이 소스에 실적 일정이 없어 포함하지 않는다. */
@@ -4699,11 +4707,12 @@ if(b.next){
 var o2=nyDay(+b.next),diff2=o2.day-t;
 if(diff2>=0&&diff2<=30)up.push({sym:sym,o:o2,k:kstDay(+b.next),ts:+b.next,mins:o2.mins,diff:diff2,fc:b.fcN!=null?+b.fcN:null,cap:b.cap})}
 if(b.last&&b.act!=null&&!isNaN(+b.act)){
-var o3=nyDay(+b.last),ago=t-o3.day;
-if(ago>=0&&ago<=30){
+var ageSec=Date.now()/1000-(+b.last);
+if(ageSec>=0&&ageSec<=86400){
+var o3=nyDay(+b.last);
 var fcA=b.fcA!=null?+b.fcA:null,surp=(b.surp!=null&&!isNaN(+b.surp))?+b.surp:null;
 var showSurp=surp!=null&&fcA!=null&&fcA>0&&Math.abs(surp)<500;
-done.push({sym:sym,o:o3,k:kstDay(+b.last),ts:+b.last,mins:o3.mins,diff:-ago,act:+b.act,fc:fcA,surp:showSurp?surp:null,surpTxt:showSurp?surpFmt(surp):"",cap:b.cap})}}});
+done.push({sym:sym,o:o3,k:kstDay(+b.last),ts:+b.last,mins:o3.mins,diff:o3.day-t,act:+b.act,fc:fcA,surp:showSurp?surp:null,surpTxt:showSurp?surpFmt(surp):"",cap:b.cap})}}});
 up.sort(function(a,b){return a.ts-b.ts||b.cap-a.cap});
 done.sort(function(a,b){return b.ts-a.ts||b.cap-a.cap});
 state={up:up.slice(0,20),done:done.slice(0,20)};
