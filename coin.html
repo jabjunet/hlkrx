@@ -35,6 +35,7 @@ a{color:inherit}
 .coinbdg{font-size:10.5px;font-weight:700;letter-spacing:.02em;color:var(--acx);background:var(--ac);border-radius:5px;padding:2px 6px}
 .hd-r{display:flex;align-items:center;gap:8px}
 .live{font-size:12px;color:var(--mut);font-weight:600;white-space:nowrap}
+.wipbdg{font-size:10.5px;font-weight:700;letter-spacing:.02em;color:var(--warn);background:rgba(217,138,22,.15);border:1px solid rgba(217,138,22,.45);border-radius:999px;padding:2px 8px;white-space:nowrap}
 .live b{color:var(--ok);font-weight:800}
 .thbtn{width:32px;height:32px;padding:0;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:none;font-size:15px}
 .hd-sub{font-size:12px;color:var(--mut);padding:1px 0 4px}
@@ -102,6 +103,7 @@ td small.sub{display:block;color:var(--mut);font-size:11.5px}
   <div class="hd-t">
     <a class="brand" href="/">kimpwon <span class="coinbdg">코인</span></a>
     <div class="hd-r">
+      <span class="wipbdg">만드는 중</span>
       <span class="live" id="liveSt"><b>●</b> 실시간</span>
       <button class="thbtn" id="thBtn" type="button" aria-label="다크/라이트 전환">◐</button>
     </div>
@@ -235,7 +237,10 @@ function loadKimchi(){
       var close=parseFloat(d[0]), chg=parseFloat(d[1]), vol=parseFloat(d[2]);
       if(ex==="UPBIT"&&tk.slice(-3)==="KRW"){
         /* 등락은 %(−0.419 = −0.42%)로 오므로 비율로 변환, 거래대금은 종가×거래량 근사 */
-        tvKrw[tk.slice(0,-3)]={price:isFinite(close)?close:null,chg:isFinite(chg)?chg/100:null,vol:(isFinite(close)&&isFinite(vol))?close*vol:null};
+        /* close가 0·빈값이면 '데이터 없음'으로 취급해 빗썸 폴백이 돌게 한다 */
+        var okP=isFinite(close)&&close>0;
+        var tvv=(okP&&isFinite(vol))?close*vol:null;
+        tvKrw[tk.slice(0,-3)]={price:okP?close:null,chg:isFinite(chg)?chg/100:null,vol:(tvv!=null&&tvv>0)?tvv:null};
       }else if(ex==="BINANCE"&&tk.slice(-4)==="USDT"){
         tvUsd[tk.slice(0,-4)]=isFinite(close)?close:null;
       }
@@ -245,7 +250,7 @@ function loadKimchi(){
       if(!t||typeof t!=="object")return;
       var price=parseFloat(t.closing_price), rate=parseFloat(t.fluctate_rate_24H);
       var val=parseFloat(t.acc_trade_value!=null?t.acc_trade_value:t.acc_trade_value_24H);
-      btMap[c[0]]={price:isFinite(price)?price:null,chg:isFinite(rate)?rate/100:null,vol:isFinite(val)?val:null};
+      btMap[c[0]]={price:(isFinite(price)&&price>0)?price:null,chg:isFinite(rate)?rate/100:null,vol:(isFinite(val)&&val>0)?val:null};
     }catch(e){}});
     if(Array.isArray(bn))bn.forEach(function(t){try{if(t.symbol&&t.symbol.slice(-4)==="USDT")bnMap[t.symbol.slice(0,-4)]=t;}catch(e){}});
     if(!tv&&!bt&&!bn){
@@ -260,7 +265,7 @@ function loadKimchi(){
       var usd=(tvUsd[sym]!=null)?tvUsd[sym]:(b?parseFloat(b.lastPrice):null);
       if(usd!=null&&!isFinite(usd))usd=null;
       var conv=(usd!=null&&fxRate)?usd*fxRate:null;
-      var kp=(krw!=null&&conv)?(krw/conv-1):null;
+      var kp=(krw!=null&&krw>0&&conv!=null&&conv>0)?(krw/conv-1):null;
       return {sym:sym,krw:krw,usd:usd,conv:conv,kp:kp,chg:chg,vol:vol};
     }).filter(function(r){return r;});
     rows.sort(function(a,b){return (b.vol||-1)-(a.vol||-1);});
