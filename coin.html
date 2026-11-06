@@ -159,7 +159,7 @@ var COINS=[
  ["ADA","에이다"],["TRX","트론"],["LINK","체인링크"],["AVAX","아발란체"],["DOT","폴카닷"],
  ["NEAR","니어프로토콜"],["ARB","아비트럼"],["OP","옵티미즘"],["SUI","수이"],["APT","앱토스"],
  ["INJ","인젝티브"],["SEI","세이"],["PEPE","페페"],["ETC","이더리움클래식"],["BCH","비트코인캐시"],
- ["LTC","라이트코인"],["XLM","스텔라루멘"],["ATOM","코스모스"],["HBAR","헤데라"]
+ ["UNI","유니스왑"],["XLM","스텔라루멘"],["ATOM","코스모스"],["HBAR","헤데라"]
 ];
 var NM={}; COINS.forEach(function(c){NM[c[0]]=c[1];});
 /* 행 단위 방어: 하나가 깨져도 그 행만 비고 나머지는 계속 그린다 */
@@ -203,42 +203,64 @@ function loadFx(){
   }).catch(function(){ /* 실패하면 직전 환율 유지 */ });
 }
 function loadKimchi(){
-  var markets=COINS.map(function(c){return "KRW-"+c[0];}).join(",");
-  var upUrl="https://api.upbit.com/v1/ticker?markets="+markets;
-  /* 업비트 직접 조회가 일부 환경에서 막히거나 배열이 아닌 응답이면 프록시 경유로 재시도 */
-  var upP=getJSON(upUrl).then(function(j){
-    if(!Array.isArray(j))throw new Error("bad");
-    return j;
-  }).catch(function(){
-    return getJSON("https://api.allorigins.win/raw?url="+encodeURIComponent(upUrl)).then(function(j){
-      if(!Array.isArray(j))throw new Error("bad");
-      return j;
-    });
+  /* 주 경로: TradingView 스캐너 — 24종 국내(업비트 KRW)·해외(바이낸스 USDT)를 한 번의 요청으로 */
+  var tickers=[];
+  COINS.forEach(function(c){tickers.push("UPBIT:"+c[0]+"KRW");tickers.push("BINANCE:"+c[0]+"USDT");});
+  var tvP=fetch("https://scanner.tradingview.com/crypto/scan",{
+    method:"POST",cache:"no-store",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({symbols:{tickers:tickers},columns:["close","change","volume"]})
+  }).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
+  .then(function(j){
+    if(!j||!Array.isArray(j.data))throw new Error("bad");
+    return j.data;
   }).catch(function(){return null;});
-  /* 바이낸스 본 API가 지역 제한 등으로 배열이 아닌 응답을 줄 때도 미러로 폴백 */
+  /* 국내가 보조: 빗썸 — TV에서 국내가를 못 받은 코인만 채운다 */
+  var btP=getJSON("https://api.bithumb.com/public/ticker/ALL_KRW").then(function(j){
+    if(!j||j.status!=="0000"||!j.data)throw new Error("bad");
+    return j.data;
+  }).catch(function(){return null;});
+  /* 해외가 보조: 바이낸스 본 API가 지역 제한 등으로 배열이 아닌 응답을 줄 때도 미러로 폴백 (우선순위는 TV 다음) */
   var bnP=getJSON("https://api.binance.com/api/v3/ticker/24hr").then(function(j){
     if(!Array.isArray(j))throw new Error("geo");
     return j;
   }).catch(function(){
     return getJSON("https://data-api.binance.vision/api/v3/ticker/24hr");
   }).catch(function(){return null;});
-  Promise.all([upP,bnP]).then(function(res){
-    var up=res[0], bn=res[1];
-    var upMap={}, bnMap={};
-    if(Array.isArray(up))up.forEach(function(t){try{upMap[t.market.replace("KRW-","")]=t;}catch(e){}});
+  Promise.all([tvP,btP,bnP]).then(function(res){
+    var tv=res[0], bt=res[1], bn=res[2];
+    var tvKrw={}, tvUsd={}, btMap={}, bnMap={};
+    if(Array.isArray(tv))tv.forEach(function(row){try{
+      var parts=String(row.s||"").split(":"), ex=parts[0], tk=parts[1]||"", d=row.d||[];
+      var close=parseFloat(d[0]), chg=parseFloat(d[1]), vol=parseFloat(d[2]);
+      if(ex==="UPBIT"&&tk.slice(-3)==="KRW"){
+        /* 등락은 %(−0.419 = −0.42%)로 오므로 비율로 변환, 거래대금은 종가×거래량 근사 */
+        tvKrw[tk.slice(0,-3)]={price:isFinite(close)?close:null,chg:isFinite(chg)?chg/100:null,vol:(isFinite(close)&&isFinite(vol))?close*vol:null};
+      }else if(ex==="BINANCE"&&tk.slice(-4)==="USDT"){
+        tvUsd[tk.slice(0,-4)]=isFinite(close)?close:null;
+      }
+    }catch(e){}});
+    if(bt)COINS.forEach(function(c){try{
+      var t=bt[c[0]];
+      if(!t||typeof t!=="object")return;
+      var price=parseFloat(t.closing_price), rate=parseFloat(t.fluctate_rate_24H);
+      var val=parseFloat(t.acc_trade_value!=null?t.acc_trade_value:t.acc_trade_value_24H);
+      btMap[c[0]]={price:isFinite(price)?price:null,chg:isFinite(rate)?rate/100:null,vol:isFinite(val)?val:null};
+    }catch(e){}});
     if(Array.isArray(bn))bn.forEach(function(t){try{if(t.symbol&&t.symbol.slice(-4)==="USDT")bnMap[t.symbol.slice(0,-4)]=t;}catch(e){}});
-    if(!up&&!bn){
+    if(!tv&&!bt&&!bn){
       document.getElementById("kpBody").innerHTML='<tr><td colspan="7" class="fail">데이터를 불러오지 못했습니다. 잠시 후 다시 시도합니다.</td></tr>';
       return;
     }
     var rows=safeMap(COINS,function(c){
-      var sym=c[0], u=upMap[sym], b=bnMap[sym];
-      var krw=u?u.trade_price:null;
-      var usd=b?parseFloat(b.lastPrice):null;
+      var sym=c[0], k=tvKrw[sym], btD=btMap[sym], b=bnMap[sym];
+      var krw=null, chg=null, vol=null;
+      if(k&&k.price!=null){ krw=k.price; chg=k.chg; vol=k.vol; }
+      else if(btD&&btD.price!=null){ krw=btD.price; chg=btD.chg; vol=btD.vol; }
+      var usd=(tvUsd[sym]!=null)?tvUsd[sym]:(b?parseFloat(b.lastPrice):null);
+      if(usd!=null&&!isFinite(usd))usd=null;
       var conv=(usd!=null&&fxRate)?usd*fxRate:null;
       var kp=(krw!=null&&conv)?(krw/conv-1):null;
-      var chg=u?u.signed_change_rate:null;
-      var vol=u?u.acc_trade_price_24h:null;
       return {sym:sym,krw:krw,usd:usd,conv:conv,kp:kp,chg:chg,vol:vol};
     }).filter(function(r){return r;});
     rows.sort(function(a,b){return (b.vol||-1)-(a.vol||-1);});
