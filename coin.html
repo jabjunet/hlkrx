@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>코인 김치프리미엄·펀딩비 실시간 비교 — 김프원 코인</title>
+<meta name="description" content="비트코인·이더리움 등 주요 코인의 김치프리미엄(김프)을 업비트와 바이낸스 가격으로 실시간 비교하고, 거래소 펀딩비와 코인 공포·탐욕 지수까지 한 페이지에서 확인하세요.">
+<link rel="canonical" href="https://kimpwon.com/coin">
+<meta property="og:type" content="website">
+<meta property="og:title" content="코인 김치프리미엄·펀딩비 실시간 비교 — 김프원 코인">
+<meta property="og:description" content="주요 코인 김프, 펀딩비, 공포·탐욕 지수를 실시간으로 비교하는 김프원 코인 전용 페이지입니다.">
+<meta property="og:url" content="https://kimpwon.com/coin">
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script>
+/* 김프원 메인과 같은 테마 저장값을 따른다 (없으면 기기 설정) */
+(function(){try{var t=localStorage.getItem('hlkrx_theme');if(t==='light'||t==='dark'){document.documentElement.dataset.theme=t;}}catch(e){}})();
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CNRQT34Z1"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-7CNRQT34Z1');</script>
+<style>
+:root{--bg:#f7f8fa;--sf:#fff;--sf2:#f1f3f5;--tx:#1a1e24;--mut:#68727e;--bd:#e4e7eb;--up:#d02a38;--dn:#1668c4;--upbg:rgba(208,42,56,.09);--dnbg:rgba(22,104,196,.09);--ac:#1a1e24;--acx:#fff;--ok:#1d9e57;--warn:#d98a16;color-scheme:light}
+:root[data-theme="dark"]{--bg:#0b0d10;--sf:#14171b;--sf2:#1d2126;--tx:#eceff3;--mut:#8f99a6;--bd:#262b31;--up:#ff5f6b;--dn:#5ea0ff;--upbg:rgba(255,95,107,.13);--dnbg:rgba(94,160,255,.13);--ac:#eceff3;--acx:#0b0d10;--ok:#1d9e57;--warn:#d98a16;color-scheme:dark}
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]){--bg:#0b0d10;--sf:#14171b;--sf2:#1d2126;--tx:#eceff3;--mut:#8f99a6;--bd:#262b31;--up:#ff5f6b;--dn:#5ea0ff;--upbg:rgba(255,95,107,.13);--dnbg:rgba(94,160,255,.13);--ac:#eceff3;--acx:#0b0d10;color-scheme:dark}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 "Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-text-size-adjust:100%}
+.wrap{max-width:1060px;margin:0 auto;padding:0 12px 24px}
+a{color:inherit}
+/* 헤더: 메인(주식)과 같은 두 줄 구조 — 윗줄 로고·상태, 아랫줄 안내 */
+.hd{display:flex;flex-direction:column;gap:1px;background:var(--bg);border-bottom:1px solid var(--bd);margin:4px 0 6px;padding-bottom:2px}
+.hd-t{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
+.brand{flex:none;display:inline-flex;align-items:center;gap:8px;background:none;color:var(--tx);font-size:17px;font-weight:300;letter-spacing:.04em;line-height:1;white-space:nowrap;text-decoration:none;padding:6px 0}
+.coinbdg{font-size:10.5px;font-weight:700;letter-spacing:.02em;color:var(--acx);background:var(--ac);border-radius:5px;padding:2px 6px}
+.hd-r{display:flex;align-items:center;gap:8px}
+.live{font-size:12px;color:var(--mut);font-weight:600;white-space:nowrap}
+.live b{color:var(--ok);font-weight:800}
+.thbtn{width:32px;height:32px;padding:0;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:none;font-size:15px}
+.hd-sub{font-size:12px;color:var(--mut);padding:1px 0 4px}
+.hd-sub b{color:var(--tx)}
+/* 섹션 */
+section{margin-top:18px}
+.ghd{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.ghd h2{margin:0;font-size:16px;font-weight:700}
+.ghd .upd{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap}
+.note{font-size:12px;color:var(--mut);margin:0 0 8px}
+.box{background:var(--sf);border:1px solid var(--bd);border-radius:14px;overflow:hidden}
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%}
+th,td{padding:8px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--bd);font-size:13px}
+tr:last-child td{border-bottom:0}
+thead th{position:sticky;top:0;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd);font-size:12px;font-weight:600;color:var(--mut)}
+th:first-child,td:first-child{text-align:left}
+td.nm b{font-size:14px}
+td.nm small{display:block;color:var(--mut);font-size:11.5px}
+td small.sub{display:block;color:var(--mut);font-size:11.5px}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px}
+.pill.up{color:var(--up);background:var(--upbg)}
+.pill.dn{color:var(--dn);background:var(--dnbg)}
+.pill.flat{color:var(--mut);background:var(--sf2)}
+.chg.up{color:var(--up);font-weight:700}
+.chg.dn{color:var(--dn);font-weight:700}
+.chg.flat{color:var(--mut)}
+.fail{padding:16px 12px;text-align:center;color:var(--mut);font-size:13px}
+/* 펀딩비 */
+.fdgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0}
+.fdcell{padding:9px 12px;border-bottom:1px solid var(--bd);border-right:1px solid var(--bd)}
+.fdcell .fs{font-size:12px;color:var(--mut);font-weight:600}
+.fdcell .fv{font-size:15px;font-weight:800;letter-spacing:-.01em}
+.fdcell .fv.up{color:var(--up)}
+.fdcell .fv.dn{color:var(--dn)}
+/* 공포·탐욕 */
+.fng{display:flex;align-items:center;gap:16px;padding:16px}
+.fng .fv2{font-size:40px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.fng .fc{font-size:15px;font-weight:700}
+.fng .ft{font-size:12px;color:var(--mut)}
+.meter{flex:1;min-width:120px}
+.meter .bar{height:8px;border-radius:99px;background:linear-gradient(90deg,var(--dn),#9db8d8,#c9ced6,var(--warn),var(--up));position:relative}
+.meter .dot{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;background:var(--sf);border:3px solid var(--tx);transform:translate(-50%,-50%)}
+.meter .sc{display:flex;justify-content:space-between;font-size:10.5px;color:var(--mut);margin-top:5px}
+/* 푸터: 메인과 같은 톤 */
+.sitefoot{margin-top:22px;padding:14px 2px 6px;border-top:1px solid var(--bd);text-align:center}
+.sitefoot nav{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.sitefoot nav a{color:var(--mut);font-size:13px;font-weight:600;text-decoration:none;padding:8px 6px;min-height:36px;display:inline-flex;align-items:center}
+.sitefoot nav a:hover{color:var(--tx);text-decoration:underline}
+.sitefoot nav i{color:var(--bd);font-style:normal}
+.sitefoot p{color:var(--mut);font-size:12px;margin:6px 0 0}
+.sitefoot .siteintro{color:var(--mut);font-size:11px;line-height:1.5;margin-top:10px;opacity:.8}
+.sitefoot .mainlink{display:inline-block;margin-top:10px;font-size:13.5px;font-weight:700;color:var(--tx);text-decoration:none;border:1px solid var(--bd);background:var(--sf);border-radius:10px;padding:9px 14px}
+@media (max-width:640px){
+ th,td{padding:8px 8px;font-size:12.5px}
+ td.nm b{font-size:13.5px}
+ .fng .fv2{font-size:32px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <div class="hd-t">
+    <a class="brand" href="/">kimpwon <span class="coinbdg">코인</span></a>
+    <div class="hd-r">
+      <span class="live" id="liveSt"><b>●</b> 실시간</span>
+      <button class="thbtn" id="thBtn" type="button" aria-label="다크/라이트 전환">◐</button>
+    </div>
+  </div>
+  <div class="hd-sub">코인 전용 페이지 — <b>코인 김프 · 펀딩비 · 공포탐욕</b>을 한눈에</div>
+</header>
+
+<main>
+<!-- 코인 김프 표 -->
+<section>
+  <div class="ghd"><h2>코인 김치프리미엄</h2><span class="upd" id="kpUpd">불러오는 중…</span></div>
+  <p class="note">국내가 = 업비트, 해외가 = 바이낸스, 환산가 = 해외가 × 환율(USD/KRW). 김프 = 국내가 ÷ 환산가 − 1.</p>
+  <div class="box"><div class="tscroll">
+    <table>
+      <thead><tr>
+        <th>코인</th><th>국내가 (업비트)</th><th>해외가 (바이낸스)</th><th>환산가</th><th>김프</th><th>24h 등락</th><th>24h 거래대금</th>
+      </tr></thead>
+      <tbody id="kpBody"><tr><td colspan="7" class="fail">불러오는 중…</td></tr></tbody>
+    </table>
+  </div></div>
+</section>
+
+<!-- 펀딩비 -->
+<section>
+  <div class="ghd"><h2>펀딩비 (바이낸스 선물)</h2><span class="upd" id="fdUpd"></span></div>
+  <p class="note">8시간마다 정산되는 펀딩비율입니다. 양수면 롱이 숏에게, 음수면 숏이 롱에게 냅니다.</p>
+  <div class="box"><div class="fdgrid" id="fdGrid"><div class="fail">불러오는 중…</div></div></div>
+</section>
+
+<!-- 공포·탐욕 -->
+<section>
+  <div class="ghd"><h2>코인 공포·탐욕 지수</h2><span class="upd" id="fngUpd"></span></div>
+  <div class="box"><div class="fng" id="fngBox"><div class="fail">불러오는 중…</div></div></div>
+</section>
+</main>
+
+<footer class="sitefoot">
+  <nav>
+    <a href="/">메인으로</a><i>|</i>
+    <a href="/guide.html">가이드</a><i>|</i>
+    <a href="/kimchi-premium.html">김치프리미엄이란</a><i>|</i>
+    <a href="/funding-rate.html">펀딩비란</a>
+  </nav>
+  <a class="mainlink" href="/">주식·ETF 시세는 김프원 메인에서 →</a>
+  <p class="siteintro">김프원은 국내외 금융시장 데이터와 김치프리미엄, 펀딩비 및 주식·ETF 정보를 비교하고 제공하는 독립 금융 정보 플랫폼입니다.</p>
+  <p>© 2026 kimpwon</p>
+</footer>
+
+</div>
+<script>
+"use strict";
+/* 주요 코인: [티커, 한글명] — 업비트 KRW 마켓 + 바이낸스 USDT 페어가 모두 있는 종목 */
+var COINS=[
+ ["BTC","비트코인"],["ETH","이더리움"],["XRP","리플"],["SOL","솔라나"],["DOGE","도지코인"],
+ ["ADA","에이다"],["TRX","트론"],["LINK","체인링크"],["AVAX","아발란체"],["DOT","폴카닷"],
+ ["NEAR","니어프로토콜"],["ARB","아비트럼"],["OP","옵티미즘"],["SUI","수이"],["APT","앱토스"],
+ ["INJ","인젝티브"],["SEI","세이"],["PEPE","페페"],["ETC","이더리움클래식"],["BCH","비트코인캐시"],
+ ["LTC","라이트코인"],["XLM","스텔라루멘"],["ATOM","코스모스"],["HBAR","헤데라"]
+];
+var NM={}; COINS.forEach(function(c){NM[c[0]]=c[1];});
+/* 행 단위 방어: 하나가 깨져도 그 행만 비고 나머지는 계속 그린다 */
+function safeMap(arr,fn){var out=[];for(var i=0;i<arr.length;i++){try{out.push(fn(arr[i],i));}catch(e){out.push(null);}}return out;}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function fmtKRW(v){
+  if(v==null||!isFinite(v))return "—";
+  if(v>=1000)return Math.round(v).toLocaleString("ko-KR");
+  if(v>=100)return (Math.round(v*10)/10).toLocaleString("ko-KR");
+  if(v>=1)return (Math.round(v*100)/100).toLocaleString("ko-KR");
+  return String(Math.round(v*10000)/10000);
+}
+function fmtUSD(v){
+  if(v==null||!isFinite(v))return "—";
+  if(v>=1000)return "$"+Math.round(v).toLocaleString("en-US");
+  if(v>=1)return "$"+(Math.round(v*100)/100).toLocaleString("en-US");
+  if(v>=0.01)return "$"+(Math.round(v*10000)/10000);
+  return "$"+(Math.round(v*100000000)/100000000);
+}
+function fmtVol(v){ /* 원화 거래대금 → 조/억 */
+  if(v==null||!isFinite(v))return "—";
+  if(v>=1e12)return (v/1e12).toFixed(2)+"조";
+  if(v>=1e8)return Math.round(v/1e8).toLocaleString("ko-KR")+"억";
+  if(v>=1e4)return Math.round(v/1e4).toLocaleString("ko-KR")+"만";
+  return Math.round(v).toLocaleString("ko-KR");
+}
+function pctCls(v){return v>0.00005?"up":(v<-0.00005?"dn":"flat");}
+function fmtPct(v,digits){ /* 비율(0.0123) → +1.23% */
+  if(v==null||!isFinite(v))return "—";
+  var d=(digits==null?2:digits);
+  return (v>0?"+":v<0?"−":"")+Math.abs(v*100).toFixed(d)+"%";
+}
+function nowT(){var d=new Date();function p(n){return (n<10?"0":"")+n;}return p(d.getHours())+":"+p(d.getMinutes())+":"+p(d.getSeconds())+" 갱신";}
+function getJSON(url){return fetch(url,{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();});}
+
+/* ---------- 코인 김프 표 ---------- */
+var fxRate=null;
+function loadFx(){
+  return getJSON("https://open.er-api.com/v6/latest/USD").then(function(j){
+    if(j&&j.rates&&j.rates.KRW)fxRate=j.rates.KRW;
+  }).catch(function(){ /* 실패하면 직전 환율 유지 */ });
+}
+function loadKimchi(){
+  var markets=COINS.map(function(c){return "KRW-"+c[0];}).join(",");
+  var upP=getJSON("https://api.upbit.com/v1/ticker?markets="+markets).catch(function(){return null;});
+  /* 바이낸스 본 API가 지역 제한 등으로 배열이 아닌 응답을 줄 때도 미러로 폴백 */
+  var bnP=getJSON("https://api.binance.com/api/v3/ticker/24hr").then(function(j){
+    if(!Array.isArray(j))throw new Error("geo");
+    return j;
+  }).catch(function(){
+    return getJSON("https://data-api.binance.vision/api/v3/ticker/24hr");
+  }).catch(function(){return null;});
+  Promise.all([upP,bnP]).then(function(res){
+    var up=res[0], bn=res[1];
+    var upMap={}, bnMap={};
+    if(Array.isArray(up))up.forEach(function(t){try{upMap[t.market.replace("KRW-","")]=t;}catch(e){}});
+    if(Array.isArray(bn))bn.forEach(function(t){try{if(t.symbol&&t.symbol.slice(-4)==="USDT")bnMap[t.symbol.slice(0,-4)]=t;}catch(e){}});
+    if(!up&&!bn){
+      document.getElementById("kpBody").innerHTML='<tr><td colspan="7" class="fail">데이터를 불러오지 못했습니다. 잠시 후 다시 시도합니다.</td></tr>';
+      return;
+    }
+    var rows=safeMap(COINS,function(c){
+      var sym=c[0], u=upMap[sym], b=bnMap[sym];
+      var krw=u?u.trade_price:null;
+      var usd=b?parseFloat(b.lastPrice):null;
+      var conv=(usd!=null&&fxRate)?usd*fxRate:null;
+      var kp=(krw!=null&&conv)?(krw/conv-1):null;
+      var chg=u?u.signed_change_rate:null;
+      var vol=u?u.acc_trade_price_24h:null;
+      return {sym:sym,krw:krw,usd:usd,conv:conv,kp:kp,chg:chg,vol:vol};
+    }).filter(function(r){return r;});
+    rows.sort(function(a,b){return (b.vol||-1)-(a.vol||-1);});
+    var html=safeMap(rows,function(r){
+      var kpHtml=(r.kp==null)?'<span class="pill flat">—</span>':
+        '<span class="pill '+pctCls(r.kp)+'">'+fmtPct(r.kp)+"</span>";
+      var chgHtml=(r.chg==null)?"—":'<span class="chg '+pctCls(r.chg)+'">'+fmtPct(r.chg)+"</span>";
+      return "<tr>"+
+        '<td class="nm"><b>'+esc(NM[r.sym]||r.sym)+'</b><small>'+esc(r.sym)+"</small></td>"+
+        "<td>"+(r.krw==null?"—":fmtKRW(r.krw))+"</td>"+
+        "<td>"+fmtUSD(r.usd)+"</td>"+
+        "<td>"+(r.conv==null?"—":fmtKRW(r.conv))+"</td>"+
+        "<td>"+kpHtml+"</td>"+
+        "<td>"+chgHtml+"</td>"+
+        "<td>"+fmtVol(r.vol)+"</td>"+
+        "</tr>";
+    }).filter(function(x){return x;}).join("");
+    document.getElementById("kpBody").innerHTML=html||'<tr><td colspan="7" class="fail">표시할 데이터가 없습니다.</td></tr>';
+    document.getElementById("kpUpd").textContent=nowT()+(fxRate?(" · 환율 "+Math.round(fxRate).toLocaleString("ko-KR")+"원"):" · 환율 불러오기 실패");
+  });
+}
+
+/* ---------- 펀딩비 ---------- */
+function loadFunding(){
+  getJSON("https://fapi.binance.com/fapi/v1/premiumIndex").then(function(arr){
+    if(!Array.isArray(arr))throw new Error("bad");
+    var map={};
+    arr.forEach(function(x){try{if(x.symbol&&x.symbol.slice(-4)==="USDT")map[x.symbol.slice(0,-4)]=x;}catch(e){}});
+    var html=safeMap(COINS,function(c){
+      var x=map[c[0]];
+      if(!x)return null;
+      var rate=parseFloat(x.lastFundingRate);
+      if(!isFinite(rate))return null;
+      return '<div class="fdcell"><div class="fs">'+esc(NM[c[0]]||c[0])+" "+esc(c[0])+'</div>'+
+        '<div class="fv '+pctCls(rate)+'">'+fmtPct(rate,4)+"</div></div>";
+    }).filter(function(x){return x;}).join("");
+    document.getElementById("fdGrid").innerHTML=html||'<div class="fail">표시할 펀딩비가 없습니다.</div>';
+    document.getElementById("fdUpd").textContent=nowT();
+  }).catch(function(){
+    document.getElementById("fdGrid").innerHTML='<div class="fail">펀딩비를 불러오지 못했습니다. 잠시 후 다시 시도합니다.</div>';
+  });
+}
+
+/* ---------- 공포·탐욕 ---------- */
+var FNG_KO={"Extreme Fear":"극단적 공포","Fear":"공포","Neutral":"중립","Greed":"탐욕","Extreme Greed":"극단적 탐욕"};
+function loadFng(){
+  getJSON("https://api.alternative.me/fng/?limit=1").then(function(j){
+    var d=j&&j.data&&j.data[0];
+    if(!d)throw new Error("bad");
+    var v=parseInt(d.value,10);
+    var label=FNG_KO[d.value_classification]||d.value_classification||"";
+    var col=v<=25?"var(--dn)":v<=45?"#7d9cc4":v<=55?"var(--mut)":v<=75?"var(--warn)":"var(--up)";
+    document.getElementById("fngBox").innerHTML=
+      '<div><div class="fv2" style="color:'+col+'">'+v+'</div><div class="ft">0–100</div></div>'+
+      '<div style="flex:none"><div class="fc">'+esc(label)+'</div><div class="ft">오늘의 시장 심리</div></div>'+
+      '<div class="meter"><div class="bar"><div class="dot" style="left:'+Math.max(0,Math.min(100,v))+'%"></div></div>'+
+      '<div class="sc"><span>극단적 공포</span><span>중립</span><span>극단적 탐욕</span></div></div>';
+    document.getElementById("fngUpd").textContent=nowT();
+  }).catch(function(){
+    document.getElementById("fngBox").innerHTML='<div class="fail">지수를 불러오지 못했습니다. 잠시 후 다시 시도합니다.</div>';
+  });
+}
+
+/* ---------- 테마 토글 (메인과 같은 저장 키) ---------- */
+document.getElementById("thBtn").addEventListener("click",function(){
+  var cur=document.documentElement.dataset.theme;
+  if(!cur)cur=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
+  var next=cur==="dark"?"light":"dark";
+  document.documentElement.dataset.theme=next;
+  try{localStorage.setItem("hlkrx_theme",next);}catch(e){}
+});
+
+/* ---------- 시작 + 60초 갱신 ---------- */
+function loadAll(){ loadFx().then(loadKimchi); loadFunding(); loadFng(); }
+loadAll();
+setInterval(loadAll,60000);
+</script>
+</body>
+</html>
