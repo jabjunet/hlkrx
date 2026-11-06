@@ -273,9 +273,9 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 #pb .prow.nqrow .xcol .pill,#pb .prow.x5row .xcol .pill{font-size:10.5px;padding:1px 4px}
 #pb .prow.nqrow>div:nth-child(4) .pill,#pb .prow.x5row>div:nth-child(4) .pill{font-size:10.5px;padding:1px 4px}
 #pb .prow.nqrow .hlw,#pb .prow.x5row .hlw{white-space:normal}
-#pb .prow.nqrow,#pb .phd.nqhd{grid-template-columns:31% 19% 23% 12% 15%}
+#pb .prow.nqrow,#pb .phd.nqhd{grid-template-columns:29% 18% 23% 14% 16%}
 /* 크립토 행 모바일 5열: 이름 칸에 스파크라인이 있어 나스닥 행보다 이름 칸을 넓게 잡고, 스파크라인은 좁혀 넣는다 */
-#pb .prow.x5row,#pb .phd.x5hd{grid-template-columns:36% 17% 21% 11% 15%}
+#pb .prow.x5row,#pb .phd.x5hd{grid-template-columns:34% 16% 21% 13% 16%}
 #pb .prow.x5row .spk{width:40px;height:18px}
 }
 #pb .pempty{padding:11px 10px;font-size:13px;color:var(--mut)}
@@ -301,16 +301,19 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 #pb .prow.nqrow .nm b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;line-height:1.25}
 #pb .prow.nqrow .nm small{display:block;flex:none;width:100%;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;line-height:1.25}
 }
-/* 나스닥 모드 열 배분(5열): 종목 37% · 비교 거래소 21% · 가격(USD) 20% · 24h 10% · 거래량 12%.
+/* 나스닥 모드 열 배분(5열): 종목 35% · 비교 거래소 20% · 가격(USD) 20% · 24h 12% · 거래량 13%.
    비교 거래소 열을 가격(USD) 열 바로 왼쪽에 붙인다(사용자 지시 2026-11-06: 비교 거래소를 가격 쪽으로 옮김).
    예전에는 가격 열이 28%로 넓어 그 왼쪽 빈 공간만큼 비교 열과 가격 사이에 간격이 벌어졌다 —
    가격 열을 내용 너비로 좁히고, 비워진 왼쪽 공간은 종목 열이 가져가 비교 열이 그만큼 오른쪽으로 이동한다.
-   헤더(#hh)는 나스닥 모드일 때만 .nqhd 클래스로 같은 비율을 적용해 열 정렬이 어긋나지 않게 한다 */
-#pb .prow.nqrow,#pb .phd.nqhd{grid-template-columns:37% 21% 20% 10% 12%}
-/* 크립토 거래소 모드 열 배분(5열): 종목 35% · 비교 거래소 20% · 가격(USD) 21% · 24h 11% · 거래량 13%.
+   헤더(#hh)는 나스닥 모드일 때만 .nqhd 클래스로 같은 비율을 적용해 열 정렬이 어긋나지 않게 한다.
+   2026-11-07 사용자 지시로 가격 열을 조금 왼쪽으로: 종목·비교 열에서 3%p를 덜어 24h·거래량 쪽으로 넘겨
+   오른쪽 정렬된 가격 숫자의 위치(가격 열 오른쪽 끝)가 그만큼 왼쪽으로 당겨지게 한다 */
+#pb .prow.nqrow,#pb .phd.nqhd{grid-template-columns:35% 20% 20% 12% 13%}
+/* 크립토 거래소 모드 열 배분(5열): 종목 33% · 비교 거래소 19% · 가격(USD) 21% · 24h 13% · 거래량 14%.
    나스닥 모드와 마찬가지로 비교 거래소 열을 가격 열 바로 왼쪽에 붙이고, 종목 열을 넓힌다.
-   헤더(#hh)는 크립토 모드일 때 .x5hd 클래스로 같은 비율을 적용해 열 정렬이 어긋나지 않게 한다 */
-#pb .prow.x5row,#pb .phd.x5hd{grid-template-columns:35% 20% 21% 11% 13%}
+   헤더(#hh)는 크립토 모드일 때 .x5hd 클래스로 같은 비율을 적용해 열 정렬이 어긋나지 않게 한다.
+   나스닥 모드와 같은 이유로 가격 열을 조금 왼쪽으로 당긴다(2026-11-07 사용자 지시) */
+#pb .prow.x5row,#pb .phd.x5hd{grid-template-columns:33% 19% 21% 13% 14%}
 #pb .av{width:25px;height:25px}
 #fetf[hidden]{display:none}
 #f[hidden]{display:none}
