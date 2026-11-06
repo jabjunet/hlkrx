@@ -538,9 +538,13 @@ main{padding:2px 12px 40px}
    김프 배지가 둘째 줄로 밀리고 거래량이 셋째 줄로 떨어졌다. 그리드 트랙은 내용 길이에 영향받지 않고
    셀마다 min-width:0이라, 어떤 행도 다른 셀을 밀어낼 수 없어 모든 행이 같은 두 줄 배치를 유지한다 */
 .kp7 thead tr{display:grid;grid-template-columns:repeat(100,minmax(0,1fr));width:100%}
-/* width:auto 필수: 데스크톱 표용 .kp7 th:nth-child(n){width:%} 규칙이 모바일 그리드에도 남아 있으면
-   머리글 칸이 그리드 영역의 일부만 차지해 배경색이 글자 뒤에만 조각처럼 남고 머리글 띠가 끊겨 보인다 */
-.kp7 thead th{position:sticky;top:0;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd);width:auto}
+/* 머리글 칸 너비 무효화 필수: 데스크톱 표용 .kp7 th:nth-child(n){width:%} 규칙이 모바일 그리드에도 남아 있으면
+   머리글 칸이 그리드 영역의 일부만 차지해 배경색이 글자 뒤에만 조각처럼 남고 머리글 띠가 끊겨 보인다.
+   nth-child 규칙(특이성 0-2-1)보다 강하게 걸어야 실제로 이긴다 — .kp7 thead th(0-1-2)에 건 width:auto는 져서 조각이 남았다.
+   행(tr)에도 같은 배경을 깔아 칸 사이가 벌어져도 띠가 끊기지 않게 한다 */
+.kp7 thead tr{background:var(--sf2)}
+.kp7 thead th{position:sticky;top:0;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
+.kp7 thead th:nth-child(1),.kp7 thead th:nth-child(2),.kp7 thead th:nth-child(3){width:auto}
 .kp7 tbody tr{display:grid;grid-template-columns:repeat(100,minmax(0,1fr));width:100%;align-items:start;border-bottom:1px solid var(--bd)}
 .kp7 tbody tr:last-child{border-bottom:0}
 .kp7 th,.kp7 td{border-bottom:0}
