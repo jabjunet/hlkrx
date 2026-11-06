@@ -246,19 +246,24 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
    고른 비교 거래소는 전용 칸에 표시한다(사용자 지시 2026-11-06: 나스닥만 그런 게 아니라 비교 거래소 전부).
    머리글의 비교 거래소 칸(#hh-cmp)은 주식 모드에서 항상 보이고, ETF 모드에서만 숨긴다 */
 #pb .phd>div[hidden]{display:none}
-#pb .prow.nqrow .xcol,#pb .prow.x5row .xcol{display:flex;align-items:center;justify-content:flex-end;gap:5px;flex-wrap:wrap;white-space:normal;line-height:1.25}
-#pb .prow.nqrow .xtag,#pb .prow.x5row .xtag{flex:none;font-size:9.5px;font-weight:800;color:var(--tx);background:var(--sf2);border:1px solid var(--bd);border-radius:5px;padding:1px 4px;letter-spacing:-.02em}
-#pb .prow.nqrow .xpr,#pb .prow.x5row .xpr{font-size:12px;font-weight:800;color:var(--tx);letter-spacing:-.02em}
+#pb .prow.nqrow .xcol,#pb .prow.x5row .xcol{display:flex;align-items:center;justify-content:flex-end;gap:5px;flex-wrap:wrap;white-space:normal;line-height:1.25;width:100%}
+/* 비교 칸 내용을 가격 칸에 바짝 붙인다: 비교 칸(2번째 열)의 오른쪽 여백과 가격 칸(3번째 열)의
+   왼쪽 여백을 2px로 줄여 두 칸 사이 간격을 최소로 한다. 머리글 칸도 같은 여백을 써 정렬을 맞춘다.
+   이 규칙은 특이성이 높아 모바일의 공통 여백(4px)보다 우선해 모바일에서도 그대로 적용된다 */
+#pb .prow.nqrow>div:nth-child(2),#pb .prow.x5row>div:nth-child(2),#pb .phd.nqhd>div:nth-child(2),#pb .phd.x5hd>div:nth-child(2){padding-right:2px}
+#pb .prow.nqrow>div:nth-child(3),#pb .prow.x5row>div:nth-child(3),#pb .phd.nqhd>div:nth-child(3),#pb .phd.x5hd>div:nth-child(3){padding-left:2px}
+#pb .prow.nqrow .xtag,#pb .prow.x5row .xtag{flex:none;font-size:11px;font-weight:800;color:var(--tx);background:var(--sf2);border:1px solid var(--bd);border-radius:5px;padding:1px 4px;letter-spacing:-.02em}
+#pb .prow.nqrow .xpr,#pb .prow.x5row .xpr{font-size:13.5px;font-weight:800;color:var(--tx);letter-spacing:-.02em}
 #pb .prow.nqrow .xpr.xnone,#pb .prow.x5row .xpr.xnone{color:var(--mut);font-weight:600}
-#pb .prow.nqrow .xpr.xonly,#pb .prow.x5row .xpr.xonly{margin-right:-6px}
-#pb .prow.nqrow .xcol .pill,#pb .prow.x5row .xcol .pill{font-size:10px;padding:1px 5px}
+#pb .prow.nqrow .xpr.xonly,#pb .prow.x5row .xpr.xonly{margin-right:0}
+#pb .prow.nqrow .xcol .pill,#pb .prow.x5row .xcol .pill{font-size:11px;padding:1px 5px}
 @media(max-width:520px){
 /* 모바일 5열: 비교 칸은 칩·가격·pill을 세로로 쌓고, 가격 칸의 고/저는 두 줄로 감아 잘리지 않게 한다 */
 #pb .prow.nqrow .xcol,#pb .prow.x5row .xcol{flex-direction:column;align-items:flex-end;flex-wrap:nowrap;gap:2px}
-#pb .prow.nqrow .xtag,#pb .prow.x5row .xtag{font-size:9px;padding:1px 3px}
-#pb .prow.nqrow .xpr,#pb .prow.x5row .xpr{font-size:11.5px}
-#pb .prow.nqrow .xpr.xonly,#pb .prow.x5row .xpr.xonly{margin-right:-3px}
-#pb .prow.nqrow .xcol .pill,#pb .prow.x5row .xcol .pill{font-size:9.5px;padding:1px 4px}
+#pb .prow.nqrow .xtag,#pb .prow.x5row .xtag{font-size:10.5px;padding:1px 3px}
+#pb .prow.nqrow .xpr,#pb .prow.x5row .xpr{font-size:13px}
+#pb .prow.nqrow .xpr.xonly,#pb .prow.x5row .xpr.xonly{margin-right:0}
+#pb .prow.nqrow .xcol .pill,#pb .prow.x5row .xcol .pill{font-size:10.5px;padding:1px 4px}
 #pb .prow.nqrow>div:nth-child(4) .pill,#pb .prow.x5row>div:nth-child(4) .pill{font-size:10.5px;padding:1px 4px}
 #pb .prow.nqrow .hlw,#pb .prow.x5row .hlw{white-space:normal}
 #pb .prow.nqrow,#pb .phd.nqhd{grid-template-columns:31% 19% 23% 12% 15%}
@@ -481,24 +486,6 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hd-online{margin:0;font-size:12px;line-height:1.2;color:var(--mut);font-weight:600;white-space:nowrap;text-align:right}
 .hd-online b{color:var(--tx);font-weight:800}
 .hd-online[hidden]{display:none}
-/* 접속자 목록 팝업: 운영자 로그인 때만 '접속자 N명'이 버튼처럼 동작해 목록이 열린다 */
-.hd-online.op{cursor:pointer}
-.hd-online.op::after{content:"▾";margin-left:3px;font-size:10px}
-.hd-online.op:focus-visible{outline:2px solid var(--ac);outline-offset:2px;border-radius:4px}
-.onpop{position:absolute;top:calc(100% + 8px);right:0;z-index:80;width:232px;max-width:80vw;background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.25);padding:12px 12px 10px;text-align:left}
-.onpop[hidden]{display:none}
-.onpop-h{font-size:13px;font-weight:800;color:var(--tx);margin-bottom:6px}
-.onpop-h b{font-weight:800}
-.onpop-list{max-height:248px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
-.onrow{display:flex;align-items:center;gap:7px;padding:5px 0;font-size:13px;color:var(--tx);min-width:0}
-.onrow .ondot{width:7px;height:7px;border-radius:50%;background:var(--ok);flex:none}
-.onrow.guest .ondot{background:var(--mut)}
-.onnm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;min-width:0}
-.onme{font-size:11px;color:var(--mut);font-weight:700;flex:none}
-.oncnt{margin-left:auto;font-size:12px;color:var(--mut);font-weight:700;flex:none;padding-left:8px}
-.oncnt b{color:var(--tx);font-weight:800}
-.onempty{font-size:12.5px;color:var(--mut);padding:4px 0}
-.onpop-note{margin:8px 0 0;font-size:11.5px;line-height:1.5;color:var(--mut)}
 .lgb{min-height:32px;padding:5px 12px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .lgb.ghost{color:var(--mut);font-weight:600}
 .who{display:inline-flex;align-items:center}
@@ -1154,7 +1141,7 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-t"><span class="brand" aria-hidden="true">kimpwon</span><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><div class="onpop" id="site-online-pop" hidden><div class="onpop-h">현재 접속자 <b id="onpop-n">0</b>명</div><div class="onpop-list" id="onpop-list"></div><p class="onpop-note">로그인한 사람은 닉네임으로, 나머지는 손님으로 표시돼요.</p></div></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤니티</button></div></div>
+<div class="hd"><div class="hd-t"><span class="brand" aria-hidden="true">kimpwon</span><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤니티</button></div></div>
 
 <script>
 /* ===== 헤더 테마(다크/라이트)·언어(한/영) 전환 =====
@@ -1172,7 +1159,7 @@ if(thBtn)thBtn.addEventListener("click",function(){var nx=effTheme()==="dark"?"l
 if(window.matchMedia){var mm=window.matchMedia("(prefers-color-scheme: dark)");if(mm.addEventListener)mm.addEventListener("change",syncThBtn)}
 var D={
 "홈":"Home","김프":"Kimchi Prem.","해외":"Global","원자재":"Commodities","펀딩비":"Funding","비교":"Compare","지표":"Indicators","커뮤니티":"Community",
-"연결 중…":"Connecting…","로그인":"Log in","접속자":"Online","명":"","프로필 설정":"Profile settings","현재 접속자":"Currently Online","손님":"Guest","(나)":"(Me)","접속자 목록 보기":"View visitor list","로그인한 사람은 닉네임으로, 나머지는 손님으로 표시돼요.":"Signed-in visitors are shown by nickname; everyone else appears as a guest.",
+"연결 중…":"Connecting…","로그인":"Log in","접속자":"Online","명":"","프로필 설정":"Profile settings",
 "코스피":"KOSPI","코스닥":"KOSDAQ","나스닥":"NASDAQ","다우":"Dow","달러/원":"USD/KRW","원유":"Crude Oil",
 "실시간 차트":"Live Chart","한국":"Korea","미국":"US","급상승":"Top Gainers","급하락":"Top Losers","불러오는 중…":"Loading…",
 "주요 종목 실적발표":"Key Earnings","주요 경제지표":"Key Economic Indicators","실시간 뉴스":"Live News","국내":"Domestic",
@@ -1753,7 +1740,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <li><b>구글 로그인 시:</b> 구글 계정 식별자(UID), 이메일 주소, 구글 계정에 등록된 표시 이름·프로필 사진(채팅·커뮤니티 이용 시 표시용으로 사용될 수 있음). 이메일 주소는 로그인 확인과 운영자 여부 확인에만 사용하고, 채팅 글·게시글에 함께 표시하거나 저장하지 않습니다.</li>
 <li><b>프로필 설정 시:</b> 이용자가 직접 정한 닉네임과 프로필 사진. 닉네임·사진은 우선 이용자의 기기(브라우저)에 저장되며, 채팅이나 커뮤니티에 글을 쓸 때 그 글과 함께 표시하기 위해 Firebase(Google) 서버에 함께 저장됩니다.</li>
 <li><b>채팅·커뮤니티 이용 시:</b> 작성한 메시지·게시글의 제목과 내용, 작성자 닉네임·사진, 계정 식별자(UID), 작성 시각, 게시글 조회수.</li>
-<li><b>접속자 수 표시 시:</b> 무작위로 생성된 세션 식별자와 접속(갱신) 시각. 로그인한 이용자는 본인이 설정한 닉네임이 접속 기록에 함께 저장되며, 닉네임을 포함한 접속자 목록은 사이트 화면에서 운영자에게만 표시됩니다. 이메일 등 그 밖의 식별 정보와는 연결하지 않습니다.</li>
+<li><b>접속자 수 표시 시:</b> 무작위로 생성된 세션 식별자와 접속(갱신) 시각. 이메일 등 그 밖의 식별 정보와는 연결하지 않습니다.</li>
 <li><b>기기에만 저장되는 정보:</b> 로그인 유지 정보, 프로필 닉네임·사진, 채팅 입력 중 임시 초안. 이 정보는 브라우저의 localStorage·sessionStorage에만 저장되고, 채팅·게시글 작성 등 이용자가 직접 전송하는 경우를 제외하고 운영자에게 전송되지 않습니다.</li>
 <li><b>계산기 저장 정보:</b> 계산기에 저장한 종목(최대 3개)과 입력값은 이용자의 기기(브라우저)에 저장됩니다. 구글 로그인 상태에서는 같은 정보가 이용자 본인의 계정 영역(Firebase 서버)에도 함께 저장되어, 다른 기기에서 로그인하면 그대로 복원됩니다.</li>
 <li><b>자동으로 생성·수집될 수 있는 정보:</b> 서비스 이용 기록, 접속 일시, 브라우저·기기 정보, 쿠키 등. 이는 제4조와 제5조에서 정한 분석·광고 서비스를 통해 수집될 수 있습니다.</li>
@@ -3575,13 +3562,9 @@ tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(b&
 /* 실시간 접속자 표시: 페이지가 열리면 Firebase Realtime Database의 presence 경로에 무작위 세션 아이디로
    자기 노드({t: 서버시각})를 등록하고, 연결이 끊기면 onDisconnect로 자동 삭제되게 한다.
    30초마다 t를 갱신해 살아 있음을 알리고, 표시 숫자는 presence 자식 수에서 t가 90초보다 오래된
-   노드(비정상 종료로 남은 찌꺼기)를 뺀 값이다. 로그인과 무관하게 모든 방문자를 센다.
-   로그인한 방문자는 본인이 설정한 닉네임(n)도 자기 노드에 함께 남긴다. 헤더의 '접속자 N명'을 누르면
-   뜨는 접속자 목록(닉네임·손님 구분)은 운영자(OPERATOR_EMAIL)로 로그인했을 때만 열리고,
-   그 외 방문자에게는 지금처럼 숫자만 보인다. */
+   노드(비정상 종료로 남은 찌꺼기)를 뺀 값이다. 로그인과 무관하게 모든 방문자를 세며, 숫자만 표시한다. */
 (function(){
 var el=document.getElementById("site-online"),nel=document.getElementById("site-online-n");
-var pop=document.getElementById("site-online-pop"),popN=document.getElementById("onpop-n"),popList=document.getElementById("onpop-list");
 if(!el||!nel)return;
 function pCfgReady(){try{var c=(typeof FIREBASE_CONFIG!=="undefined")?FIREBASE_CONFIG:null;return !!(c&&typeof c.apiKey==="string"&&c.apiKey.trim()&&typeof c.databaseURL==="string"&&c.databaseURL.trim())}catch(e){return false}}
 if(!pCfgReady())return;
@@ -3590,72 +3573,18 @@ try{if(!firebase.apps||!firebase.apps.length)firebase.initializeApp(FIREBASE_CON
 var db;try{db=firebase.database()}catch(e){return}
 var sid="s"+Date.now().toString(36)+Math.random().toString(36).slice(2,10);
 var myRef=db.ref("presence/"+sid),presRef=db.ref("presence");
-var offset=0,lastSnap=null,shown=false,nameBlocked=false,opUi=null,authEmail=null;
-function profJ(){try{var p=JSON.parse(localStorage.getItem("hlkrx_prof")||"{}");return p&&typeof p==="object"?p:{}}catch(e){return{}}}
-function myEmail(){if(authEmail!==null)return authEmail;try{var u=String(localStorage.getItem("hlkrx_uid")||"").trim().toLowerCase();if(u)return u;return String(profJ().email||"").trim().toLowerCase()}catch(e){return""}}
-function isOpNow(){var oe=(typeof OPERATOR_EMAIL!=="undefined"?String(OPERATOR_EMAIL||""):"").trim().toLowerCase();var em=myEmail();return !!oe&&!!em&&em===oe}
-function myNick(){var em=myEmail();if(!em)return"";var n=String(profJ().nick||"").trim();if(!n)n=em.split("@")[0];return n?n.slice(0,30):""}
-function activeList(){
-var now=Date.now()+offset,total=0,guests=0,named=[],byName={};
-if(lastSnap)lastSnap.forEach(function(ch){var v=ch.val();var t=(v&&typeof v.t==="number")?v.t:0;if(!(t&&now-t<=90000&&t-now<=30000))return;total++;
-var nm=(v&&typeof v.n==="string")?v.n.trim():"";
-if(nm){var g=byName[nm];if(!g){g={n:nm,c:0,me:false};byName[nm]=g;named.push(g)}g.c++;if(ch.key===sid)g.me=true}
-else guests++});
-named.sort(function(a,b){return (b.me?1:0)-(a.me?1:0)||b.c-a.c});
-return{total:total,named:named,guests:guests}}
-function closePop(){if(pop)pop.hidden=true}
-function syncOpUI(){
-var op=isOpNow();
-if(op===opUi){if(!op)closePop();return}
-opUi=op;
-el.classList.toggle("op",op);
-if(op){el.setAttribute("role","button");el.setAttribute("tabindex","0");el.title="접속자 목록 보기"}
-else{el.removeAttribute("role");el.removeAttribute("tabindex");el.removeAttribute("title");closePop()}
-}
-function rowNamed(g){
-var r=document.createElement("div");r.className="onrow";
-var d=document.createElement("span");d.className="ondot";r.appendChild(d);
-var nm=document.createElement("span");nm.className="onnm";nm.textContent=g.n;r.appendChild(nm);
-if(g.me){var me=document.createElement("span");me.className="onme";me.textContent="(나)";r.appendChild(me)}
-if(g.c>1){var c=document.createElement("span");c.className="oncnt";c.textContent="×"+g.c;r.appendChild(c)}
-return r}
-function rowGuest(n){
-var r=document.createElement("div");r.className="onrow guest";
-var d=document.createElement("span");d.className="ondot";r.appendChild(d);
-var nm=document.createElement("span");nm.className="onnm";nm.textContent="손님";r.appendChild(nm);
-var c=document.createElement("span");c.className="oncnt";var b=document.createElement("b");b.textContent=String(n);c.appendChild(b);c.appendChild(document.createTextNode("명"));r.appendChild(c);
-return r}
-function drawPop(){
-if(!pop||pop.hidden||!popList)return;
-var L=activeList();
-if(popN)popN.textContent=String(L.total);
-popList.textContent="";
-if(!L.total){var e=document.createElement("div");e.className="onempty";e.textContent="불러오는 중…";popList.appendChild(e);return}
-for(var i=0;i<L.named.length;i++)popList.appendChild(rowNamed(L.named[i]));
-if(L.guests)popList.appendChild(rowGuest(L.guests));
-}
-function togglePop(){
-if(!pop)return;
-if(pop.hidden){if(!isOpNow())return;pop.hidden=false;drawPop()}
-else pop.hidden=true;
-}
+var offset=0,lastSnap=null;
+function countActive(){
+var now=Date.now()+offset,total=0;
+if(lastSnap)lastSnap.forEach(function(ch){var v=ch.val();var t=(v&&typeof v.t==="number")?v.t:0;if(t&&now-t<=90000&&t-now<=30000)total++});
+return total}
 function render(){
 if(!lastSnap)return;
-var L=activeList();
-nel.textContent=String(L.total);el.hidden=false;shown=true;
-syncOpUI();drawPop();
+nel.textContent=String(countActive());el.hidden=false;
 }
 function beat(){
-var rec={t:firebase.database.ServerValue.TIMESTAMP};
-var nk=nameBlocked?"":myNick();if(nk)rec.n=nk;
-try{var p=myRef.set(rec);if(p&&typeof p.catch==="function")p.catch(function(){if(nk){nameBlocked=true;beat()}})}catch(e){}
+try{myRef.set({t:firebase.database.ServerValue.TIMESTAMP})}catch(e){}
 }
-el.addEventListener("click",function(){if(isOpNow())togglePop()});
-el.addEventListener("keydown",function(e){if(!isOpNow())return;if(e.key==="Enter"||e.key===" "){e.preventDefault();togglePop()}});
-document.addEventListener("click",function(e){if(pop&&!pop.hidden&&e.target&&e.target.closest&&!e.target.closest("#site-online-pop")&&!e.target.closest("#site-online"))pop.hidden=true});
-document.addEventListener("keydown",function(e){if(e.key==="Escape")closePop()});
-try{if(firebase.auth)firebase.auth().onAuthStateChanged(function(u){authEmail=u?String(u.email||"").trim().toLowerCase():"";beat();syncOpUI();drawPop()})}catch(e){}
-syncOpUI();
 try{db.ref(".info/serverTimeOffset").on("value",function(s){var v=s.val();if(typeof v==="number"){offset=v;render()}})}catch(e){}
 try{db.ref(".info/connected").on("value",function(s){
 if(s.val()===true){
