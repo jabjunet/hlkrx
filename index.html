@@ -203,12 +203,13 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .cln .cvv{font-weight:800;color:var(--tx);letter-spacing:-.02em}
 .kp td .cln .cvv{display:inline;font-size:14.5px}
 #pb .prow .cln .cvv{font-size:12.5px}
-/* 해외 탭 종가 표시 축소(2026-11-06): '종가' 글자 칩도 #pb 안에서만 한 단계 작게 (김프 탭 종가는 그대로) */
+/* 종가 표시(2026-11-06): '종가' 글자 칩과 종가 숫자는 작게 유지하고, 키우는 건 가격 칸의 현재가 숫자(.pv·.pcv)뿐이다.
+   #pb 안의 칩은 9.5px로 더 작게 (김프 탭 칩은 기본 10.5px 그대로) */
 #pb .cln .cb{font-size:9.5px;padding:1px 5px}
 .etfd .cln .cvv{font-size:13.5px}
 .etfcur{display:flex;align-items:center;gap:6px;justify-content:flex-end;flex-wrap:nowrap;white-space:nowrap}
-.pcv{display:block;color:var(--mut);font-size:12.5px;font-weight:600;white-space:nowrap;line-height:1.3}
-@media(max-width:520px){.etfd .cln .cvv{font-size:12.5px}.kp7 .cln .cb{font-size:9.5px;padding:1px 4px;margin-right:3px}.kp7 .cln .cvv{font-size:12.5px}.kp7 .pcv{font-size:11px}}
+.pcv{display:block;color:var(--mut);font-size:15px;font-weight:600;white-space:nowrap;line-height:1.3}
+@media(max-width:520px){.etfd .cln .cvv{font-size:12.5px}.kp7 .cln .cb{font-size:9.5px;padding:1px 4px;margin-right:3px}.kp7 .cln .cvv{font-size:12.5px}.kp7 .pcv{font-size:13.5px}}
 /* 김프 표 (7열) */
 .kp{table-layout:fixed}
 .kp th,.kp td{padding:9px 8px}
@@ -234,19 +235,19 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 #pb .prow>div:first-child{text-align:left}
 #pb .phd>div:first-child,#pb .prow>div:first-child{padding-left:12px}
 #pb .phd>div:last-child,#pb .prow>div:last-child{padding-right:12px}
-#pb .prow .pv{font-size:14px;line-height:1.2}
+#pb .prow .pv{font-size:17.5px;line-height:1.2}
 #pb .prow .hlw{display:block;color:var(--mut);font-size:10.5px;font-weight:500;white-space:nowrap;line-height:1.3;letter-spacing:-.02em;margin-top:1px}
 #pb .prow .hl1{white-space:nowrap}
 #pb .prow .xdf{display:block;color:var(--mut);font-size:10.5px;font-weight:500;white-space:nowrap;line-height:1.3;letter-spacing:-.02em;margin-top:1px}
 #pb .prow .xdn{white-space:nowrap}
 #pb .prow .xdf .pill{font-size:10px;padding:1px 4px;vertical-align:1px}
 /* 비교 거래소 전용 칸(.xcol): 가격 칸 밑 전용 줄이 아니라, 종목 칸과 가격(USD) 칸 사이에 독립 열로 둔다.
-   거래소 칩 + 굵은 본문색 가격 + 차이 % pill을 넣고, 열이 좁으면 pill이 아래 줄로 감긴다.
+   2열 그리드: 윗줄에 거래소 칩 + 굵은 본문색 비교 가격, 아랫줄 오른쪽에 차이 % pill을 둔다(사용자 지시 2026-11-06).
    나스닥 행(.nqrow)뿐 아니라 크립토 거래소 행(.x5row)에도 같은 칸을 둔다 — 기준 거래소가 무엇이든
    고른 비교 거래소는 전용 칸에 표시한다(사용자 지시 2026-11-06: 나스닥만 그런 게 아니라 비교 거래소 전부).
    머리글의 비교 거래소 칸(#hh-cmp)은 주식 모드에서 항상 보이고, ETF 모드에서만 숨긴다 */
 #pb .phd>div[hidden]{display:none}
-#pb .prow.nqrow .xcol,#pb .prow.x5row .xcol{display:flex;align-items:center;justify-content:flex-end;gap:5px;flex-wrap:wrap;white-space:normal;line-height:1.25;width:100%}
+#pb .prow.nqrow .xcol,#pb .prow.x5row .xcol{display:grid;grid-template-columns:auto auto;justify-content:end;justify-items:end;align-items:center;column-gap:5px;row-gap:2px;white-space:normal;line-height:1.25;width:100%}
 /* 비교 칸 내용을 가격 칸에 바짝 붙인다: 비교 칸(2번째 열)의 오른쪽 여백과 가격 칸(3번째 열)의
    왼쪽 여백을 2px로 줄여 두 칸 사이 간격을 최소로 한다. 머리글 칸도 같은 여백을 써 정렬을 맞춘다.
    이 규칙은 특이성이 높아 모바일의 공통 여백(4px)보다 우선해 모바일에서도 그대로 적용된다 */
@@ -256,10 +257,11 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 #pb .prow.nqrow .xpr,#pb .prow.x5row .xpr{font-size:13.5px;font-weight:800;color:var(--tx);letter-spacing:-.02em}
 #pb .prow.nqrow .xpr.xnone,#pb .prow.x5row .xpr.xnone{color:var(--mut);font-weight:600}
 #pb .prow.nqrow .xpr.xonly,#pb .prow.x5row .xpr.xonly{margin-right:0}
-#pb .prow.nqrow .xcol .pill,#pb .prow.x5row .xcol .pill{font-size:11px;padding:1px 5px}
+#pb .prow.nqrow .xcol .pill,#pb .prow.x5row .xcol .pill{font-size:11px;padding:1px 5px;grid-column:2;justify-self:end}
 @media(max-width:520px){
-/* 모바일 5열: 비교 칸은 칩·가격·pill을 세로로 쌓고, 가격 칸의 고/저는 두 줄로 감아 잘리지 않게 한다 */
-#pb .prow.nqrow .xcol,#pb .prow.x5row .xcol{flex-direction:column;align-items:flex-end;flex-wrap:nowrap;gap:2px}
+/* 모바일 5열: 비교 칸은 열이 좁아 칩·가격·pill을 한 열로 세로로 쌓고, 가격 칸의 고/저는 두 줄로 감아 잘리지 않게 한다 */
+#pb .prow.nqrow .xcol,#pb .prow.x5row .xcol{grid-template-columns:auto;row-gap:2px}
+#pb .prow.nqrow .xcol .pill,#pb .prow.x5row .xcol .pill{grid-column:1}
 #pb .prow.nqrow .xtag,#pb .prow.x5row .xtag{font-size:10.5px;padding:1px 3px}
 #pb .prow.nqrow .xpr,#pb .prow.x5row .xpr{font-size:13px}
 #pb .prow.nqrow .xpr.xonly,#pb .prow.x5row .xpr.xonly{margin-right:0}
@@ -553,7 +555,7 @@ th,td{padding:9px 10px}
 .kp td b{font-size:15px}
 .kp .l{font-size:12.5px}
 #pb .phd>div,#pb .prow>div{padding:7px 10px}
-#pb .prow .pv{font-size:14.5px}
+#pb .prow .pv{font-size:18px}
 #pb .nm b{font-size:14px}
 #pb .av{width:26px;height:26px}
 .av{width:30px;height:30px}
@@ -636,7 +638,7 @@ main{padding:2px 12px 40px}
 #pb .nm b{font-size:13px}
 #pb .nm{gap:6px}
 #pb .av{width:24px;height:24px}
-#pb .prow .pv{font-size:13.5px}
+#pb .prow .pv{font-size:16.5px}
 /* 모바일: 가격 열을 넓혀(35/31/16/18) 비교 가격·차이 배지와 고/저가 각각 한 줄로 들어가 행이 세로로 늘어나지 않게 */
 #pb .phd,#pb .prow{grid-template-columns:35% 31% 16% 18%}
 /* 모바일 5열(비교 거래소 칸): 위 기본 규칙보다 뒤에 둬 실제로 적용되게 한다. 데스크톱과 마찬가지로
