@@ -196,11 +196,11 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .pill{display:inline-block;padding:2px 7px;border-radius:5px;font-weight:600;background:var(--sf2)}
 .pill.up{background:var(--upbg);color:var(--up)}
 .pill.dn{background:var(--dnbg);color:var(--dn)}
-/* 종가 줄: 해당 시장이 끝나 있을 때만 현재가 칸 맨 위에 넣는다 — 작은 pill 배지 '종가' + 굵은 종가 값,
-   그 아래 현재가는 회색 작은 글씨(.pcv)로 내린다. 장중에는 이 마크업 자체가 없어 기존 표시와 같다 */
+/* 종가 줄: 해당 시장이 끝나 있을 때만 현재가 칸 맨 위에 넣는다 — 작은 pill 배지 '종가' + 종가 값(회색),
+   그 아래 현재가는 밝은 본문색(.pcv)으로 내린다(종가·현재가 색 맞바꿈, 2026-11-06). 장중에는 이 마크업 자체가 없어 기존 표시와 같다 */
 .cln{display:block;white-space:nowrap;line-height:1.25}
 .cln .cb{display:inline-block;padding:1px 6px;border-radius:5px;background:var(--mut);color:var(--bg);font-size:10.5px;font-weight:700;vertical-align:2px;margin-right:5px;letter-spacing:-.02em}
-.cln .cvv{font-weight:800;color:var(--tx);letter-spacing:-.02em}
+.cln .cvv{font-weight:800;color:var(--mut);letter-spacing:-.02em}
 .kp td .cln .cvv{display:inline;font-size:14.5px}
 #pb .prow .cln .cvv{font-size:12.5px}
 /* 종가 표시(2026-11-06): '종가' 글자 칩과 종가 숫자는 작게 유지하고, 키우는 건 가격 칸의 현재가 숫자(.pv·.pcv)뿐이다.
@@ -208,7 +208,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 #pb .cln .cb{font-size:9.5px;padding:1px 5px}
 .etfd .cln .cvv{font-size:13.5px}
 .etfcur{display:flex;align-items:center;gap:6px;justify-content:flex-end;flex-wrap:nowrap;white-space:nowrap}
-.pcv{display:block;color:var(--mut);font-size:15px;font-weight:600;white-space:nowrap;line-height:1.3}
+.pcv{display:block;color:var(--tx);font-size:15px;font-weight:600;white-space:nowrap;line-height:1.3}
 @media(max-width:520px){.etfd .cln .cvv{font-size:12.5px}.kp7 .cln .cb{font-size:9.5px;padding:1px 4px;margin-right:3px}.kp7 .cln .cvv{font-size:12.5px}.kp7 .pcv{font-size:13.5px}}
 /* 김프 표 (7열) */
 .kp{table-layout:fixed}
@@ -2343,7 +2343,7 @@ var kt=Object.keys(kr);if(kt.length)fetch("https://scanner.tradingview.com/korea
 hlfetch();setInterval(function(){if(!document.hidden)hlfetch()},60000);
 /* ===== 종가(가장 최근 거래일 마감 가격) =====
    장이 열려 있는 동안에는 종가 줄을 아예 넣지 않고, 장이 끝난 상태(개장 전·장 종료 후·휴장일)에서만
-   현재가 칸 맨 위에 [종가] 배지 줄을 넣고 현재가는 그 아래 회색 작은 글씨로 내린다.
+   현재가 칸 맨 위에 [종가] 배지 줄(종가 값은 회색)을 넣고 현재가는 그 아래 밝은 본문색 글씨로 내린다.
    시장 판정은 종목 기준이다: 한국 종목은 한국 장(평일 09:00–15:30 KST, 기존 krxOpen),
    미국 종목은 미국 현지(ET) 정규장(평일 09:30–16:00)을 Intl 타임존으로 계산해
    서머타임 기간에는 KST 22:30–05:00으로 자동 이동한다.
