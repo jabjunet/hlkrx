@@ -509,8 +509,6 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .lgmsg[hidden]{display:none}
 .lgnote{color:var(--mut);font-size:11.5px;text-align:center;margin:10px 0 0}
 .gbtn[hidden]{display:none}
-.opbdg{display:inline-flex;align-items:center;flex:none;padding:2px 8px;border-radius:999px;background:var(--ac);color:var(--acx);font-size:11px;font-weight:700;line-height:1.5;letter-spacing:.01em;vertical-align:2px}
-.opbdg[hidden]{display:none}
 /* 프로필 */
 .who{appearance:none;-webkit-appearance:none;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;min-height:32px;padding:5px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;max-width:min(180px,42vw)}
 .wnick{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
@@ -1213,7 +1211,7 @@ var D={
 "김프원은 국내외 금융시장 데이터와 김치프리미엄, 펀딩비 및 주식·ETF 정보를 비교하고 제공하는 독립 금융 정보 플랫폼입니다.":"Kimpwon is an independent financial information platform that compares and provides domestic and global market data, Kimchi Premium, funding rates, and stock and ETF information.",
 "채팅":"Chat","오픈 채팅":"Open Chat","방문자들이 함께 이야기하는 공간":"A place for visitors to chat together","채팅 준비 중이에요":"Chat is getting ready","메시지를 입력하세요":"Type a message","전송":"Send","구글 로그인하고 글쓰기":"Sign in with Google to Write",
 "로그인 상태를 확인하고 있어요. 잠시만 기다려 주세요.":"Checking your sign-in status. Please wait a moment.","글을 쓰려면 구글 로그인이 필요해요. 아래 버튼으로 로그인하면 바로 글을 쓸 수 있어요. 로그인 전에는 메시지를 읽을 수만 있어요.":"You need to sign in with Google to write. Sign in with the button below to post right away. Before signing in, you can only read messages.",
-"아직 메시지가 없어요. 첫 메시지를 남겨 보세요.":"No messages yet. Leave the first message.","채팅을 불러오는 중…":"Loading chat…","채팅을 불러오지 못했어요. 패널을 닫았다가 다시 열어 주세요.":"Could not load chat. Close the panel and open it again.","채팅을 불러오지 못했어요.":"Could not load chat.","운영자":"Operator","익명":"Anonymous",
+"아직 메시지가 없어요. 첫 메시지를 남겨 보세요.":"No messages yet. Leave the first message.","채팅을 불러오는 중…":"Loading chat…","채팅을 불러오지 못했어요. 패널을 닫았다가 다시 열어 주세요.":"Could not load chat. Close the panel and open it again.","채팅을 불러오지 못했어요.":"Could not load chat.","익명":"Anonymous",
 "전송에 실패했어요. 다시 시도해 주세요.":"Failed to send. Please try again.","로그인 창이 닫혔어요. 버튼을 눌러 다시 시도해 주세요.":"The sign-in window was closed. Press the button to try again.","로그인에 실패했어요. 앱 안 브라우저(카카오톡 등)에서는 구글 로그인이 막힐 수 있어요. 크롬이나 사파리에서 열면 더 잘 돼요.":"Sign-in failed. Google sign-in may be blocked in in-app browsers (such as KakaoTalk). Opening this page in Chrome or Safari works better.","이 주소에서는 구글 로그인이 허용되지 않아요. jabjunet.pages.dev 주소로 접속해 다시 시도해 주세요.":"Google sign-in is not allowed at this address. Please open the jabjunet.pages.dev address and try again.","로그인 상태를 확인하고 있어요. 잠시 후 다시 눌러 주세요.":"Checking your sign-in status. Please press again in a moment.","글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 누르면 쓰던 글이 그대로 남아 있어요.":"You need to sign in to write. Press the Google sign-in button above and your draft will stay as it is.","채팅 연결이 아직 준비되지 않았어요. 패널을 닫았다가 다시 열어 주세요.":"Chat is not connected yet. Close the panel and open it again.","로그인을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.":"Could not load sign-in. Please try again shortly.",
 "계산기":"Calculator","김프 계산기":"Kimchi Premium Calculator","평단 계산기":"Average Price Calculator","종목 이름":"Stock Name","저장":"Save",
 "국내 가격 (원)":"Korean Price (KRW)","해외 가격 ($)":"Overseas Price ($)","환율 (원/$)":"Exchange Rate (KRW/$)","투자 금액 (원 · 선택)":"Investment Amount (KRW · Optional)",
@@ -1720,7 +1718,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </form></div></div>
 <div class="lgov" id="pf-ov" hidden><div class="lgbox pfcard" role="dialog" aria-modal="true" aria-labelledby="pf-t">
 <button type="button" class="lgx" id="pf-x" aria-label="닫기">×</button>
-<h2 id="pf-t">프로필 설정 <span class="opbdg" id="pf-op" hidden>운영자</span></h2>
+<h2 id="pf-t">프로필 설정</h2>
 <div class="pfhero"><div class="pfav" aria-hidden="true"><span id="pf-av-t"></span><img id="pf-av-img" alt="" hidden></div>
 <div class="pfrow"><button type="button" class="lgb" id="pf-pick">사진 고르기</button><button type="button" class="lgb ghost" id="pf-del" hidden>사진 지우기</button></div></div>
 <input type="file" id="pf-file" accept="image/*" hidden>
@@ -1805,7 +1803,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <h3>제4조 (계정과 로그인)</h3>
 <p>시세 조회는 로그인 없이 이용할 수 있고, 채팅·커뮤니티 글쓰기 등 일부 기능은 구글 로그인이 필요합니다. 이용자는 본인의 구글 계정을 통해 로그인해야 하며, 계정 관리 책임은 이용자 본인에게 있습니다. 프로필 닉네임·사진은 이용자가 설정한 내용대로 채팅·게시글에 표시됩니다.</p>
 <h3>제5조 (채팅·게시글)</h3>
-<p>이용자가 채팅과 커뮤니티에 작성한 글의 책임은 작성자 본인에게 있습니다. 운영자는 법령 위반, 권리 침해, 서비스 운영 방해에 해당하는 글을 사전 통지 없이 삭제하거나 이용을 제한할 수 있습니다. 운영자 표시가 있는 계정은 서비스 운영을 위해 글을 삭제할 수 있습니다.</p>
+<p>이용자가 채팅과 커뮤니티에 작성한 글의 책임은 작성자 본인에게 있습니다. 운영자는 법령 위반, 권리 침해, 서비스 운영 방해에 해당하는 글을 사전 통지 없이 삭제하거나 이용을 제한할 수 있습니다. 운영자 계정은 서비스 운영을 위해 글을 삭제할 수 있습니다.</p>
 <h3>제6조 (금지 행위)</h3>
 <p>이용자는 다음 행위를 해서는 안 됩니다.</p>
 <ul>
@@ -1842,7 +1840,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </div></div></div>
 <script>
 /* ===== 설정: 아래 값들을 채우면 켜집니다 =====
-   OPERATOR_EMAIL: 운영자 구글 이메일 (로그인 이메일과 일치하면 "운영자" 배지 표시, 비어 있으면 배지 없음)
+   OPERATOR_EMAIL: 운영자 구글 이메일 (로그인 이메일과 일치하면 다른 사람 글·메시지도 삭제 가능, 비어 있으면 운영자 없음)
    FIREBASE_CONFIG: Firebase 프로젝트의 firebaseConfig 객체. 사이트 로그인과 자체 채팅이 이 인증을 함께 씁니다 — 한 번 로그인하면 프로필과 채팅이 같이 켜집니다 (비어 있으면 로그인·채팅이 동작하지 않습니다) */
 var OPERATOR_EMAIL="kimsumin0327@gmail.com";
 var FIREBASE_CONFIG={apiKey:"AIzaSyCK_8KrdL-JkTn7UmFz_xsDW4rTTX8Hcj8",authDomain:"jabjunet.firebaseapp.com",databaseURL:"https://jabjunet-default-rtdb.firebaseio.com",projectId:"jabjunet",storageBucket:"jabjunet.firebasestorage.app",messagingSenderId:"518844585539",appId:"1:518844585539:web:8ab1132490e672dd8366f6"};
@@ -2866,8 +2864,7 @@ function isWebImg(v){return typeof v==="string"&&/^https?:\/\//i.test(v)}
 function firstCh(s){var a=Array.from(String(s||""));return a.length?a[0]:"?"}
 function setAv(t,im,nick,img){if(img){im.src=img;im.hidden=false;t.hidden=true}else{im.hidden=true;im.removeAttribute("src");t.hidden=false;t.textContent=firstCh(nick)}}
 function isOp(){var oe=typeof OPERATOR_EMAIL!=="undefined"?String(OPERATOR_EMAIL||"").trim().toLowerCase():"";if(!oe)return false;var u=saved().trim().toLowerCase();if(u&&u===oe)return true;var pe=String(prof().email||"").trim().toLowerCase();return !!pe&&pe===oe}
-function syncOp(){var b=el("pf-op");if(b)b.hidden=!isOp()}
-function show(){var u=saved();openB.hidden=!!u;who.hidden=!u;if(u){var p=prof();var nick=p.nick||u;var wn=el("lg-who-nick");if(wn)wn.textContent=nick}syncOp()}
+function show(){var u=saved();openB.hidden=!!u;who.hidden=!u;if(u){var p=prof();var nick=p.nick||u;var wn=el("lg-who-nick");if(wn)wn.textContent=nick}}
 function open(){el("lg-msg").hidden=true;ov.hidden=false}
 el("lg-g").addEventListener("click",function(){var m=el("lg-msg");if(typeof window.__hlkrxFbSignIn==="function"){m.hidden=true;window.__hlkrxFbSignIn(false)}else{m.textContent="로그인을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.";m.hidden=false}});
 /* 채팅 쪽 로그인 흐름이 실패를 알릴 때 쓰는 공용 창구: 사이트 로그인으로 시작한 실패는 채팅 패널이 아니라
@@ -2970,7 +2967,7 @@ openB.addEventListener("click",open);
 el("lg-x").addEventListener("click",close);
 ov.addEventListener("click",function(e){if(e.target===ov)close()});
 function pfDraw(){var nick=pnick.value.trim()||saved();setAv(el("pf-av-t"),el("pf-av-img"),nick,tmpImg);el("pf-del").hidden=!tmpImg}
-function pfOpen(first){var p=prof();pfFirst=!!first;tmpImg=effImg(p);pnick.value=p.nick||saved();perr.hidden=true;pskip.hidden=!first;syncOp();pov.hidden=false;pfDraw();setTimeout(function(){pnick.focus()},30)}
+function pfOpen(first){var p=prof();pfFirst=!!first;tmpImg=effImg(p);pnick.value=p.nick||saved();perr.hidden=true;pskip.hidden=!first;pov.hidden=false;pfDraw();setTimeout(function(){pnick.focus()},30)}
 function pfClose(){if(pfFirst){var p=prof();p.done=1;saveProf(p)}pfFirst=false;pov.hidden=true}
 el("pf-x").addEventListener("click",pfClose);
 pov.addEventListener("click",function(e){if(e.target===pov)pfClose()});
@@ -3027,7 +3024,6 @@ row.appendChild(av);
 var main=document.createElement("div");main.className="cmsg-main";
 var hd=document.createElement("div");hd.className="cmsg-hd";
 var nm=document.createElement("b");nm.textContent=String(m.name||"익명");hd.appendChild(nm);
-if(m.op===true){var bd=document.createElement("span");bd.className="opbdg";bd.textContent="운영자";hd.appendChild(bd)}
 var tm=document.createElement("span");tm.className="cmsg-tm";tm.textContent=fmtTime(m.ts);hd.appendChild(tm);
 if(fbUser&&(isOpEmail(fbUser.email)||(m.uid&&m.uid===fbUser.uid))){var del=document.createElement("button");del.type="button";del.className="cmsg-del";del.textContent="삭제";del.setAttribute("aria-label","이 메시지 삭제");del.addEventListener("click",function(){if(msgRef)msgRef.child(key).remove().catch(function(){})});hd.appendChild(del)}
 main.appendChild(hd);
