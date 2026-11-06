@@ -238,25 +238,21 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 #pb .prow .xdf{display:block;color:var(--mut);font-size:10.5px;font-weight:500;white-space:nowrap;line-height:1.3;letter-spacing:-.02em;margin-top:1px}
 #pb .prow .xdn{white-space:nowrap}
 #pb .prow .xdf .pill{font-size:10px;padding:1px 4px;vertical-align:1px}
-/* 나스닥 행 비교 거래소 전용 칸(.xcol): 가격 칸 밑 전용 줄이 아니라, 종목 칸과 가격(USD) 칸 사이에 독립 열로 둔다.
-   거래소 칩 + 굵은 본문색 가격 + 차이 % pill을 넣고, 열이 좁으면 pill이 아래 줄로 감긴다.
-   새 열 폭은 종목 열의 빈 공간에서 가져오므로 가격(USD) 열의 너비(28%)·시작 위치(40%)는 예전 그대로다.
-   머리글의 비교 거래소 칸(#hh-cmp)은 나스닥 모드에서만 보이고, 다른 모드에서는 숨겨 4열 배치를 유지한다 */
-#pb .phd>div[hidden]{display:none}
-#pb .prow.nqrow .xcol{display:flex;align-items:center;justify-content:flex-end;gap:5px;flex-wrap:wrap;white-space:normal;line-height:1.25}
+/* 나스닥 행 비교 거래소 전용 줄(.xline): 가격 아래 작고 흐리게 붙던 비교 가격(.xdf)을 나스닥 행에서만 대체한다.
+   가격 칸 안에 위쪽 구분선으로 나뉜 독립 줄을 만들고, 거래소 칩 + 굵은 본문색 가격 + 차이 % pill을 한눈에 읽히는 크기로 넣는다.
+   행의 열 배분·다른 칸·고/저 줄은 그대로 둔다 */
+#pb .prow.nqrow .xline{display:flex;align-items:center;justify-content:flex-end;gap:5px;white-space:nowrap;line-height:1.25;margin-top:5px;padding-top:5px;border-top:1px solid var(--bd)}
 #pb .prow.nqrow .xtag{flex:none;font-size:11px;font-weight:800;color:var(--tx);background:var(--sf2);border:1px solid var(--bd);border-radius:5px;padding:1px 5px;letter-spacing:-.02em}
 #pb .prow.nqrow .xpr{font-size:13.5px;font-weight:800;color:var(--tx);letter-spacing:-.02em}
 #pb .prow.nqrow .xpr.xnone{color:var(--mut);font-weight:600}
-#pb .prow.nqrow .xcol .pill{font-size:11px;padding:2px 6px}
+#pb .prow.nqrow .xline .pill{font-size:11px;padding:2px 6px}
 @media(max-width:520px){
-/* 모바일 5열: 비교 칸은 칩·가격·pill을 세로로 쌓고, 가격 칸의 고/저는 두 줄로 감아 잘리지 않게 한다 */
-#pb .prow.nqrow .xcol{flex-direction:column;align-items:flex-end;flex-wrap:nowrap;gap:2px}
+#pb .prow.nqrow .xline{gap:4px}
 #pb .prow.nqrow .xtag{font-size:10px;padding:1px 4px}
 #pb .prow.nqrow .xpr{font-size:12.5px}
-#pb .prow.nqrow .xcol .pill{font-size:10.5px;padding:1px 4px}
-#pb .prow.nqrow>div:nth-child(4) .pill{font-size:10.5px;padding:1px 4px}
-#pb .prow.nqrow .hlw{white-space:normal}
-#pb .prow.nqrow,#pb .phd.nqhd{grid-template-columns:25% 21% 25% 13% 16%}
+#pb .prow.nqrow .xline .pill{font-size:10.5px;padding:1px 4px}
+/* 모바일에서는 전용 줄이 가격 칸(28%)에 다 들어가지 않아, 나스닥 행·머리글만 이름 열을 조금 줄이고 가격 열을 넓힌다 */
+#pb .prow.nqrow,#pb .phd.nqhd{grid-template-columns:35% 33% 15% 17%}
 }
 #pb .pempty{padding:11px 10px;font-size:13px;color:var(--mut)}
 #pb .pgrp{display:flex;align-items:baseline;gap:8px;background:var(--sf2);color:var(--tx);font-weight:700;font-size:12.5px;padding:6px 10px;border-bottom:1px solid var(--bd)}
@@ -280,12 +276,11 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 #pb .prow.nqrow .nm b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;line-height:1.25}
 #pb .prow.nqrow .nm small{display:block;flex:none;width:100%;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;line-height:1.25}
 }
-/* 나스닥 모드 열 배분(5열): 종목 20% · 비교 거래소 20% · 가격(USD) 28% · 24h 15% · 거래량 17%.
-   비교 거래소 열은 종목 열이 비워 둔 공간(기존 40% 중 20%)에 새로 만들고, 가격(USD) 열은
-   너비 28%·시작 위치 40%로 예전과 완전히 같게 유지한다.
+/* 나스닥 모드 열 배분: 나스닥 행은 스파크라인 칸을 없애고(마크업에서 제거) 그 폭을 이름 열에 준다.
+   이름 열을 넓히고 거래량 열은 B·M 축약 표기에 맞춰 줄여, 티커와 짧은 표시명이 말줄임 없이 온전히 보이게 한다.
    헤더(#hh)는 나스닥 모드일 때만 .nqhd 클래스로 같은 비율을 적용해 열 정렬이 어긋나지 않게 한다.
    다른 모드의 행·헤더에는 적용되지 않는다 */
-#pb .prow.nqrow,#pb .phd.nqhd{grid-template-columns:20% 20% 28% 15% 17%}
+#pb .prow.nqrow,#pb .phd.nqhd{grid-template-columns:40% 28% 15% 17%}
 #pb .av{width:25px;height:25px}
 #fetf[hidden]{display:none}
 #f[hidden]{display:none}
@@ -1409,7 +1404,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <button data-f="sec:기타" aria-pressed="false">기타</button>
 </div>
 <div class="wrap"><div class="plist" role="table">
-<div class="phd nqhd" id="hh" role="row"><div role="columnheader">종목</div><div role="columnheader" id="hh-cmp">비교 거래소</div><div role="columnheader">가격(USD)</div><div role="columnheader" data-k="c">24h<span class="ar"></span></div><div role="columnheader" data-k="v">거래량<span class="ar"></span></div></div>
+<div class="phd" id="hh" role="row"><div role="columnheader">종목</div><div role="columnheader">가격(USD)</div><div role="columnheader" data-k="c">24h<span class="ar"></span></div><div role="columnheader" data-k="v">거래량<span class="ar"></span></div></div>
 <div id="tb"></div>
 </div></div>
 <div id="nqmore" class="pempty" hidden>스크롤하면 더 불러옵니다</div>
@@ -2044,7 +2039,7 @@ if(us.length)html+=grp("미국 상장 ETF · 나스닥/NYSE",us);
 if(kr.length)html+=grp("국내 상장 ETF · 한국거래소(KRX)",kr);
 if(!r.length)html='<div class="pempty">검색 결과가 없습니다.</div>';
 el("tb").innerHTML=html}
-function draw(){el("hh").classList.toggle("nqhd",!etfOn&&v==="nq");var hcx=el("hh-cmp");if(hcx)hcx.hidden=etfOn||v!=="nq";renderSelChips();if(!etfOn){el("f").hidden=(v==="nq");el("fnq").hidden=!(v==="nq"&&nqSecOpen);el("nqsecbtn").hidden=(v!=="nq");el("nqmore").hidden=(v!=="nq"||typeof NQ==="undefined"||NQ.done);el("q").placeholder=(v==="nq")?"나스닥 종목 검색 (티커·회사명)":"종목 검색";if(v==="nq"){if(typeof NQ!=="undefined")nqDraw();return}}
+function draw(){el("hh").classList.toggle("nqhd",!etfOn&&v==="nq");renderSelChips();if(!etfOn){el("f").hidden=(v==="nq");el("fnq").hidden=!(v==="nq"&&nqSecOpen);el("nqsecbtn").hidden=(v!=="nq");el("nqmore").hidden=(v!=="nq"||typeof NQ==="undefined"||NQ.done);el("q").placeholder=(v==="nq")?"나스닥 종목 검색 (티커·회사명)":"종목 검색";if(v==="nq"){if(typeof NQ!=="undefined")nqDraw();return}}
 if(etfOn){el("fetf").hidden=!etfThOpen;drawEtf();return}
 var ex=EXN[v];if(!ex)return;
 var q=el("q").value.trim().toUpperCase(),qt=el("q").value.trim(),r=xlist(v).filter(function(x){var s=x[0];
@@ -2479,9 +2474,9 @@ if(!j.data||!j.data.length||NQ.items.length>=NQ.total)NQ.done=true;nqSyncArr();f
 function nqDiff(t,price){
 if(cv===v||!(price>0))return"";
 var can=t.replace(/\./g,""),r=xrow(cv,fromCan(cv,can))||xrow(cv,can)||xrow(cv,t);
-if(!r||!(r[1]>0))return'<span class="xtag">'+XTAG[cv]+'</span><span class="xpr xnone">—</span>';
+if(!r||!(r[1]>0))return'<span class="xline"><span class="xtag">'+XTAG[cv]+'</span><span class="xpr xnone">—</span></span>';
 var other=r[1],d=(price/other-1)*100,c=d>0?"up":d<0?"dn":"";
-return'<span class="xtag">'+XTAG[cv]+'</span><span class="xpr">'+f(other,other<10?3:2)+'</span><span class="pill '+c+'">'+(d>0?"+":"")+d.toFixed(2)+'%</span>'}
+return'<span class="xline"><span class="xtag">'+XTAG[cv]+'</span><span class="xpr">'+f(other,other<10?3:2)+'</span><span class="pill '+c+'">'+(d>0?"+":"")+d.toFixed(2)+'%</span></span>'}
 function nqAv(it){
 if(LG[it.t])return av(it.t);
 if(it.lg){var h='hsl('+(it.t.charCodeAt(0)*47%360)+' 45% 42%)';return'<span class="av"><img src="https://s3-symbol-logo.tradingview.com/'+encodeURIComponent(it.lg)+'--big.svg" alt="" loading="lazy" onerror="var s=this.parentNode;s.style.background=\''+h+'\';s.textContent=\''+it.t.charAt(0)+'\'"></span>'}
@@ -2518,7 +2513,7 @@ var hs="",pp=[];if(it.hi>0)pp.push("고 "+f(it.hi,it.hi<10?3:2));if(it.lo>0)pp.p
 var pr=it.p>0?f(it.p,it.p<10?3:2):"—";
 var pcellN=(it.p>0&&!usOpen())?clnHtml(pr)+'<span class="pcv">'+pr+"</span>":'<b class=pv>'+pr+"</b>";
 var vol=it.vt>=1000?"$"+(it.vt/1000).toFixed(1)+"B":it.vt>=1?"$"+it.vt.toFixed(1)+"M":it.vt>0?"$"+Math.round(it.vt*1000)+"K":"—";
-return"<div class=\"prow nqrow\" role=row><div role=cell><div class=nm>"+nqAv(it)+"<div><b>"+nqEsc(it.t)+"</b>"+(sn?" <small>"+nqEsc(sn)+"</small>":"")+"</div></div></div><div role=cell><span class=xcol>"+nqDiff(it.t,it.p)+"</span></div><div role=cell>"+pcellN+hs+"</div><div role=cell>"+(it.c==null?"—":pc(it.c))+"</div><div role=cell>"+vol+"</div></div>"}
+return"<div class=\"prow nqrow\" role=row><div role=cell><div class=nm>"+nqAv(it)+"<div><b>"+nqEsc(it.t)+"</b>"+(sn?" <small>"+nqEsc(sn)+"</small>":"")+"</div></div></div><div role=cell>"+pcellN+nqDiff(it.t,it.p)+hs+"</div><div role=cell>"+(it.c==null?"—":pc(it.c))+"</div><div role=cell>"+vol+"</div></div>"}
 function nqRender(){
 el("tt").textContent=!NQSELS.length?"나스닥 주식 전체 ("+f(NQ.total||NQ.items.length)+")":"나스닥 · "+nqSecLabel()+" ("+f(NQ.total||NQ.items.length)+")";
 var html;
