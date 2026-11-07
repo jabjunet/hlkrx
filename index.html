@@ -965,17 +965,20 @@ main{padding:2px 12px 40px}
 .cm-form[hidden]{display:none}
 .cm-form input{display:block;width:100%;min-height:42px;border-radius:9px;padding:9px 12px;font-size:14px;margin-bottom:8px}
 .cm-form textarea{display:block;width:100%;border-radius:9px;padding:10px 12px;font:inherit;font-size:14px;font-weight:500;color:var(--tx);background:var(--sf);border:1px solid var(--bd);resize:vertical;min-height:110px}
-/* 글쓰기 사진 첨부: 사진 고르기 버튼과 미리보기. 사진은 한 장만 넣을 수 있다 */
+/* 글쓰기 사진 첨부: 사진 고르기 버튼과 미리보기. 사진은 한 글에 4장까지 넣을 수 있고,
+   미리보기는 2열로 나열해 각 사진마다 지우기 버튼을 단다 */
 .cm-imgrow{display:flex;align-items:center;gap:8px;margin-top:10px}
 #cm-file{display:none}
 .cm-imgbtn{display:inline-flex;align-items:center;min-height:36px;padding:7px 13px;border:1px solid var(--bd);border-radius:999px;background:var(--sf2);color:var(--tx);font-size:13px;font-weight:600;cursor:pointer}
 .cm-imgnote{font-size:12px;color:var(--mut)}
-.cm-imgpv{margin-top:10px}
+.cm-imgpv{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .cm-imgpv[hidden]{display:none}
-.cm-imgpv img{display:block;max-width:100%;max-height:180px;border-radius:9px;border:1px solid var(--bd);background:var(--sf2)}
-.cm-imgx{margin-top:8px;min-height:32px;padding:5px 12px;border:1px solid var(--bd);border-radius:999px;background:none;color:var(--up);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
-.pv-img{display:block;max-width:100%;margin:0 0 12px;border-radius:9px;border:1px solid var(--bd)}
-.pv-img[hidden]{display:none}
+.cm-imgitem{width:calc(50% - 4px)}
+.cm-imgitem img{display:block;width:100%;height:110px;object-fit:cover;border-radius:9px;border:1px solid var(--bd);background:var(--sf2)}
+.cm-imgx{margin-top:6px;min-height:32px;padding:5px 12px;border:1px solid var(--bd);border-radius:999px;background:none;color:var(--up);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+.pv-imgs{display:flex;flex-direction:column;gap:8px;margin:0 0 12px}
+.pv-imgs[hidden]{display:none}
+.pv-img{display:block;max-width:100%;border-radius:9px;border:1px solid var(--bd)}
 .cm-err{margin:8px 2px 0;font-size:12.5px;color:var(--up)}
 .cm-err[hidden]{display:none}
 .cm-frow{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
@@ -991,8 +994,9 @@ main{padding:2px 12px 40px}
    가운데 제목, 오른쪽 끝에 작성자 | 날짜를 한 줄로 보여 준다. 조회수는 제목 아래 작은 글씨 */
 .cm-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--bd);background:none;color:var(--tx);font:inherit;padding:9px 2px;cursor:pointer}
 .cm-row:last-child{border-bottom:0}
-.cm-th{flex:none;width:64px;height:46px;border-radius:6px;background:var(--sf2);color:var(--mut);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;overflow:hidden}
+.cm-th{position:relative;flex:none;width:64px;height:46px;border-radius:6px;background:var(--sf2);color:var(--mut);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;overflow:hidden}
 .cm-th img{width:100%;height:100%;object-fit:cover;display:block}
+.cm-thn{position:absolute;right:3px;bottom:3px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:rgba(0,0,0,.65);color:#fff;font-size:11px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center}
 .cm-rmain{flex:1;min-width:0}
 .cm-rt{display:block;font-size:14.5px;font-weight:600;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cm-rv{display:block;margin-top:2px;font-size:11.5px;color:var(--mut)}
@@ -1195,7 +1199,7 @@ var D={
 "금":"Gold","은":"Silver","구리":"Copper","유가":"Oil","차트보기":"Show Chart","차트접기":"Hide Chart",
 "금 (GOLD)":"Gold (GOLD)","은 (SILVER)":"Silver (SILVER)","구리 (COPPER)":"Copper (COPPER)","유가 (WTI 원유)":"Oil (WTI Crude)",
 "국제 현물 · 트로이온스(oz) 기준 · gold-api.com":"Intl spot · per troy ounce (oz) · gold-api.com","국제 현물 · 파운드(lb) 기준 · gold-api.com":"Intl spot · per pound (lb) · gold-api.com","국제 선물 · 배럴(bbl) 기준 · NYMEX WTI":"Intl futures · per barrel (bbl) · NYMEX WTI",
-"국내시세 출처: 한국금거래소 고시 · 2026-11-05":"Domestic prices: Korea Gold Exchange notice · 2026-11-05","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 9월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Sep 2026 (monthly notice)",
+"국내시세 출처: 한국금거래소 고시 · 2026-11-06":"Domestic prices: Korea Gold Exchange notice · 2026-11-06","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 9월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Sep 2026 (monthly notice)",
 "유가는 국내 고시 가격이 없어 김프를 표시하지 않습니다. 국제 시세(WTI) 기준입니다.":"Oil has no domestic posted price, so no Kimchi Premium is shown. Based on international (WTI) prices.",
 "김프 (국내 vs 국제 환산)":"Kimchi Prem. (Domestic vs Intl)","국내 유통가 (1kg)":"Domestic price (1kg)","국제 환산가 (1kg)":"Intl converted price (1kg)","국내 살 때 (1돈)":"Domestic buy (1 don)","국내 팔 때 (1돈)":"Domestic sell (1 don)","국제 원화 환산 (1배럴)":"Intl conversion (1 barrel)","당일 고가 (1배럴)":"Day high (1 barrel)","당일 저가 (1배럴)":"Day low (1 barrel)","국내 · 1kg":"Domestic · 1kg","국제 환산 · 1kg":"Intl conv. · 1kg","국내 · 팔 때 1돈":"Domestic · Sell 1 don","국제 환산 · 1돈":"Intl conv. · 1 don",
 "김프 = (국내 가격 ÷ 국제 환산가 − 1) × 100":"Kimchi Prem. = (Domestic price ÷ Intl converted price − 1) × 100","+면 국내가 더 비싸고, −면 국내가 더 쌉니다.":"Positive means the domestic price is higher; negative means it is cheaper.",
@@ -1217,7 +1221,7 @@ var D={
 "디시인사이드 코스피 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인":"Self-disclosed on DC Inside KOSPI Gallery · Prices via TradingView · Checked every 1 min",
 "최신글":"Latest Posts","글쓰기":"Write","구글 로그인":"Google Sign-in",
 "글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.":"You need to sign in with Google to write a post. Once signed in, you can post right away.",
-"제목을 입력하세요":"Enter a title","내용을 입력하세요":"Enter content","사진 첨부":"Attach Photo","사진 1장까지 넣을 수 있어요":"You can attach up to 1 photo","사진 지우기":"Remove Photo","취소":"Cancel","등록":"Post","삭제":"Delete","수정":"Edit","수정 완료":"Save Changes","닫기":"Close",
+"제목을 입력하세요":"Enter a title","내용을 입력하세요":"Enter content","사진 첨부":"Attach Photo","사진 4장까지 넣을 수 있어요":"You can attach up to 4 photos","사진은 4장까지 넣을 수 있어요.":"You can attach up to 4 photos.","이미지 파일만 넣을 수 있어요.":"Only image files can be attached.","사진 지우기":"Remove Photo","취소":"Cancel","등록":"Post","삭제":"Delete","수정":"Edit","수정 완료":"Save Changes","닫기":"Close",
 "아직 글이 없습니다. 첫 글을 남겨 보세요.":"No posts yet. Write the first post.","글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to write. Press the Google sign-in button above.","아직 연결이 준비되지 않았어요. 잠시 후 다시 시도해 주세요.":"The connection is not ready yet. Please try again shortly.","제목을 입력해 주세요.":"Please enter a title.","내용을 입력하거나 사진을 넣어 주세요.":"Please enter content or add a photo.","등록에 실패했어요. 다시 시도해 주세요.":"Failed to post. Please try again.","수정에 실패했어요. 다시 시도해 주세요.":"Failed to save changes. Please try again.","이미지를 불러오지 못했어요.":"Could not load the image.",
 "좋아요":"Like","댓글":"Comments","댓글을 입력하세요":"Write a comment","댓글 입력":"Comment input","댓글을 불러오는 중…":"Loading comments…","댓글을 불러오지 못했어요.":"Could not load comments.","아직 댓글이 없습니다. 첫 댓글을 남겨 보세요.":"No comments yet. Leave the first comment.","댓글을 쓰려면 로그인이 필요해요.":"You need to sign in to comment.","좋아요를 누르려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to like. Press the Google sign-in button above.","댓글을 입력해 주세요.":"Please enter a comment.","댓글 등록에 실패했어요. 다시 시도해 주세요.":"Failed to post the comment. Please try again.","댓글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to comment. Press the Google sign-in button above.",
 "데이터 갱신 안내":"Data Update Notes","개인정보처리방침":"Privacy Policy","이용약관":"Terms of Service","문의":"Contact","가이드":"Guide",
@@ -1273,6 +1277,7 @@ if(m=c.match(/^나스닥 · (.+) \((.+)\)$/))return "NASDAQ · "+trCore(m[1])+" 
 if(m=c.match(/^실제 상장 ETF \((.+)\)$/))return "Listed ETFs ("+m[1]+")";
 if(m=c.match(/^(.+) 주식 전체 \((.+)\)$/))return m[1]+" Stocks ("+m[2]+")";
 if(m=c.match(/^보유 종목 (\d+)개 보기$/))return "View "+m[1]+" Holdings";
+if(m=c.match(/^사진 (\d+)장 첨부됨 · 4장까지 넣을 수 있어요$/))return m[1]+" photos attached · up to 4 photos";
 if(m=c.match(/^평가손익 \+([\d.]+)억 원 · 순자산 ([\d.]+)억 원 \(예수금 ([\d.]+)억 원 포함\)$/))return "P&L +₩"+bn(m[1])+"B · Net assets ₩"+bn(m[2])+"B (incl. ₩"+bn(m[3])+"B cash)";
 if(m=c.match(/^평가손익 (.+)$/))return "P&L "+m[1];
 if(m=c.match(/^(.+) · (\d+)시간마다 확인$/))return m[1]+" · Checked every "+m[2]+"h";
@@ -1458,7 +1463,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <span class="gsub" id="au-krw"></span>
 </div>
 <div class="sum" id="au-sum"></div>
-<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-05</span>
+<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-06</span>
 </div>
 <div id="mt-ag" hidden>
 <div class="tvbar"><button type="button" class="mt-tgl" id="ag-tgl" aria-expanded="false" aria-controls="ag-tvwrap">차트보기</button><span class="gread" id="ag-tv"></span></div>
@@ -1469,7 +1474,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <span class="gsub" id="ag-krw"></span>
 </div>
 <div class="sum" id="ag-sum"></div>
-<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-05</span>
+<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-06</span>
 </div>
 <div id="mt-cu" hidden>
 <div class="tvbar"><button type="button" class="mt-tgl" id="cu-tgl" aria-expanded="false" aria-controls="cu-tvwrap">차트보기</button><span class="gread" id="cu-tv"></span></div>
@@ -1642,8 +1647,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <form class="cm-form" id="cm-form" hidden>
 <input id="cm-title" type="text" maxlength="80" placeholder="제목을 입력하세요" aria-label="글 제목" autocomplete="off">
 <textarea id="cm-body" maxlength="3000" placeholder="내용을 입력하세요" aria-label="글 내용"></textarea>
-<div class="cm-imgrow"><label class="cm-imgbtn" for="cm-file">사진 첨부</label><input type="file" id="cm-file" accept="image/*" hidden><span class="cm-imgnote">사진 1장까지 넣을 수 있어요</span></div>
-<div class="cm-imgpv" id="cm-img-pv" hidden><img id="cm-img-el" alt="첨부한 사진 미리보기"><button type="button" class="cm-imgx" id="cm-img-x">사진 지우기</button></div>
+<div class="cm-imgrow"><label class="cm-imgbtn" for="cm-file">사진 첨부</label><input type="file" id="cm-file" accept="image/*" multiple hidden><span class="cm-imgnote" id="cm-img-note">사진 4장까지 넣을 수 있어요</span></div>
+<div class="cm-imgpv" id="cm-img-pv" hidden></div>
 <p class="cm-err" id="cm-err" role="alert" hidden></p>
 <div class="cm-frow"><button type="button" class="cm-cancel" id="cm-cancel">취소</button><button type="submit" class="cm-submit" id="cm-submit">등록</button></div>
 </form>
@@ -1655,12 +1660,12 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <div class="lgov" id="pv-ov" hidden><div class="lgbox pvbox" role="dialog" aria-modal="true" aria-labelledby="pv-title">
 <h2 id="pv-title"></h2>
 <p class="pv-meta" id="pv-meta"></p>
-<div class="pv-body" id="pv-body"><img class="pv-img" id="pv-img" alt="" hidden><span id="pv-text"></span></div>
+<div class="pv-body" id="pv-body"><div class="pv-imgs" id="pv-imgs" hidden></div><span id="pv-text"></span></div>
 <div class="pv-likerow"><button type="button" class="pv-like" id="pv-like" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.7C6.4 17 3 13.6 3 9.9 3 7.2 5 5 7.6 5c1.7 0 3.4.9 4.4 2.4C13 5.9 14.7 5 16.4 5 19 5 21 7.2 21 9.9c0 3.7-3.4 7.1-9 10.8z"/></svg><span>좋아요</span><span id="pv-like-n">0</span></button><p class="pv-likemsg" id="pv-like-msg" role="alert" hidden></p></div>
 <div class="pv-cmts"><h3>댓글 <span id="pv-cmt-n">0</span></h3><div class="pv-clist" id="pv-clist"><p class="pv-cempty">댓글을 불러오는 중…</p></div><p class="pv-cgate" id="pv-cgate" hidden>댓글을 쓰려면 로그인이 필요해요.<button type="button" class="pv-clogin" id="pv-clogin">구글 로그인</button></p><form class="pv-cform" id="pv-cform" hidden><input id="pv-cinput" type="text" maxlength="500" placeholder="댓글을 입력하세요" aria-label="댓글 입력" autocomplete="off"><button type="submit" class="pv-csend">등록</button></form><p class="pv-cerr" id="pv-cerr" role="alert" hidden></p></div>
 <div class="pv-row"><button type="button" class="pv-del" id="pv-del" hidden>삭제</button><button type="button" class="pv-edit" id="pv-edit" hidden>수정</button><button type="button" class="cm-submit" id="pv-close">닫기</button></div>
 </div></div>
-<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-05), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-06 조회, KRX는 11/06 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
+<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-06), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-06 조회, KRX는 11/06 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
 <footer class="sitefoot">
 <nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button><i aria-hidden="true">·</i><button type="button" id="legal-contact-open">문의</button><i aria-hidden="true">·</i><a href="guide.html">가이드</a></nav>
 <p>© 2026 kimpwon</p>
@@ -2670,10 +2675,10 @@ window.addEventListener("resize",function(){clearTimeout(ncRzT);ncRzT=setTimeout
 function gd2(n){return f(n,n<10?3:2)}
 function tvtheme(){var t=document.documentElement.getAttribute("data-theme");if(t)return t;return window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}
 var MT={
-au:{sym:"XAU",dec:2,usd:4055.1,buy:775000,sell:652000,tv:"TVC:GOLD",live:false,
+au:{sym:"XAU",dec:2,usd:4055.1,buy:785000,sell:667000,tv:"TVC:GOLD",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
-ag:{sym:"XAG",dec:3,usd:51.777,buy:9480,sell:8090,tv:"TVC:SILVER",live:false,
+ag:{sym:"XAG",dec:3,usd:51.777,buy:9490,sell:8110,tv:"TVC:SILVER",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
 cu:{sym:"HG",dec:4,usd:6.3528,dom:21700,tv:"TVC:COPPER",live:false,
@@ -3208,12 +3213,14 @@ else if(inPk)leave();
 </script>
 <script>
 /* 커뮤니티 게시판: Firebase Realtime Database의 posts 경로를 쓴다.
-   글 구조 {title, body, name(닉네임), photo(프로필 사진), img(첨부 사진, 있으면), uid, ts(서버시각), views(조회수),
+   글 구조 {title, body, name(닉네임), photo(프로필 사진), img(첨부 사진 첫 장, 예전 글·썸네일 호환용),
+   imgs(첨부 사진 전체 배열, 있으면), uid, ts(서버시각), views(조회수),
    likes(좋아요 수), likers/{uid}=true(좋아요한 사람), comments/{댓글ID}={text, name, uid, ts, photo}}.
    좋아요는 글 팝업의 하트 버튼으로 로그인한 사람만 토글할 수 있고(다시 누르면 취소), 댓글도 팝업 아래에서
    로그인한 사람만 쓸 수 있으며 삭제는 댓글 쓴 사람과 운영자만 할 수 있다. 목록 행에는 조회·좋아요·댓글 수를 함께 보인다.
    첨부 사진은 고른 파일을 브라우저에서 긴 변 1024px 이하 JPEG으로 줄여 data URL로 글에 함께 저장한다
-   (별도 스토리지 없이 프로필 사진과 같은 방식). 사진은 한 글에 한 장까지.
+   (별도 스토리지 없이 프로필 사진과 같은 방식). 사진은 한 글에 4장까지 넣을 수 있고, imgs 배열에 전부 저장하며
+   img에는 첫 장을 함께 넣어 예전 방식으로 읽는 화면에서도 썸네일이 뜨게 한다. imgs가 없는 예전 글은 img 한 장으로 읽는다.
    최신글은 작성 시각 최신순으로 왼쪽 넓은 칸에 보여 준다. 처음에는 가장 최근 글 5개만 불러와 보여 주고,
    목록 박스 안에서 아래로 스크롤하면 예전 글을 5개씩 이어서 불러와 가장 오래된 글까지 볼 수 있다
    (펀딩비 탭과 같은 박스 안 스크롤 방식: 박스 끝 센티넬이 하단 근처에 닿으면 다음 5개를 붙인다.
@@ -3234,12 +3241,12 @@ gateEl=document.getElementById("cm-gate"),loginBtn=document.getElementById("cm-l
 writeBtn=document.getElementById("cm-write-btn"),form=document.getElementById("cm-form"),
 titleIn=document.getElementById("cm-title"),bodyIn=document.getElementById("cm-body"),
 fileIn=document.getElementById("cm-file"),imgPv=document.getElementById("cm-img-pv"),
-imgEl=document.getElementById("cm-img-el"),imgX=document.getElementById("cm-img-x"),
+imgNote=document.getElementById("cm-img-note"),
 errEl=document.getElementById("cm-err"),cancelBtn=document.getElementById("cm-cancel"),
 submitBtn=document.getElementById("cm-submit"),
 ov=document.getElementById("pv-ov"),pvTitle=document.getElementById("pv-title"),
 pvMeta=document.getElementById("pv-meta"),pvBody=document.getElementById("pv-body"),
-pvImg=document.getElementById("pv-img"),pvText=document.getElementById("pv-text"),
+pvImgs=document.getElementById("pv-imgs"),pvText=document.getElementById("pv-text"),
 pvDel=document.getElementById("pv-del"),pvEdit=document.getElementById("pv-edit"),pvClose=document.getElementById("pv-close"),
 pvLike=document.getElementById("pv-like"),pvLikeN=document.getElementById("pv-like-n"),
 pvLikeMsg=document.getElementById("pv-like-msg"),
@@ -3248,7 +3255,20 @@ pvCGate=document.getElementById("pv-cgate"),pvCLogin=document.getElementById("pv
 pvCForm=document.getElementById("pv-cform"),pvCInput=document.getElementById("pv-cinput"),
 pvCErr=document.getElementById("pv-cerr");
 if(!tabs||!listEl||!form||!ov)return;
-var started=false,postsRef=null,fbUser=null,authKnown=false,posts=[],curKey=null,postImg="",editKey=null;
+var started=false,postsRef=null,fbUser=null,authKnown=false,posts=[],curKey=null,postImgs=[],editKey=null;
+var MAX_POST_IMGS=4;
+/* 글의 첨부 사진을 배열로 정규화한다: 새 글은 imgs 배열, 예전 글은 img 한 장.
+   Firebase가 배열을 숫자 키 객체로 돌려주는 경우도 함께 받는다 */
+function postImgsOf(p){
+if(!p)return[];
+var out=[];
+function pushStr(s){if(typeof s==="string"&&s&&out.length<MAX_POST_IMGS)out.push(s)}
+var raw=p.imgs;
+if(Array.isArray(raw)){for(var i=0;i<raw.length;i++)pushStr(raw[i])}
+else if(raw&&typeof raw==="object"){var ks=Object.keys(raw).sort(function(a,b){return (parseInt(a,10)||0)-(parseInt(b,10)||0)});for(var j=0;j<ks.length;j++)pushStr(raw[ks[j]])}
+if(!out.length&&typeof p.img==="string"&&p.img)out.push(p.img);
+return out.slice(0,MAX_POST_IMGS);
+}
 var cmtsRef=null,cmtsCb=null,lastCmts=[],likeBusy=false;
 /* 최신글 이어 불러오기 상태: 처음에는 최근 5개(limitToLast(5))만 듣고, 목록 박스 스크롤로
    하단에 가까워질 때마다 한도를 5개씩 늘려 다시 듣는다. 받아온 개수가 한도보다 적으면
@@ -3274,8 +3294,9 @@ listEl.textContent="";
 posts.forEach(function(p){
 var b=document.createElement("button");b.type="button";b.className="cm-row";
 var th=document.createElement("span");th.className="cm-th";th.setAttribute("aria-hidden","true");
-var tsrc=p.img||p.photo;
-if(tsrc){var im=document.createElement("img");im.src=tsrc;im.alt="";im.referrerPolicy="no-referrer";im.addEventListener("error",function(){if(p.img&&p.photo&&im.src!==p.photo){im.src=p.photo}else{th.textContent=(p.name||"익명").charAt(0)}});th.appendChild(im)}
+var pimgs=postImgsOf(p);var firstImg=pimgs[0]||"";
+var tsrc=firstImg||p.photo;
+if(tsrc){var im=document.createElement("img");im.src=tsrc;im.alt="";im.referrerPolicy="no-referrer";im.addEventListener("error",function(){if(firstImg&&p.photo&&im.src!==p.photo){im.src=p.photo}else{th.textContent=(p.name||"익명").charAt(0)}});th.appendChild(im);if(pimgs.length>1){var bd=document.createElement("span");bd.className="cm-thn";bd.textContent=String(pimgs.length);th.appendChild(bd)}}
 else th.textContent=(p.name||"익명").charAt(0);
 b.appendChild(th);
 var main=document.createElement("span");main.className="cm-rmain";
@@ -3319,7 +3340,7 @@ if(postQuery&&postCb){try{postQuery.off("value",postCb)}catch(e){}}
 var q=postsRef.orderByChild("ts").limitToLast(postLimit);
 postQuery=q;
 postCb=function(snap){
-var arr=[];snap.forEach(function(ch){var v=ch.val()||{};arr.push({key:ch.key,title:String(v.title||""),body:String(v.body||""),name:String(v.name||"익명"),photo:String(v.photo||""),img:String(v.img||""),uid:String(v.uid||""),ts:(typeof v.ts==="number"?v.ts:0),views:(typeof v.views==="number"?v.views:0),likes:(typeof v.likes==="number"?v.likes:0),likers:(v.likers&&typeof v.likers==="object")?v.likers:{},cmtCount:(v.comments&&typeof v.comments==="object")?Object.keys(v.comments).length:0})});
+var arr=[];snap.forEach(function(ch){var v=ch.val()||{};var pim=postImgsOf(v);arr.push({key:ch.key,title:String(v.title||""),body:String(v.body||""),name:String(v.name||"익명"),photo:String(v.photo||""),img:pim[0]||String(v.img||""),imgs:pim,uid:String(v.uid||""),ts:(typeof v.ts==="number"?v.ts:0),views:(typeof v.views==="number"?v.views:0),likes:(typeof v.likes==="number"?v.likes:0),likers:(v.likers&&typeof v.likers==="object")?v.likers:{},cmtCount:(v.comments&&typeof v.comments==="object")?Object.keys(v.comments).length:0})});
 arr.sort(function(a,b){return (b.ts||0)-(a.ts||0)});
 postExhausted=arr.length<postLimit;
 postLoading=false;
@@ -3449,7 +3470,9 @@ var already=hasViewed(key);
 var showViews=already?(sessionCounted[key]&&sessionCounted[key]>baseViews?sessionCounted[key]:baseViews):(baseViews+1);
 pvTitle.textContent=p.title||"(제목 없음)";
 pvMeta.textContent=(p.name||"익명")+" · "+fmtT(p.ts)+" · 조회 "+showViews;
-if(p.img){pvImg.src=p.img;pvImg.hidden=false}else{pvImg.hidden=true;pvImg.removeAttribute("src")}
+pvImgs.textContent="";
+var pim2=postImgsOf(p);
+if(pim2.length){pim2.forEach(function(src){var im2=document.createElement("img");im2.className="pv-img";im2.src=src;im2.alt="";im2.referrerPolicy="no-referrer";pvImgs.appendChild(im2)});pvImgs.hidden=false}else{pvImgs.hidden=true}
 pvText.textContent=p.body||"";
 pvDel.hidden=!canDel(p);
 pvEdit.hidden=!canEdit(p);
@@ -3482,7 +3505,7 @@ var key=curKey;closePost();
 postsRef.child(key).remove().catch(function(){});
 });
 /* 수정 모드 종료: 수정 중이던 내용을 버리고 폼을 새 글 등록 상태로 되돌린다 */
-function endEdit(){if(editKey){editKey=null;titleIn.value="";bodyIn.value="";clearPostImg()}submitBtn.textContent="등록"}
+function endEdit(){if(editKey){editKey=null;titleIn.value="";bodyIn.value="";clearPostImgs()}submitBtn.textContent="등록"}
 /* 수정: 글쓴이 본인(또는 운영자)이 팝업의 수정 버튼을 누르면 글쓰기 폼에 기존 제목·본문·사진을 채워 열고,
    저장(submit)에서는 새 글을 만들지 않고 그 글을 update 한다 */
 pvEdit.addEventListener("click",function(){
@@ -3490,42 +3513,71 @@ if(!curKey)return;
 var p=postByKey(curKey);if(!p||!canEdit(p))return;
 editKey=curKey;
 titleIn.value=p.title||"";bodyIn.value=p.body||"";
-postImg=p.img||"";
-if(postImg){if(imgEl)imgEl.src=postImg;if(imgPv)imgPv.hidden=false}
-else if(imgPv)imgPv.hidden=true;
+postImgs=postImgsOf(p);
+renderImgPv();
 submitBtn.textContent="수정 완료";
 closePost();
 form.hidden=false;errEl.hidden=true;titleIn.focus();
 });
 writeBtn.addEventListener("click",function(){endEdit();form.hidden=false;errEl.hidden=true;titleIn.focus()});
-cancelBtn.addEventListener("click",function(){form.hidden=true;errEl.hidden=true;endEdit();clearPostImg()});
-function clearPostImg(){postImg="";if(imgEl)imgEl.removeAttribute("src");if(imgPv)imgPv.hidden=true}
-function imgErr(msg){errEl.textContent=msg;errEl.hidden=false;clearPostImg()}
-if(fileIn)fileIn.addEventListener("change",function(){
-var f=fileIn.files&&fileIn.files[0];fileIn.value="";
-if(!f)return;
-if(!/^image\//.test(f.type||"")){imgErr("이미지 파일만 넣을 수 있어요.");return}
+cancelBtn.addEventListener("click",function(){form.hidden=true;errEl.hidden=true;endEdit();clearPostImgs()});
+function clearPostImgs(){postImgs=[];renderImgPv();syncImgNote()}
+function syncImgNote(){if(imgNote)imgNote.textContent=postImgs.length?("사진 "+postImgs.length+"장 첨부됨 · 4장까지 넣을 수 있어요"):"사진 4장까지 넣을 수 있어요"}
+/* 첨부 미리보기 다시 그리기: postImgs 순서대로 2열로 보여 주고, 각 사진의 지우기 버튼은 그 사진만 뺀다 */
+function renderImgPv(){
+if(!imgPv)return;
+imgPv.textContent="";
+if(!postImgs.length){imgPv.hidden=true;return}
+imgPv.hidden=false;
+postImgs.forEach(function(src,idx){
+var wrap=document.createElement("div");wrap.className="cm-imgitem";
+var im=document.createElement("img");im.src=src;im.alt="첨부한 사진 미리보기";wrap.appendChild(im);
+var x=document.createElement("button");x.type="button";x.className="cm-imgx";x.textContent="사진 지우기";
+(function(i){x.addEventListener("click",function(){postImgs.splice(i,1);renderImgPv();syncImgNote()})})(idx);
+wrap.appendChild(x);
+imgPv.appendChild(wrap);
+});
+}
+/* 파일 하나를 긴 변 1024px 이하 JPEG data URL로 줄여 콜백으로 돌려준다. 실패하면 빈 문자열 */
+function loadPostImgFile(f,cb){
+if(!/^image\//.test(f.type||"")){cb("");return}
 var rd=new FileReader();
 rd.onload=function(){
 var img=new Image();
 img.onload=function(){
 var w=img.naturalWidth,h=img.naturalHeight;
-if(!w||!h){imgErr("이미지를 불러오지 못했어요.");return}
+if(!w||!h){cb("");return}
 var MAX=1024,s=Math.min(1,MAX/Math.max(w,h));
 var cv=document.createElement("canvas");cv.width=Math.max(1,Math.round(w*s));cv.height=Math.max(1,Math.round(h*s));
 var cx=cv.getContext("2d");cx.drawImage(img,0,0,cv.width,cv.height);
 var out="";try{out=cv.toDataURL("image/jpeg",0.82)}catch(e){out=""}
 if(out&&out.length>900000){try{out=cv.toDataURL("image/jpeg",0.6)}catch(e){}}
-if(!out){imgErr("이미지를 불러오지 못했어요.");return}
-postImg=out;imgEl.src=out;imgPv.hidden=false;errEl.hidden=true;
+cb(out||"");
 };
-img.onerror=function(){imgErr("이미지를 불러오지 못했어요.")};
+img.onerror=function(){cb("")};
 img.src=rd.result;
 };
-rd.onerror=function(){imgErr("이미지를 불러오지 못했어요.")};
+rd.onerror=function(){cb("")};
 rd.readAsDataURL(f);
+}
+if(fileIn)fileIn.addEventListener("change",function(){
+var files=fileIn.files?Array.prototype.slice.call(fileIn.files):[];fileIn.value="";
+if(!files.length)return;
+var room=MAX_POST_IMGS-postImgs.length;
+if(room<=0){errEl.textContent="사진은 4장까지 넣을 수 있어요.";errEl.hidden=false;return}
+var over=files.length>room;
+var picked=files.slice(0,room);
+var results=new Array(picked.length),left=picked.length,failed=false;
+function step(){
+if(--left>0)return;
+for(var i=0;i<results.length;i++){if(results[i])postImgs.push(results[i])}
+renderImgPv();syncImgNote();
+if(failed){errEl.textContent="이미지를 불러오지 못했어요.";errEl.hidden=false}
+else if(over){errEl.textContent="사진은 4장까지 넣을 수 있어요.";errEl.hidden=false}
+else errEl.hidden=true;
+}
+picked.forEach(function(f,i){loadPostImgFile(f,function(out){results[i]=out;if(!out)failed=true;step()})});
 });
-if(imgX)imgX.addEventListener("click",clearPostImg);
 if(loginBtn)loginBtn.addEventListener("click",function(){if(typeof window.__hlkrxFbSignIn==="function")window.__hlkrxFbSignIn(false)});
 form.addEventListener("submit",function(e){
 e.preventDefault();
@@ -3533,21 +3585,21 @@ if(!fbUser){errEl.textContent="글을 쓰려면 로그인이 필요해요. 위�
 if(!postsRef){errEl.textContent="아직 연결이 준비되지 않았어요. 잠시 후 다시 시도해 주세요.";errEl.hidden=false;return}
 var t=titleIn.value.trim(),b=bodyIn.value.trim();
 if(!t){errEl.textContent="제목을 입력해 주세요.";errEl.hidden=false;titleIn.focus();return}
-if(!b&&!postImg){errEl.textContent="내용을 입력하거나 사진을 넣어 주세요.";errEl.hidden=false;bodyIn.focus();return}
+if(!b&&!postImgs.length){errEl.textContent="내용을 입력하거나 사진을 넣어 주세요.";errEl.hidden=false;bodyIn.focus();return}
 if(editKey){
 var ep=postByKey(editKey);
 if(!ep||!canEdit(ep)){errEl.textContent="수정에 실패했어요. 다시 시도해 주세요.";errEl.hidden=false;return}
-var upd={title:t.slice(0,80),body:b.slice(0,3000),img:postImg?postImg:null};
+var upd={title:t.slice(0,80),body:b.slice(0,3000),img:postImgs.length?postImgs[0]:null,imgs:postImgs.length?postImgs.slice(0,MAX_POST_IMGS):null};
 var epr=postsRef.child(editKey).update(upd);
-function edone(){titleIn.value="";bodyIn.value="";editKey=null;submitBtn.textContent="등록";clearPostImg();form.hidden=true;errEl.hidden=true}
+function edone(){titleIn.value="";bodyIn.value="";editKey=null;submitBtn.textContent="등록";clearPostImgs();form.hidden=true;errEl.hidden=true}
 if(epr&&typeof epr.then==="function")epr.then(edone).catch(function(){errEl.textContent="수정에 실패했어요. 다시 시도해 주세요.";errEl.hidden=false});
 else edone();
 return;
 }
 var rec={title:t.slice(0,80),body:b.slice(0,3000),name:myNick(),photo:myPhoto(),uid:fbUser.uid||"",ts:firebase.database.ServerValue.TIMESTAMP,views:0,likes:0};
-if(postImg)rec.img=postImg;
+if(postImgs.length){rec.img=postImgs[0];rec.imgs=postImgs.slice(0,MAX_POST_IMGS)}
 var pr=postsRef.push(rec);
-function done(){titleIn.value="";bodyIn.value="";clearPostImg();form.hidden=true;errEl.hidden=true}
+function done(){titleIn.value="";bodyIn.value="";clearPostImgs();form.hidden=true;errEl.hidden=true}
 if(pr&&typeof pr.then==="function")pr.then(done).catch(function(){errEl.textContent="등록에 실패했어요. 다시 시도해 주세요.";errEl.hidden=false});
 else done();
 });
