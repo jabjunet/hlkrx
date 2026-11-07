@@ -4876,18 +4876,31 @@ setInterval(function(){if(!document.hidden)load()},60000);
    한 그룹의 출처가 모두 실패하면 그 그룹에만 안내를 표시하고 다른 그룹은 정상 표시하며, 전부 실패할 때만 전체 안내를 표시한다.
    피드 모두 CORS 헤더가 없어 직접 fetch가 막히면 공개 RSS 프록시를 순서대로 경유한다:
    ① rss2json(JSON 변환) ② allorigins(raw XML). 일부 출처가 실패하면 성공한 출처 기사만으로 채우고, 전부 실패할 때만 안내를 표시한다.
-   피드 주소는 빌드 시점에 실제 응답을 확인했다: 한국경제 https://www.hankyung.com/feed/all-news (200, RSS 2.0),
+   피드 주소는 빌드 시점에 실제 응답을 확인했다: 한국경제 증권 https://www.hankyung.com/feed/finance (200, RSS 2.0, 채널명 '한국경제 | 뉴스 | 증권'),
    매일경제 증권 https://www.mk.co.kr/rss/50200011/ (직접 호출은 403으로 막혀 rss2json 경유로 당일 증권 기사 응답 확인),
    인베스팅 한국어판 https://kr.investing.com/rss/news.rss (200, RSS 2.0).
+   국내 그룹은 두 매체 모두 증권 섹션 피드만 쓴다. 그래도 섹션 피드에 섞여 들어오는 주식 무관 기사
+   (정치·부동산·연예·스포츠·날씨·사건사고 등)는 제목 보조 필터(isStockTitle)로 표시 목록에서 제외한다.
+   주식 관련 표현이 제목에 하나라도 있으면 무조건 남기는 보수적 방식이라 주식 뉴스가 잘못 걸러지지 않고,
+   필터 후 국내 기사가 적게 남으면 있는 만큼만 표시하며 무관한 기사로 빈자리를 채우지 않는다.
+   국내 피드는 필터 후에도 최대 10개를 채울 수 있도록 출처당 최대 30개까지 읽는다(해외는 기존대로 12개).
    인베스팅 pubDate는 오프셋 없는 UTC 표기라 타임존 없는 날짜 문자열은 UTC로 해석한다. 7분 간격 자동 갱신. */
 (function(){
 function $(id){return document.getElementById(id)}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 var SRC={
-hk:{name:"한국경제",feed:"https://www.hankyung.com/feed/all-news"},
+hk:{name:"한국경제",feed:"https://www.hankyung.com/feed/finance"},
 mk:{name:"매일경제",feed:"https://www.mk.co.kr/rss/50200011/"},
 iv:{name:"인베스팅",feed:"https://kr.investing.com/rss/news.rss"}};
 var cache={},settled={};
+/* 국내 전용 제목 보조 필터: 주식 관련 표현이 제목에 하나라도 있으면 무조건 통과시키고(keep 우선),
+   없을 때만 주식과 무관한 주제의 강한 표현이 있는 제목을 제외한다. 어느 쪽에도 걸리지 않으면 통과(보수적 적용). */
+var STOCK_KEEP=/주식|증시|코스피|코스닥|종목|주가|상장|공모|IPO|ETF|ETN|실적|영업이익|순이익|매출|공시|배당|증권|목표주가|상한가|하한가|공매도|자사주|유상증자|주주|시가총액|개미|펀드|퇴직연금|리츠|우선주|전환사채|급등|급락|폭등|폭락|강세|약세/;
+var OFF_TOPIC=/정치|선거|대선|총선|국회|여당|야당|민주당|국민의힘|대통령|탄핵|부동산|아파트|분양|전세|월세|집주인|세입자|재개발|재건축|연예|아이돌|드라마|예능|스포츠|축구|야구|농구|배구|골프|올림픽|월드컵|결승골|홈런|득점|역전승|날씨|폭염|폭우|태풍|장마|한파|폭설|미세먼지|지진|홍수|산불|화재|교통사고|살인|성범죄|마약|음주운전|뺑소니|운세|로또|맛집|레시피/;
+function isStockTitle(t){
+if(STOCK_KEEP.test(t))return true;
+if(OFF_TOPIC.test(t))return false;
+return true}
 function fetchT(url,ms){
 var ctl=("AbortController" in window)?new AbortController():null;
 var tm=ctl?setTimeout(function(){ctl.abort()},ms||12000):null;
@@ -4897,30 +4910,30 @@ if(!s)return 0;
 s=String(s).trim();
 if(/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}$/.test(s))return Date.parse(s.replace(" ","T")+"Z")||0;
 var t=Date.parse(s);return isNaN(t)?0:t}
-function parseXml(txt){
+function parseXml(txt,lim){
 var doc=new DOMParser().parseFromString(txt,"text/xml"),out=[];
 if(doc.querySelector("parsererror"))throw new Error("xml");
 var items=doc.querySelectorAll("item");
-for(var i=0;i<items.length&&out.length<12;i++){
+for(var i=0;i<items.length&&out.length<(lim||12);i++){
 var tt=items[i].querySelector("title"),lk=items[i].querySelector("link"),pd=items[i].querySelector("pubDate");
 var title=tt?tt.textContent.trim():"",link=lk?lk.textContent.trim():"";
 if(title&&/^https?:\/\//.test(link))out.push({t:title,u:link,d:parseDate(pd?pd.textContent:"")})}
 if(!out.length)throw new Error("empty");
 return out}
-function parseR2J(txt){
+function parseR2J(txt,lim){
 var j=JSON.parse(txt),out=[];
 if(!j||j.status!=="ok"||!j.items)throw new Error("r2j");
-for(var i=0;i<j.items.length&&out.length<12;i++){
+for(var i=0;i<j.items.length&&out.length<(lim||12);i++){
 var it=j.items[i],title=String(it.title||"").trim(),link=String(it.link||"").trim();
 if(title&&/^https?:\/\//.test(link))out.push({t:title,u:link,d:parseDate(it.pubDate)})}
 if(!out.length)throw new Error("empty");
 return out}
 function loadSrc(key){
-var feed=SRC[key].feed;
-return fetchT(feed).then(parseXml)
-.catch(function(){return fetchT("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(feed)).then(parseR2J)})
-.catch(function(){return fetchT("https://api.allorigins.win/raw?url="+encodeURIComponent(feed)).then(parseXml)})
-.then(function(rows){cache[key]=rows;settled[key]=1;render()})
+var feed=SRC[key].feed,dom=(key==="hk"||key==="mk"),lim=dom?30:12;
+return fetchT(feed).then(function(t){return parseXml(t,lim)})
+.catch(function(){return fetchT("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(feed)).then(function(t){return parseR2J(t,lim)})})
+.catch(function(){return fetchT("https://api.allorigins.win/raw?url="+encodeURIComponent(feed)).then(function(t){return parseXml(t,lim)})})
+.then(function(rows){if(dom)rows=rows.filter(function(r){return isStockTitle(r.t)});cache[key]=rows;settled[key]=1;render()})
 .catch(function(){settled[key]=1;if(!cache[key])cache[key]="err";render()})}
 function ago(t){
 if(!t)return "";
