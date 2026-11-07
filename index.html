@@ -1222,7 +1222,7 @@ var D={
 "최신글":"Latest Posts","글쓰기":"Write","구글 로그인":"Google Sign-in",
 "글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.":"You need to sign in with Google to write a post. Once signed in, you can post right away.",
 "제목을 입력하세요":"Enter a title","내용을 입력하세요":"Enter content","사진 첨부":"Attach Photo","사진 4장까지 넣을 수 있어요":"You can attach up to 4 photos","사진은 4장까지 넣을 수 있어요.":"You can attach up to 4 photos.","이미지 파일만 넣을 수 있어요.":"Only image files can be attached.","사진 지우기":"Remove Photo","취소":"Cancel","등록":"Post","삭제":"Delete","수정":"Edit","수정 완료":"Save Changes","닫기":"Close",
-"아직 글이 없습니다. 첫 글을 남겨 보세요.":"No posts yet. Write the first post.","글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to write. Press the Google sign-in button above.","아직 연결이 준비되지 않았어요. 잠시 후 다시 시도해 주세요.":"The connection is not ready yet. Please try again shortly.","제목을 입력해 주세요.":"Please enter a title.","내용을 입력하거나 사진을 넣어 주세요.":"Please enter content or add a photo.","등록에 실패했어요. 다시 시도해 주세요.":"Failed to post. Please try again.","수정에 실패했어요. 다시 시도해 주세요.":"Failed to save changes. Please try again.","이미지를 불러오지 못했어요.":"Could not load the image.",
+"아직 글이 없습니다. 첫 글을 남겨 보세요.":"No posts yet. Write the first post.","글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to write. Press the Google sign-in button above.","아직 연결이 준비되지 않았어요. 잠시 후 다시 시도해 주세요.":"The connection is not ready yet. Please try again shortly.","제목을 입력해 주세요.":"Please enter a title.","내용을 입력하거나 사진을 넣어 주세요.":"Please enter content or add a photo.","등록에 실패했어요. 다시 시도해 주세요.":"Failed to post. Please try again.","수정에 실패했어요. 다시 시도해 주세요.":"Failed to save changes. Please try again.","글을 올린 지 10분이 지나 수정할 수 없어요.":"You can no longer edit this post — 10 minutes have passed since it was posted.","이미지를 불러오지 못했어요.":"Could not load the image.",
 "좋아요":"Like","댓글":"Comments","댓글을 입력하세요":"Write a comment","댓글 입력":"Comment input","댓글을 불러오는 중…":"Loading comments…","댓글을 불러오지 못했어요.":"Could not load comments.","아직 댓글이 없습니다. 첫 댓글을 남겨 보세요.":"No comments yet. Leave the first comment.","댓글을 쓰려면 로그인이 필요해요.":"You need to sign in to comment.","좋아요를 누르려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to like. Press the Google sign-in button above.","댓글을 입력해 주세요.":"Please enter a comment.","댓글 등록에 실패했어요. 다시 시도해 주세요.":"Failed to post the comment. Please try again.","댓글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to comment. Press the Google sign-in button above.",
 "데이터 갱신 안내":"Data Update Notes","개인정보처리방침":"Privacy Policy","이용약관":"Terms of Service","문의":"Contact","가이드":"Guide",
 "김프원은 국내외 금융시장 데이터와 김치프리미엄, 펀딩비 및 주식·ETF 정보를 비교하고 제공하는 독립 금융 정보 플랫폼입니다.":"Kimpwon is an independent financial information platform that compares and provides domestic and global market data, Kimchi Premium, funding rates, and stock and ETF information.",
@@ -3233,6 +3233,8 @@ else if(inPk)leave();
    삭제는 운영자(OPERATOR_EMAIL)와 글쓴이 본인만 할 수 있다.
    수정도 글쓴이 본인과 운영자만 할 수 있다: 글을 열면 팝업에 수정 버튼이 보이고, 누르면 글쓰기 폼에
    기존 제목·본문·사진이 채워진 채로 열리며, 저장하면 새 글을 만들지 않고 그 글의 제목·본문·사진만 바꾼다.
+   단, 글쓴이 본인은 글을 올린 지 10분 안에만 수정할 수 있다: 10분이 지나면 수정 버튼이 보이지 않고
+   저장도 막힌다. 운영자는 예외로 언제든 수정할 수 있다(삭제의 10분 제한은 없다).
    커뮤니티 탭을 처음 열 때 초기화한다. */
 (function(){
 var tabs=document.getElementById("tabs");
@@ -3255,7 +3257,7 @@ pvCGate=document.getElementById("pv-cgate"),pvCLogin=document.getElementById("pv
 pvCForm=document.getElementById("pv-cform"),pvCInput=document.getElementById("pv-cinput"),
 pvCErr=document.getElementById("pv-cerr");
 if(!tabs||!listEl||!form||!ov)return;
-var started=false,postsRef=null,fbUser=null,authKnown=false,posts=[],curKey=null,postImgs=[],editKey=null;
+var started=false,postsRef=null,fbUser=null,authKnown=false,posts=[],curKey=null,postImgs=[],editKey=null,editHideTimer=null;
 var MAX_POST_IMGS=4;
 /* 글의 첨부 사진을 배열로 정규화한다: 새 글은 imgs 배열, 예전 글은 img 한 장.
    Firebase가 배열을 숫자 키 객체로 돌려주는 경우도 함께 받는다 */
@@ -3282,7 +3284,23 @@ function fmtD(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts),now=
 function fmtT(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts),now=new Date();var hm=d.toLocaleTimeString("ko-KR",{hour:"numeric",minute:"2-digit"});if(d.toDateString()===now.toDateString())return hm;var ymd=d.getFullYear()!==now.getFullYear()?d.getFullYear()+". ":"";return ymd+(d.getMonth()+1)+"/"+d.getDate()+" "+hm}
 function emptyMsg(el,msg){el.textContent="";var p=document.createElement("p");p.className="cm-empty";p.textContent=msg;el.appendChild(p)}
 function canDel(p){return !!fbUser&&(isOp()||(p.uid&&p.uid===fbUser.uid))}
-function canEdit(p){return canDel(p)}
+/* 수정 10분 제한: 글쓴이 본인은 작성 시각(ts)부터 10분 안에만 수정할 수 있고, 운영자는 예외로 언제든 가능하다.
+   작성 시각이 없거나 형식이 아닌 글은 기한이 지난 것으로 본다 */
+var EDIT_LIMIT_MS=10*60*1000;
+function editExpired(p){return !(p&&typeof p.ts==="number"&&p.ts>0&&(Date.now()-p.ts)<EDIT_LIMIT_MS)}
+function canEdit(p){if(!fbUser||!p)return false;if(isOp())return true;if(!(p.uid&&p.uid===fbUser.uid))return false;return !editExpired(p)}
+function clearEditTimer(){if(editHideTimer){try{clearTimeout(editHideTimer)}catch(e){}editHideTimer=null}}
+/* 팝업을 열어 둔 채로 10분이 지나는 경우에도 수정 버튼이 그 자리에서 사라지게 남은 시간만큼 타이머를 건다 */
+function scheduleEditHide(p){
+clearEditTimer();
+if(!p||ov.hidden)return;
+if(!fbUser||isOp())return;
+if(!(p.uid&&p.uid===fbUser.uid))return;
+if(typeof p.ts!=="number"||!p.ts)return;
+var remain=p.ts+EDIT_LIMIT_MS-Date.now();
+if(remain<=0){pvEdit.hidden=true;return}
+editHideTimer=setTimeout(function(){editHideTimer=null;if(!ov.hidden&&curKey){var cp=postByKey(curKey);if(cp)pvEdit.hidden=!canEdit(cp)}},remain+60);
+}
 function postByKey(key){for(var i=0;i<posts.length;i++){if(posts[i].key===key)return posts[i]}return null}
 function likeN(p){return (p&&typeof p.likes==="number"&&p.likes>0)?p.likes:0}
 function cmtN(p){return (p&&typeof p.cmtCount==="number"&&p.cmtCount>0)?p.cmtCount:0}
@@ -3344,7 +3362,7 @@ var arr=[];snap.forEach(function(ch){var v=ch.val()||{};var pim=postImgsOf(v);ar
 arr.sort(function(a,b){return (b.ts||0)-(a.ts||0)});
 postExhausted=arr.length<postLimit;
 postLoading=false;
-posts=arr;renderLists();if(!ov.hidden&&curKey)syncLikeUI();
+posts=arr;renderLists();if(!ov.hidden&&curKey){syncLikeUI();var _cp=postByKey(curKey);if(_cp){pvDel.hidden=!canDel(_cp);pvEdit.hidden=!canEdit(_cp);scheduleEditHide(_cp)}}
 };
 try{q.on("value",postCb,function(){postLoading=false;emptyMsg(listEl,"글을 불러오지 못했어요.")})}catch(e){postLoading=false;emptyMsg(listEl,"글을 불러오지 못했어요.")}
 }
@@ -3477,6 +3495,7 @@ pvText.textContent=p.body||"";
 pvDel.hidden=!canDel(p);
 pvEdit.hidden=!canEdit(p);
 ov.hidden=false;
+scheduleEditHide(p);
 pvLikeMsg.hidden=true;pvCErr.hidden=true;pvCInput.value="";
 syncLikeUI();attachCmts(key);syncPvAuth();
 if(already)return;
@@ -3495,7 +3514,7 @@ if(curKey===key){var q=null;for(var i=0;i<posts.length;i++){if(posts[i].key===ke
 }else{bumpViews(key)}
 }catch(e){bumpViews(key)}
 }
-function closePost(){ov.hidden=true;curKey=null;detachCmts()}
+function closePost(){clearEditTimer();ov.hidden=true;curKey=null;detachCmts()}
 pvClose.addEventListener("click",closePost);
 ov.addEventListener("click",function(e){if(e.target===ov)closePost()});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!ov.hidden)closePost()});
@@ -3510,7 +3529,7 @@ function endEdit(){if(editKey){editKey=null;titleIn.value="";bodyIn.value="";cle
    저장(submit)에서는 새 글을 만들지 않고 그 글을 update 한다 */
 pvEdit.addEventListener("click",function(){
 if(!curKey)return;
-var p=postByKey(curKey);if(!p||!canEdit(p))return;
+var p=postByKey(curKey);if(!p||!canEdit(p)){pvEdit.hidden=true;return}
 editKey=curKey;
 titleIn.value=p.title||"";bodyIn.value=p.body||"";
 postImgs=postImgsOf(p);
@@ -3588,7 +3607,9 @@ if(!t){errEl.textContent="제목을 입력해 주세요.";errEl.hidden=false;tit
 if(!b&&!postImgs.length){errEl.textContent="내용을 입력하거나 사진을 넣어 주세요.";errEl.hidden=false;bodyIn.focus();return}
 if(editKey){
 var ep=postByKey(editKey);
-if(!ep||!canEdit(ep)){errEl.textContent="수정에 실패했어요. 다시 시도해 주세요.";errEl.hidden=false;return}
+if(!ep||!canEdit(ep)){
+if(ep&&fbUser&&!isOp()&&ep.uid&&ep.uid===fbUser.uid&&editExpired(ep)){errEl.textContent="글을 올린 지 10분이 지나 수정할 수 없어요.";errEl.hidden=false;return}
+errEl.textContent="수정에 실패했어요. 다시 시도해 주세요.";errEl.hidden=false;return}
 var upd={title:t.slice(0,80),body:b.slice(0,3000),img:postImgs.length?postImgs[0]:null,imgs:postImgs.length?postImgs.slice(0,MAX_POST_IMGS):null};
 var epr=postsRef.child(editKey).update(upd);
 function edone(){titleIn.value="";bodyIn.value="";editKey=null;submitBtn.textContent="등록";clearPostImgs();form.hidden=true;errEl.hidden=true}
@@ -3608,7 +3629,7 @@ if(started)return;started=true;
 if(!cfgReady()||typeof firebase==="undefined"||!firebase.initializeApp||!firebase.database){emptyMsg(listEl,"글을 불러오지 못했어요.");return}
 try{if(!firebase.apps||!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG)}catch(e){}
 try{firebase.auth().onAuthStateChanged(function(u){fbUser=u||null;authKnown=true;syncGate();if(!ov.hidden&&curKey)openPostRefresh()})}catch(e){}
-function openPostRefresh(){var p=null;for(var i=0;i<posts.length;i++){if(posts[i].key===curKey){p=posts[i];break}}if(p){pvDel.hidden=!canDel(p);pvEdit.hidden=!canEdit(p)}syncPvAuth()}
+function openPostRefresh(){var p=null;for(var i=0;i<posts.length;i++){if(posts[i].key===curKey){p=posts[i];break}}if(p){pvDel.hidden=!canDel(p);pvEdit.hidden=!canEdit(p);scheduleEditHide(p)}syncPvAuth()}
 try{
 postsRef=firebase.database().ref("posts");
 subscribePosts();
