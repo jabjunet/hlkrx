@@ -1040,6 +1040,38 @@ main{padding:2px 12px 40px}
 .pv-csend{flex:none;min-height:42px;padding:9px 16px;border:0;border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
 .pv-cerr{margin:8px 2px 0;font-size:12.5px;color:var(--up)}
 .pv-cerr[hidden]{display:none}
+/* 커뮤니티 카테고리·정렬·HOT·대댓글·알림 (기존 변수만 사용) */
+.cm-latest .cm-toolbar{flex:none}
+.cm-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 16px 4px;background:var(--bg)}
+.cm-filters{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.cm-filters button,.cm-fcats button{min-height:30px;padding:4px 11px;border:1px solid var(--bd);background:var(--sf);color:var(--mut);border-radius:999px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+.cm-filters button[aria-pressed="true"],.cm-fcats button[aria-pressed="true"]{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+.cm-sort{margin-left:auto;flex:none;min-height:30px;padding:4px 8px;border:1px solid var(--bd);border-radius:999px;background:var(--sf);color:var(--tx);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+@media(max-width:520px){.cm-sort{margin-left:0}}
+.cm-fcats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.cm-tline{display:flex;align-items:center;gap:6px;min-width:0}
+.cm-tline .cm-rt{flex:1 1 auto;min-width:0}
+.cm-cat{flex:none;font-size:11px;font-weight:700;color:var(--mut);background:var(--sf2);border:1px solid var(--bd);border-radius:5px;padding:1px 6px;line-height:1.5;white-space:nowrap}
+.cm-hot{flex:none;font-size:10.5px;font-weight:800;color:#fff;background:var(--up);border-radius:5px;padding:2px 6px;letter-spacing:.04em;line-height:1.3}
+.pv-cact{display:flex;gap:4px;margin-top:2px}
+.pv-rbtn{border:0;background:none;color:var(--mut);font:inherit;font-size:12px;font-weight:700;cursor:pointer;padding:4px 6px;min-height:28px;border-radius:6px}
+.pv-rbtn:hover{color:var(--tx);background:var(--sf2)}
+.pv-rform{display:flex;gap:6px;margin:6px 0 2px}
+.pv-rform input{flex:1;min-width:0;min-height:38px;border-radius:999px;padding:8px 13px;font-size:13px;font-weight:500}
+.pv-rsend{flex:none;min-height:38px;padding:8px 14px;border:0;border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.notif-wrap{position:relative;flex:none}
+.notif-btn{position:relative}
+.notif-badge{position:absolute;top:-4px;right:-4px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--up);color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1}
+.notif-badge[hidden]{display:none}
+.notif-pop{position:absolute;right:0;top:calc(100% + 8px);z-index:90;width:min(320px,86vw);background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.22);padding:6px;max-height:60vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.notif-pop[hidden]{display:none}
+.notif-hd{margin:0;font-size:13px;font-weight:800;padding:6px 10px 4px;color:var(--tx)}
+.notif-empty{margin:0;padding:12px 10px;font-size:12.5px;color:var(--mut)}
+.notif-item{display:block;width:100%;text-align:left;border:0;background:none;color:var(--tx);font:inherit;padding:9px 10px;border-radius:8px;cursor:pointer}
+.notif-item:hover{background:var(--sf2)}
+.ntf-msg{display:block;font-size:13px;font-weight:600;line-height:1.45}
+.ntf-title{display:block;font-size:12.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.ntf-time{display:block;font-size:11.5px;color:var(--mut);margin-top:1px}
 /* 김프 계산기: 화면 오른쪽 아래 빈 공간에 뜨는 작은 패널. 채팅 버튼 위에 버튼을 쌓아 두고,
    버튼을 눌러 패널을 넣었다 뺐다 할 수 있다. 패널 안에서는 국내 가격·해외 가격·환율로 김프를 바로 계산한다 */
 .kcbtn{position:fixed;right:16px;bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:120;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 16px;border:1px solid var(--bd);border-radius:999px;background:var(--sf);color:var(--tx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.18)}
@@ -1158,7 +1190,7 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-t"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimpwon</span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤니티</button></div></div>
+<div class="hd"><div class="hd-t"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimpwon</span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="notif-wrap" id="notif-wrap" hidden><button type="button" class="thbtn notif-btn" id="notif-btn" aria-label="알림 보기" title="알림 보기"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7 21a2 2 0 0 1-3.4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="notif-badge" id="notif-badge" hidden>0</span></button><div class="notif-pop" id="notif-pop" hidden><p class="notif-hd">알림</p><div id="notif-list"></div></div></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤니티</button></div></div>
 
 <script>
 /* ===== 헤더 테마(다크/라이트)·언어(한/영) 전환 =====
@@ -1219,7 +1251,7 @@ var D={
 "주식 평가금액 · 2026년 11월 5일 본인 공개":"Stock valuation · Self-disclosed Nov 5, 2026","보유 종목 접기":"Hide Holdings","공개 당시":"At disclosure",
 "실시간 보유 현황이 아니라 11월 5일 공개 시점 기준입니다. 본인이 5억 원 이상 보유 종목만 공개해 그보다 작은 보유 종목은 빠져 있고, 종목별 평가금액은 공개된 평가손익·수익률로 계산한 대략적인 값입니다.":"This reflects the positions as disclosed on Nov 5, not live holdings. Only holdings of 500M KRW or more were disclosed, so smaller positions are omitted, and per-stock valuations are approximate figures calculated from the disclosed P&L and returns.",
 "디시인사이드 코스피 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인":"Self-disclosed on DC Inside KOSPI Gallery · Prices via TradingView · Checked every 1 min",
-"최신글":"Latest Posts","글쓰기":"Write","구글 로그인":"Google Sign-in",
+"최신글":"Latest Posts","글쓰기":"Write","구글 로그인":"Google Sign-in","자유":"Free","코인":"Coins","질문":"Q&A","카테고리":"Category","카테고리 필터":"Category filter","최신순":"Newest","인기순":"Most Liked","댓글순":"Most Commented","답글":"Reply","답글을 입력하세요":"Write a reply","답글 입력":"Reply input","답글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to reply. Press the Google sign-in button above.","답글을 입력해 주세요.":"Please enter a reply.","답글 등록에 실패했어요. 다시 시도해 주세요.":"Failed to post the reply. Please try again.","알림":"Notifications","알림 보기":"View notifications","알림이 없습니다.":"No notifications yet.","해당 카테고리에 글이 없습니다.":"No posts in this category yet.",
 "글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.":"You need to sign in with Google to write a post. Once signed in, you can post right away.",
 "제목을 입력하세요":"Enter a title","내용을 입력하세요":"Enter content","사진 첨부":"Attach Photo","사진 4장까지 넣을 수 있어요":"You can attach up to 4 photos","사진은 4장까지 넣을 수 있어요.":"You can attach up to 4 photos.","이미지 파일만 넣을 수 있어요.":"Only image files can be attached.","사진 지우기":"Remove Photo","취소":"Cancel","등록":"Post","삭제":"Delete","수정":"Edit","수정 완료":"Save Changes","닫기":"Close",
 "아직 글이 없습니다. 첫 글을 남겨 보세요.":"No posts yet. Write the first post.","글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to write. Press the Google sign-in button above.","아직 연결이 준비되지 않았어요. 잠시 후 다시 시도해 주세요.":"The connection is not ready yet. Please try again shortly.","제목을 입력해 주세요.":"Please enter a title.","내용을 입력하거나 사진을 넣어 주세요.":"Please enter content or add a photo.","등록에 실패했어요. 다시 시도해 주세요.":"Failed to post. Please try again.","수정에 실패했어요. 다시 시도해 주세요.":"Failed to save changes. Please try again.","글을 올린 지 10분이 지나 수정할 수 없어요.":"You can no longer edit this post — 10 minutes have passed since it was posted.","이미지를 불러오지 못했어요.":"Could not load the image.",
@@ -1301,10 +1333,12 @@ if(c.indexOf("프리")>=0&&c.indexOf("–")>=0)return c.replace(/프리/g,"Pre")
 if(c.length<70&&(c.indexOf("오전 ")>=0||c.indexOf("오후 ")>=0||c.indexOf("조회 ")>=0||c.indexOf("만기")>=0)){
 var o=c.replace(/오전 /g,"AM ").replace(/오후 /g,"PM ").replace(/조회 ([\d,]+)/g,"Views $1").replace(/좋아요 ([\d,]+)/g,"Likes $1").replace(/댓글 ([\d,]+)/g,"Comments $1").replace(/^익명/,"Anonymous").replace(/네 마녀의 날/g,"Quadruple Witching").replace(/선물·옵션 동시만기/g,"Futures & Options Expiry").replace(/다음 만기 /g,"Next expiry ").replace(/(\d+)년 (\d+)월 (\d+)일 \(([일월화수목금토])\)/g,function(_,y,mo,d,w){return MON[+mo-1]+" "+d+", "+y+" ("+WD[w]+")"});
 if(o!==c)return o}
+if(m=c.match(/^(.+)님이 내 글에 댓글을 달았어요$/))return m[1]+" commented on your post";
+if(m=c.match(/^(.+)님이 내 글을 좋아해요$/))return m[1]+" liked your post";
 return c}
 function trStr(s){var m=s.match(/^(\s*)([\s\S]*?)(\s*)$/);if(!m||!m[2])return s;return m[1]+trCore(m[2])+m[3]}
 var TM=new WeakMap(),AM=new WeakMap(),ATTRS=["placeholder","title","aria-label","alt"];
-function excluded(n){var e=n.nodeType===3?n.parentElement:n;if(!e||!e.closest)return true;if(e.closest("script,style,.cmsg-tx,.cm-rt,.pv-ctx,#pv-title,#pv-text,#th-btn,#lang-btn"))return true;return false}
+function excluded(n){var e=n.nodeType===3?n.parentElement:n;if(!e||!e.closest)return true;if(e.closest("script,style,.cmsg-tx,.cm-rt,.pv-ctx,#pv-title,#pv-text,#th-btn,#lang-btn,.ntf-title"))return true;return false}
 function procText(n){var v=n.nodeValue;if(v==null||!/[가-힣]/.test(v))return;var rec=TM.get(n);if(rec&&v===rec.en)return;var en=trStr(v);TM.set(n,{ko:v,en:en});if(LANG==="en"&&en!==v)n.nodeValue=en}
 function procAttrs(el){if(!el.getAttribute)return;var rec=AM.get(el);for(var i=0;i<ATTRS.length;i++){var a=ATTRS[i],v=el.getAttribute(a);if(v==null||!/[가-힣]/.test(v))continue;if(rec&&rec[a]&&v===rec[a].en)continue;var en=trStr(v);if(!rec)rec={};if(!rec[a]||rec[a].ko!==v)rec[a]={ko:v,en:en};AM.set(el,rec);if(LANG==="en"&&en!==v)el.setAttribute(a,en)}}
 function walk(node){
@@ -1640,8 +1674,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <div class="cm-top">
 <div class="cmbox cm-latest">
 <div class="cm-hd"><h2>최신글</h2><button type="button" class="cm-wbtn" id="cm-write-btn" hidden>글쓰기</button></div>
+<div class="cm-toolbar" id="cm-toolbar"><div class="cm-filters" id="cm-filters" role="group" aria-label="카테고리 필터"><button type="button" data-f="전체" aria-pressed="true">전체</button><button type="button" data-f="자유" aria-pressed="false">자유</button><button type="button" data-f="주식" aria-pressed="false">주식</button><button type="button" data-f="코인" aria-pressed="false">코인</button><button type="button" data-f="질문" aria-pressed="false">질문</button></div><select class="cm-sort" id="cm-sort" aria-label="정렬"><option value="latest">최신순</option><option value="popular">인기순</option><option value="comments">댓글순</option></select></div>
 <div class="cm-gate" id="cm-gate" hidden><p>글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.</p><button type="button" class="cm-login" id="cm-login-btn">구글 로그인</button></div>
 <form class="cm-form" id="cm-form" hidden>
+<div class="cm-fcats" id="cm-fcats" role="group" aria-label="카테고리"><button type="button" data-cat="자유" aria-pressed="true">자유</button><button type="button" data-cat="주식" aria-pressed="false">주식</button><button type="button" data-cat="코인" aria-pressed="false">코인</button><button type="button" data-cat="질문" aria-pressed="false">질문</button></div>
 <input id="cm-title" type="text" maxlength="80" placeholder="제목을 입력하세요" aria-label="글 제목" autocomplete="off">
 <textarea id="cm-body" maxlength="3000" placeholder="내용을 입력하세요" aria-label="글 내용"></textarea>
 <div class="cm-imgrow"><label class="cm-imgbtn" for="cm-file">사진 첨부</label><input type="file" id="cm-file" accept="image/*" multiple hidden><span class="cm-imgnote" id="cm-img-note">사진 4장까지 넣을 수 있어요</span></div>
@@ -3253,6 +3289,7 @@ pvCmtN=document.getElementById("pv-cmt-n"),pvCList=document.getElementById("pv-c
 pvCGate=document.getElementById("pv-cgate"),pvCLogin=document.getElementById("pv-clogin"),
 pvCForm=document.getElementById("pv-cform"),pvCInput=document.getElementById("pv-cinput"),
 pvCErr=document.getElementById("pv-cerr");
+var filterEl=document.getElementById("cm-filters"),sortEl=document.getElementById("cm-sort"),fcatsEl=document.getElementById("cm-fcats");
 if(!tabs||!listEl||!form||!ov)return;
 var started=false,postsRef=null,fbUser=null,authKnown=false,posts=[],curKey=null,postImgs=[],editKey=null,editHideTimer=null;
 var MAX_POST_IMGS=4;
@@ -3273,6 +3310,7 @@ var cmtsRef=null,cmtsCb=null,lastCmts=[],likeBusy=false;
    하단에 가까워질 때마다 한도를 5개씩 늘려 다시 듣는다. 받아온 개수가 한도보다 적으면
    가장 오래된 글까지 다 불러온 것으로 보고(postExhausted) 더 늘리지 않는다 */
 var postLimit=5,postLoading=false,postExhausted=false,postQuery=null,postCb=null,postSentArmed=false,cmIO=null;
+var cmFilter="전체",cmSort="latest",cmDisplay=5,formCat="자유";
 function cfgReady(){try{var c=(typeof FIREBASE_CONFIG!=="undefined")?FIREBASE_CONFIG:null;return !!(c&&typeof c.apiKey==="string"&&c.apiKey.trim()&&typeof c.databaseURL==="string"&&c.databaseURL.trim())}catch(e){return false}}
 function isOp(){if(!fbUser)return false;var oe=(typeof OPERATOR_EMAIL!=="undefined"?String(OPERATOR_EMAIL||""):"").trim().toLowerCase();return !!oe&&String(fbUser.email||"").trim().toLowerCase()===oe}
 function myNick(){try{var p=JSON.parse(localStorage.getItem("hlkrx_prof")||"{}");var n=String((p&&p.nick)||"").trim();if(n)return n}catch(e){}return (fbUser&&fbUser.displayName)||"익명"}
@@ -3301,12 +3339,21 @@ editHideTimer=setTimeout(function(){editHideTimer=null;if(!ov.hidden&&curKey){va
 function postByKey(key){for(var i=0;i<posts.length;i++){if(posts[i].key===key)return posts[i]}return null}
 function likeN(p){return (p&&typeof p.likes==="number"&&p.likes>0)?p.likes:0}
 function cmtN(p){return (p&&typeof p.cmtCount==="number"&&p.cmtCount>0)?p.cmtCount:0}
+function catOf(p){var c=(p&&typeof p.cat==="string")?p.cat:"";return (c==="주식"||c==="코인"||c==="질문")?c:"자유"}
+function getVisiblePosts(){var arr=posts.filter(function(p){return cmFilter==="전체"||catOf(p)===cmFilter});arr.sort(function(a,b){if(cmSort==="popular"){var d=likeN(b)-likeN(a);if(d)return d;var dv=(b.views||0)-(a.views||0);if(dv)return dv;return (b.ts||0)-(a.ts||0)}if(cmSort==="comments"){var dc=cmtN(b)-cmtN(a);if(dc)return dc;return (b.ts||0)-(a.ts||0)}return (b.ts||0)-(a.ts||0)});return arr}
+function notifyAuthor(type,postKey,post){try{if(!fbUser||!fbUser.uid||!post||!post.uid)return;if(String(post.uid)===String(fbUser.uid))return;if(typeof firebase==="undefined"||!firebase.database)return;firebase.database().ref("notifications/"+post.uid).push({type:type,postKey:postKey,postTitle:String(post.title||""),actorName:myNick(),ts:firebase.database.ServerValue.TIMESTAMP,read:false})}catch(e){}}
+function syncFcats(){if(!fcatsEl)return;fcatsEl.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.cat===formCat))})}
+if(filterEl)filterEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;cmFilter=b.dataset.f||"전체";filterEl.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});cmDisplay=5;try{listEl.scrollTop=0}catch(err){}renderLists()});
+if(sortEl)sortEl.addEventListener("change",function(){cmSort=sortEl.value||"latest";cmDisplay=5;try{listEl.scrollTop=0}catch(err){}renderLists()});
+if(fcatsEl)fcatsEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;formCat=b.dataset.cat||"자유";syncFcats()});
 function isLiked(p){return !!(p&&fbUser&&fbUser.uid&&p.likers&&p.likers[fbUser.uid]===true)}
 function canDelCmt(c){return !!fbUser&&(isOp()||(c.uid&&c.uid===fbUser.uid))}
 function renderLists(){
 if(!posts.length){emptyMsg(listEl,"아직 글이 없습니다. 첫 글을 남겨 보세요.");return}
+var vis=getVisiblePosts();
 listEl.textContent="";
-posts.forEach(function(p){
+if(!vis.length){var ep=document.createElement("p");ep.className="cm-empty";ep.textContent="해당 카테고리에 글이 없습니다.";listEl.appendChild(ep);var sent0=document.createElement("div");sent0.id="cm-sent";sent0.setAttribute("aria-hidden","true");listEl.appendChild(sent0);if(!postExhausted){var more0=document.createElement("p");more0.className="cm-more";more0.textContent=postLoading?"이전 글을 불러오는 중…":"아래로 내리면 이전 글을 더 볼 수 있어요";listEl.appendChild(more0)}cmObserveSent(sent0);setTimeout(cmFillCheck,0);return}
+vis.slice(0,cmDisplay).forEach(function(p){
 var b=document.createElement("button");b.type="button";b.className="cm-row";
 var th=document.createElement("span");th.className="cm-th";th.setAttribute("aria-hidden","true");
 var pimgs=postImgsOf(p);var firstImg=pimgs[0]||"";
@@ -3315,7 +3362,7 @@ if(tsrc){var im=document.createElement("img");im.src=tsrc;im.alt="";im.referrerP
 else th.textContent=(p.name||"익명").charAt(0);
 b.appendChild(th);
 var main=document.createElement("span");main.className="cm-rmain";
-var t=document.createElement("span");t.className="cm-rt";t.textContent=p.title||"(제목 없음)";main.appendChild(t);
+var tl=document.createElement("span");tl.className="cm-tline";var cat=document.createElement("span");cat.className="cm-cat";cat.textContent=catOf(p);tl.appendChild(cat);var t=document.createElement("span");t.className="cm-rt";t.textContent=p.title||"(제목 없음)";tl.appendChild(t);if(cmtN(p)>=3||likeN(p)>=3){var hot=document.createElement("span");hot.className="cm-hot";hot.textContent="HOT";tl.appendChild(hot)}main.appendChild(tl);
 var v=document.createElement("span");v.className="cm-rv";v.textContent="조회 "+(p.views||0)+" · 좋아요 "+likeN(p)+" · 댓글 "+cmtN(p);main.appendChild(v);
 b.appendChild(main);
 var mt=document.createElement("span");mt.className="cm-rmeta";
@@ -3327,7 +3374,7 @@ b.addEventListener("click",function(){openPost(p.key)});
 listEl.appendChild(b);
 });
 var sent=document.createElement("div");sent.id="cm-sent";sent.setAttribute("aria-hidden","true");listEl.appendChild(sent);
-if(!postExhausted){var more=document.createElement("p");more.className="cm-more";more.textContent=postLoading?"이전 글을 불러오는 중…":"아래로 내리면 이전 글을 더 볼 수 있어요";listEl.appendChild(more)}
+if(cmDisplay<vis.length||!postExhausted){var more=document.createElement("p");more.className="cm-more";more.textContent=postLoading?"이전 글을 불러오는 중…":"아래로 내리면 이전 글을 더 볼 수 있어요";listEl.appendChild(more)}
 cmObserveSent(sent);
 setTimeout(cmFillCheck,0);
 }
@@ -3335,12 +3382,14 @@ setTimeout(cmFillCheck,0);
    무장되고, 박스 끝 센티넬이 하단 320px 안에 들어오면 다음 5개를 불러온다 */
 function pkOpen(){var pkEl=document.getElementById("pk");return !!(pkEl&&!pkEl.hidden)}
 function cmMore(){
-if(postLoading||postExhausted||!postsRef)return;
+if(postLoading||!postsRef)return;
+if(cmDisplay<getVisiblePosts().length){cmDisplay+=5;renderLists();return}
+if(postExhausted)return;
 if(posts.length<postLimit)return;
-postLoading=true;postLimit+=5;subscribePosts();renderLists();
+postLoading=true;cmDisplay+=5;postLimit+=5;subscribePosts();renderLists();
 }
 function cmSentCheck(){if(!postSentArmed||!pkOpen())return;if(listEl.scrollTop+listEl.clientHeight>=listEl.scrollHeight-320)cmMore()}
-function cmFillCheck(){if(postLoading||postExhausted||!posts.length||!pkOpen())return;if(listEl.scrollHeight<=listEl.clientHeight+8)cmMore()}
+function cmFillCheck(){if(postLoading||!posts.length||!pkOpen())return;if(listEl.scrollHeight<=listEl.clientHeight+8&&(cmDisplay<getVisiblePosts().length||!postExhausted))cmMore()}
 function cmObserveSent(sent){
 if(!window.IntersectionObserver||!sent)return;
 if(cmIO){try{cmIO.disconnect()}catch(e){}cmIO=null}
@@ -3355,7 +3404,7 @@ if(postQuery&&postCb){try{postQuery.off("value",postCb)}catch(e){}}
 var q=postsRef.orderByChild("ts").limitToLast(postLimit);
 postQuery=q;
 postCb=function(snap){
-var arr=[];snap.forEach(function(ch){var v=ch.val()||{};var pim=postImgsOf(v);arr.push({key:ch.key,title:String(v.title||""),body:String(v.body||""),name:String(v.name||"익명"),photo:String(v.photo||""),img:pim[0]||String(v.img||""),imgs:pim,uid:String(v.uid||""),ts:(typeof v.ts==="number"?v.ts:0),views:(typeof v.views==="number"?v.views:0),likes:(typeof v.likes==="number"?v.likes:0),likers:(v.likers&&typeof v.likers==="object")?v.likers:{},cmtCount:(v.comments&&typeof v.comments==="object")?Object.keys(v.comments).length:0})});
+var arr=[];snap.forEach(function(ch){var v=ch.val()||{};var pim=postImgsOf(v);arr.push({key:ch.key,title:String(v.title||""),body:String(v.body||""),name:String(v.name||"익명"),photo:String(v.photo||""),img:pim[0]||String(v.img||""),imgs:pim,cat:String(v.cat||""),uid:String(v.uid||""),ts:(typeof v.ts==="number"?v.ts:0),views:(typeof v.views==="number"?v.views:0),likes:(typeof v.likes==="number"?v.likes:0),likers:(v.likers&&typeof v.likers==="object")?v.likers:{},cmtCount:(v.comments&&typeof v.comments==="object")?Object.keys(v.comments).length:0})});
 arr.sort(function(a,b){return (b.ts||0)-(a.ts||0)});
 postExhausted=arr.length<postLimit;
 postLoading=false;
@@ -3402,7 +3451,7 @@ if(inc&&(!liked||n>0)){
 try{
 var upd={};upd["likers/"+fbUser.uid]=liked?null:true;upd["likes"]=inc(liked?-1:1);
 var pr=postsRef.child(curKey).update(upd);
-if(pr&&typeof pr.then==="function")pr.then(done).catch(done);else done();
+if(pr&&typeof pr.then==="function")pr.then(function(){done();if(!liked)notifyAuthor("like",curKey,p)}).catch(done);else{done();if(!liked)notifyAuthor("like",curKey,p)}
 return;
 }catch(e){}
 }
@@ -3411,15 +3460,37 @@ try{
 var base=postsRef.child(curKey);
 var lp=liked?base.child("likers").child(fbUser.uid).remove():base.child("likers").child(fbUser.uid).set(true);
 var tp=base.child("likes").transaction(function(v){v=(typeof v==="number"?v:0);return liked?Math.max(0,v-1):v+1});
-Promise.all([lp,tp]).then(done).catch(done);
+Promise.all([lp,tp]).then(function(){done();if(!liked)notifyAuthor("like",curKey,p)}).catch(done);
 }catch(e2){done()}
 });
 /* 댓글 렌더링: 오래된 댓글부터 위에서 아래로. 삭제 버튼은 댓글 쓴 사람과 운영자에게만 보인다 */
 function renderCmts(){
 pvCList.textContent="";
 if(!lastCmts.length){var e=document.createElement("p");e.className="pv-cempty";e.textContent="아직 댓글이 없습니다. 첫 댓글을 남겨 보세요.";pvCList.appendChild(e);return}
-lastCmts.forEach(function(c){
+var byKey={},kids={};
+lastCmts.forEach(function(c){byKey[c.key]=c});
+lastCmts.forEach(function(c){var pk=(c.parent&&byKey[c.parent])?c.parent:"";if(!kids[pk])kids[pk]=[];kids[pk].push(c)});
+function delCmt(c){
+if(!cmtsRef)return;
+var keys=[],seen={};
+(function collect(k){if(seen[k])return;seen[k]=1;keys.push(k);var ch=kids[k]||[];for(var i=0;i<ch.length;i++)collect(ch[i].key)})(c.key);
+keys.forEach(function(k){try{var r=cmtsRef.child(k).remove();if(r&&r.catch)r.catch(function(){})}catch(e2){}});
+}
+function sendReply(parentC,inp){
+var txt=inp.value.trim();
+if(!txt){inp.focus();return}
+if(!fbUser){pvCErr.textContent="답글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.";pvCErr.hidden=false;return}
+if(!cmtsRef){pvCErr.textContent="아직 연결이 준비되지 않았어요. 잠시 후 다시 시도해 주세요.";pvCErr.hidden=false;return}
+var rec={text:txt.slice(0,500),name:myNick(),uid:fbUser.uid||"",ts:firebase.database.ServerValue.TIMESTAMP,photo:myPhoto(),parent:parentC.key};
+var pr=cmtsRef.push(rec);
+function ok(){pvCErr.hidden=true;var post=curKey?postByKey(curKey):null;if(post)notifyAuthor("comment",curKey,post)}
+if(pr&&typeof pr.then==="function")pr.then(ok).catch(function(){pvCErr.textContent="답글 등록에 실패했어요. 다시 시도해 주세요.";pvCErr.hidden=false});
+else ok();
+}
+function renderOne(c,depth){
+var wrap=document.createElement("div");
 var row=document.createElement("div");row.className="cmsg";
+if(depth>0)row.style.marginLeft=(Math.min(depth,3)*16)+"px";
 var av=document.createElement("div");av.className="cav";av.setAttribute("aria-hidden","true");
 if(c.photo){var im=document.createElement("img");im.src=c.photo;im.alt="";im.referrerPolicy="no-referrer";im.addEventListener("error",function(){av.textContent=(c.name||"익명").charAt(0)});av.appendChild(im)}
 else av.textContent=(c.name||"익명").charAt(0);
@@ -3428,12 +3499,28 @@ var main=document.createElement("div");main.className="cmsg-main";
 var hd=document.createElement("div");hd.className="cmsg-hd";
 var nm=document.createElement("b");nm.textContent=c.name||"익명";hd.appendChild(nm);
 var tm=document.createElement("span");tm.className="cmsg-tm";tm.textContent=fmtT(c.ts);hd.appendChild(tm);
-if(canDelCmt(c)){var del=document.createElement("button");del.type="button";del.className="cmsg-del";del.textContent="삭제";del.setAttribute("aria-label","이 댓글 삭제");del.addEventListener("click",function(){if(cmtsRef)cmtsRef.child(c.key).remove().catch(function(){})});hd.appendChild(del)}
+if(canDelCmt(c)){var del=document.createElement("button");del.type="button";del.className="cmsg-del";del.textContent="삭제";del.setAttribute("aria-label","이 댓글 삭제");del.addEventListener("click",function(){delCmt(c)});hd.appendChild(del)}
 main.appendChild(hd);
 var tx=document.createElement("p");tx.className="cmsg-tx pv-ctx";tx.textContent=c.text||"";main.appendChild(tx);
-row.appendChild(main);
-pvCList.appendChild(row);
+var act=document.createElement("div");act.className="pv-cact";
+var rb=document.createElement("button");rb.type="button";rb.className="pv-rbtn";rb.textContent="답글";
+rb.addEventListener("click",function(){
+var ex=wrap.querySelector(".pv-rform");if(ex){ex.remove();return}
+if(!fbUser){pvCErr.textContent="답글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.";pvCErr.hidden=false;return}
+var f=document.createElement("div");f.className="pv-rform";if(depth>0)f.style.marginLeft=(Math.min(depth,3)*16)+"px";
+var inp=document.createElement("input");inp.type="text";inp.maxLength=500;inp.placeholder="답글을 입력하세요";inp.setAttribute("aria-label","답글 입력");inp.autocomplete="off";
+var sb=document.createElement("button");sb.type="button";sb.className="pv-rsend";sb.textContent="등록";
+sb.addEventListener("click",function(){sendReply(c,inp)});
+inp.addEventListener("keydown",function(ev){if(ev.key==="Enter"){ev.preventDefault();sendReply(c,inp)}});
+f.appendChild(inp);f.appendChild(sb);wrap.appendChild(f);inp.focus();
 });
+act.appendChild(rb);main.appendChild(act);
+row.appendChild(main);
+wrap.appendChild(row);
+pvCList.appendChild(wrap);
+var ch=kids[c.key]||[];for(var i=0;i<ch.length;i++)renderOne(ch[i],depth+1);
+}
+var tops=kids[""]||[];for(var j=0;j<tops.length;j++)renderOne(tops[j],0);
 }
 /* 열린 글의 댓글 실시간 연결: posts/{글}/comments 를 시각순으로 듣고, 닫으면 해제한다 */
 function attachCmts(key){
@@ -3442,9 +3529,9 @@ if(!postsRef)return;
 pvCList.textContent="";var ld=document.createElement("p");ld.className="pv-cempty";ld.textContent="댓글을 불러오는 중…";pvCList.appendChild(ld);
 cmtsRef=postsRef.child(key).child("comments");
 cmtsCb=function(snap){
-var arr=[];snap.forEach(function(ch){var v=ch.val()||{};arr.push({key:ch.key,text:String(v.text||""),name:String(v.name||"익명"),photo:String(v.photo||""),uid:String(v.uid||""),ts:(typeof v.ts==="number"?v.ts:0)})});
+var arr=[];snap.forEach(function(ch){var v=ch.val()||{};arr.push({key:ch.key,text:String(v.text||""),name:String(v.name||"익명"),photo:String(v.photo||""),uid:String(v.uid||""),parent:String(v.parent||""),ts:(typeof v.ts==="number"?v.ts:0)})});
 arr.sort(function(a,b){return (a.ts||0)-(b.ts||0)});
-lastCmts=arr;renderCmts();
+lastCmts=arr;pvCmtN.textContent=String(arr.length);renderCmts();
 };
 try{cmtsRef.orderByChild("ts").on("value",cmtsCb,function(){pvCList.textContent="";var e=document.createElement("p");e.className="pv-cempty";e.textContent="댓글을 불러오지 못했어요.";pvCList.appendChild(e)})}catch(e){}
 }
@@ -3472,7 +3559,7 @@ var t=pvCInput.value.trim();
 if(!t){pvCErr.textContent="댓글을 입력해 주세요.";pvCErr.hidden=false;pvCInput.focus();return}
 var rec={text:t.slice(0,500),name:myNick(),uid:fbUser.uid||"",ts:firebase.database.ServerValue.TIMESTAMP,photo:myPhoto()};
 var pr=cmtsRef.push(rec);
-function done(){pvCInput.value="";pvCErr.hidden=true;pvCList.scrollTop=pvCList.scrollHeight}
+function done(){pvCInput.value="";pvCErr.hidden=true;pvCList.scrollTop=pvCList.scrollHeight;var _pp=curKey?postByKey(curKey):null;if(_pp)notifyAuthor("comment",curKey,_pp)}
 if(pr&&typeof pr.then==="function")pr.then(done).catch(function(){pvCErr.textContent="댓글 등록에 실패했어요. 다시 시도해 주세요.";pvCErr.hidden=false});
 else done();
 });
@@ -3521,7 +3608,7 @@ var key=curKey;closePost();
 postsRef.child(key).remove().catch(function(){});
 });
 /* 수정 모드 종료: 수정 중이던 내용을 버리고 폼을 새 글 등록 상태로 되돌린다 */
-function endEdit(){if(editKey){editKey=null;titleIn.value="";bodyIn.value="";clearPostImgs()}submitBtn.textContent="등록"}
+function endEdit(){if(editKey){editKey=null;titleIn.value="";bodyIn.value="";clearPostImgs()}formCat="자유";syncFcats();submitBtn.textContent="등록"}
 /* 수정: 글쓴이 본인(또는 운영자)이 팝업의 수정 버튼을 누르면 글쓰기 폼에 기존 제목·본문·사진을 채워 열고,
    저장(submit)에서는 새 글을 만들지 않고 그 글을 update 한다 */
 pvEdit.addEventListener("click",function(){
@@ -3529,6 +3616,7 @@ if(!curKey)return;
 var p=postByKey(curKey);if(!p||!canEdit(p)){pvEdit.hidden=true;return}
 editKey=curKey;
 titleIn.value=p.title||"";bodyIn.value=p.body||"";
+formCat=catOf(p);syncFcats();
 postImgs=postImgsOf(p);
 renderImgPv();
 submitBtn.textContent="수정 완료";
@@ -3607,14 +3695,14 @@ var ep=postByKey(editKey);
 if(!ep||!canEdit(ep)){
 if(ep&&fbUser&&!isOp()&&ep.uid&&ep.uid===fbUser.uid&&editExpired(ep)){errEl.textContent="글을 올린 지 10분이 지나 수정할 수 없어요.";errEl.hidden=false;return}
 errEl.textContent="수정에 실패했어요. 다시 시도해 주세요.";errEl.hidden=false;return}
-var upd={title:t.slice(0,80),body:b.slice(0,3000),img:postImgs.length?postImgs[0]:null,imgs:postImgs.length?postImgs.slice(0,MAX_POST_IMGS):null};
+var upd={title:t.slice(0,80),body:b.slice(0,3000),cat:formCat,img:postImgs.length?postImgs[0]:null,imgs:postImgs.length?postImgs.slice(0,MAX_POST_IMGS):null};
 var epr=postsRef.child(editKey).update(upd);
 function edone(){titleIn.value="";bodyIn.value="";editKey=null;submitBtn.textContent="등록";clearPostImgs();form.hidden=true;errEl.hidden=true}
 if(epr&&typeof epr.then==="function")epr.then(edone).catch(function(){errEl.textContent="수정에 실패했어요. 다시 시도해 주세요.";errEl.hidden=false});
 else edone();
 return;
 }
-var rec={title:t.slice(0,80),body:b.slice(0,3000),name:myNick(),photo:myPhoto(),uid:fbUser.uid||"",ts:firebase.database.ServerValue.TIMESTAMP,views:0,likes:0};
+var rec={title:t.slice(0,80),body:b.slice(0,3000),cat:formCat,name:myNick(),photo:myPhoto(),uid:fbUser.uid||"",ts:firebase.database.ServerValue.TIMESTAMP,views:0,likes:0};
 if(postImgs.length){rec.img=postImgs[0];rec.imgs=postImgs.slice(0,MAX_POST_IMGS)}
 var pr=postsRef.push(rec);
 function done(){titleIn.value="";bodyIn.value="";clearPostImgs();form.hidden=true;errEl.hidden=true}
@@ -3632,7 +3720,62 @@ postsRef=firebase.database().ref("posts");
 subscribePosts();
 }catch(e){emptyMsg(listEl,"글을 불러오지 못했어요.")}
 }
+window.__kimpwonOpenPost=function(key){
+if(!key)return;
+var pkEl=document.getElementById("pk");
+if(pkEl&&pkEl.hidden){var tb=tabs.querySelector('button[data-t="pk"]');if(tb)tb.click()}
+start();
+var p=postByKey(key);if(p){openPost(key);return}
+if(postsRef){try{postsRef.child(key).once("value").then(function(snap){var v=snap&&snap.val();if(!v)return;var pim=postImgsOf(v);var np={key:key,title:String(v.title||""),body:String(v.body||""),name:String(v.name||"익명"),photo:String(v.photo||""),img:pim[0]||String(v.img||""),imgs:pim,cat:String(v.cat||""),uid:String(v.uid||""),ts:(typeof v.ts==="number"?v.ts:0),views:(typeof v.views==="number"?v.views:0),likes:(typeof v.likes==="number"?v.likes:0),likers:(v.likers&&typeof v.likers==="object")?v.likers:{},cmtCount:(v.comments&&typeof v.comments==="object")?Object.keys(v.comments).length:0};if(!postByKey(key))posts.push(np);openPost(key)}).catch(function(){})}catch(e){}}
+};
 tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.t==="pk")start()});
+})();
+</script>
+<script>
+/* 알림 종: 로그인한 사용자의 notifications/{uid} 를 듣고 안 읽은 개수를 종 배지로 보여 준다.
+   종을 누르면 최근 알림 20개를 팝업으로 열고 그 시점에 모두 읽음 처리한다.
+   항목을 누르면 팝업을 닫고 커뮤니티 글 팝업(window.__kimpwonOpenPost)으로 이동한다. */
+(function(){
+var wrap=document.getElementById("notif-wrap"),btn=document.getElementById("notif-btn"),badge=document.getElementById("notif-badge"),pop=document.getElementById("notif-pop"),list=document.getElementById("notif-list");
+if(!wrap||!btn||!badge||!pop||!list)return;
+function cfg(){try{var c=(typeof FIREBASE_CONFIG!=="undefined")?FIREBASE_CONFIG:null;return !!(c&&typeof c.apiKey==="string"&&c.apiKey.trim()&&typeof c.databaseURL==="string"&&c.databaseURL.trim())}catch(e){return false}}
+if(!cfg()||typeof firebase==="undefined"||!firebase.initializeApp||!firebase.database)return;
+try{if(!firebase.apps||!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG)}catch(e){}
+var db;try{db=firebase.database()}catch(e){return}
+var ref=null,qry=null,cb=null,items=[];
+function fmtT2(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts),now=new Date();var hm=d.toLocaleTimeString("ko-KR",{hour:"numeric",minute:"2-digit"});if(d.toDateString()===now.toDateString())return hm;var ymd=d.getFullYear()!==now.getFullYear()?d.getFullYear()+". ":"";return ymd+(d.getMonth()+1)+"/"+d.getDate()+" "+hm}
+function renderBadge(){var n=0;for(var i=0;i<items.length;i++)if(!items[i].read)n++;badge.textContent=String(n);badge.hidden=!n}
+function renderList(){
+list.textContent="";
+if(!items.length){var e=document.createElement("p");e.className="notif-empty";e.textContent="알림이 없습니다.";list.appendChild(e);return}
+items.slice(0,20).forEach(function(it){
+var b=document.createElement("button");b.type="button";b.className="notif-item";
+var m=document.createElement("span");m.className="ntf-msg";m.textContent=(it.actorName||"익명")+(it.type==="like"?"님이 내 글을 좋아해요":"님이 내 글에 댓글을 달았어요");b.appendChild(m);
+if(it.postTitle){var tt=document.createElement("span");tt.className="ntf-title";tt.textContent=it.postTitle;b.appendChild(tt)}
+var tm=document.createElement("span");tm.className="ntf-time";tm.textContent=fmtT2(it.ts);b.appendChild(tm);
+b.addEventListener("click",function(){pop.hidden=true;if(it.postKey&&typeof window.__kimpwonOpenPost==="function")window.__kimpwonOpenPost(it.postKey)});
+list.appendChild(b);
+});
+}
+function markAllRead(){
+if(!ref)return;
+var upd={},any=false;
+items.forEach(function(it){if(!it.read){upd[it.key+"/read"]=true;any=true}});
+if(any){try{var pr=ref.update(upd);if(pr&&pr.catch)pr.catch(function(){})}catch(e){}}
+}
+btn.addEventListener("click",function(e){e.stopPropagation();var willOpen=pop.hidden;pop.hidden=!willOpen;if(willOpen){renderList();markAllRead()}});
+document.addEventListener("click",function(e){if(!pop.hidden&&wrap&&!wrap.contains(e.target))pop.hidden=true});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")pop.hidden=true});
+function detach(){if(qry&&cb){try{qry.off("value",cb)}catch(e){}}qry=null;cb=null;ref=null;items=[]}
+try{firebase.auth().onAuthStateChanged(function(u){
+detach();
+if(!u||!u.uid){wrap.hidden=true;pop.hidden=true;return}
+wrap.hidden=false;
+ref=db.ref("notifications/"+u.uid);
+qry=ref.orderByChild("ts").limitToLast(100);
+cb=function(snap){var arr=[];snap.forEach(function(ch){var v=ch.val()||{};arr.push({key:ch.key,type:String(v.type||"comment"),postKey:String(v.postKey||""),postTitle:String(v.postTitle||""),actorName:String(v.actorName||"익명"),ts:(typeof v.ts==="number"?v.ts:0),read:v.read===true})});arr.sort(function(a,b){return (b.ts||0)-(a.ts||0)});items=arr;renderBadge();if(!pop.hidden)renderList()};
+try{qry.on("value",cb,function(){})}catch(e){}
+})}catch(e){}
 })();
 </script>
 <script>
