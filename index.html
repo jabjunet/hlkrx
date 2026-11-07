@@ -46,6 +46,10 @@
 .lgbtn{min-height:32px;padding:5px 11px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;flex:none;line-height:1}
 
 *{box-sizing:border-box}
+/* 마지막 안전장치: 어떤 요소가 넘쳐도 문서 전체가 가로로 밀리지 않게 한다.
+   clip을 지원하는 브라우저에서는 clip이 이겨 표 머리글의 sticky가 깨지지 않고,
+   미지원 브라우저에서는 hidden이 적용된다. 박스 내부 스크롤 요소에는 영향 없음 */
+html,body{overflow-x:hidden;overflow-x:clip}
 body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 "Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;font-variant-numeric:tabular-nums}
 main{max-width:680px;margin:0 auto;padding:2px 16px 44px;box-shadow:-20px 0 30px -20px var(--adsh),20px 0 30px -20px var(--adsh)}
 @media(max-width:720px){main{box-shadow:none}}
@@ -55,7 +59,8 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 /* 상단 헤더 */
 .hd{display:flex;flex-direction:column;gap:1px;background:var(--bg);border-bottom:1px solid var(--bd);margin:4px 0 6px;padding-bottom:2px}
-.live{display:inline-flex;align-items:center;gap:7px;padding:1px 2px;font-size:12px;color:var(--mut);white-space:nowrap;margin-top:0}
+.live{display:inline-flex;align-items:center;gap:7px;padding:1px 2px;font-size:12px;color:var(--mut);white-space:nowrap;margin-top:0;flex:0 1 auto;min-width:0}
+#lv{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dot{width:9px;height:9px;border-radius:50%;background:var(--warn);flex:none}
 .dot.ok{background:var(--ok)}
 .dot.bad{background:#b7bfc9}
@@ -462,9 +467,9 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .herow{padding:8px 12px;border-bottom:1px solid var(--bd)}
 .herow:last-child{border-bottom:0}
 .herow .he1{display:flex;align-items:baseline;gap:7px;min-width:0}
-.herow .he1 b{font-size:13.5px;font-weight:700;white-space:nowrap}
+.herow .he1 b{font-size:13.5px;font-weight:700;white-space:nowrap;flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .herow .he1 .henm{color:var(--mut);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.herow .he1 .heen{font-size:11px;font-weight:600;color:var(--mut);white-space:nowrap;letter-spacing:.02em}
+.herow .he1 .heen{font-size:11px;font-weight:600;color:var(--mut);white-space:nowrap;letter-spacing:.02em;flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .herow .he1 .hedt{margin-left:auto;flex:none;font-size:12px;font-weight:700;white-space:nowrap}
 .herow .he1 .hetm{flex:none;font-size:11px;font-weight:700;color:var(--mut);border:1px solid var(--bd);border-radius:5px;padding:1px 5px;white-space:nowrap}
 .herow .he2{display:block;margin-top:2px;font-size:12.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -490,7 +495,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .dnote .note p:last-child{margin-bottom:0}
 .dnote .note b{color:var(--tx)}
 /* 로그인 */
-.hd-r{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.hd-r{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;justify-content:flex-end;flex:1 1 auto;min-width:0}
 .acct{margin-top:0;flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:1px;position:relative}
 .hd-online{margin:0;font-size:12px;line-height:1.2;color:var(--mut);font-weight:600;white-space:nowrap;text-align:right}
 .hd-online b{color:var(--tx);font-weight:800}
@@ -517,7 +522,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .lgnote{color:var(--mut);font-size:11.5px;text-align:center;margin:10px 0 0}
 .gbtn[hidden]{display:none}
 /* 프로필 */
-.who{appearance:none;-webkit-appearance:none;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;min-height:32px;padding:5px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;max-width:min(180px,42vw)}
+.who{appearance:none;-webkit-appearance:none;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:999px;min-height:32px;padding:5px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;max-width:min(160px,36vw)}
 .wnick{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .pav{width:28px;height:28px;border-radius:50%;background:var(--ac);color:var(--acx);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;overflow:hidden;flex:none}
 .pav img{width:100%;height:100%;object-fit:cover;display:block}
@@ -668,8 +673,10 @@ main{padding:2px 12px 40px}
 .xpair .xl{align-self:center}
 #xswap{grid-area:sw;justify-self:center;width:26px;height:44px}
 .xsel{font-size:13.5px}
-/* 모바일: 윗줄 배치 그대로 유지 — 로고 왼쪽, 실시간 상태·로그인은 오른쪽 끝에 한 줄로 */
-.hd-r{flex-wrap:nowrap}
+/* 모바일: 윗줄 배치 그대로 유지 — 로고 왼쪽, 실시간 상태·로그인은 오른쪽 끝에 한 줄로.
+   간격을 좁히고 닉네임 pill 최대 폭을 줄여 종 버튼·긴 닉네임이 있어도 한 줄에 들어가게 한다 */
+.hd-r{flex-wrap:nowrap;gap:6px}
+.who{max-width:min(110px,28vw)}
 }
 /* 펀딩비 탭: 종목 + 거래소 4곳 고정 열 */
 #pf .flive{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--mut);margin:0 0 10px}
