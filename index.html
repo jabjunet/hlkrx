@@ -1211,6 +1211,81 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+<style>
+/* ===== 모바일 전용 리디자인 (미리보기 시안 이식, 2026-11-08) =====
+   아래 규칙은 전부 max-width:720px 미디어 쿼리 안에만 있다. 데스크톱에서는
+   이 블록이 아무 요소에도 적용되지 않아 기존 화면과 완전히 동일하다.
+   히어로(.m-hero)는 hidden 속성으로 데스크톱에서 숨고, 모바일 쿼리의
+   display:block이 이를 덮어 모바일에서만 나타난다.
+   색은 기존 테마 변수(var(--sf)·var(--bd)·var(--upbg) 등)를 써서
+   라이트/다크 어느 모드에서도 깨지지 않게 한다. 데이터·렌더링 JS는 무변경 */
+@media(max-width:720px){
+/* 전체 톤: 배경에 아주 은은한 무드만 얹는다 (카드 표면은 테마 변수 그대로) */
+body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.09),rgba(22,199,132,0) 62%),radial-gradient(480px 240px at -12% 140px,rgba(94,160,255,.06),rgba(94,160,255,0) 60%);background-repeat:no-repeat}
+/* 1) 탭 바: 선택 탭은 초록 채워진 pill, 비선택은 회색 글자 */
+.hd .tabs{gap:4px;padding:6px 0 9px;align-items:center}
+.hd .tabs button{min-height:40px;padding:7px 16px;border:0;border-bottom:0;border-radius:999px;font-size:15.5px;font-weight:700;color:var(--mut);background:transparent;transition:background-color .18s ease,color .18s ease}
+.hd .tabs button[aria-pressed="true"]{background:#16c784;color:#04160d;font-weight:800;border-bottom-color:transparent;box-shadow:0 4px 14px rgba(22,199,132,.25)}
+/* 2) 홈 상단 히어로 (모바일에서만 표시) */
+.m-hero{display:block;padding:24px 4px 22px}
+.m-hero-t{font-size:34px;line-height:1.16;font-weight:800;letter-spacing:-.035em;margin:0;color:var(--tx)}
+.m-hero-t span{color:#10b981}
+.m-hero-sub{margin:12px 0 0;font-size:14.5px;line-height:1.6;color:var(--mut)}
+.m-hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.m-hero-chips span{display:inline-flex;align-items:center;padding:7px 13px;border:1px solid var(--bd);border-radius:999px;background:var(--sf);font-size:12.5px;font-weight:700;color:var(--tx)}
+/* 3) 주요 지수 타일: 2열 큼직한 카드, 큰 숫자 + 등락 pill */
+#ph .ixtiles{grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px}
+#ph .ixtiles::before{content:"주요 지수";grid-column:1/-1;font-size:19px;font-weight:800;letter-spacing:-.02em;color:var(--tx);padding:0 2px}
+#ph .ixt{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px;min-width:0}
+#ph .ixt small{font-size:13px;font-weight:700;color:var(--tx);gap:6px;margin-bottom:6px;white-space:nowrap}
+#ph .ixt small i{width:6px;height:6px}
+#ph .ixt b{display:block;font-size:clamp(23px,6.6vw,28px);font-weight:800;letter-spacing:-.03em;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ph .ixt .ixc{display:inline-flex;align-items:center;margin-top:9px;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:800;background:var(--sf2);color:var(--mut)}
+#ph .ixt .ixc.up{background:var(--upbg);color:var(--up)}
+#ph .ixt .ixc.dn{background:var(--dnbg);color:var(--dn)}
+#ph .ixt .ixc.up::before{content:"▲";font-size:8.5px;margin-right:5px}
+#ph .ixt .ixc.dn::before{content:"▼";font-size:8.5px;margin-right:5px}
+/* 홈 섹션 제목을 카드 톤에 맞춰 키운다 */
+#ph .hmhd h2{font-size:18px;font-weight:800;letter-spacing:-.02em}
+/* 실시간 차트·뉴스: 카드형 박스로 감싼다 */
+#ph .hmv{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 4px 6px;margin-bottom:12px}
+#ph .hmv .hmhd{padding:0 10px}
+#ph .hmv .hmseg{padding:0 10px}
+#ph .hmv .note{padding:0 10px 6px}
+#ph .hnw{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 4px 6px;margin-top:14px}
+#ph .hnw .hmhd{padding:0 10px}
+#ph .hnwr{padding:12px 10px}
+#ph .hnwr .nt1{font-size:14.5px;white-space:normal;line-height:1.45}
+#ph .hnghd{padding:2px 10px 8px;font-size:13px}
+/* 5·6) 실적발표·경제지표 박스: 둥근 카드 + 넉넉한 행 간격, 날짜는 배지로 근사 */
+#ph .hewbox{border-radius:16px}
+#ph .hecbox{border-radius:16px}
+#ph .herow{padding:12px 14px}
+#ph .herow .he1 b{font-size:14.5px}
+#ph .herow .he1 .hedt{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:3px 8px;font-size:11.5px}
+#ph .herow .he1 .hetm{border-radius:999px;padding:2px 7px}
+#ph .herow .he2{font-size:13px;margin-top:4px}
+#ph .heghd{padding:9px 14px;font-size:12.5px}
+/* 4) 김프 표: 행 여백 넉넉하게, 현재가 크게, 김프 % pill 강조 */
+#pa .wrap{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:2px 0 4px}
+#pa .kp7 td{padding-top:10px}
+#pa .kp7 td:nth-child(n+4){padding-top:3px;padding-bottom:11px}
+#pa .kp7 .pcv{font-size:17px;font-weight:800}
+#pa .kp7 td b{font-size:15px}
+#pa .kp7 .pill{border-radius:999px;padding:3px 9px;font-weight:700}
+#pa .kp7 td:nth-child(3) .pill{font-size:13px;padding:4px 10px;font-weight:800}
+/* 해외·펀딩비 표도 행 간격만 같은 톤으로 맞춘다 (구조·렌더링 무변경) */
+#pb .prow>div{padding-top:9px;padding-bottom:9px}
+#pf .prow>div{padding-top:10px;padding-bottom:10px}
+/* 공통 카드 모서리 */
+.c{border-radius:16px}
+.sum div,.xsum div{border-radius:14px}
+.cmp-cell{border-radius:14px}
+}
+@media(max-width:720px) and (prefers-reduced-motion:reduce){
+.hd .tabs button{transition:none}
+}
+</style>
 </head>
 <body>
 <main>
@@ -1391,6 +1466,11 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 })();
 </script>
 <section id="ph">
+<div class="m-hero" hidden>
+<h1 class="m-hero-t">김프부터 펀딩비까지,<br><span>한 화면에서.</span></h1>
+<p class="m-hero-sub">국내가와 해외가, 환율까지 일일이 열어볼 필요 없이 한 번에 확인하세요.</p>
+<div class="m-hero-chips"><span>김프 실시간</span><span>펀딩비</span><span>해외주식·ETF</span></div>
+</div>
 <div class="ixtiles" aria-label="주요 지수">
 <div class="ixt"><small><i id="ixt-ks-d"></i>코스피</small><b id="ixt-ks-v">—</b><span class="ixc na" id="ixt-ks-c">—</span></div>
 <div class="ixt"><small><i id="ixt-kq-d"></i>코스닥</small><b id="ixt-kq-v">—</b><span class="ixc na" id="ixt-kq-c">—</span></div>
