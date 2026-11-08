@@ -1069,6 +1069,8 @@ main{padding:2px 12px 40px}
 .cat-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd)}
 .cat-row span{flex:1;min-width:0;font-size:14px;font-weight:600;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cat-del{flex:none;min-height:32px;padding:5px 12px;border:1px solid var(--bd);border-radius:999px;background:none;color:var(--up);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.cat-ren{flex:none;min-height:32px;padding:5px 12px;border:1px solid var(--bd);border-radius:999px;background:none;color:var(--tx);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.cat-ren-inp{flex:1;min-width:0;min-height:36px;border-radius:9px;padding:6px 10px;font-size:14px;font-weight:600}
 .cat-addrow{display:flex;gap:8px;margin-top:14px}
 .cat-addrow input{flex:1;min-width:0;min-height:40px;border-radius:9px;padding:8px 12px;font-size:13.5px;font-weight:500}
 .cat-add{flex:none;min-height:40px;padding:8px 16px;border:0;border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
@@ -1253,7 +1255,7 @@ var D={
 "금":"Gold","은":"Silver","구리":"Copper","유가":"Oil","차트보기":"Show Chart","차트접기":"Hide Chart",
 "금 (GOLD)":"Gold (GOLD)","은 (SILVER)":"Silver (SILVER)","구리 (COPPER)":"Copper (COPPER)","유가 (WTI 원유)":"Oil (WTI Crude)",
 "국제 현물 · 트로이온스(oz) 기준 · gold-api.com":"Intl spot · per troy ounce (oz) · gold-api.com","국제 현물 · 파운드(lb) 기준 · gold-api.com":"Intl spot · per pound (lb) · gold-api.com","국제 선물 · 배럴(bbl) 기준 · NYMEX WTI":"Intl futures · per barrel (bbl) · NYMEX WTI",
-"국내시세 출처: 한국금거래소 고시 · 2026-11-06":"Domestic prices: Korea Gold Exchange notice · 2026-11-06","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 9월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Sep 2026 (monthly notice)",
+"국내시세 출처: 한국금거래소 고시 · 2026-11-07":"Domestic prices: Korea Gold Exchange notice · 2026-11-07","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 9월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Sep 2026 (monthly notice)",
 "유가는 국내 고시 가격이 없어 김프를 표시하지 않습니다. 국제 시세(WTI) 기준입니다.":"Oil has no domestic posted price, so no Kimchi Premium is shown. Based on international (WTI) prices.",
 "김프 (국내 vs 국제 환산)":"Kimchi Prem. (Domestic vs Intl)","국내 유통가 (1kg)":"Domestic price (1kg)","국제 환산가 (1kg)":"Intl converted price (1kg)","국내 살 때 (1돈)":"Domestic buy (1 don)","국내 팔 때 (1돈)":"Domestic sell (1 don)","국제 원화 환산 (1배럴)":"Intl conversion (1 barrel)","당일 고가 (1배럴)":"Day high (1 barrel)","당일 저가 (1배럴)":"Day low (1 barrel)","국내 · 1kg":"Domestic · 1kg","국제 환산 · 1kg":"Intl conv. · 1kg","국내 · 팔 때 1돈":"Domestic · Sell 1 don","국제 환산 · 1돈":"Intl conv. · 1 don",
 "김프 = (국내 가격 ÷ 국제 환산가 − 1) × 100":"Kimchi Prem. = (Domestic price ÷ Intl converted price − 1) × 100","+면 국내가 더 비싸고, −면 국내가 더 쌉니다.":"Positive means the domestic price is higher; negative means it is cheaper.",
@@ -1273,7 +1275,7 @@ var D={
 "주식 평가금액 · 2026년 11월 5일 본인 공개":"Stock valuation · Self-disclosed Nov 5, 2026","보유 종목 접기":"Hide Holdings","공개 당시":"At disclosure",
 "실시간 보유 현황이 아니라 11월 5일 공개 시점 기준입니다. 본인이 5억 원 이상 보유 종목만 공개해 그보다 작은 보유 종목은 빠져 있고, 종목별 평가금액은 공개된 평가손익·수익률로 계산한 대략적인 값입니다.":"This reflects the positions as disclosed on Nov 5, not live holdings. Only holdings of 500M KRW or more were disclosed, so smaller positions are omitted, and per-stock valuations are approximate figures calculated from the disclosed P&L and returns.",
 "디시인사이드 코스피 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인":"Self-disclosed on DC Inside KOSPI Gallery · Prices via TradingView · Checked every 1 min",
-"최신글":"Latest Posts","글쓰기":"Write","구글 로그인":"Google Sign-in","자유":"Free","코인":"Coins","질문":"Q&A","카테고리":"Category","카테고리 필터":"Category filter","최신순":"Newest","인기순":"Most Liked","댓글순":"Most Commented","답글":"Reply","답글을 입력하세요":"Write a reply","답글 입력":"Reply input","답글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to reply. Press the Google sign-in button above.","답글을 입력해 주세요.":"Please enter a reply.","답글 등록에 실패했어요. 다시 시도해 주세요.":"Failed to post the reply. Please try again.","알림":"Notifications","알림 보기":"View notifications","알림이 없습니다.":"No notifications yet.","해당 카테고리에 글이 없습니다.":"No posts in this category yet.","카테고리 관리":"Manage Categories","추가":"Add","고정":"Pin","고정 해제":"Unpin","공지":"Notice","새 카테고리 이름":"New category name","카테고리 이름을 입력해 주세요.":"Please enter a category name.","이미 있는 카테고리예요.":"That category already exists.","카테고리 이름은 10자까지예요.":"Category names can be up to 10 characters.","카테고리 저장에 실패했어요. 다시 시도해 주세요.":"Failed to save categories. Please try again.",
+"최신글":"Latest Posts","글쓰기":"Write","구글 로그인":"Google Sign-in","자유":"Free","코인":"Coins","질문":"Q&A","카테고리":"Category","카테고리 필터":"Category filter","최신순":"Newest","인기순":"Most Liked","댓글순":"Most Commented","답글":"Reply","답글을 입력하세요":"Write a reply","답글 입력":"Reply input","답글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to reply. Press the Google sign-in button above.","답글을 입력해 주세요.":"Please enter a reply.","답글 등록에 실패했어요. 다시 시도해 주세요.":"Failed to post the reply. Please try again.","알림":"Notifications","알림 보기":"View notifications","알림이 없습니다.":"No notifications yet.","해당 카테고리에 글이 없습니다.":"No posts in this category yet.","카테고리 관리":"Manage Categories","추가":"Add","고정":"Pin","고정 해제":"Unpin","공지":"Notice","새 카테고리 이름":"New category name","카테고리 이름을 입력해 주세요.":"Please enter a category name.","이미 있는 카테고리예요.":"That category already exists.","카테고리 이름은 10자까지예요.":"Category names can be up to 10 characters.","카테고리 저장에 실패했어요. 다시 시도해 주세요.":"Failed to save categories. Please try again.","카테고리는 최소 1개가 필요해요.":"At least one category is required.","'공지'는 고정 글 배지 이름이라 쓸 수 없어요.":"'Notice' is reserved for pinned-post badges and can't be used as a category name.",
 "글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.":"You need to sign in with Google to write a post. Once signed in, you can post right away.",
 "제목을 입력하세요":"Enter a title","내용을 입력하세요":"Enter content","사진 첨부":"Attach Photo","사진 4장까지 넣을 수 있어요":"You can attach up to 4 photos","사진은 4장까지 넣을 수 있어요.":"You can attach up to 4 photos.","이미지 파일만 넣을 수 있어요.":"Only image files can be attached.","사진 지우기":"Remove Photo","취소":"Cancel","등록":"Post","삭제":"Delete","수정":"Edit","수정 완료":"Save Changes","닫기":"Close",
 "아직 글이 없습니다. 첫 글을 남겨 보세요.":"No posts yet. Write the first post.","글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to write. Press the Google sign-in button above.","아직 연결이 준비되지 않았어요. 잠시 후 다시 시도해 주세요.":"The connection is not ready yet. Please try again shortly.","제목을 입력해 주세요.":"Please enter a title.","내용을 입력하거나 사진을 넣어 주세요.":"Please enter content or add a photo.","등록에 실패했어요. 다시 시도해 주세요.":"Failed to post. Please try again.","수정에 실패했어요. 다시 시도해 주세요.":"Failed to save changes. Please try again.","글을 올린 지 10분이 지나 수정할 수 없어요.":"You can no longer edit this post — 10 minutes have passed since it was posted.","이미지를 불러오지 못했어요.":"Could not load the image.",
@@ -1514,7 +1516,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <span class="gsub" id="au-krw"></span>
 </div>
 <div class="sum" id="au-sum"></div>
-<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-06</span>
+<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-07</span>
 </div>
 <div id="mt-ag" hidden>
 <div class="tvbar"><button type="button" class="mt-tgl" id="ag-tgl" aria-expanded="false" aria-controls="ag-tvwrap">차트보기</button><span class="gread" id="ag-tv"></span></div>
@@ -1525,7 +1527,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <span class="gsub" id="ag-krw"></span>
 </div>
 <div class="sum" id="ag-sum"></div>
-<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-06</span>
+<span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-07</span>
 </div>
 <div id="mt-cu" hidden>
 <div class="tvbar"><button type="button" class="mt-tgl" id="cu-tgl" aria-expanded="false" aria-controls="cu-tvwrap">차트보기</button><span class="gread" id="cu-tv"></span></div>
@@ -1725,7 +1727,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <p class="cat-err" id="cat-err" role="alert" hidden></p>
 <div class="cat-row2"><button type="button" class="cm-cancel" id="cat-close">닫기</button></div>
 </div></div>
-<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-06), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-06 조회, KRX는 11/06 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
+<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-07), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-06 조회, KRX는 11/06 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
 <footer class="sitefoot">
 <nav aria-label="약관 및 방침"><button type="button" id="legal-priv-open">개인정보처리방침</button><i aria-hidden="true">·</i><button type="button" id="legal-terms-open">이용약관</button><i aria-hidden="true">·</i><button type="button" id="legal-contact-open">문의</button><i aria-hidden="true">·</i><a href="guide.html">가이드</a></nav>
 <p>© 2026 kimpwon</p>
@@ -2735,10 +2737,10 @@ window.addEventListener("resize",function(){clearTimeout(ncRzT);ncRzT=setTimeout
 function gd2(n){return f(n,n<10?3:2)}
 function tvtheme(){var t=document.documentElement.getAttribute("data-theme");if(t)return t;return window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}
 var MT={
-au:{sym:"XAU",dec:2,usd:4055.1,buy:785000,sell:667000,tv:"TVC:GOLD",live:false,
+au:{sym:"XAU",dec:2,usd:4055.1,buy:784000,sell:662000,tv:"TVC:GOLD",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
-ag:{sym:"XAG",dec:3,usd:51.777,buy:9490,sell:8110,tv:"TVC:SILVER",live:false,
+ag:{sym:"XAG",dec:3,usd:51.777,buy:9520,sell:8130,tv:"TVC:SILVER",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
 cu:{sym:"HG",dec:4,usd:6.3528,dom:21700,tv:"TVC:COPPER",live:false,
@@ -3368,13 +3370,16 @@ editHideTimer=setTimeout(function(){editHideTimer=null;if(!ov.hidden&&curKey){va
 function postByKey(key){for(var i=0;i<posts.length;i++){if(posts[i].key===key)return posts[i]}return null}
 function likeN(p){return (p&&typeof p.likes==="number"&&p.likes>0)?p.likes:0}
 function cmtN(p){return (p&&typeof p.cmtCount==="number"&&p.cmtCount>0)?p.cmtCount:0}
-/* 카테고리 목록: RTDB의 cmConfig/cats 배열에서 읽고, 없으면 기본값을 쓴다.
+/* 카테고리 목록: RTDB의 cmConfig/cats 배열이 항상 기준이다. 저장된 목록이 없을 때만
+   기본값(자유·주식·코인·질문)으로 시작하고, 그 뒤로는 운영자가 추가·삭제·이름 변경한
+   목록이 그대로 유지된다(기본 카테고리도 예외 없이 지우고 이름을 바꿀 수 있다).
    글의 cat은 카테고리 '이름' 문자열로 저장한다. 예전 빌드가 코드(free/stock/coin/qna)로 저장한 글은
-   이름으로 바꿔 취급하고, cat이 없거나 목록에 없는 카테고리인 글은 '자유'로 표시한다 */
+   이름으로 바꿔 취급하고, cat이 없거나 목록에 없는 카테고리인 글은 목록의 첫 번째 카테고리로 표시한다 */
 var CAT_CODES={free:"자유",stock:"주식",coin:"코인",qna:"질문"};
 var DEFAULT_CATS=["자유","주식","코인","질문"];
 var cmCats=DEFAULT_CATS.slice();
-function normCat(c){if(typeof c!=="string")return "자유";c=c.trim();if(!c)return "자유";if(CAT_CODES[c])return CAT_CODES[c];var lc=c.toLowerCase();if(CAT_CODES[lc])return CAT_CODES[lc];return cmCats.indexOf(c)>=0?c:"자유"}
+function firstCat(){return cmCats.length?cmCats[0]:"자유"}
+function normCat(c){if(typeof c!=="string")return firstCat();c=c.trim();if(!c)return firstCat();if(CAT_CODES[c])c=CAT_CODES[c];else{var lc=c.toLowerCase();if(CAT_CODES[lc])c=CAT_CODES[lc]}return cmCats.indexOf(c)>=0?c:firstCat()}
 function catOf(p){return normCat(p&&typeof p.cat==="string"?p.cat:"")}
 function getVisiblePosts(){var arr=posts.filter(function(p){return !p.pin&&(cmFilter==="전체"||catOf(p)===cmFilter)});arr.sort(function(a,b){if(cmSort==="popular"){var d=likeN(b)-likeN(a);if(d)return d;var dv=(b.views||0)-(a.views||0);if(dv)return dv;return (b.ts||0)-(a.ts||0)}if(cmSort==="comments"){var dc=cmtN(b)-cmtN(a);if(dc)return dc;return (b.ts||0)-(a.ts||0)}return (b.ts||0)-(a.ts||0)});return arr}
 /* 고정 글: 카테고리 필터가 '전체'이거나 그 글의 카테고리와 같을 때만, 최근에 고정한 순으로 최대 5개 */
@@ -3383,18 +3388,18 @@ function renderFilterChips(){
 if(!filterEl)return;
 filterEl.textContent="";
 var all=document.createElement("button");all.type="button";all.dataset.f="전체";all.setAttribute("aria-pressed",String(cmFilter==="전체"));all.textContent="전체";filterEl.appendChild(all);
-cmCats.forEach(function(name){if(name==="공지")return;var b=document.createElement("button");b.type="button";b.dataset.f=name;b.setAttribute("aria-pressed",String(cmFilter===name));b.textContent=name;filterEl.appendChild(b)});
+cmCats.forEach(function(name){var b=document.createElement("button");b.type="button";b.dataset.f=name;b.setAttribute("aria-pressed",String(cmFilter===name));b.textContent=name;filterEl.appendChild(b)});
 }
 function renderFcatsChips(){
 if(!fcatsEl)return;
 fcatsEl.textContent="";
-cmCats.forEach(function(name){if(name==="공지")return;var b=document.createElement("button");b.type="button";b.dataset.cat=name;b.setAttribute("aria-pressed",String(formCat===name));b.textContent=name;fcatsEl.appendChild(b)});
+cmCats.forEach(function(name){var b=document.createElement("button");b.type="button";b.dataset.cat=name;b.setAttribute("aria-pressed",String(formCat===name));b.textContent=name;fcatsEl.appendChild(b)});
 }
 function notifyAuthor(type,postKey,post){try{if(!fbUser||!fbUser.uid||!post||!post.uid)return;if(String(post.uid)===String(fbUser.uid))return;if(typeof firebase==="undefined"||!firebase.database)return;firebase.database().ref("notifications/"+post.uid).push({type:type,postKey:postKey,postTitle:String(post.title||""),actorName:myNick(),ts:firebase.database.ServerValue.TIMESTAMP,read:false})}catch(e){}}
 function syncFcats(){if(!fcatsEl)return;fcatsEl.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.cat===formCat))})}
 if(filterEl)filterEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;cmFilter=b.dataset.f||"전체";filterEl.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});cmDisplay=5;try{listEl.scrollTop=0}catch(err){}renderLists()});
 if(sortEl)sortEl.addEventListener("change",function(){cmSort=sortEl.value||"latest";cmDisplay=5;try{listEl.scrollTop=0}catch(err){}renderLists()});
-if(fcatsEl)fcatsEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;formCat=b.dataset.cat||"자유";syncFcats()});
+if(fcatsEl)fcatsEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;formCat=b.dataset.cat||firstCat();syncFcats()});
 function isLiked(p){return !!(p&&fbUser&&fbUser.uid&&p.likers&&p.likers[fbUser.uid]===true)}
 function canDelCmt(c){return !!fbUser&&(isOp()||(c.uid&&c.uid===fbUser.uid))}
 function rowEl(p,pinned){
@@ -3677,13 +3682,16 @@ pvPin.textContent=np?"고정 해제":"고정";
 renderLists();
 try{var pr=postsRef.child(curKey).update(upd);if(pr&&pr.catch)pr.catch(function(){})}catch(e){}
 });
-/* 카테고리 관리(운영자 전용): cmConfig/cats 배열을 읽어 칩을 그리고, 팝업에서 추가·삭제하면
-   배열을 RTDB에 저장하고 필터 칩·글쓰기 칩을 즉시 다시 그린다. '자유'는 기본 분류라 지울 수 없다.
-   카테고리를 지워도 그 카테고리의 기존 글은 지우지 않고 catOf에서 '자유'로 표시된다 */
+/* 카테고리 관리(운영자 전용): cmConfig/cats 배열을 읽어 칩을 그리고, 팝업에서 추가·삭제·
+   이름 변경하면 배열을 RTDB에 저장하고 필터 칩·글쓰기 칩을 즉시 다시 그린다. 기본 카테고리
+   (자유·주식·코인·질문)를 포함해 전부 지우고 이름을 바꿀 수 있으며 저장된 목록이 항상 기준이다.
+   카테고리를 지워도 그 카테고리의 기존 글은 지우지 않고 catOf에서 목록의 첫 번째 카테고리로
+   표시된다. 글이 속할 곳이 없어지면 안 되므로 마지막 1개는 지울 수 없다 */
 var catsRef=null;
 function saveCats(next,after){
+if(!next.length){if(after)after(false);return}
 cmCats=next.slice();
-if(cmCats.indexOf(formCat)<0)formCat="자유";
+if(cmCats.indexOf(formCat)<0)formCat=firstCat();
 if(cmFilter!=="전체"&&cmCats.indexOf(cmFilter)<0){cmFilter="전체";cmDisplay=5}
 renderFilterChips();renderFcatsChips();renderCatList();renderLists();
 if(!catsRef){if(after)after(false);return}
@@ -3695,17 +3703,78 @@ catList.textContent="";
 cmCats.forEach(function(name){
 var row=document.createElement("div");row.className="cat-row";
 var nm=document.createElement("span");nm.textContent=name;row.appendChild(nm);
-if(name!=="자유"){
+var ren=document.createElement("button");ren.type="button";ren.className="cat-ren";ren.textContent="수정";
+ren.addEventListener("click",function(){if(isOp())startCatRename(row,name)});
+row.appendChild(ren);
 var del=document.createElement("button");del.type="button";del.className="cat-del";del.textContent="삭제";
 del.addEventListener("click",function(){
 if(!isOp())return;
+if(cmCats.length<=1){if(catErr){catErr.textContent="카테고리는 최소 1개가 필요해요.";catErr.hidden=false}return}
 var next=cmCats.filter(function(x){return x!==name});
 saveCats(next,function(ok){if(!ok&&catErr){catErr.textContent="카테고리 저장에 실패했어요. 다시 시도해 주세요.";catErr.hidden=false}});
 });
 row.appendChild(del);
-}
 catList.appendChild(row);
 });
+}
+/* 글에 저장된 카테고리 이름(예전 코드 포함)을 정규화한 이름으로 돌려준다.
+   normCat과 달리 현재 목록에 없어도 그 이름을 그대로 유지한다 */
+function rawCatName(c){
+if(typeof c!=="string")return "";
+c=c.trim();
+if(!c)return "";
+if(CAT_CODES[c])return CAT_CODES[c];
+var lc=c.toLowerCase();
+if(CAT_CODES[lc])return CAT_CODES[lc];
+return c;
+}
+/* 카테고리 이름 변경 전파: 로컬에 불러온 글 중 그 카테고리의 글을 새 이름으로 바꾸고,
+   RTDB의 posts 전체를 한 번 읽어 같은 카테고리로 저장된 글의 cat도 새 이름으로
+   update 한다. 아직 불러오지 않은(한도 밖) 글까지 새 이름을 따라가게 하기 위해서다 */
+function migratePostCats(oldName,newName){
+posts.forEach(function(p){if(rawCatName(p.cat)===oldName)p.cat=newName});
+renderLists();
+if(!postsRef)return;
+try{
+var pr=postsRef.once("value");
+if(!pr||typeof pr.then!=="function")return;
+pr.then(function(snap){
+var upd={},found=false;
+snap.forEach(function(ch){
+var v=ch.val()||{};
+if(rawCatName(typeof v.cat==="string"?v.cat:"")===oldName){upd[ch.key+"/cat"]=newName;found=true}
+});
+if(!found)return;
+try{var up=postsRef.update(upd);if(up&&up.catch)up.catch(function(){})}catch(e2){}
+}).catch(function(){});
+}catch(e){}
+}
+/* 카테고리 이름 변경: 행을 입력칸으로 바꿔 그 자리에서 저장한다. 필터·글쓰기에서 골라 둔
+   카테고리가 바뀐 이름이면 새 이름을 따라가고, 그 카테고리로 저장된 기존 글도
+   migratePostCats로 새 이름으로 옮겨 표시가 어긋나지 않게 한다 */
+function startCatRename(row,oldName){
+row.textContent="";
+var inp=document.createElement("input");inp.type="text";inp.className="cat-ren-inp";inp.maxLength=30;inp.value=oldName;inp.setAttribute("aria-label","카테고리 이름");inp.autocomplete="off";row.appendChild(inp);
+function done(save){
+var name=inp.value.trim();
+if(!save){renderCatList();return}
+if(!name){if(catErr){catErr.textContent="카테고리 이름을 입력해 주세요.";catErr.hidden=false}inp.focus();return}
+if(name.length>10){if(catErr){catErr.textContent="카테고리 이름은 10자까지예요.";catErr.hidden=false}inp.focus();return}
+if(name!==oldName&&cmCats.indexOf(name)>=0){if(catErr){catErr.textContent="이미 있는 카테고리예요.";catErr.hidden=false}inp.focus();return}
+if(catErr)catErr.hidden=true;
+if(name===oldName){renderCatList();return}
+var next=cmCats.map(function(x){return x===oldName?name:x});
+if(formCat===oldName)formCat=name;
+if(cmFilter===oldName)cmFilter=name;
+migratePostCats(oldName,name);
+saveCats(next,function(ok){if(!ok&&catErr){catErr.textContent="카테고리 저장에 실패했어요. 다시 시도해 주세요.";catErr.hidden=false}});
+}
+var sb=document.createElement("button");sb.type="button";sb.className="cat-ren";sb.textContent="저장";
+sb.addEventListener("click",function(){done(true)});row.appendChild(sb);
+var cb=document.createElement("button");cb.type="button";cb.className="cat-ren";cb.textContent="취소";
+cb.addEventListener("click",function(){done(false)});row.appendChild(cb);
+inp.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();done(true)}else if(e.key==="Escape"){e.preventDefault();e.stopPropagation();done(false)}});
+inp.focus();inp.select();
 }
 function catAddTry(){
 if(!catNew||!catErr)return;
@@ -3725,7 +3794,9 @@ if(catManBtn)catManBtn.addEventListener("click",function(){if(!isOp()||!catOv)re
 if(catClose)catClose.addEventListener("click",closeCatOv);
 if(catOv)catOv.addEventListener("click",function(e){if(e.target===catOv)closeCatOv()});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&catOv&&!catOv.hidden)closeCatOv()});
-/* cmConfig/cats 구독: 저장된 목록에서 '공지'를 빼고 기본 카테고리를 채운 목록으로 칩을 다시 그린다 */
+/* cmConfig/cats 구독: 저장된 목록을 그대로 칩으로 다시 그린다
+   (저장된 목록이 없을 때만 기본 카테고리를 채운다). '공지'도 일반 카테고리
+   이름으로 쓸 수 있다 — 고정 글의 '공지' 배지는 별도 표시라 충돌하지 않는다 */
 function subscribeCats(){
 if(typeof firebase==="undefined"||!firebase.database)return;
 try{
@@ -3736,15 +3807,14 @@ var arr=null;
 if(Array.isArray(v))arr=v;
 else if(v&&typeof v==="object"){var ks=Object.keys(v).sort(function(a,b){return (parseInt(a,10)||0)-(parseInt(b,10)||0)});arr=ks.map(function(k){return v[k]})}
 var clean=[];
-if(arr)arr.forEach(function(s){if(typeof s==="string"){s=s.trim();if(s&&s!=="공지"&&clean.indexOf(s)<0)clean.push(s)}});
-if(clean.indexOf("자유")<0)clean.unshift("자유");
-/* '공지'는 고정 글 배지용 이름이라 카테고리로 취급하지 않는다. 저장된 목록이 없거나
-   일부만 있어도 기본 카테고리(자유·주식·코인·질문)는 항상 앞에 채워 칩에 보이게 하고,
-   운영자가 추가한 카테고리는 그 뒤에 붙인다 */
-cmCats=DEFAULT_CATS.slice();
-clean.forEach(function(s){if(cmCats.indexOf(s)<0)cmCats.push(s)});
+if(arr)arr.forEach(function(s){if(typeof s==="string"){s=s.trim();if(s&&clean.indexOf(s)<0)clean.push(s)}});
+var hadSaved=clean.length>0;
+/* 저장된 목록이 있으면 그 목록을 그대로 쓴다 — 운영자가 지우거나 이름을 바꾼
+   카테고리를 기본값으로 다시 채우면 변경이 되돌아가므로, 기본 카테고리는
+   저장된 목록이 아직 없을 때만 채운다 */
+cmCats=hadSaved?clean.slice():DEFAULT_CATS.slice();
 var changed=false;
-if(cmCats.indexOf(formCat)<0){formCat="자유";changed=true}
+if(cmCats.indexOf(formCat)<0){formCat=firstCat();changed=true}
 if(cmFilter!=="전체"&&cmCats.indexOf(cmFilter)<0){cmFilter="전체";cmDisplay=5;changed=true}
 renderFilterChips();renderFcatsChips();renderCatList();
 if(posts.length||changed)renderLists();
@@ -3752,7 +3822,7 @@ if(posts.length||changed)renderLists();
 }catch(e){}
 }
 /* 수정 모드 종료: 수정 중이던 내용을 버리고 폼을 새 글 등록 상태로 되돌린다 */
-function endEdit(){if(editKey){editKey=null;titleIn.value="";bodyIn.value="";clearPostImgs()}formCat="자유";syncFcats();submitBtn.textContent="등록"}
+function endEdit(){if(editKey){editKey=null;titleIn.value="";bodyIn.value="";clearPostImgs()}formCat=firstCat();syncFcats();submitBtn.textContent="등록"}
 /* 수정: 글쓴이 본인(또는 운영자)이 팝업의 수정 버튼을 누르면 글쓰기 폼에 기존 제목·본문·사진을 채워 열고,
    저장(submit)에서는 새 글을 만들지 않고 그 글을 update 한다 */
 pvEdit.addEventListener("click",function(){
