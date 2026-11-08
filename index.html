@@ -1369,6 +1369,18 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .pkdd a:hover{background:var(--sf2)}
 @media (hover:hover) and (pointer:fine){.pkdd.open{display:block}}
 </style>
+<style>
+/* ===== 게시물 전체보기 화면 (2026-11-09) =====
+   커뮤니티 탭 호버 드롭다운의 '게시물'을 누르면 헤더·탭 줄은 그대로 둔 채
+   내용 영역만 이 화면으로 바뀐다. 목록은 박스 안 스크롤이 아니라 페이지 흐름을
+   그대로 쓰고, 행 모양은 커뮤니티 최신글과 같은 .cm-row를 그대로 쓴다 */
+.pp-box{padding:0;overflow:hidden}
+.pp-box .cm-hd{padding:13px 16px 5px;margin-bottom:0}
+.pp-box .cm-toolbar{background:none;padding:8px 16px 6px}
+#pp-list{padding:2px 16px 8px}
+.pp-morebtn{display:block;width:calc(100% - 32px);margin:2px 16px 16px;min-height:44px;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--sf2);color:var(--tx);font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
+.pp-morebtn:hover{background:var(--sf)}
+</style>
 </head>
 <body>
 <main>
@@ -1873,6 +1885,14 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <div id="cm-list"><p class="cm-empty">불러오는 중…</p></div>
 </div>
 <div class="cm-chat" id="cm-chat-slot"></div>
+</div>
+</section>
+<section id="pp" hidden>
+<div class="cmbox pp-box">
+<div class="cm-hd"><h2>게시물</h2></div>
+<div class="cm-toolbar"><div class="cm-filters" id="pp-filters" role="group" aria-label="카테고리 필터"></div><select class="cm-sort" id="pp-sort" aria-label="정렬"><option value="latest">최신순</option><option value="popular">인기순</option><option value="comments">댓글순</option></select></div>
+<div id="pp-list"><p class="cm-empty">불러오는 중…</p></div>
+<button type="button" class="pp-morebtn" id="pp-more" hidden>더 보기</button>
 </div>
 </section>
 <div class="lgov" id="pv-ov" hidden><div class="lgbox pvbox" role="dialog" aria-modal="true" aria-labelledby="pv-title">
@@ -4118,6 +4138,83 @@ start();
 var p=postByKey(key);if(p){openPost(key);return}
 if(postsRef){try{postsRef.child(key).once("value").then(function(snap){var v=snap&&snap.val();if(!v)return;var pim=postImgsOf(v);var np={key:key,title:String(v.title||""),body:String(v.body||""),name:String(v.name||"익명"),photo:String(v.photo||""),img:pim[0]||String(v.img||""),imgs:pim,cat:String(v.cat||""),uid:String(v.uid||""),ts:(typeof v.ts==="number"?v.ts:0),views:(typeof v.views==="number"?v.views:0),likes:(typeof v.likes==="number"?v.likes:0),likers:(v.likers&&typeof v.likers==="object")?v.likers:{},cmtCount:(v.comments&&typeof v.comments==="object")?Object.keys(v.comments).length:0,pin:v.pin===true,pinTs:(typeof v.pinTs==="number"?v.pinTs:0)};if(!postByKey(key))posts.push(np);openPost(key)}).catch(function(){})}catch(e){}}
 };
+/* ===== 게시물 전체보기 화면 =====
+   커뮤니티 탭 호버 드롭다운의 '게시물'을 누르면 별도 페이지로 이동하지 않고, 헤더·탭 줄은
+   그대로 둔 채 내용 영역만 이 화면으로 바뀐다(다른 탭을 누르면 그 탭 화면으로 돌아간다).
+   이 화면이 켜져 있는 동안 탭 줄에서는 커뮤니티 탭이 선택된 것으로 표시한다.
+   데이터: 최신글 구독(limitToLast)은 최근 일부만 들고 있으므로, 이 화면을 처음 열 때
+   posts 전체를 제한 없이 한 번 읽어 와 별도 배열(allPosts)에 담는다(기존 구독은 건드리지 않는다).
+   표시는 30개씩 그리고 '더 보기'로 이어 본다. 행과 글 팝업은 최신글과 같은 rowEl/openPost를 쓴다 */
+var ppSec=document.getElementById("pp"),ppListEl=document.getElementById("pp-list"),
+ppFiltersEl=document.getElementById("pp-filters"),ppSortEl=document.getElementById("pp-sort"),
+ppMoreBtn=document.getElementById("pp-more");
+var allPosts=null,ppBusy=false,ppFilter="전체",ppSort="latest",ppShown=30;
+var PP_PAGE=30;
+function ppVisiblePosts(){var arr=(allPosts||[]).filter(function(p){return !p.pin&&(ppFilter==="전체"||catOf(p)===ppFilter)});arr.sort(function(a,b){if(ppSort==="popular"){var d=likeN(b)-likeN(a);if(d)return d;var dv=(b.views||0)-(a.views||0);if(dv)return dv;return (b.ts||0)-(a.ts||0)}if(ppSort==="comments"){var dc=cmtN(b)-cmtN(a);if(dc)return dc;return (b.ts||0)-(a.ts||0)}return (b.ts||0)-(a.ts||0)});return arr}
+/* 고정 글: 최신글과 같은 규칙 — 필터가 전체이거나 그 글의 카테고리와 같을 때만, 최근에 고정한 순으로 최대 5개 */
+function ppPinnedPosts(){var arr=(allPosts||[]).filter(function(p){return p.pin&&(ppFilter==="전체"||catOf(p)===ppFilter)});arr.sort(function(a,b){var d=(b.pinTs||0)-(a.pinTs||0);if(d)return d;return (b.ts||0)-(a.ts||0)});return arr.slice(0,5)}
+function renderPpChips(){
+if(!ppFiltersEl)return;
+if(ppFilter!=="전체"&&cmCats.indexOf(ppFilter)<0)ppFilter="전체";
+ppFiltersEl.textContent="";
+var all=document.createElement("button");all.type="button";all.dataset.f="전체";all.setAttribute("aria-pressed",String(ppFilter==="전체"));all.textContent="전체";ppFiltersEl.appendChild(all);
+cmCats.forEach(function(name){var b=document.createElement("button");b.type="button";b.dataset.f=name;b.setAttribute("aria-pressed",String(ppFilter===name));b.textContent=name;ppFiltersEl.appendChild(b)});
+}
+function renderPp(){
+if(!ppListEl)return;
+renderPpChips();
+if(!allPosts){ppMoreBtn.hidden=true;return}
+/* 구독 중인 최신 글들의 최신 수치(조회·좋아요·댓글·고정 상태)를 전체 목록에도 반영한다 */
+for(var i=0;i<allPosts.length;i++){var lp=postByKey(allPosts[i].key);if(lp){allPosts[i].title=lp.title;allPosts[i].body=lp.body;allPosts[i].name=lp.name;allPosts[i].photo=lp.photo;allPosts[i].img=lp.img;allPosts[i].imgs=lp.imgs;allPosts[i].cat=lp.cat;allPosts[i].views=lp.views;allPosts[i].likes=lp.likes;allPosts[i].likers=lp.likers;allPosts[i].cmtCount=lp.cmtCount;allPosts[i].pin=lp.pin;allPosts[i].pinTs=lp.pinTs}}
+ppListEl.textContent="";
+var pins=ppPinnedPosts();
+pins.forEach(function(p){var r=rowEl(p,true);r.dataset.key=p.key;ppListEl.appendChild(r)});
+var vis=ppVisiblePosts();
+if(!vis.length&&!pins.length){var ep=document.createElement("p");ep.className="cm-empty";ep.textContent=allPosts.length?"해당 카테고리에 글이 없습니다.":"아직 글이 없습니다. 첫 글을 남겨 보세요.";ppListEl.appendChild(ep)}
+vis.slice(0,ppShown).forEach(function(p){var r=rowEl(p,false);r.dataset.key=p.key;ppListEl.appendChild(r)});
+ppMoreBtn.hidden=!(ppShown<vis.length);
+}
+/* 전체 글 한 번 읽기: 기존 limitToLast 구독과 별개로 posts를 제한 없이 읽는다 */
+function ppFetch(){
+if(allPosts||ppBusy)return;
+start();
+if(!postsRef){emptyMsg(ppListEl,"글을 불러오지 못했어요.");ppMoreBtn.hidden=true;return}
+ppBusy=true;
+emptyMsg(ppListEl,"불러오는 중…");
+try{
+postsRef.once("value").then(function(snap){
+var arr=[];
+snap.forEach(function(ch){var v=ch.val()||{};var pim=postImgsOf(v);arr.push({key:ch.key,title:String(v.title||""),body:String(v.body||""),name:String(v.name||"익명"),photo:String(v.photo||""),img:pim[0]||String(v.img||""),imgs:pim,cat:String(v.cat||""),uid:String(v.uid||""),ts:(typeof v.ts==="number"?v.ts:0),views:(typeof v.views==="number"?v.views:0),likes:(typeof v.likes==="number"?v.likes:0),likers:(v.likers&&typeof v.likers==="object")?v.likers:{},cmtCount:(v.comments&&typeof v.comments==="object")?Object.keys(v.comments).length:0,pin:v.pin===true,pinTs:(typeof v.pinTs==="number"?v.pinTs:0)})});
+arr.sort(function(a,b){return (b.ts||0)-(a.ts||0)});
+allPosts=arr;ppBusy=false;renderPp();
+}).catch(function(){ppBusy=false;emptyMsg(ppListEl,"글을 불러오지 못했어요.");ppMoreBtn.hidden=true});
+}catch(e){ppBusy=false;emptyMsg(ppListEl,"글을 불러오지 못했어요.");ppMoreBtn.hidden=true}
+}
+if(ppFiltersEl)ppFiltersEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;ppFilter=b.dataset.f||"전체";ppFiltersEl.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});ppShown=PP_PAGE;renderPp()});
+if(ppSortEl)ppSortEl.addEventListener("change",function(){ppSort=ppSortEl.value||"latest";ppShown=PP_PAGE;renderPp()});
+if(ppMoreBtn)ppMoreBtn.addEventListener("click",function(){ppShown+=PP_PAGE;renderPp()});
+/* 행 클릭: openPost는 구독 배열(posts)에서 글을 찾으므로, 아직 구독 범위에 없는 옛 글은
+   전체 목록에서 찾아 배열에 넣어 둔 뒤 기존 행 클릭(openPost)이 그대로 열게 한다.
+   캡처 단계에서 먼저 실행돼 행 자체의 클릭보다 앞서 처리된다 */
+if(ppListEl)ppListEl.addEventListener("click",function(e){
+var b=e.target.closest("button.cm-row");if(!b||!b.dataset.key)return;
+var key=b.dataset.key;
+if(postByKey(key))return;
+var arr=allPosts||[];
+for(var i=0;i<arr.length;i++){if(arr[i].key===key){posts.push(arr[i]);break}}
+},true);
+function showPostsView(){
+if(!ppSec)return;
+["ph","pa","pb","pg","pf","pc","pi","pk"].forEach(function(id){var s=document.getElementById(id);if(s)s.hidden=true});
+ppSec.hidden=false;
+if(tabs)tabs.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x.dataset.t==="pk"))});
+document.querySelectorAll(".dnote,.sitefoot").forEach(function(n){n.hidden=true});
+try{window.scrollTo(0,0)}catch(e){}
+if(allPosts)renderPp();else ppFetch();
+}
+window.__kimpwonShowPosts=showPostsView;
+/* 다른 탭을 누르면 게시물 화면은 닫히고 그 탭 화면이 뜬다(기존 탭 전환 핸들러가 패널을 토글한다) */
+if(tabs)tabs.addEventListener("click",function(e){if(e.target.closest("button")&&ppSec)ppSec.hidden=true});
 tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.t==="pk")start()});
 })();
 </script>
@@ -5647,7 +5744,7 @@ setTimeout(function(){window.location.href=brand.href},650);
 });
 })();
 </script>
-<div class="pkdd" id="pkdd"><a href="/posts.html">게시물</a></div>
+<div class="pkdd" id="pkdd"><a href="#" id="pkdd-posts">게시물</a></div>
 <script>
 /* 커뮤니티 탭 호버 드롭다운: 마우스 기기에서만 동작한다. 래퍼(커뮤니티 버튼)와
    드롭다운 중 어느 한쪽에라도 마우스가 있으면 열려 있고, 둘 다 벗어나면 닫힌다.
@@ -5679,6 +5776,20 @@ dd.addEventListener("mouseleave",function(e){if(!wrap.contains(e.relatedTarget))
 window.addEventListener("resize",function(){if(dd.classList.contains("open"))place()});
 window.addEventListener("scroll",function(){if(dd.classList.contains("open"))place()},true);
 document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
+})();
+</script>
+<script>
+/* 드롭다운 '게시물' 클릭: 별도 페이지로 이동하지 않고, 헤더·탭 줄은 그대로 둔 채
+   내용 영역만 게시물 전체보기 화면으로 바꾼다(커뮤니티 모듈의 __kimpwonShowPosts).
+   드롭다운의 호버 표시·위치·닫힘 지연은 위 스크립트 그대로 둔다 */
+(function(){
+var a=document.getElementById("pkdd-posts"),dd=document.getElementById("pkdd");
+if(!a)return;
+a.addEventListener("click",function(e){
+e.preventDefault();
+if(dd)dd.classList.remove("open");
+if(typeof window.__kimpwonShowPosts==="function")window.__kimpwonShowPosts();
+});
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c6e8ab4e4ea4777bf54ca7e737337b9"}'></script><!-- End Cloudflare Web Analytics -->
