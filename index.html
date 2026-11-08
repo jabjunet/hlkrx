@@ -1289,10 +1289,67 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .hd .tabs button{transition:none}
 }
 </style>
+<style>
+/* ===== 헤더 한 줄 정리 + 실적발표·경제지표 카드 (미리보기 시안 반영, 2026-11-08) =====
+   데스크톱·모바일 공통. 왼쪽은 로고+실시간 상태, 오른쪽은 테마·언어·알림·접속자·로그인이
+   한 줄로 붙는다. 접속자 수는 로그인 버튼 왼쪽에 텍스트로 같은 줄에 둔다(예전에는 아래 줄).
+   색은 기존 테마 변수만 써서 라이트/다크 모두에서 깨지지 않게 한다 */
+.hd-t{align-items:center}
+.hd-l{display:flex;align-items:center;gap:10px;flex:0 1 auto;min-width:0}
+.hd-l .live{margin-top:0}
+.hd-r{align-items:center}
+.acct{flex-direction:row;align-items:center;gap:8px}
+.hd-online{text-align:left}
+/* 실적발표·경제지표 박스: 둥근 카드 톤으로 통일 */
+.hewbox{border-radius:16px}
+.hecbox{border-radius:16px}
+/* 실적발표 행: 날짜 박스 + 본문 + D-day 배지 */
+.erow{display:flex;align-items:center;gap:12px;padding:13px 14px}
+.erow .edate{flex:none;width:52px;height:52px;border:1px solid var(--bd);background:var(--sf2);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05}
+.erow .edate b{font-size:20px;font-weight:800;letter-spacing:-.02em}
+.erow .edate span{font-size:11px;font-weight:600;color:var(--mut);margin-top:3px}
+.erow .emain{flex:1 1 auto;min-width:0}
+.erow .emain .he1{flex-wrap:wrap;row-gap:1px}
+.erow .emain .he1 b{font-size:14.5px}
+.erow .emain .he1 .hedt{margin-left:0;font-size:11.5px;font-weight:600;color:var(--mut);background:none;border:0;border-radius:0;padding:0}
+.erow .emain .he2{white-space:normal;overflow:visible;text-overflow:clip}
+.erow .edd{flex:none;font-size:12px;font-weight:800;padding:5px 9px;border-radius:8px;background:var(--sf2);border:1px solid var(--bd);color:var(--mut);white-space:nowrap}
+.erow .edd.near{background:var(--upbg);border-color:transparent;color:var(--up)}
+/* 경제지표 행: 지표명 크게, 날짜·예상/이전은 작은 회색 줄, 발표 시각은 오른쪽 끝에 크게 */
+.hecbox .herow{position:relative;padding:13px 78px 13px 14px}
+.hecbox .herow .he1{flex-wrap:wrap;row-gap:1px}
+.hecbox .herow .he1 b{font-size:15px}
+.hecbox .herow .he1 .hedt{order:3;flex-basis:100%;margin-left:0;font-size:12px;font-weight:600;color:var(--mut)}
+.hecbox .herow .he1 .hetm{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:17px;font-weight:800;color:var(--tx);background:none;border:0;border-radius:0;padding:0}
+.hecbox .herow .he2{margin-top:1px}
+#ph .hecbox .herow{padding:13px 78px 13px 14px}
+#ph .hecbox .herow .he1 .hetm{border:0;padding:0}
+#ph .hecbox .herow .he1 .hedt{background:none;border:0;border-radius:0;padding:0}
+#ph .erow .emain .he1 .hedt{background:none;border:0;border-radius:0;padding:0}
+@media(max-width:720px){
+.hd-l{gap:7px}
+.hd-r{gap:5px}
+.hd-ctl{gap:4px}
+.acct{gap:6px}
+.hd-online{font-size:11px}
+.hd-l .live{font-size:11.5px;gap:5px}
+.lgb{padding:5px 10px}
+.who{max-width:min(96px,24vw)}
+.erow{gap:10px;padding:12px}
+.erow .edate{width:46px;height:46px;border-radius:11px}
+.erow .edate b{font-size:18px}
+#ph .hecbox .herow{padding:12px 70px 12px 12px}
+.hecbox .herow .he1 .hetm{right:12px;font-size:16px}
+}
+@media(max-width:520px){
+.thbtn{width:30px;height:30px}
+.lgbtn{padding:5px 8px}
+}
+</style>
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-t"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div><div class="notif-wrap" id="notif-wrap" hidden><button type="button" class="thbtn notif-btn" id="notif-btn" aria-label="알림 보기" title="알림 보기"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7 21a2 2 0 0 1-3.4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="notif-badge" id="notif-badge" hidden>0</span></button><div class="notif-pop" id="notif-pop" hidden><p class="notif-hd">알림</p><div id="notif-list"></div></div></div><div class="acct"><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤니티</button></div></div>
+<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="notif-wrap" id="notif-wrap" hidden><button type="button" class="thbtn notif-btn" id="notif-btn" aria-label="알림 보기" title="알림 보기"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7 21a2 2 0 0 1-3.4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="notif-badge" id="notif-badge" hidden>0</span></button><div class="notif-pop" id="notif-pop" hidden><p class="notif-hd">알림</p><div id="notif-list"></div></div></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤니티</button></div></div>
 
 <script>
 /* ===== 헤더 테마(다크/라이트)·언어(한/영) 전환 =====
@@ -5194,17 +5251,28 @@ return s}
 function timeLbl(mins){if(mins<570)return "장전";if(mins>=960)return "장후";return ""}
 function epsFmt(v){if(v==null||isNaN(v))return "—";return "$"+Number(v).toFixed(2)}
 var state=null,failed=false;
+function sessLbl(mins){var t=timeLbl(mins);if(t==="장전")return "장 시작 전";if(t==="장후")return "장 마감 후";return t}
+function dateBoxHtml(x){return '<div class="edate" aria-hidden="true"><b>'+x.o.d+'</b><span>'+x.o.m+'월</span></div>'}
+function ddayHtml(x){var lbl=x.diff===0?"D-Day":"D-"+x.diff;return '<span class="edd'+(x.diff<=5?" near":"")+'">'+lbl+'</span>'}
 function headHtml(x){
-var tm=timeLbl(x.mins),kt=kstTimeLbl(x);
-return '<div class="he1"><b>'+esc(x.sym)+'</b><span class="henm">'+esc(WATCH[x.sym])+'</span>'+(tm?'<span class="hetm">'+tm+'</span>':"")+'<span class="hedt">'+esc(dateLbl(x.o,x.diff))+'</span>'+(kt?'<span class="hetm" title="한국 시간">'+esc(kt)+'</span>':"")+'</div>'}
+return '<div class="he1"><b>'+esc(WATCH[x.sym])+' ('+esc(x.sym)+')</b><span class="hedt">'+esc(dateLbl(x.o,x.diff))+'</span></div>'}
 function rowHtml(x){
-var body='EPS 예상 <b>'+epsFmt(x.fc)+'</b>';
-return '<div class="herow">'+headHtml(x)+'<span class="he2">'+body+'</span></div>'}
+try{
+var parts=[],ss=sessLbl(x.mins),kt=kstTimeLbl(x);
+if(ss)parts.push(esc(ss));
+parts.push('예상 EPS <b>'+epsFmt(x.fc)+'</b>');
+if(kt)parts.push('한국 시간 '+esc(kt));
+return '<div class="herow erow">'+dateBoxHtml(x)+'<div class="emain">'+headHtml(x)+'<span class="he2">'+parts.join('<span> · </span>')+'</span></div>'+ddayHtml(x)+'</div>'}catch(e){return ""}}
 function surpFmt(v){if(v==null||isNaN(v))return "";return (v>0?"+":v<0?"−":"")+Math.abs(v).toFixed(1)+"%"}
 function doneRowHtml(x){
-var body='EPS 실제 <b>'+epsFmt(x.act)+'</b><span> · </span>예상 <b>'+epsFmt(x.fc)+'</b>';
-if(x.surpTxt)body+='<span> · </span>서프라이즈 <em class="'+(x.surp>0?"beat":x.surp<0?"miss":"")+'">'+esc(x.surpTxt)+'</em>';
-return '<div class="herow">'+headHtml(x)+'<span class="he2">'+body+'</span></div>'}
+try{
+var parts=[],ss=sessLbl(x.mins),kt=kstTimeLbl(x);
+if(ss)parts.push(esc(ss));
+parts.push('EPS 실제 <b>'+epsFmt(x.act)+'</b>');
+parts.push('예상 <b>'+epsFmt(x.fc)+'</b>');
+if(x.surpTxt)parts.push('서프라이즈 <em class="'+(x.surp>0?"beat":x.surp<0?"miss":"")+'">'+esc(x.surpTxt)+'</em>');
+if(kt)parts.push('한국 시간 '+esc(kt));
+return '<div class="herow erow">'+dateBoxHtml(x)+'<div class="emain">'+headHtml(x)+'<span class="he2">'+parts.join('<span> · </span>')+'</span></div></div>'}catch(e){return ""}}
 function render(){
 var box=$("he-list");if(!box)return;
 if(failed){
@@ -5214,8 +5282,8 @@ return}
 if(!state){box.innerHTML='<div class="hmvempty">불러오는 중…</div>';return}
 if(!state.done.length&&!state.up.length){box.innerHTML='<div class="heempty">앞으로 30일 안에 예정된 주요 종목 실적발표가 없습니다</div>';return}
 var html='';
-if(state.done.length){html+='<div class="heghd">발표 완료 <b>'+state.done.length+'</b></div>';state.done.forEach(function(x){html+=doneRowHtml(x)})}
-if(state.up.length){html+='<div class="heghd">발표 예정 <b>'+state.up.length+'</b></div>';state.up.forEach(function(x){html+=rowHtml(x)})}
+if(state.done.length){html+='<div class="heghd">발표 완료 <b>'+state.done.length+'</b></div>';state.done.forEach(function(x){try{html+=doneRowHtml(x)}catch(e){}})}
+if(state.up.length){html+='<div class="heghd">발표 예정 <b>'+state.up.length+'</b></div>';state.up.forEach(function(x){try{html+=rowHtml(x)}catch(e){}})}
 box.innerHTML=html}
 function load(){
 var body={columns:["name","earnings_release_next_date","earnings_per_share_forecast_next_fq","market_cap_basic","earnings_release_date","earnings_per_share_fq","earnings_per_share_forecast_fq","eps_surprise_percent_fq"],filter:[{left:"name",operation:"in_range",right:SYMS}],range:[0,SYMS.length+10]};
@@ -5228,6 +5296,7 @@ var cap=+d[3]||0;
 if(!best[sym]||cap>best[sym].cap)best[sym]={next:d[1],fcN:d[2],cap:cap,last:d[4],act:d[5],fcA:d[6],surp:d[7]}});
 var up=[],done=[];
 Object.keys(best).forEach(function(sym){
+try{
 var b=best[sym];
 if(b.next){
 var o2=nyDay(+b.next),diff2=o2.day-t;
@@ -5238,7 +5307,7 @@ if(ageSec>=0&&ageSec<=86400){
 var o3=nyDay(+b.last);
 var fcA=b.fcA!=null?+b.fcA:null,surp=(b.surp!=null&&!isNaN(+b.surp))?+b.surp:null;
 var showSurp=surp!=null&&fcA!=null&&fcA>0&&Math.abs(surp)<500;
-done.push({sym:sym,o:o3,k:kstDay(+b.last),ts:+b.last,mins:o3.mins,diff:o3.day-t,act:+b.act,fc:fcA,surp:showSurp?surp:null,surpTxt:showSurp?surpFmt(surp):"",cap:b.cap})}}});
+done.push({sym:sym,o:o3,k:kstDay(+b.last),ts:+b.last,mins:o3.mins,diff:o3.day-t,act:+b.act,fc:fcA,surp:showSurp?surp:null,surpTxt:showSurp?surpFmt(surp):"",cap:b.cap})}}}catch(e){}});
 up.sort(function(a,b){return a.ts-b.ts||b.cap-a.cap});
 done.sort(function(a,b){return b.ts-a.ts||b.cap-a.cap});
 state={up:up.slice(0,20),done:done.slice(0,20)};
