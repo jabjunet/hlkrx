@@ -807,11 +807,11 @@ main{padding:2px 12px 40px}
 .steady-hd b{font-size:14px;white-space:nowrap}
 .steady-sub{color:var(--mut);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .steady-chart{height:300px;margin-top:8px;position:relative;min-width:0;overflow:hidden}
-/* 비교 4분할 TradingView 위젯: 칸 높이를 그대로 채우고, 로딩 문구는 위젯 위에 겹쳐 둔다 */
-.steady-tvw iframe{width:100%!important;height:100%!important;border:0;display:block;border-radius:6px;background:var(--sf)}
-.steady-tvw>div[id$="-in"]{height:100%}
-.steady-tvw>div[id$="-in"]>div{height:100%!important}
-.steady-tvw .tvmsg{z-index:2}
+/* 비교 4분할 미니 차트 위젯: 칸 높이를 그대로 채우고, 로딩 문구는 위젯 위에 겹쳐 둔다 */
+.steady-chart .tradingview-widget-container{width:100%;height:100%}
+.steady-chart .tradingview-widget-container__widget{width:100%;height:100%}
+.steady-chart iframe{width:100%!important;height:100%!important;border:0;display:block;border-radius:6px;background:var(--sf)}
+.steady-chart .tvmsg{z-index:2}
 @media(max-width:720px){.steady{grid-template-columns:1fr;gap:8px}.steady-cell{padding:10px}}
 .cmp-more-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:10px;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:12px}
 .cmp-more-btn:hover{background:var(--sf2)}
@@ -4722,11 +4722,11 @@ setInterval(function(){var had={};[1,2].forEach(function(idx){if(CMPSEL[idx])had
 })();
 </script>
 <script>
-/* 비교 탭 메인 고정 4분할 (비트·유가·금·나스닥): 네 칸 모두 TradingView 고급
-   차트 위젯으로 그린다. 상단 툴바를 표시하고 심볼 변경을 허용해
-   (allow_symbol_change) 위젯 왼쪽 위의 심볼 검색으로 바로 종목을 바꿀 수
-   있게 한다. 위젯이 심볼 변경을 알리면 칸 위의 이름 줄도 새 심볼
-   기준으로 따라간다. 기본 심볼: 비트코인 BINANCE:BTCUSDT · 유가 TVC:USOIL ·
+/* 비교 탭 메인 고정 4분할 (비트·유가·금·나스닥): 네 칸 모두 TradingView 미니
+   차트 위젯(mini-symbol-overview)으로 그린다. 고급 차트 위젯보다 가벼워
+   비교 탭 로딩이 빠르다. 기본 기간은 3개월(3M), 테마는 사이트 다크/라이트를
+   따라가고 테마가 바뀌면 위젯도 새 테마로 다시 그린다.
+   기본 심볼: 비트코인 BINANCE:BTCUSDT · 유가 TVC:USOIL ·
    금 TVC:GOLD · 나스닥 FOREXCOM:NSXUSD. 가격 줄은 두지 않고 가격은 위젯 안에서 본다. */
 (function(){
 function $(id){return document.getElementById(id)}
@@ -4737,96 +4737,67 @@ oil:{name:"유가",sub:"WTI 원유",sym:"TVC:USOIL"},
 gold:{name:"금",sub:"GOLD · 국제 금",sym:"TVC:GOLD"},
 ndx:{name:"나스닥",sub:"NQ · 나스닥 선물",sym:"FOREXCOM:NSXUSD"}};
 var cellSym={btc:CELLS.btc.sym,oil:CELLS.oil.sym,gold:CELLS.gold.sym,ndx:CELLS.ndx.sym};
-/* TradingView 위젯 로더: 원자재 탭의 mtLoadTvJs(전역)를 재사용하고,
-   없을 때만 같은 방식으로 tv.js를 직접 불러온다. */
-var tvWait=null,tvLoading=false;
-function tvLoadJs(cb){
-if(window.TradingView&&TradingView.widget){cb(true);return}
-if(typeof mtLoadTvJs==="function"){mtLoadTvJs(cb);return}
-(tvWait=tvWait||[]).push(cb);
-if(tvLoading)return;
-tvLoading=true;
-var s=document.createElement("script");
-s.src="https://s3.tradingview.com/tv.js";s.async=true;
-s.onload=function(){var ok=!!(window.TradingView&&TradingView.widget);(tvWait||[]).splice(0).forEach(function(fn){fn(ok)})};
-s.onerror=function(){(tvWait||[]).splice(0).forEach(function(fn){fn(false)})};
-document.head.appendChild(s)}
-/* 위젯 안에서 심볼이 바뀌면 칸 위의 이름 줄을 새 심볼 기준으로 맞춘다. */
-function hookSym(widget,key,tok,w){
-try{
-var ch=null;
-if(typeof widget.activeChart==="function")ch=widget.activeChart();
-else if(typeof widget.chart==="function")ch=widget.chart();
-if(!ch||typeof ch.onSymbolChanged!=="function")return;
-ch.onSymbolChanged(function(si){
-if(w._tvTok!==tok)return;
-var full=null;
-try{if(typeof ch.symbol==="function")full=ch.symbol()}catch(e){}
-if(!full&&si)full=si.full_name||si.name;
-if(!full||full===cellSym[key])return;
-cellSym[key]=full;
-var nm=$("steady-"+key+"-nm"),sb=$("steady-"+key+"-sub");
-if(nm)nm.textContent=(si&&(si.description||si.name))||full;
-if(sb)sb.textContent=full;
-})}catch(e){}}
-/* 칸 차트 마운트: TradingView 고급 차트 위젯. 상단 툴바를 보이고 심볼 변경을
-   허용해, 위젯 왼쪽 위 심볼 검색으로 종목을 바로 바꿀 수 있게 한다. */
-function mountTv(key){
+/* 테마는 다른 위젯들과 같은 방식(tvtheme 전역)으로 읽는다. */
+function curTheme(){return (typeof tvtheme==="function"?tvtheme():"light")}
+var mountedTheme=null;
+/* 칸 차트 마운트: TradingView 미니 차트 위젯(embed-widget-mini-symbol-overview).
+   칸마다 위젯 컨테이너와 전용 임베드 스크립트를 새로 만들어 넣는다 — 스크립트
+   안의 JSON 설정(심볼·기간 3M·테마)을 위젯이 읽어 그 칸만 그린다. */
+function mountMini(key){
 var w=$("steady-chart-"+key);if(!w)return;
 var sym=cellSym[key];
-w._tvTok=String(Date.now())+"tv"+key;
-w.classList.add("steady-tvw");
-var tok=w._tvTok;
-w.innerHTML='<div class="tvmsg"><span>차트 불러오는 중…</span></div><div id="steady-'+key+'-tvw-in" style="width:100%;height:100%"></div>';
+var theme=curTheme();
+w._miniTok=String(Date.now())+"mn"+key;
+var tok=w._miniTok;
+w.innerHTML="";
+var msg=document.createElement("div");
+msg.className="tvmsg";
+msg.innerHTML="<span>차트 불러오는 중…</span>";
+w.appendChild(msg);
+var cont=document.createElement("div");
+cont.className="tradingview-widget-container";
+var inner=document.createElement("div");
+inner.className="tradingview-widget-container__widget";
+cont.appendChild(inner);
+var cfg={symbol:sym,width:"100%",height:"100%",locale:"kr",dateRange:"3M",colorTheme:theme,isTransparent:false,autosize:true,chartOnly:false,noTimeScale:false};
+var sc=document.createElement("script");
+sc.type="text/javascript";
+sc.async=true;
+sc.src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js";
+sc.textContent=JSON.stringify(cfg);
+cont.appendChild(sc);
+w.appendChild(cont);
 var ready=false;
-function done(){if(w._tvTok!==tok||ready)return;ready=true;var m=w.querySelector(".tvmsg");if(m)m.hidden=true}
-function fail(){if(w._tvTok!==tok||ready||w.querySelector("iframe"))return;
+function done(){if(w._miniTok!==tok||ready)return;ready=true;msg.hidden=true}
+function fail(){if(w._miniTok!==tok||ready||w.querySelector("iframe"))return;
 w.innerHTML='<div class="tvmsg"><b>차트를 불러오지 못했어요</b><span>TradingView 차트 연결을 불러오지 못했어요. 연결 문제일 수 있으니 다시 시도해 보세요.</span><a class="tvlink" href="https://www.tradingview.com/chart/?symbol='+encodeURIComponent(sym)+'" target="_blank" rel="noopener">TradingView에서 열기</a><button type="button" class="tvretry">다시 시도</button></div>';
-var b=w.querySelector(".tvretry");if(b)b.addEventListener("click",function(){mountTv(key)})}
-var fitN=0,fitIv=setInterval(function(){if(w._tvTok!==tok){clearInterval(fitIv);return}
-var fr=w.querySelector("iframe");if(!fr){if(++fitN>60)clearInterval(fitIv);return}
-done();
-var H=w.clientHeight,Wd=w.clientWidth;if(H<50){clearInterval(fitIv);return}
-var n=fr.parentElement;while(n&&n!==w){n.style.setProperty("height","100%","important");n=n.parentElement}
-if(Math.abs(fr.clientHeight-H)>2||Math.abs(fr.clientWidth-Wd)>2){fr.style.setProperty("height",H+"px","important");fr.style.setProperty("width",Wd+"px","important");if(++fitN>60)clearInterval(fitIv)}else clearInterval(fitIv)},400);
-setTimeout(function(){if(w._tvTok===tok&&!w.querySelector("iframe"))fail()},15000);
-tvLoadJs(function(ok){
-if(w._tvTok!==tok)return;
-if(!ok){fail();return}
-try{
-var widget=new TradingView.widget({container_id:"steady-"+key+"-tvw-in",symbol:sym,interval:"240",theme:(typeof tvtheme==="function"?tvtheme():"light"),style:"1",timezone:"Asia/Seoul",locale:"kr",hide_top_toolbar:false,hide_side_toolbar:false,allow_symbol_change:true,save_image:false,autosize:true});
-if(widget&&typeof widget.onChartReady==="function")widget.onChartReady(function(){done();hookSym(widget,key,tok,w);setTimeout(function(){if(w._tvTok===tok)refit(key)},350);setTimeout(function(){if(w._tvTok===tok)refit(key)},1600)});
-}catch(e){fail()}})}
-function mountCharts(){["btc","oil","gold","ndx"].forEach(function(k,i){setTimeout(function(){mountTv(k)},i*200)})}
-/* 위젯 내부 배치 재측정: 네 칸 위젯이 한꺼번에 만들어지면 TradingView가
-   칸 크기를 잘못 재는 경우가 있어, 가격 축이 칸 오른쪽 밖으로 밀려 나가고
-   캔들이 아래로 눌려 보인다(비트코인·유가 칸에서 실제로 발생). iframe 크기를
-   1px 줄였다가 다음 프레임에 칸 크기로 되돌리면 위젯이 내부 배치를 다시
-   계산해 가격 축과 캔들이 칸 안으로 돌아온다. */
-function refit(key){
-var w=$("steady-chart-"+key);if(!w)return;
-var fr=w.querySelector("iframe");if(!fr)return;
-var H=w.clientHeight,Wd=w.clientWidth;if(H<50||Wd<50)return;
-var n=fr.parentElement;while(n&&n!==w){n.style.setProperty("height","100%","important");n=n.parentElement}
-fr.style.setProperty("width",(Wd-1)+"px","important");
-fr.style.setProperty("height",(H-1)+"px","important");
-requestAnimationFrame(function(){requestAnimationFrame(function(){
-if(!w.isConnected)return;
-var H2=w.clientHeight,W2=w.clientWidth;if(H2<50||W2<50)return;
-fr.style.setProperty("width",W2+"px","important");
-fr.style.setProperty("height",H2+"px","important");
-setTimeout(function(){fr.style.removeProperty("width");fr.style.removeProperty("height")},600)})})}
-function refitAll(){["btc","oil","gold","ndx"].forEach(function(k,i){setTimeout(function(){refit(k)},i*120)})}
+var b=w.querySelector(".tvretry");if(b)b.addEventListener("click",function(){mountMini(key)})}
+sc.onerror=function(){setTimeout(fail,0)};
+var pollN=0,poll=setInterval(function(){if(w._miniTok!==tok){clearInterval(poll);return}
+var fr=w.querySelector("iframe");
+if(fr&&fr.clientHeight>50){done();clearInterval(poll);return}
+if(++pollN>40)clearInterval(poll)},400);
+setTimeout(function(){if(w._miniTok===tok&&!w.querySelector("iframe"))fail()},15000)}
+function mountCharts(){mountedTheme=curTheme();["btc","oil","gold","ndx"].forEach(function(k,i){setTimeout(function(){mountMini(k)},i*120)})}
+/* 테마 연동: 사이트 테마(data-theme 속성 또는 기기 설정)가 바뀌면 미니 차트도
+   새 테마로 다시 그린다. 비교 탭이 닫혀 있는 동안 바뀐 경우에는 탭을 다시
+   열 때 그려진 테마와 비교해 다르면 그때 다시 그린다. 미니 위젯은 autosize라
+   창 크기 변경에 따로 손댈 필요가 없다. */
+function checkTheme(){
+if(!started)return;
+if(curTheme()===mountedTheme)return;
+if(!pcOpen())return;
+mountCharts()}
 var started=false;
 function start(){
 if(!pcOpen())return;
-if(started)return;
+if(started){checkTheme();return}
 started=true;
 mountCharts()}
 var tabs=$("tabs");
-if(tabs)tabs.addEventListener("click",function(e){var b=e.target.closest?e.target.closest("button"):null;if(b&&b.dataset.t==="pc"){var was=started;start();if(was)setTimeout(refitAll,80)}});
-var rzT=null;
-window.addEventListener("resize",function(){if(!started||!pcOpen())return;clearTimeout(rzT);rzT=setTimeout(refitAll,350)});
+if(tabs)tabs.addEventListener("click",function(e){var b=e.target.closest?e.target.closest("button"):null;if(b&&b.dataset.t==="pc")start()});
+try{var thObs=new MutationObserver(function(){checkTheme()});thObs.observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]})}catch(e){}
+if(window.matchMedia){var thMm=window.matchMedia("(prefers-color-scheme: dark)");if(thMm.addEventListener)thMm.addEventListener("change",function(){checkTheme()})}
 if(pcOpen())start();
 var btn=$("cmp-more-btn"),wrap=$("cmp2wrap");
 if(btn&&wrap)btn.addEventListener("click",function(){
