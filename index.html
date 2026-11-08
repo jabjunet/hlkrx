@@ -1380,6 +1380,30 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pp-list{padding:2px 16px 8px}
 .pp-morebtn{display:block;width:calc(100% - 32px);margin:2px 16px 16px;min-height:44px;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--sf2);color:var(--tx);font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
 .pp-morebtn:hover{background:var(--sf)}
+/* ===== 모바일 전용 '게시물' 버튼 (2026-11-09) =====
+   커뮤니티 탭 '최신글' 제목 줄에서 '글쓰기' 버튼 바로 왼쪽에 붙는 보조 버튼.
+   데스크톱에서는 호버 드롭다운만 쓰므로 숨기고, 720px 이하에서만 보인다.
+   모양은 '글쓰기'(채워진 주 버튼)보다 튀지 않게 기존 칩/보조 버튼 언어를 쓴다 */
+.cm-posts-btn{display:none}
+@media(max-width:720px){
+.cm-posts-btn{display:inline-flex;align-items:center;justify-content:center;flex:none;min-height:36px;padding:7px 13px;border:1px solid var(--bd);border-radius:999px;background:var(--sf2);color:var(--tx);font:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-left:auto}
+.cm-posts-btn + .cm-wbtn{margin-left:0}
+/* 게시물 전체보기 모바일: 카테고리 칩 줄은 줄바꿈되고, 글 행은 가로로 넘치지 않는다 */
+.pp-box .cm-toolbar{flex-wrap:wrap}
+.pp-box .cm-filters{flex-wrap:wrap;flex:1 1 auto;min-width:0}
+.pp-box .cm-filters button{flex:none}
+.pp-box .cm-toolbar .cm-sort{flex:none;max-width:100%}
+.pp-box .cm-row{max-width:100%}
+.pp-box .cm-rmain{min-width:0}
+#pp-list{overflow-x:hidden}
+}
+@media(max-width:520px){
+.pp-box .cm-hd{padding-left:12px;padding-right:12px}
+.pp-box .cm-toolbar{padding-left:12px;padding-right:12px}
+#pp-list{padding-left:12px;padding-right:12px}
+.pp-morebtn{width:calc(100% - 24px);margin-left:12px;margin-right:12px}
+.pp-box .cm-row{gap:8px}
+}
 </style>
 </head>
 <body>
@@ -1870,7 +1894,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <section id="pk" hidden>
 <div class="cm-top">
 <div class="cmbox cm-latest">
-<div class="cm-hd"><h2>최신글</h2><button type="button" class="cm-wbtn" id="cm-write-btn" hidden>글쓰기</button></div>
+<div class="cm-hd"><h2>최신글</h2><button type="button" class="cm-posts-btn" id="cm-posts-btn">게시물</button><button type="button" class="cm-wbtn" id="cm-write-btn" hidden>글쓰기</button></div>
 <div class="cm-toolbar" id="cm-toolbar"><div class="cm-filters" id="cm-filters" role="group" aria-label="카테고리 필터"><button type="button" data-f="전체" aria-pressed="true">전체</button><button type="button" data-f="자유" aria-pressed="false">자유</button><button type="button" data-f="주식" aria-pressed="false">주식</button><button type="button" data-f="코인" aria-pressed="false">코인</button><button type="button" data-f="질문" aria-pressed="false">질문</button></div><select class="cm-sort" id="cm-sort" aria-label="정렬"><option value="latest">최신순</option><option value="popular">인기순</option><option value="comments">댓글순</option></select><button type="button" class="cm-catman-btn" id="cm-catman-btn" hidden>카테고리 관리</button></div>
 <div class="cm-gate" id="cm-gate" hidden><p>글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.</p><button type="button" class="cm-login" id="cm-login-btn">구글 로그인</button></div>
 <form class="cm-form" id="cm-form" hidden>
@@ -5788,10 +5812,15 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
    드롭다운의 호버 표시·위치·닫힘 지연은 위 스크립트 그대로 둔다 */
 (function(){
 var a=document.getElementById("pkdd-posts"),dd=document.getElementById("pkdd");
-if(!a)return;
-a.addEventListener("click",function(e){
+if(a)a.addEventListener("click",function(e){
 e.preventDefault();
 if(dd)dd.classList.remove("open");
+if(typeof window.__kimpwonShowPosts==="function")window.__kimpwonShowPosts();
+});
+/* 모바일 전용 '게시물' 버튼(최신글 제목 줄, 글쓰기 바로 왼쪽): 드롭다운 '게시물'과
+   완전히 같은 동작 — 페이지 이동 없이 게시물 전체보기 화면으로 전환한다 */
+var mb=document.getElementById("cm-posts-btn");
+if(mb)mb.addEventListener("click",function(){
 if(typeof window.__kimpwonShowPosts==="function")window.__kimpwonShowPosts();
 });
 })();
