@@ -1048,7 +1048,7 @@ main{padding:2px 12px 40px}
 .pv-csend{flex:none;min-height:42px;padding:9px 16px;border:0;border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
 .pv-cerr{margin:8px 2px 0;font-size:12.5px;color:var(--up)}
 .pv-cerr[hidden]{display:none}
-/* 커뮤니티 카테고리·정렬·HOT·대댓글·알림 (기존 변수만 사용) */
+/* 커뮤니티 카테고리·정렬·HOT·대댓글 (기존 변수만 사용) */
 .cm-latest .cm-toolbar{flex:none}
 .cm-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 16px 2px;background:var(--bg)}
 .cm-filters{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
@@ -1084,19 +1084,7 @@ main{padding:2px 12px 40px}
 .pv-rform{display:flex;gap:6px;margin:6px 0 2px}
 .pv-rform input{flex:1;min-width:0;min-height:38px;border-radius:999px;padding:8px 13px;font-size:13px;font-weight:500}
 .pv-rsend{flex:none;min-height:38px;padding:8px 14px;border:0;border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
-.notif-wrap{position:relative;flex:none}
-.notif-btn{position:relative}
-.notif-badge{position:absolute;top:-4px;right:-4px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--up);color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1}
-.notif-badge[hidden]{display:none}
-.notif-pop{position:absolute;right:0;top:calc(100% + 8px);z-index:90;width:min(320px,86vw);background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.22);padding:6px;max-height:60vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.notif-pop[hidden]{display:none}
-.notif-hd{margin:0;font-size:13px;font-weight:800;padding:6px 10px 4px;color:var(--tx)}
-.notif-empty{margin:0;padding:12px 10px;font-size:12.5px;color:var(--mut)}
-.notif-item{display:block;width:100%;text-align:left;border:0;background:none;color:var(--tx);font:inherit;padding:9px 10px;border-radius:8px;cursor:pointer}
-.notif-item:hover{background:var(--sf2)}
-.ntf-msg{display:block;font-size:13px;font-weight:600;line-height:1.45}
-.ntf-title{display:block;font-size:12.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
-.ntf-time{display:block;font-size:11.5px;color:var(--mut);margin-top:1px}
+
 /* 김프 계산기: 화면 오른쪽 아래 빈 공간에 뜨는 작은 패널. 채팅 버튼 위에 버튼을 쌓아 두고,
    버튼을 눌러 패널을 넣었다 뺐다 할 수 있다. 패널 안에서는 국내 가격·해외 가격·환율로 김프를 바로 계산한다 */
 .kcbtn{position:fixed;right:16px;bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:120;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 16px;border:1px solid var(--bd);border-radius:999px;background:var(--sf);color:var(--tx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.18)}
@@ -1291,7 +1279,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 </style>
 <style>
 /* ===== 헤더 한 줄 정리 + 실적발표·경제지표 카드 (미리보기 시안 반영, 2026-11-08) =====
-   데스크톱·모바일 공통. 왼쪽은 로고+실시간 상태, 오른쪽은 테마·언어·알림·접속자·로그인이
+   데스크톱·모바일 공통. 왼쪽은 로고+실시간 상태, 오른쪽은 테마·언어·접속자·로그인이
    한 줄로 붙는다. 접속자 수는 로그인 버튼 왼쪽에 텍스트로 같은 줄에 둔다(예전에는 아래 줄).
    색은 기존 테마 변수만 써서 라이트/다크 모두에서 깨지지 않게 한다 */
 .hd-t{align-items:center}
@@ -1348,12 +1336,11 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 </style>
 <style>
 /* ===== 프로필 설정 항목 + 헤더 정리 (2026-11-08) =====
-   프로필 팝업 안 설정 행(알림·다크 모드·언어)은 데스크톱·모바일 공용이다.
+   프로필 팝업 안 설정 행(다크 모드·언어)은 데스크톱·모바일 공용이다.
    다크모드 버튼(#th-btn)은 헤더 오른쪽 프로필 옆에 다시 표시한다(모바일·데스크톱 공통,
    예전 해/달 아이콘 그대로). 언어 버튼(#lang-btn)만 계속 숨긴다 — 버튼 요소 자체는
    지우지 않고 숨기기만 한다: 프로필 항목이 기존 버튼 클릭을 재사용하므로 DOM에 남아
-   있어야 테마·언어 전환(저장 포함)이 그대로 동작한다. 알림 종 버튼은 데스크톱에서는
-   그대로 보이고, 모바일(720px 이하)에서만 숨긴다(팝업은 남겨 프로필 '알림'에서 연다) */
+   있어야 테마·언어 전환(저장 포함)이 그대로 동작한다. */
 .pfset{border:1px solid var(--bd);border-radius:12px;background:var(--sf2);overflow:hidden;margin:2px 0 12px}
 .pfset-row{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:44px;padding:10px 12px;border:0;border-bottom:1px solid var(--bd);background:none;color:var(--tx);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;text-align:left}
 .pfset-row:last-child{border-bottom:0}
@@ -1361,23 +1348,19 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .pfset-lb{flex:none}
 .pfset-val{flex:none;display:inline-flex;align-items:center;gap:7px;color:var(--mut);font-weight:700;font-size:13px}
 .pfset-chev{font-size:16px;line-height:1;color:var(--mut)}
-.pfnotif-n{min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--up);color:#fff;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;line-height:1}
-.pfnotif-n.zero{background:var(--bd);color:var(--mut)}
 .hd-ctl{display:flex;align-items:center;gap:6px;flex:none}
 .hd-ctl #th-btn{display:inline-flex}
 .hd-ctl #lang-btn{display:none}
 @media(max-width:720px){
-#notif-btn{display:none}
 .hd-t{gap:6px}
 .hd-l{gap:6px}
 .hd-r{gap:6px}
-.notif-pop{top:30px}
 }
 </style>
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="notif-wrap" id="notif-wrap" hidden><button type="button" class="thbtn notif-btn" id="notif-btn" aria-label="알림 보기" title="알림 보기"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7 21a2 2 0 0 1-3.4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="notif-badge" id="notif-badge" hidden>0</span></button><div class="notif-pop" id="notif-pop" hidden><p class="notif-hd">알림</p><div id="notif-list"></div></div></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤니티</button></div></div>
+<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤니티</button></div></div>
 
 <script>
 /* ===== 헤더 테마(다크/라이트)·언어(한/영) 전환 =====
@@ -1438,7 +1421,7 @@ var D={
 "주식 평가금액 · 2026년 11월 5일 본인 공개":"Stock valuation · Self-disclosed Nov 5, 2026","보유 종목 접기":"Hide Holdings","공개 당시":"At disclosure",
 "실시간 보유 현황이 아니라 11월 5일 공개 시점 기준입니다. 본인이 5억 원 이상 보유 종목만 공개해 그보다 작은 보유 종목은 빠져 있고, 종목별 평가금액은 공개된 평가손익·수익률로 계산한 대략적인 값입니다.":"This reflects the positions as disclosed on Nov 5, not live holdings. Only holdings of 500M KRW or more were disclosed, so smaller positions are omitted, and per-stock valuations are approximate figures calculated from the disclosed P&L and returns.",
 "디시인사이드 코스피 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인":"Self-disclosed on DC Inside KOSPI Gallery · Prices via TradingView · Checked every 1 min",
-"최신글":"Latest Posts","글쓰기":"Write","구글 로그인":"Google Sign-in","자유":"Free","코인":"Coins","질문":"Q&A","카테고리":"Category","카테고리 필터":"Category filter","최신순":"Newest","인기순":"Most Liked","댓글순":"Most Commented","답글":"Reply","답글을 입력하세요":"Write a reply","답글 입력":"Reply input","답글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to reply. Press the Google sign-in button above.","답글을 입력해 주세요.":"Please enter a reply.","답글 등록에 실패했어요. 다시 시도해 주세요.":"Failed to post the reply. Please try again.","알림":"Notifications","알림 보기":"View notifications","다크 모드":"Dark Mode","언어":"Language","켜짐":"On","꺼짐":"Off","알림이 없습니다.":"No notifications yet.","해당 카테고리에 글이 없습니다.":"No posts in this category yet.","카테고리 관리":"Manage Categories","추가":"Add","고정":"Pin","고정 해제":"Unpin","공지":"Notice","새 카테고리 이름":"New category name","카테고리 이름을 입력해 주세요.":"Please enter a category name.","이미 있는 카테고리예요.":"That category already exists.","카테고리 이름은 10자까지예요.":"Category names can be up to 10 characters.","카테고리 저장에 실패했어요. 다시 시도해 주세요.":"Failed to save categories. Please try again.","카테고리는 최소 1개가 필요해요.":"At least one category is required.","'공지'는 고정 글 배지 이름이라 쓸 수 없어요.":"'Notice' is reserved for pinned-post badges and can't be used as a category name.",
+"최신글":"Latest Posts","글쓰기":"Write","구글 로그인":"Google Sign-in","자유":"Free","코인":"Coins","질문":"Q&A","카테고리":"Category","카테고리 필터":"Category filter","최신순":"Newest","인기순":"Most Liked","댓글순":"Most Commented","답글":"Reply","답글을 입력하세요":"Write a reply","답글 입력":"Reply input","답글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to reply. Press the Google sign-in button above.","답글을 입력해 주세요.":"Please enter a reply.","답글 등록에 실패했어요. 다시 시도해 주세요.":"Failed to post the reply. Please try again.","다크 모드":"Dark Mode","언어":"Language","켜짐":"On","꺼짐":"Off","해당 카테고리에 글이 없습니다.":"No posts in this category yet.","카테고리 관리":"Manage Categories","추가":"Add","고정":"Pin","고정 해제":"Unpin","공지":"Notice","새 카테고리 이름":"New category name","카테고리 이름을 입력해 주세요.":"Please enter a category name.","이미 있는 카테고리예요.":"That category already exists.","카테고리 이름은 10자까지예요.":"Category names can be up to 10 characters.","카테고리 저장에 실패했어요. 다시 시도해 주세요.":"Failed to save categories. Please try again.","카테고리는 최소 1개가 필요해요.":"At least one category is required.","'공지'는 고정 글 배지 이름이라 쓸 수 없어요.":"'Notice' is reserved for pinned-post badges and can't be used as a category name.",
 "글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.":"You need to sign in with Google to write a post. Once signed in, you can post right away.",
 "제목을 입력하세요":"Enter a title","내용을 입력하세요":"Enter content","사진 첨부":"Attach Photo","사진 4장까지 넣을 수 있어요":"You can attach up to 4 photos","사진은 4장까지 넣을 수 있어요.":"You can attach up to 4 photos.","이미지 파일만 넣을 수 있어요.":"Only image files can be attached.","사진 지우기":"Remove Photo","취소":"Cancel","등록":"Post","삭제":"Delete","수정":"Edit","수정 완료":"Save Changes","닫기":"Close",
 "아직 글이 없습니다. 첫 글을 남겨 보세요.":"No posts yet. Write the first post.","글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to write. Press the Google sign-in button above.","아직 연결이 준비되지 않았어요. 잠시 후 다시 시도해 주세요.":"The connection is not ready yet. Please try again shortly.","제목을 입력해 주세요.":"Please enter a title.","내용을 입력하거나 사진을 넣어 주세요.":"Please enter content or add a photo.","등록에 실패했어요. 다시 시도해 주세요.":"Failed to post. Please try again.","수정에 실패했어요. 다시 시도해 주세요.":"Failed to save changes. Please try again.","글을 올린 지 10분이 지나 수정할 수 없어요.":"You can no longer edit this post — 10 minutes have passed since it was posted.","이미지를 불러오지 못했어요.":"Could not load the image.",
@@ -1969,7 +1952,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <label class="lgf">닉네임<input id="pf-nick" type="text" maxlength="20" autocomplete="nickname" placeholder="닉네임을 입력하세요"></label>
 <p class="lgerr" id="pf-err" role="alert" hidden></p>
 <div class="pfset" id="pf-set">
-<button type="button" class="pfset-row" id="pf-notif"><span class="pfset-lb">알림</span><span class="pfset-val"><span class="pfnotif-n zero" id="pf-notif-n">0</span><span class="pfset-chev" aria-hidden="true">›</span></span></button>
 <button type="button" class="pfset-row" id="pf-theme"><span class="pfset-lb">다크 모드</span><span class="pfset-val" id="pf-theme-v">꺼짐</span></button>
 <button type="button" class="pfset-row" id="pf-lang"><span class="pfset-lb">언어</span><span class="pfset-val" id="pf-lang-v">한국어</span></button>
 </div>
@@ -3218,13 +3200,12 @@ el("lg-x").addEventListener("click",close);
 ov.addEventListener("click",function(e){if(e.target===ov)close()});
 function pfDraw(){var nick=pnick.value.trim()||saved();setAv(el("pf-av-t"),el("pf-av-img"),nick,tmpImg);el("pf-del").hidden=!tmpImg}
 function pfOpen(first){var p=prof();pfFirst=!!first;tmpImg=effImg(p);pnick.value=p.nick||saved();perr.hidden=true;pskip.hidden=!first;pov.hidden=false;pfDraw();pfSetSync();setTimeout(function(){pnick.focus()},30)}
-/* 프로필 팝업 설정 행(알림·다크 모드·언어): 기능 자체는 헤더 버튼의 기존 로직을 그대로 쓰고,
+/* 프로필 팝업 설정 행(다크 모드·언어): 기능 자체는 헤더 버튼의 기존 로직을 그대로 쓰고,
    여기서는 진입점만 제공한다. 테마·언어는 헤더 버튼을 대신 눌러 hlkrx_theme·hlkrx_lang 저장까지
-   기존 경로로 처리하고, 알림은 프로필 팝업을 닫은 뒤 기존 종 버튼을 눌러 기존 팝업을 연다 */
+   기존 경로로 처리한다 */
 function pfIsDark(){var t=document.documentElement.getAttribute("data-theme");if(t==="dark")return true;if(t==="light")return false;return !!(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)}
 function pfLangEn(){try{return localStorage.getItem("hlkrx_lang")==="en"}catch(e){return false}}
-function pfSetSync(){var en=pfLangEn();var tv=el("pf-theme-v");if(tv)tv.textContent=pfIsDark()?(en?"On":"켜짐"):(en?"Off":"꺼짐");var lv=el("pf-lang-v");if(lv)lv.textContent=en?"EN":"한국어";var nb=document.getElementById("notif-badge");var n=(nb&&!nb.hidden)?String(nb.textContent||"0"):"0";var nn=el("pf-notif-n");if(nn){nn.textContent=n;nn.classList.toggle("zero",n==="0")}}
-var pfNotifB=el("pf-notif");if(pfNotifB)pfNotifB.addEventListener("click",function(e){e.stopPropagation();pfFirst=false;pov.hidden=true;var b=document.getElementById("notif-btn");if(b)b.click()});
+function pfSetSync(){var en=pfLangEn();var tv=el("pf-theme-v");if(tv)tv.textContent=pfIsDark()?(en?"On":"켜짐"):(en?"Off":"꺼짐");var lv=el("pf-lang-v");if(lv)lv.textContent=en?"EN":"한국어"}
 var pfThemeB=el("pf-theme");if(pfThemeB)pfThemeB.addEventListener("click",function(){var b=document.getElementById("th-btn");if(b)b.click();pfSetSync()});
 var pfLangB=el("pf-lang");if(pfLangB)pfLangB.addEventListener("click",function(){var b=document.getElementById("lang-btn");if(b)b.click();pfSetSync()});
 function pfClose(){if(pfFirst){var p=prof();p.done=1;saveProf(p)}pfFirst=false;pov.hidden=true}
@@ -3578,7 +3559,6 @@ if(!fcatsEl)return;
 fcatsEl.textContent="";
 cmCats.forEach(function(name){var b=document.createElement("button");b.type="button";b.dataset.cat=name;b.setAttribute("aria-pressed",String(formCat===name));b.textContent=name;fcatsEl.appendChild(b)});
 }
-function notifyAuthor(type,postKey,post){try{if(!fbUser||!fbUser.uid||!post||!post.uid)return;if(String(post.uid)===String(fbUser.uid))return;if(typeof firebase==="undefined"||!firebase.database)return;firebase.database().ref("notifications/"+post.uid).push({type:type,postKey:postKey,postTitle:String(post.title||""),actorName:myNick(),ts:firebase.database.ServerValue.TIMESTAMP,read:false})}catch(e){}}
 function syncFcats(){if(!fcatsEl)return;fcatsEl.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.cat===formCat))})}
 if(filterEl)filterEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;cmFilter=b.dataset.f||"전체";filterEl.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});cmDisplay=5;try{listEl.scrollTop=0}catch(err){}renderLists()});
 if(sortEl)sortEl.addEventListener("change",function(){cmSort=sortEl.value||"latest";cmDisplay=5;try{listEl.scrollTop=0}catch(err){}renderLists()});
@@ -3694,7 +3674,7 @@ if(inc&&(!liked||n>0)){
 try{
 var upd={};upd["likers/"+fbUser.uid]=liked?null:true;upd["likes"]=inc(liked?-1:1);
 var pr=postsRef.child(curKey).update(upd);
-if(pr&&typeof pr.then==="function")pr.then(function(){done();if(!liked)notifyAuthor("like",curKey,p)}).catch(done);else{done();if(!liked)notifyAuthor("like",curKey,p)}
+if(pr&&typeof pr.then==="function")pr.then(done).catch(done);else done()
 return;
 }catch(e){}
 }
@@ -3703,7 +3683,7 @@ try{
 var base=postsRef.child(curKey);
 var lp=liked?base.child("likers").child(fbUser.uid).remove():base.child("likers").child(fbUser.uid).set(true);
 var tp=base.child("likes").transaction(function(v){v=(typeof v==="number"?v:0);return liked?Math.max(0,v-1):v+1});
-Promise.all([lp,tp]).then(function(){done();if(!liked)notifyAuthor("like",curKey,p)}).catch(done);
+Promise.all([lp,tp]).then(done).catch(done);
 }catch(e2){done()}
 });
 /* 댓글 렌더링: 오래된 댓글부터 위에서 아래로. 삭제 버튼은 댓글 쓴 사람과 운영자에게만 보인다 */
@@ -3726,7 +3706,7 @@ if(!fbUser){pvCErr.textContent="답글을 쓰려면 로그인이 필요해요. �
 if(!cmtsRef){pvCErr.textContent="아직 연결이 준비되지 않았어요. 잠시 후 다시 시도해 주세요.";pvCErr.hidden=false;return}
 var rec={text:txt.slice(0,500),name:myNick(),uid:fbUser.uid||"",ts:firebase.database.ServerValue.TIMESTAMP,photo:myPhoto(),parent:parentC.key};
 var pr=cmtsRef.push(rec);
-function ok(){pvCErr.hidden=true;var post=curKey?postByKey(curKey):null;if(post)notifyAuthor("comment",curKey,post)}
+function ok(){pvCErr.hidden=true}
 if(pr&&typeof pr.then==="function")pr.then(ok).catch(function(){pvCErr.textContent="답글 등록에 실패했어요. 다시 시도해 주세요.";pvCErr.hidden=false});
 else ok();
 }
@@ -3802,7 +3782,7 @@ var t=pvCInput.value.trim();
 if(!t){pvCErr.textContent="댓글을 입력해 주세요.";pvCErr.hidden=false;pvCInput.focus();return}
 var rec={text:t.slice(0,500),name:myNick(),uid:fbUser.uid||"",ts:firebase.database.ServerValue.TIMESTAMP,photo:myPhoto()};
 var pr=cmtsRef.push(rec);
-function done(){pvCInput.value="";pvCErr.hidden=true;pvCList.scrollTop=pvCList.scrollHeight;var _pp=curKey?postByKey(curKey):null;if(_pp)notifyAuthor("comment",curKey,_pp)}
+function done(){pvCInput.value="";pvCErr.hidden=true;pvCList.scrollTop=pvCList.scrollHeight}
 if(pr&&typeof pr.then==="function")pr.then(done).catch(function(){pvCErr.textContent="댓글 등록에 실패했어요. 다시 시도해 주세요.";pvCErr.hidden=false});
 else done();
 });
@@ -4129,53 +4109,7 @@ if(postsRef){try{postsRef.child(key).once("value").then(function(snap){var v=sna
 tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.t==="pk")start()});
 })();
 </script>
-<script>
-/* 알림 종: 로그인한 사용자의 notifications/{uid} 를 듣고 안 읽은 개수를 종 배지로 보여 준다.
-   종을 누르면 최근 알림 20개를 팝업으로 열고 그 시점에 모두 읽음 처리한다.
-   항목을 누르면 팝업을 닫고 커뮤니티 글 팝업(window.__kimpwonOpenPost)으로 이동한다. */
-(function(){
-var wrap=document.getElementById("notif-wrap"),btn=document.getElementById("notif-btn"),badge=document.getElementById("notif-badge"),pop=document.getElementById("notif-pop"),list=document.getElementById("notif-list");
-if(!wrap||!btn||!badge||!pop||!list)return;
-function cfg(){try{var c=(typeof FIREBASE_CONFIG!=="undefined")?FIREBASE_CONFIG:null;return !!(c&&typeof c.apiKey==="string"&&c.apiKey.trim()&&typeof c.databaseURL==="string"&&c.databaseURL.trim())}catch(e){return false}}
-if(!cfg()||typeof firebase==="undefined"||!firebase.initializeApp||!firebase.database)return;
-try{if(!firebase.apps||!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG)}catch(e){}
-var db;try{db=firebase.database()}catch(e){return}
-var ref=null,qry=null,cb=null,items=[];
-function fmtT2(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts),now=new Date();var hm=d.toLocaleTimeString("ko-KR",{hour:"numeric",minute:"2-digit"});if(d.toDateString()===now.toDateString())return hm;var ymd=d.getFullYear()!==now.getFullYear()?d.getFullYear()+". ":"";return ymd+(d.getMonth()+1)+"/"+d.getDate()+" "+hm}
-function renderBadge(){var n=0;for(var i=0;i<items.length;i++)if(!items[i].read)n++;badge.textContent=String(n);badge.hidden=!n}
-function renderList(){
-list.textContent="";
-if(!items.length){var e=document.createElement("p");e.className="notif-empty";e.textContent="알림이 없습니다.";list.appendChild(e);return}
-items.slice(0,20).forEach(function(it){
-var b=document.createElement("button");b.type="button";b.className="notif-item";
-var m=document.createElement("span");m.className="ntf-msg";m.textContent=(it.actorName||"익명")+(it.type==="like"?"님이 내 글을 좋아해요":"님이 내 글에 댓글을 달았어요");b.appendChild(m);
-if(it.postTitle){var tt=document.createElement("span");tt.className="ntf-title";tt.textContent=it.postTitle;b.appendChild(tt)}
-var tm=document.createElement("span");tm.className="ntf-time";tm.textContent=fmtT2(it.ts);b.appendChild(tm);
-b.addEventListener("click",function(){pop.hidden=true;if(it.postKey&&typeof window.__kimpwonOpenPost==="function")window.__kimpwonOpenPost(it.postKey)});
-list.appendChild(b);
-});
-}
-function markAllRead(){
-if(!ref)return;
-var upd={},any=false;
-items.forEach(function(it){if(!it.read){upd[it.key+"/read"]=true;any=true}});
-if(any){try{var pr=ref.update(upd);if(pr&&pr.catch)pr.catch(function(){})}catch(e){}}
-}
-btn.addEventListener("click",function(e){e.stopPropagation();var willOpen=pop.hidden;pop.hidden=!willOpen;if(willOpen){renderList();markAllRead()}});
-document.addEventListener("click",function(e){if(!pop.hidden&&wrap&&!wrap.contains(e.target))pop.hidden=true});
-document.addEventListener("keydown",function(e){if(e.key==="Escape")pop.hidden=true});
-function detach(){if(qry&&cb){try{qry.off("value",cb)}catch(e){}}qry=null;cb=null;ref=null;items=[]}
-try{firebase.auth().onAuthStateChanged(function(u){
-detach();
-if(!u||!u.uid){wrap.hidden=true;pop.hidden=true;return}
-wrap.hidden=false;
-ref=db.ref("notifications/"+u.uid);
-qry=ref.orderByChild("ts").limitToLast(100);
-cb=function(snap){var arr=[];snap.forEach(function(ch){var v=ch.val()||{};arr.push({key:ch.key,type:String(v.type||"comment"),postKey:String(v.postKey||""),postTitle:String(v.postTitle||""),actorName:String(v.actorName||"익명"),ts:(typeof v.ts==="number"?v.ts:0),read:v.read===true})});arr.sort(function(a,b){return (b.ts||0)-(a.ts||0)});items=arr;renderBadge();if(!pop.hidden)renderList()};
-try{qry.on("value",cb,function(){})}catch(e){}
-})}catch(e){}
-})();
-</script>
+
 <script>
 /* 실시간 접속자 표시: 페이지가 열리면 Firebase Realtime Database의 presence 경로에 무작위 세션 아이디로
    자기 노드({t: 서버시각})를 등록하고, 연결이 끊기면 onDisconnect로 자동 삭제되게 한다.
