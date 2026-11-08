@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>하이퍼리퀴드(DEX) 선물 거래 원리와 펀딩비 | 김프원 가이드</title>
+<meta name="description" content="하이퍼리퀴드 같은 DEX(탈중앙화 거래소)에서 무기한 선물이 어떻게 거래되는지, 중앙화 거래소와의 차이와 펀딩비가 붙는 원리, 이용할 때 주의할 점을 쉽게 설명합니다.">
+<link rel="canonical" href="https://kimpwon.com/hyperliquid.html">
+<link rel="icon" href="/favicon.ico">
+<style>
+:root{--bg:#f7f8fa;--card:#ffffff;--text:#191c20;--muted:#6b7280;--line:#e4e7ec;--accent:#2563eb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif;line-height:1.7;-webkit-text-size-adjust:100%}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+header{padding:8px 0 20px}
+.logo{font-size:22px;font-weight:600;letter-spacing:-.5px;color:var(--text);text-decoration:none}
+article{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 20px}
+h1{font-size:23px;margin:0 0 16px;line-height:1.4}
+h2{font-size:17px;margin:28px 0 8px}
+p{margin:0 0 14px}
+.formula{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:0 0 14px;font-size:15px;text-align:center}
+ul{margin:0 0 14px;padding-left:20px}
+li{margin-bottom:6px}
+footer{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);font-size:14px}
+footer nav{display:flex;flex-wrap:wrap;gap:8px 16px;margin-bottom:12px}
+footer a{color:var(--accent);text-decoration:none}
+.copy{color:var(--muted);font-size:13px}
+@media (prefers-color-scheme: dark){
+:root{--bg:#14161a;--card:#1e2126;--text:#e9ebee;--muted:#9aa1ab;--line:#2d3138;--accent:#7aa2ff}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="https://kimpwon.com">kimpwon</a></header>
+<main>
+<article>
+<h1>하이퍼리퀴드(DEX) 선물 거래 원리와 펀딩비 이해하기</h1>
+
+<p>하이퍼리퀴드(Hyperliquid)는 주문과 체결이 블록체인 위에서 이루어지는 탈중앙화 거래소, 즉 DEX에서 무기한 선물을 거래하는 서비스입니다. 화면만 보면 평소 쓰던 중앙화 거래소와 비슷해 보이지만, 돈을 맡기는 방식부터 다릅니다. 이 글에서는 DEX 선물이 어떤 구조로 돌아가는지, 그리고 펀딩비가 왜 오가는지를 차근차근 풀어 보겠습니다.</p>
+
+<h2>DEX와 중앙화 거래소는 뭐가 다른가요</h2>
+<p>먼저 DEX와 중앙화 거래소의 차이부터 짚어 보겠습니다. 바이낸스 같은 중앙화 거래소는 회사가 거래소를 운영하고, 이용자는 그 회사에 돈을 입금해서 거래합니다. 회원 가입과 본인 인증을 거치는 것도 이 구조 때문입니다.</p>
+<p>DEX는 다릅니다. 회사 계정 대신 본인의 암호화폐 지갑을 연결해서 거래합니다. 자산은 거래소가 통째로 맡아 두는 게 아니라, 본인 지갑과 블록체인 위의 프로그램인 스마트 계약이 관리합니다. 주문을 넣고 체결되는 과정도 블록체인에 그대로 기록됩니다.</p>
+<p>하이퍼리퀴드는 자체 블록체인 위에서 오더북(호가창) 방식을 씁니다. 매수와 매도 주문이 호가창에 쌓이고, 가격이 맞는 주문끼리 체결되는 방식이라 화면 구성이나 거래 체감은 중앙화 거래소와 크게 다르지 않습니다.</p>
+<ul>
+<li>가입 방식: 중앙화 거래소는 계정과 본인 인증, DEX는 지갑 연결</li>
+<li>자산 보관: 중앙화 거래소는 거래소가 맡고, DEX는 본인 지갑이 기준</li>
+<li>체결 기록: DEX는 블록체인에 남아 누구나 확인할 수 있음</li>
+</ul>
+
+<h2>무기한 선물은 어떤 상품인가요</h2>
+<p>무기한 선물은 말 그대로 만기가 없는 선물 계약입니다. 일반 선물은 정해진 날짜가 되면 계약이 끝나지만, 무기한 선물은 그런 날짜가 없어서 본인이 정리하기 전까지 포지션을 계속 유지할 수 있습니다.</p>
+<p>실제 코인을 들고 있는 것도 아닙니다. 가격 움직임에 따라 이익과 손실이 정해지는 계약을 사고파는 것이고, 증거금을 맡기면 그보다 큰 금액으로 거래하는 레버리지도 쓸 수 있습니다.</p>
+<p>그런데 만기가 없는데도 선물 가격이 현물 가격에서 멀리 달아나지 않습니다. 뒤에서 설명할 펀딩비가 선물 가격을 현물 쪽으로 계속 끌어당기는 역할을 하기 때문입니다.</p>
+
+<h2>펀딩비는 왜 오가나요</h2>
+<p>선물 시장에서는 사려는 쪽(롱)과 팔려는 쪽(숏)의 균형이 자주 깨집니다. 가격이 오를 것 같으면 롱이 몰리고, 선물 가격이 현물보다 비싸지는 일이 생깁니다. 이때 롱이 숏에게 돈을 내는 구조가 펀딩비입니다.</p>
+<p>펀딩비가 양수(+)면 롱이 숏에게, 음수(−)면 숏이 롱에게 냅니다. 한쪽으로 과하게 몰릴수록 내는 쪽의 부담이 커지니, 몰린 포지션을 정리하거나 반대쪽 포지션을 잡을 이유가 생깁니다. 선물 가격이 현물에서 크게 벗어나지 않게 잡아 주는 장치인 셈입니다.</p>
+<p>실제로 오가는 금액은 포지션 금액에 펀딩비 비율을 곱해서 정해집니다. 포지션이 클수록, 들고 있는 시간이 길수록 금액이 커지기 때문에 오래 들고 가는 포지션일수록 이 비용을 무시하기 어렵습니다.</p>
+<p>중앙화 거래소는 보통 8시간마다 펀딩비를 정산하지만, 하이퍼리퀴드는 1시간마다 정산합니다. 정산 주기가 짧으면 펀딩비가 조금씩 자주 오가서, 포지션을 짧게 잡는 사람일수록 시간당 비용을 더 꼼꼼히 따져 봐야 합니다.</p>
+<p>펀딩비 비율은 거래소마다 다르게 매겨집니다. 김프원의 펀딩비 탭에서는 하이퍼리퀴드를 포함한 주요 거래소의 펀딩비를 한 화면에서 비교할 수 있습니다.</p>
+
+<h2>이용할 때 주의할 점</h2>
+<ul>
+<li>레버리지를 쓰면 가격이 반대로 조금만 움직여도 포지션이 청산될 수 있습니다. 청산되면 맡긴 증거금을 잃게 됩니다.</li>
+<li>펀딩비도 비용입니다. 포지션을 오래 들고 있으면 정산 때마다 빠져나가는 펀딩비가 생각보다 크게 쌓일 수 있습니다.</li>
+<li>지갑의 시드 문구(복구 문구)를 잃어버리거나 남에게 알려 주면 자산을 되찾기 어렵습니다. 시드 문구는 온라인에 저장하지 말고 오프라인에 적어 따로 보관하세요.</li>
+<li>DEX에 자산을 넣고 뺄 때는 다른 네트워크를 거치는 브리지 과정을 지나는데, 이 과정에서 수수료가 들고 시간도 걸립니다. 처음에는 소액으로 전체 흐름을 확인해 보는 편이 안전합니다.</li>
+</ul>
+<p>DEX는 문제가 생겼을 때 전화로 물어볼 고객센터가 마땅치 않은 경우도 많습니다. 주문 방식과 청산 조건을 충분히 익힌 뒤에 이용하는 것이 좋습니다.</p>
+
+</article>
+</main>
+<footer>
+<nav>
+<a href="/guide.html">가이드</a>
+<a href="/kimchi-premium.html">김치프리미엄이란</a>
+<a href="/funding-rate.html">펀딩비란</a>
+<a href="/hyperliquid.html">하이퍼리퀴드 선물과 펀딩비</a>
+<a href="/earnings-season.html">실적발표 보는 법</a>
+<a href="/fear-greed.html">공포·탐욕 지수</a>
+<a href="/data.html">데이터 출처와 산출 기준</a>
+</nav>
+<div class="copy">© 2026 kimpwon</div>
+</footer>
+</div>
+</body>
+</html>
