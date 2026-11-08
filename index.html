@@ -1357,10 +1357,22 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .hd-r{gap:6px}
 }
 </style>
+<style>
+/* ===== 커뮤니티 탭 호버 드롭다운 (2026-11-09) =====
+   마우스가 있는 기기에서만 커뮤니티 탭 아래에 '게시물' 링크 메뉴가 뜬다.
+   position:fixed로 띄워 탭 줄의 overflow에 잘리지 않게 하고, 위치는 JS가
+   버튼의 getBoundingClientRect 기준으로 잡는다. 터치 기기에서는 절대 뜨지 않는다.
+   색은 기존 테마 변수만 써서 라이트/다크 모두에서 깨지지 않게 한다 */
+.pkdd-wrap{position:relative;display:inline-flex;align-items:stretch;flex:none}
+.pkdd{display:none;position:fixed;z-index:200;background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 10px 28px var(--adsh);padding:9px 5px 5px}
+.pkdd a{display:block;padding:9px 14px;text-align:center;color:var(--tx);text-decoration:none;font:inherit;font-size:14.5px;font-weight:700;border-radius:8px;white-space:nowrap}
+.pkdd a:hover{background:var(--sf2)}
+@media (hover:hover) and (pointer:fine){.pkdd.open{display:block}}
+</style>
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤니티</button></div></div>
+<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><span class="pkdd-wrap" id="pkdd-wrap"><button data-t="pk" aria-pressed="false">커뮤니티</button></span></div></div>
 
 <script>
 /* ===== 헤더 테마(다크/라이트)·언어(한/영) 전환 =====
@@ -1377,7 +1389,7 @@ function syncThBtn(){if(!thBtn)return;var d=effTheme()==="dark";var lb=LANG==="e
 if(thBtn)thBtn.addEventListener("click",function(){var nx=effTheme()==="dark"?"light":"dark";root.setAttribute("data-theme",nx);try{localStorage.setItem("hlkrx_theme",nx)}catch(e){}syncThBtn()});
 if(window.matchMedia){var mm=window.matchMedia("(prefers-color-scheme: dark)");if(mm.addEventListener)mm.addEventListener("change",syncThBtn)}
 var D={
-"홈":"Home","김프":"Kimchi Prem.","해외":"Global","원자재":"Commodities","펀딩비":"Funding","비교":"Compare","지표":"Indicators","커뮤니티":"Community",
+"홈":"Home","김프":"Kimchi Prem.","해외":"Global","원자재":"Commodities","펀딩비":"Funding","비교":"Compare","지표":"Indicators","커뮤니티":"Community","게시물":"Posts",
 "실시간":"Live","연결 중…":"Connecting…","로그인":"Log in","접속자":"Online","명":"","프로필 설정":"Profile settings",
 "코스피":"KOSPI","코스닥":"KOSDAQ","나스닥":"NASDAQ","다우":"Dow","달러/원":"USD/KRW","원유":"Crude Oil",
 "실시간 차트":"Live Chart","한국":"Korea","미국":"US","급상승":"Top Gainers","급하락":"Top Losers","불러오는 중…":"Loading…",
@@ -5633,6 +5645,40 @@ navigating=true;
 showTip();
 setTimeout(function(){window.location.href=brand.href},650);
 });
+})();
+</script>
+<div class="pkdd" id="pkdd"><a href="/posts.html" target="_blank" rel="noopener">게시물</a></div>
+<script>
+/* 커뮤니티 탭 호버 드롭다운: 마우스 기기에서만 동작한다. 래퍼(커뮤니티 버튼)와
+   드롭다운 중 어느 한쪽에라도 마우스가 있으면 열려 있고, 둘 다 벗어나면 닫힌다.
+   버튼 클릭 시 커뮤니티 탭으로 전환되는 기존 동작은 건드리지 않는다 */
+(function(){
+var wrap=document.getElementById("pkdd-wrap"),dd=document.getElementById("pkdd");
+if(!wrap||!dd)return;
+if(!(window.matchMedia&&window.matchMedia("(hover: hover) and (pointer: fine)").matches))return;
+var btn=wrap.querySelector('button[data-t="pk"]');
+if(!btn)return;
+function place(){
+var r=btn.getBoundingClientRect();
+dd.style.minWidth=Math.ceil(r.width)+"px";
+var w=dd.offsetWidth,left=r.left;
+if(left+w>window.innerWidth-6)left=window.innerWidth-6-w;
+if(left<4)left=4;
+dd.style.left=left+"px";
+dd.style.top=r.bottom+"px";
+}
+var closeTimer=0;
+function cancelClose(){if(closeTimer){clearTimeout(closeTimer);closeTimer=0}}
+function scheduleClose(){cancelClose();closeTimer=setTimeout(function(){closeTimer=0;dd.classList.remove("open")},250)}
+function open(){cancelClose();dd.classList.add("open");place()}
+function close(){cancelClose();dd.classList.remove("open")}
+wrap.addEventListener("mouseenter",open);
+wrap.addEventListener("mouseleave",function(e){if(!dd.contains(e.relatedTarget))scheduleClose()});
+dd.addEventListener("mouseenter",cancelClose);
+dd.addEventListener("mouseleave",function(e){if(!wrap.contains(e.relatedTarget))scheduleClose()});
+window.addEventListener("resize",function(){if(dd.classList.contains("open"))place()});
+window.addEventListener("scroll",function(){if(dd.classList.contains("open"))place()},true);
+document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c6e8ab4e4ea4777bf54ca7e737337b9"}'></script><!-- End Cloudflare Web Analytics -->
