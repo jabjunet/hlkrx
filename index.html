@@ -2099,14 +2099,15 @@ function pctc(x){if(x==null||isNaN(x))return'<b>—</b>';var c=x>0?"up":x<0?"dn"
 function hlv(h){return{hi:h[4]>0?(h[1]-h[4])/h[4]*100:null,lo:h[5]>0?(h[1]-h[5])/h[5]*100:null}}
 function hlv2(h,key){var g=hlv(h);if(key&&HL2[key]){var q=HL2[key];if(g.hi==null&&q[0]>0)g.hi=(h[1]-q[0])/q[0]*100;if(g.lo==null&&q[1]>0)g.lo=(h[1]-q[1])/q[1]*100}return g}
 /* 김프 표 가격 칸: 가격 숫자만 표시한다(행별 거래소 칩 없음).
-   각 행이 쓰는 거래소는 위쪽 거래소 전환(xc)이고, 그 거래소에 데이터가 없으면 있는 거래소 중 첫 번째를 쓴다. */
+   각 행이 쓰는 거래소는 위쪽 거래소 전환(xc) 하나로 고정한다. 기준 거래소에 그 종목이 없거나
+   가격이 없으면 다른 거래소 가격으로 대체하지 않고 kxPick이 null을 돌려줘 그 행을 '—'로 표시한다. */
 function kxAv(rows){return["hl","bn","okx","by"].filter(function(x){return rows[x]&&rows[x][1]>0})}
-function kxPick(key,av){if(av.indexOf(xc)>=0)return xc;return av[0]}
+function kxPick(key,av){return av.indexOf(xc)>=0?xc:null}
 function kxTag(x,bt,hl){if(x==="hl")return "xyz:"+hl;if(x==="okx")return bt+"-USDT-SWAP";return bt+"USDT"}
 function kxCell(key,av,xs,inner){return '<td><span class="kxp">'+inner+'</span></td>'}
 /* 행 단위 방어: 한 종목의 계산·렌더링에서 예외가 나도 그 행만 빠지거나 대체 행으로 바뀌고, 표 전체 렌더링과 데이터 로딩은 멈추지 않는다.
    safeMap은 행마다 try/catch로 감싸고, 실패한 행은 아바타·스파크라인 없이 숫자 칸만 '—'인 kxFbKr/kxFbUs 대체 행으로 바꾼다.
-   일부 거래소 데이터가 없거나 늦게 와도 kxAv가 있는 거래소만 골라 나머지 행은 정상으로 그린다. */
+   기준 거래소에 없는 종목은 해외가·김프·등락·거래량을 '—'로 그린 행으로 남기고, 나머지 행은 정상으로 그린다. */
 function safeMap(list,fn,fb){var out=[];if(!list)return out;for(var i=0;i<list.length;i++){try{out.push(fn(list[i],i))}catch(e){var v=null;if(fb)try{v=fb(list[i],i)}catch(e2){}if(v!=null)out.push(v)}}return out}
 function kxFbKr(r){var nm=(r&&r[0])||"?";return{n:nm,tg:nm,fk:(r&&r[1])||nm,b:null,c:null,v:null,p:null,hi:null,lo:null,mc:null,html:'<tr class="na"><td><div class="nm"><div><b>'+nm+'</b><span class="l">데이터 대기</span></div></div></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td></tr>'}}
 function kxFbUs(s){var nm=s||"?";return{n:nm,tg:nm,fk:nm,b:null,c:null,v:null,p:null,hi:null,lo:null,mc:null,html:'<tr class="na"><td><div class="nm"><div><b>'+nm+'</b><span class="l">데이터 대기</span></div></div></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td></tr>'}}
@@ -2116,7 +2117,7 @@ if(mk==="us")return us(fx);
 KBR=safeMap(R,function(r){var fk=r[1]||r[0],bt=BR[r[0]];
 var rows={hl:r[1]?(D.filter(function(x){return x[0]===r[1]})[0]||null):null,bn:bt?brow(bt):null,okx:bt?xrow("okx",bt):null,by:bt?xrow("by",bt):null};
 var avl=kxAv(rows),xs=avl.length?kxPick(r[0],avl):null,h=xs?rows[xs]:null;
-if(!h)return{n:r[0],tg:r[0],fk:fk,b:null,c:null,v:null,p:null,hi:null,lo:null,mc:null,html:'<tr class="na"><td><div class="nm">'+av(r[0])+'<div><b>'+r[0]+'</b><span class="l">미상장</span></div>'+spkHtml("",xc)+'</div></td>'+(krxOpen()?'<td><b>—</b></td>':'<td>'+clnHtml(r[2]>0?f(r[2]):null)+'<span class="pcv">—</span></td>')+'<td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td></tr>'};
+if(!h)return{n:r[0],tg:r[0],fk:fk,b:null,c:null,v:null,p:null,hi:null,lo:null,mc:(MCN[r[0]]&&MCK[MCN[r[0]]]!=null)?MCK[MCN[r[0]]]:null,html:'<tr><td><div class="nm">'+av(r[0])+'<div><b>'+r[0]+'</b><span class="l">미상장</span></div>'+spkHtml("",xc)+'</div></td>'+(krxOpen()?'<td><b>—</b></td>':'<td>'+clnHtml(r[2]>0?f(r[2]):null)+'<span class="pcv">—</span></td>')+'<td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td></tr>'};
 var o=h[1]*fx,pv=(r[2]/o-1)*100,c=pv>0?"up":pv<0?"dn":"",tag=kxTag(xs,bt,r[1]),g=hlv2(h,r[1]||toCan("bn",bt));
 var pinner=krxOpen()?'<b>'+f(o)+'</b><span class="l">$'+f(h[1],h[1]<10?3:2)+'</span>':clnHtml(r[2]>0?f(r[2]):null)+'<span class="pcv">'+f(o)+'</span>';
 var pcell=kxCell(r[0],avl,xs,pinner);
@@ -2382,7 +2383,7 @@ KBR=safeMap(ticks,function(s){var b=OR[s],bnRow=null,i;
 for(i=0;i<BD.length;i++)if(BD[i][0].replace(/_$/,"")===s){bnRow=BD[i];break}
 var rows={hl:D.filter(function(z){return z[0]===s})[0]||null,bn:bnRow,okx:xrow("okx",s),by:xrow("by",s)};
 var avl=kxAv(rows),xs=avl.length?kxPick(s,avl):null,h=xs?rows[xs]:null;
-if(!h)return{n:s,tg:s,fk:s,b:null,c:null,v:null,p:null,hi:null,lo:null,mc:capOf(s),html:'<tr class="na"><td><div class="nm">'+av(s)+'<div><b>'+s+'</b><span class="l">미상장</span></div>'+spkHtml("",xc)+'</div></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td></tr>'};
+if(!h)return{n:s,tg:s,fk:s,b:null,c:null,v:null,p:null,hi:null,lo:null,mc:capOf(s),html:'<tr><td><div class="nm">'+av(s)+'<div><b>'+s+'</b><span class="l">미상장</span></div>'+spkHtml("",xc)+'</div></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td><td><b>—</b></td></tr>'};
 var pv=(h[1]/b-1)*100,c=pv>0?"up":pv<0?"dn":"",tag=xs==="hl"?"xyz:"+s:xs==="okx"?s+"-USDT-SWAP":(xs==="bn"&&rows.bn[0]==="SPCX_")?"SPCXUSD1":s+"USDT",g=hlv2(h,xs==="hl"?s:toCan(xs,s));
 var pcv2=usOpen()?undefined:pclose(xs==="hl"?s:toCan(xs,s),h);
 var pinner2=pcv2===undefined?'<b>'+f(h[1]*fx)+'</b><span class="l">$'+d2(h[1])+'</span>':clnHtml(pcv2!=null?f(pcv2*fx):null)+'<span class="pcv">'+f(h[1]*fx)+'</span>';
