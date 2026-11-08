@@ -74,7 +74,7 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .tabs button[aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
 /* 헤더 두 줄 구조: 윗줄 왼쪽은 배경 없는 얇은 소문자 영문 로고 글자만, 오른쪽 끝은 실시간 상태·로그인(아래 접속자 표시). 아랫줄은 탭 한 줄 — 넘치면 탭 영역만 가로 스크롤 */
 .hd-t{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-width:0}
-.brand{position:relative;flex:none;display:inline-flex;align-items:center;background:none;color:var(--tx);font-size:26px;font-weight:300;letter-spacing:-.015em;line-height:1;white-space:nowrap;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;text-decoration:none;cursor:pointer}
+.brand{position:relative;flex:none;display:inline-flex;align-items:center;background:none;color:var(--tx);font-size:23px;font-weight:300;letter-spacing:-.015em;line-height:1;white-space:nowrap;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;text-decoration:none;cursor:pointer}
 .brand .brand-won{font-weight:800}
 .brand:hover .brand-txt{opacity:.75}
 .brand-tip{position:absolute;left:50%;top:calc(100% + 8px);transform:translate(-50%,-3px);background:var(--sf);color:var(--tx);font-size:16px;font-weight:700;letter-spacing:0;line-height:1;padding:12px 20px;border:1px solid var(--bd);border-radius:6px;white-space:nowrap;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .16s ease,transform .16s ease,visibility .16s ease;box-shadow:0 6px 16px rgba(0,0,0,.18);z-index:80}
@@ -1223,8 +1223,8 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 @media(max-width:720px){
 /* 전체 톤: 배경에 아주 은은한 무드만 얹는다 (카드 표면은 테마 변수 그대로) */
 body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.09),rgba(22,199,132,0) 62%),radial-gradient(480px 240px at -12% 140px,rgba(94,160,255,.06),rgba(94,160,255,0) 60%);background-repeat:no-repeat}
-/* 0) 헤더 로고: 기본 규칙(26px·'kimp' 얇게·'won' 굵게 800)과 같은 결 — 모바일은 크기만 27px로 키운다 */
-.brand{font-size:27px}
+/* 0) 헤더 로고: 기본 규칙(23px·'kimp' 얇게·'won' 굵게 800)과 같은 결 — 모바일은 크기만 24px로 키운다 */
+.brand{font-size:24px}
 /* 1) 탭 바: 선택 탭은 초록 채워진 pill, 비선택은 회색 글자 */
 .hd .tabs{gap:4px;padding:6px 0 9px;align-items:center}
 .hd .tabs button{min-height:40px;padding:7px 16px;border:0;border-bottom:0;border-radius:999px;font-size:15.5px;font-weight:700;color:var(--mut);background:transparent;transition:background-color .18s ease,color .18s ease}
