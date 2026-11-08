@@ -1011,6 +1011,8 @@ main{padding:2px 12px 40px}
 .cm-rmeta{flex:none;display:flex;align-items:center;gap:5px;max-width:42%;font-size:12px;color:var(--mut);white-space:nowrap}
 .cm-ra{min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:12.5px;font-weight:600;color:var(--tx)}
 .cm-rsep{flex:none;color:var(--bd)}
+/* 목록 행 삭제 버튼: 댓글 삭제 버튼(.cmsg-del)처럼 작고 튀지 않게. 행이 <button>이라 안에 실제 버튼을 넣을 수 없어 span으로 만든다 */
+.cm-rdel{flex:none;display:inline-flex;align-items:center;border:1px solid var(--bd);background:none;color:var(--mut);border-radius:6px;font-size:11px;font-weight:600;padding:3px 8px;min-height:24px;cursor:pointer}
 @media(max-width:520px){.cm-rmeta{max-width:36%}}
 /* 글 보기 팝업: 로그인 팝업(.lgov/.lgbox)과 같은 틀, 본문만 더 넓고 길게.
    좋아요·댓글까지 들어가 팝업 전체가 화면 높이를 넘지 않게 카드 안에서 스크롤한다 */
@@ -1020,6 +1022,16 @@ main{padding:2px 12px 40px}
 .pv-row{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
 .pv-del{margin-right:auto;min-height:40px;padding:8px 14px;border:1px solid var(--bd);border-radius:999px;background:none;color:var(--up);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .pv-del[hidden]{display:none}
+/* 글 삭제 확인·실패 안내 다이얼로그: 글 팝업(.lgov z-200)보다 위에 뜨는 작은 확인창.
+   확인 모드(취소/삭제)와 안내 모드(확인)를 한 오버레이로 쓴다 */
+.cfov{z-index:230}
+.cfbox{max-width:340px}
+.cf-msg{margin:0 0 16px;font-size:15px;font-weight:600;line-height:1.5;color:var(--tx)}
+.cf-row{display:flex;justify-content:flex-end;gap:8px}
+.cf-row button[hidden]{display:none}
+.cf-cancel{min-height:40px;padding:8px 16px;border:1px solid var(--bd);border-radius:999px;background:none;color:var(--tx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
+.cf-del{min-height:40px;padding:8px 16px;border:1px solid var(--up);border-radius:999px;background:none;color:var(--up);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
+.cf-ok{min-height:40px;padding:8px 16px;border:1px solid var(--bd);border-radius:999px;background:var(--sf2);color:var(--tx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
 .pv-edit{min-height:40px;padding:8px 14px;border:1px solid var(--bd);border-radius:999px;background:none;color:var(--tx);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .pv-edit[hidden]{display:none}
 /* 글 좋아요: 본문 아래 하트 버튼. 눌러 좋아요한 상태(.on)면 하트가 빨갛게 채워진다 */
@@ -1926,6 +1938,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <div class="pv-likerow"><button type="button" class="pv-like" id="pv-like" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.7C6.4 17 3 13.6 3 9.9 3 7.2 5 5 7.6 5c1.7 0 3.4.9 4.4 2.4C13 5.9 14.7 5 16.4 5 19 5 21 7.2 21 9.9c0 3.7-3.4 7.1-9 10.8z"/></svg><span>좋아요</span><span id="pv-like-n">0</span></button><p class="pv-likemsg" id="pv-like-msg" role="alert" hidden></p></div>
 <div class="pv-cmts"><h3>댓글 <span id="pv-cmt-n">0</span></h3><div class="pv-clist" id="pv-clist"><p class="pv-cempty">댓글을 불러오는 중…</p></div><p class="pv-cgate" id="pv-cgate" hidden>댓글을 쓰려면 로그인이 필요해요.<button type="button" class="pv-clogin" id="pv-clogin">구글 로그인</button></p><form class="pv-cform" id="pv-cform" hidden><input id="pv-cinput" type="text" maxlength="500" placeholder="댓글을 입력하세요" aria-label="댓글 입력" autocomplete="off"><button type="submit" class="pv-csend">등록</button></form><p class="pv-cerr" id="pv-cerr" role="alert" hidden></p></div>
 <div class="pv-row"><button type="button" class="pv-del" id="pv-del" hidden>삭제</button><button type="button" class="pv-edit" id="pv-pin" hidden>고정</button><button type="button" class="pv-edit" id="pv-edit" hidden>수정</button><button type="button" class="cm-submit" id="pv-close">닫기</button></div>
+</div></div>
+<div class="lgov cfov" id="cf-ov" hidden><div class="lgbox cfbox" role="alertdialog" aria-modal="true" aria-labelledby="cf-msg">
+<p class="cf-msg" id="cf-msg">이 글을 삭제할까요?</p>
+<div class="cf-row"><button type="button" class="cf-cancel" id="cf-cancel">취소</button><button type="button" class="cf-del" id="cf-ok">삭제</button><button type="button" class="cf-ok" id="cf-done" hidden>확인</button></div>
 </div></div>
 <div class="lgov" id="cat-ov" hidden><div class="lgbox catbox" role="dialog" aria-modal="true" aria-labelledby="cat-title">
 <h2 id="cat-title">카테고리 관리</h2>
@@ -3570,6 +3586,49 @@ function fmtD(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts),now=
 function fmtT(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts),now=new Date();var hm=d.toLocaleTimeString("ko-KR",{hour:"numeric",minute:"2-digit"});if(d.toDateString()===now.toDateString())return hm;var ymd=d.getFullYear()!==now.getFullYear()?d.getFullYear()+". ":"";return ymd+(d.getMonth()+1)+"/"+d.getDate()+" "+hm}
 function emptyMsg(el,msg){el.textContent="";var p=document.createElement("p");p.className="cm-empty";p.textContent=msg;el.appendChild(p)}
 function canDel(p){return !!fbUser&&(isOp()||(p.uid&&p.uid===fbUser.uid))}
+/* 글 삭제 확인·실패 안내 다이얼로그(#cf-ov): 확인 모드(취소/삭제)와 안내 모드(확인)를 한 오버레이로 쓴다 */
+var cfOv=document.getElementById("cf-ov"),cfMsg=document.getElementById("cf-msg"),
+cfOkBtn=document.getElementById("cf-ok"),cfCancelBtn=document.getElementById("cf-cancel"),cfDoneBtn=document.getElementById("cf-done");
+var cfPending=null;
+function cfHide(){if(cfOv)cfOv.hidden=true;cfPending=null}
+function askDelete(cb){
+if(!cfOv){cb();return}
+cfPending=cb;
+cfMsg.textContent="이 글을 삭제할까요?";
+cfOkBtn.hidden=false;cfCancelBtn.hidden=false;cfDoneBtn.hidden=true;
+cfOv.hidden=false;
+}
+function showDelFail(){
+if(!cfOv)return;
+cfPending=null;
+cfMsg.textContent="삭제하지 못했어요. 다시 시도해 주세요";
+cfOkBtn.hidden=true;cfCancelBtn.hidden=true;cfDoneBtn.hidden=false;
+cfOv.hidden=false;
+}
+if(cfOkBtn)cfOkBtn.addEventListener("click",function(){var cb=cfPending;cfHide();if(cb)cb()});
+if(cfCancelBtn)cfCancelBtn.addEventListener("click",cfHide);
+if(cfDoneBtn)cfDoneBtn.addEventListener("click",cfHide);
+if(cfOv)cfOv.addEventListener("click",function(e){if(e.target===cfOv)cfHide()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&cfOv&&!cfOv.hidden){e.stopImmediatePropagation();cfHide()}});
+/* 글 삭제는 이 한 경로로만 한다(목록 행 버튼·글 팝업 삭제 버튼 공용):
+   지우기 전에 확인 다이얼로그를 한 번 거치고, 취소하면 아무 일도 일어나지 않는다.
+   실패하면 조용히 삼키지 않고 안내 다이얼로그를 띄운다. 지우면 글 하위 comments(댓글·대댓글)도 함께 사라진다.
+   목록 반영은 기존 구독 갱신이 맡고, 전체보기(#pp) 전용 배열(allPosts)에서도 빼서 바로 사라지게 한다.
+   onConfirm은 확인을 눌러 실제 삭제가 시작되는 시점에 실행된다(팝업 삭제 버튼이 팝업을 닫는 용도) */
+function deletePost(key,onConfirm){
+if(!key||!postsRef)return;
+askDelete(function(){
+if(onConfirm)onConfirm();
+try{
+var pr=postsRef.child(key).remove();
+if(pr&&typeof pr.catch==="function")pr.catch(function(){showDelFail()});
+if(pr&&typeof pr.then==="function")pr.then(function(){
+posts=posts.filter(function(x){return x.key!==key});
+if(allPosts){allPosts=allPosts.filter(function(x){return x.key!==key});if(ppSec&&!ppSec.hidden)renderPp()}
+});
+}catch(e){showDelFail()}
+});
+}
 /* 수정 10분 제한: 글쓴이 본인은 작성 시각(ts)부터 10분 안에만 수정할 수 있고, 운영자는 예외로 언제든 가능하다.
    작성 시각이 없거나 형식이 아닌 글은 기한이 지난 것으로 본다 */
 var EDIT_LIMIT_MS=10*60*1000;
@@ -3637,6 +3696,14 @@ var mt=document.createElement("span");mt.className="cm-rmeta";
 var au=document.createElement("span");au.className="cm-ra";au.textContent=p.name||"익명";mt.appendChild(au);
 var sep=document.createElement("span");sep.className="cm-rsep";sep.setAttribute("aria-hidden","true");sep.textContent="|";mt.appendChild(sep);
 var dt=document.createElement("span");dt.textContent=fmtD(p.ts);mt.appendChild(dt);
+/* 본인 글(또는 운영자)이면 메타 오른쪽 끝에 삭제 버튼을 붙인다. 행이 <button>이라 실제 버튼을
+   중첩할 수 없어 span(role=button)으로 만들고, 클릭이 행 클릭(팝업 열기)으로 전파되지 않게 막는다 */
+if(canDel(p)){
+var del=document.createElement("span");del.className="cm-rdel";del.setAttribute("role","button");del.setAttribute("tabindex","0");del.setAttribute("aria-label","이 글 삭제");del.textContent="삭제";
+del.addEventListener("click",function(e){e.stopPropagation();deletePost(p.key)});
+del.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();e.stopPropagation();deletePost(p.key)}});
+mt.appendChild(del);
+}
 b.appendChild(mt);
 b.addEventListener("click",function(){openPost(p.key)});
 return b;
@@ -3884,8 +3951,8 @@ ov.addEventListener("click",function(e){if(e.target===ov)closePost()});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!ov.hidden)closePost()});
 pvDel.addEventListener("click",function(){
 if(!curKey||!postsRef)return;
-var key=curKey;closePost();
-postsRef.child(key).remove().catch(function(){});
+/* 확인 다이얼로그에서 삭제를 눌렀을 때만 팝업을 닫고 공용 경로로 지운다. 취소하면 팝업도 그대로 둔다 */
+deletePost(curKey,function(){closePost()});
 });
 /* 글 고정(공지): 운영자에게만 고정/고정 해제 버튼을 보이고, 누르면 posts/{글}/pin을 바꾼다.
    고정 시각(pinTs)도 함께 저장해 고정 영역을 최근에 고정한 순으로 보여 준다 */
