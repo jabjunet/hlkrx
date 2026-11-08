@@ -255,7 +255,7 @@ function render(){
     var e=document.createElement("div"); e.className="state"; e.textContent="아직 글이 없어요.";
     listEl.appendChild(e);
   }
-  countEl.textContent="전체 "+arr.length+"개 글";
+  countEl.textContent="전체 "+(pins.length+arr.length)+"개 글";
   moreBtn.hidden=arr.length<=shown;
 }
 function openPost(p){
