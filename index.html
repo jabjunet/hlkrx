@@ -3551,7 +3551,7 @@ if(tsrc){var im=document.createElement("img");im.src=tsrc;im.alt="";im.referrerP
 else th.textContent=(p.name||"익명").charAt(0);
 b.appendChild(th);
 var main=document.createElement("span");main.className="cm-rmain";
-var tl=document.createElement("span");tl.className="cm-tline";if(pinned){var pinB=document.createElement("span");pinB.className="cm-pinbdg";pinB.textContent="공지";tl.appendChild(pinB)}var cat=document.createElement("span");cat.className="cm-cat";cat.textContent=catOf(p);tl.appendChild(cat);var t=document.createElement("span");t.className="cm-rt";t.textContent=p.title||"(제목 없음)";tl.appendChild(t);if(cmtN(p)>=3||likeN(p)>=3){var hot=document.createElement("span");hot.className="cm-hot";hot.textContent="HOT";tl.appendChild(hot)}main.appendChild(tl);
+var tl=document.createElement("span");tl.className="cm-tline";if(pinned){var pinB=document.createElement("span");pinB.className="cm-pinbdg";pinB.textContent="공지";tl.appendChild(pinB)}else{var cat=document.createElement("span");cat.className="cm-cat";cat.textContent=catOf(p);tl.appendChild(cat)}var t=document.createElement("span");t.className="cm-rt";t.textContent=p.title||"(제목 없음)";tl.appendChild(t);if(cmtN(p)>=3||likeN(p)>=3){var hot=document.createElement("span");hot.className="cm-hot";hot.textContent="HOT";tl.appendChild(hot)}main.appendChild(tl);
 var v=document.createElement("span");v.className="cm-rv";v.textContent="조회 "+(p.views||0)+" · 좋아요 "+likeN(p)+" · 댓글 "+cmtN(p);main.appendChild(v);
 b.appendChild(main);
 var mt=document.createElement("span");mt.className="cm-rmeta";
