@@ -3888,7 +3888,7 @@ if(!next.length){if(after)after(false);return}
 cmCats=next.slice();
 if(cmCats.indexOf(formCat)<0)formCat=firstCat();
 if(cmFilter!=="전체"&&cmCats.indexOf(cmFilter)<0){cmFilter="전체";cmDisplay=5}
-renderFilterChips();renderFcatsChips();renderCatList();renderLists();
+renderFilterChips();renderFcatsChips();renderCatList();renderLists();renderPp();
 if(!catsRef){if(after)after(false);return}
 try{var pr=catsRef.set(cmCats.slice());if(pr&&typeof pr.then==="function")pr.then(function(){if(after)after(true)}).catch(function(){if(after)after(false)});else if(after)after(true)}catch(e){if(after)after(false)}
 }
@@ -3961,6 +3961,7 @@ if(name===oldName){renderCatList();return}
 var next=cmCats.map(function(x){return x===oldName?name:x});
 if(formCat===oldName)formCat=name;
 if(cmFilter===oldName)cmFilter=name;
+if(ppFilter===oldName)ppFilter=name;
 migratePostCats(oldName,name);
 saveCats(next,function(ok){if(!ok&&catErr){catErr.textContent="카테고리 저장에 실패했어요. 다시 시도해 주세요.";catErr.hidden=false}});
 }
@@ -4013,6 +4014,9 @@ if(cmCats.indexOf(formCat)<0){formCat=firstCat();changed=true}
 if(cmFilter!=="전체"&&cmCats.indexOf(cmFilter)<0){cmFilter="전체";cmDisplay=5;changed=true}
 renderFilterChips();renderFcatsChips();renderCatList();
 if(posts.length||changed)renderLists();
+/* 게시물 전체보기(#pp) 칩도 같은 저장 목록이 기준이다 — 목록이 불러와지거나 바뀌면
+   전체보기 칩도 같은 목록으로 다시 그린다(기본값은 저장 목록이 없을 때만) */
+renderPp();
 },function(){});
 }catch(e){}
 }
