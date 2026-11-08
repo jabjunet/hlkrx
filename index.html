@@ -1349,10 +1349,10 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 <style>
 /* ===== 프로필 설정 항목 + 헤더 정리 (2026-11-08) =====
    프로필 팝업 안 설정 행(알림·다크 모드·언어)은 데스크톱·모바일 공용이다.
-   테마·언어 버튼 묶음(.hd-ctl)은 전 화면 폭에서 헤더에 표시하지 않는다 — 기능은
-   프로필 팝업의 '다크 모드'·'언어' 항목으로만 쓴다. 버튼 요소 자체는 지우지 않고
-   숨기기만 한다: 프로필 항목이 기존 버튼 클릭을 재사용하므로 DOM에 남아 있어야
-   테마·언어 전환(저장 포함)이 그대로 동작한다. 알림 종 버튼은 데스크톱에서는
+   다크모드 버튼(#th-btn)은 헤더 오른쪽 프로필 옆에 다시 표시한다(모바일·데스크톱 공통,
+   예전 해/달 아이콘 그대로). 언어 버튼(#lang-btn)만 계속 숨긴다 — 버튼 요소 자체는
+   지우지 않고 숨기기만 한다: 프로필 항목이 기존 버튼 클릭을 재사용하므로 DOM에 남아
+   있어야 테마·언어 전환(저장 포함)이 그대로 동작한다. 알림 종 버튼은 데스크톱에서는
    그대로 보이고, 모바일(720px 이하)에서만 숨긴다(팝업은 남겨 프로필 '알림'에서 연다) */
 .pfset{border:1px solid var(--bd);border-radius:12px;background:var(--sf2);overflow:hidden;margin:2px 0 12px}
 .pfset-row{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:44px;padding:10px 12px;border:0;border-bottom:1px solid var(--bd);background:none;color:var(--tx);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;text-align:left}
@@ -1363,7 +1363,9 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .pfset-chev{font-size:16px;line-height:1;color:var(--mut)}
 .pfnotif-n{min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--up);color:#fff;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;line-height:1}
 .pfnotif-n.zero{background:var(--bd);color:var(--mut)}
-.hd-ctl{display:none}
+.hd-ctl{display:flex;align-items:center;gap:6px;flex:none}
+.hd-ctl #th-btn{display:inline-flex}
+.hd-ctl #lang-btn{display:none}
 @media(max-width:720px){
 #notif-btn{display:none}
 .hd-t{gap:6px}
@@ -1393,7 +1395,7 @@ if(thBtn)thBtn.addEventListener("click",function(){var nx=effTheme()==="dark"?"l
 if(window.matchMedia){var mm=window.matchMedia("(prefers-color-scheme: dark)");if(mm.addEventListener)mm.addEventListener("change",syncThBtn)}
 var D={
 "홈":"Home","김프":"Kimchi Prem.","해외":"Global","원자재":"Commodities","펀딩비":"Funding","비교":"Compare","지표":"Indicators","커뮤니티":"Community",
-"연결 중…":"Connecting…","로그인":"Log in","접속자":"Online","명":"","프로필 설정":"Profile settings",
+"실시간":"Live","연결 중…":"Connecting…","로그인":"Log in","접속자":"Online","명":"","프로필 설정":"Profile settings",
 "코스피":"KOSPI","코스닥":"KOSDAQ","나스닥":"NASDAQ","다우":"Dow","달러/원":"USD/KRW","원유":"Crude Oil",
 "실시간 차트":"Live Chart","한국":"Korea","미국":"US","급상승":"Top Gainers","급하락":"Top Losers","불러오는 중…":"Loading…",
 "주요 종목 실적발표":"Key Earnings","주요 경제지표":"Key Economic Indicators","실시간 뉴스":"Live News","국내":"Domestic",
@@ -2459,7 +2461,7 @@ var o=parseFloat(a.oraclePx);if(o>0)OR[x[0]]=o});
 if(window.mtHl)window.mtHl(m);
 var n=new Date(),p2=function(z){return (z<10?"0":"")+z};
 UPDT=p2(n.getHours())+":"+p2(n.getMinutes())+":"+p2(n.getSeconds());
-hlLastOk=UPDT;el("lv").textContent="실시간 · "+UPDT+" 업데이트";el("lvdot").className="dot ok";
+hlLastOk=UPDT;el("lv").textContent="실시간";el("lvdot").className="dot ok";
 try{fStamp();calc();draw()}catch(e){}}
 function hlWs(cb){var wi=0;
 function attempt(){if(wi>=HL_WS.length){cb(false);return}
@@ -2474,7 +2476,7 @@ var cnt=0;D.forEach(function(x){var p=parseFloat(mids["xyz:"+x[0]]);if(p>0){x[1]
 if(cnt<10){fin(false);return}
 var n=new Date(),p2=function(z){return (z<10?"0":"")+z};
 UPDT=p2(n.getHours())+":"+p2(n.getMinutes())+":"+p2(n.getSeconds());
-hlLastOk=UPDT;el("lv").textContent="실시간 · "+UPDT+" 업데이트";el("lvdot").className="dot ok";try{calc();draw()}catch(e){}fin(true)};
+hlLastOk=UPDT;el("lv").textContent="실시간";el("lvdot").className="dot ok";try{calc();draw()}catch(e){}fin(true)};
 ws.onerror=function(){fin(false)};
 ws.onclose=function(){fin(false)}}
 attempt()}
@@ -2483,7 +2485,7 @@ function live(t){if(document.hidden||hlBusy)return;if(t==null){if(Date.now()<hlN
 hlFetch().then(function(j){hlBusy=false;hlFail=0;hlNext=0;hlApply(j)}).catch(function(){
 function fail(){if(t<2){hlBusy=false;setTimeout(function(){live(t+1)},1500);return}
 hlBusy=false;hlFail++;hlNext=Date.now()+Math.min(60000,15000*Math.pow(2,hlFail));
-el("lv").textContent="Hyperliquid 연결 실패 · 스냅샷 표시 중"+(hlLastOk?" · 마지막 업데이트 "+hlLastOk:"");el("lvdot").className="dot bad"}
+el("lv").textContent="Hyperliquid 연결 실패 · 스냅샷 표시 중";el("lvdot").className="dot bad"}
 if(t===0&&!hlWsDead){hlWs(function(ok){if(ok){hlBusy=false;hlFail=0;hlNext=0}else{hlWsDead=true;fail()}})}else fail()})}
 live();setInterval(live,15000);
 function blist(){var m={};BD.forEach(function(x){m[x[0]]=1});return m}
