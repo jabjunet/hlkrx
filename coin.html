@@ -82,6 +82,17 @@ td small.sub{display:block;color:var(--mut);font-size:11.5px}
 .xchips .xlb{font-size:12.5px;color:var(--mut);font-weight:600}
 .xchips button{min-height:34px;padding:6px 13px;border:1px solid var(--bd);background:var(--sf);color:var(--mut);border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .xchips button[aria-pressed="true"]{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+/* 김프 탭: 기준/비교 거래소 선택 박스 + 검색 + 무한 스크롤 */
+.xselrow{display:flex;align-items:flex-end;gap:8px;margin-bottom:10px}
+.xsel{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.xsel .xlb{font-size:12.5px;color:var(--mut);font-weight:600}
+.xsel select{width:100%;min-height:40px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:10px;font:inherit;font-size:14px;font-weight:700;padding:6px 10px}
+.xswap{flex:none;color:var(--mut);font-size:15px;padding-bottom:11px}
+.ksearch{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ksearch input{flex:1;min-width:0;min-height:40px;border:1px solid var(--bd);border-radius:999px;background:var(--sf);color:var(--tx);font:inherit;font-size:13.5px;padding:8px 14px}
+.ksearch .kcnt{flex:none;font-size:12.5px;color:var(--mut);white-space:nowrap}
+td .kpnow{font-size:15px;font-weight:700}
+.kpmore{padding:12px;text-align:center;color:var(--mut);font-size:12.5px}
 /* 해외 탭 표 셀: 가격 + 작은 등락 */
 td .xp{display:block;font-size:13.5px;font-weight:600}
 td .xc{font-size:11.5px}
@@ -256,19 +267,29 @@ td .xc{font-size:11.5px}
 <!-- 김프 탭 -->
 <section id="panel-kimp">
   <div class="ghd"><h2>코인 김치프리미엄</h2><span class="upd" id="kpUpd">불러오는 중…</span></div>
-  <div class="xchips" role="group" aria-label="해외 기준 거래소">
-    <span class="xlb">해외 기준</span>
-    <span id="ovxChips"></span>
+  <div class="xselrow">
+    <label class="xsel"><span class="xlb">기준 거래소</span>
+      <select id="kpBase" aria-label="기준 거래소"><option value="UPBIT">업비트</option><option value="BITHUMB">빗썸</option></select>
+    </label>
+    <span class="xswap" aria-hidden="true">⇄</span>
+    <label class="xsel"><span class="xlb">비교 거래소</span>
+      <select id="kpComp" aria-label="비교 거래소"><option value="BINANCE">바이낸스</option><option value="OKX">OKX</option><option value="BYBIT">바이비트</option><option value="HYPERLIQUID">하이퍼리퀴드</option></select>
+    </label>
   </div>
-  <p class="note">국내가는 업비트·빗썸, 해외가는 고른 해외 거래소 가격입니다. 환산가 = 해외가 × 환율(USD/KRW), 김프 = 국내가 ÷ 환산가 − 1 (국내 거래소별로 따로 계산).</p>
+  <div class="ksearch">
+    <input id="kpSearch" type="search" placeholder="코인 검색 (이름·심볼)" aria-label="코인 검색" autocomplete="off">
+    <span class="kcnt" id="kpCnt"></span>
+  </div>
+  <p class="note">기준 거래소 가격과 비교 거래소 가격(환율 환산가)으로 김프를 계산합니다. 코인은 시가총액 순으로 정렬되고, 스크롤하면 계속 이어집니다.</p>
   <div class="box"><div class="tscroll">
     <table>
       <thead><tr>
-        <th>코인</th><th>업비트</th><th>빗썸</th><th id="ovxHead">해외가 (바이낸스)</th><th>환산가</th><th>김프 (업비트)</th><th>김프 (빗썸)</th><th>24h 등락</th><th>24h 거래대금</th>
+        <th>코인</th><th>현재가</th><th>김프</th><th>전일대비</th><th>거래대금 (일)</th>
       </tr></thead>
-      <tbody id="kpBody"><tr><td colspan="9" class="fail">불러오는 중…</td></tr></tbody>
+      <tbody id="kpBody"><tr><td colspan="5" class="fail">불러오는 중…</td></tr></tbody>
     </table>
   </div></div>
+  <div class="kpmore" id="kpMore" hidden>스크롤하면 더 불러와요</div>
 </section>
 
 <!-- 해외 탭 -->
@@ -421,16 +442,21 @@ var COINS=[
  {s:"SEI",n:"세이"},{s:"PEPE",n:"페페"},{s:"ETC",n:"이더리움클래식"},{s:"BCH",n:"비트코인캐시"},
  {s:"UNI",n:"유니스왑"},{s:"XLM",n:"스텔라"},{s:"ATOM",n:"코스모스"},{s:"HBAR",n:"헤데라"}
 ];
-var FN=['close','change','volume']; /* TV 스캐너 컬럼: 종가·24h 등락%·24h 거래량 */
-var OVX=[["BINANCE","바이낸스"],["OKX","OKX"],["BYBIT","바이비트"],["HYPERLIQUID","하이퍼리퀴드"]];
+var FN=['close','change','volume']; /* TV 스캐너 컬럼: 종가·24h 등락%·24h 거래량(기본단위) */
 var OVX_LABEL={BINANCE:"바이낸스",OKX:"OKX",BYBIT:"바이비트",HYPERLIQUID:"하이퍼리퀴드",UPBIT:"업비트",BITHUMB:"빗썸"};
-var ovxSel="BINANCE";
-try{var so=localStorage.getItem("hlkrx_coin_ovx");if(so&&OVX_LABEL[so]&&so!=="UPBIT"&&so!=="BITHUMB")ovxSel=so;}catch(e){}
-var MKT=null; /* {코인심볼: {거래소: {p:가격USD또는KRW, c:등락%, v:거래량}}} */
+var baseSel="UPBIT",compSel="BINANCE";
+try{
+  var sb0=localStorage.getItem("hlkrx_coin_base");if(sb0==="UPBIT"||sb0==="BITHUMB")baseSel=sb0;
+  var sc0=localStorage.getItem("hlkrx_coin_ovx");if(sc0&&OVX_LABEL[sc0]&&sc0!=="UPBIT"&&sc0!=="BITHUMB")compSel=sc0;
+}catch(e){}
+var UNIV=[]; /* 김프 탭 코인 목록 [{s,n,left}] — 시가총액 순, left=1은 시총 목록에 없어 뒤에 붙는 국내 전용 코인 */
+var MKT=null; /* {코인심볼: {거래소: {p:가격, c:등락%, v:거래대금(국내 KRW·해외 USD)}}} */
+var UPMK={},BTMK={}; /* 업비트·빗썸 실제 상장 심볼 집합 (티커 요청용) */
 var USDKRW=null;
 function $(id){return document.getElementById(id)}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function fmtKRW(v){if(!(v>0))return"—";return v>=1000?Math.round(v).toLocaleString("ko-KR"):Math.round(v*10)/10+""}
+function fmtKRWAbs(v){var a=Math.abs(v||0);if(!isFinite(a))return"0";return a>=1000?Math.round(a).toLocaleString("ko-KR"):String(Math.round(a*10)/10)}
 function fmtUSD(v){if(!(v>0))return"—";if(v>=100)return v.toLocaleString("en-US",{maximumFractionDigits:2});if(v>=1)return v.toFixed(2);if(v>=0.01)return v.toFixed(4);return v.toFixed(6)}
 function fmtVolK(v){if(!(v>0))return"—";if(v>=1e12)return Math.round(v/1e8)/100+"조";if(v>=1e8)return Math.round(v/1e8)+"억";if(v>=1e4)return Math.round(v/1e4)+"만";return Math.round(v)+""}
 function pillHtml(v){
@@ -443,100 +469,126 @@ function chgCls(v){return (typeof v==="number"&&!isNaN(v))?(v>0?"up":(v<0?"dn":"
 function chgTxt(v){return (typeof v==="number"&&!isNaN(v))?((v>0?"+":"")+v.toFixed(2)+"%"):"—"}
 function num(v){return typeof v==="number"&&isFinite(v)?v:null}
 function updTxt(el){if(el)el.textContent=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"})+" 갱신"}
+function allSyms(){return UNIV.length?UNIV.map(function(c){return c.s}):COINS.map(function(c){return c.s})}
 
-/* TV 스캐너: 업비트·빗썸(원화쌍)·바이낸스·OKX·바이비트(달러쌍) 한 번에.
-   하이퍼리퀴드는 TV 스캐너에 데이터가 없어 공개 API로 채운다 (fillApiGaps).
-   OKX·바이비트도 환경에 따라 스캐너 응답이 비는 경우가 있어 공개 API로 빈 칸을 보충한다. */
-function tvSym(x,s){return x+":"+(x==="UPBIT"||x==="BITHUMB"?s+"KRW":s+"USDT")}
-function loadMarkets(){
-  var symMap={},syms=[];
-  COINS.forEach(function(c){
-    ["UPBIT","BITHUMB","BINANCE","OKX","BYBIT"].forEach(function(x){
-      var tv=tvSym(x,c.s);symMap[tv]={coin:c.s,x:x};syms.push(tv);
+/* 코인 목록: CoinGecko 시가총액 순 상위 목록 ∩ 국내(업비트·빗썸) 상장.
+   시총 목록에 없는 국내 상장 코인은 뒤에 붙이고(가격 로드 뒤 국내 거래대금 순으로 정렬), 한글명은 업비트 마켓 정보에서 가져온다. */
+function cgPage(p){
+  return fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page="+p+"&sparkline=false")
+  .then(function(r){if(!r.ok)throw new Error("cg");return r.json()})
+  .catch(function(){return null});
+}
+function loadUniverse(){
+  var cgP=Promise.all([cgPage(1),cgPage(2),cgPage(3),cgPage(4)]);
+  var upP=fetch("https://api.upbit.com/v1/market/all?isDetails=false").then(function(r){if(!r.ok)throw new Error("up");return r.json()}).catch(function(){return null});
+  var btP=fetch("https://api.bithumb.com/v1/market/all").then(function(r){if(!r.ok)throw new Error("bt");return r.json()}).catch(function(){return null});
+  return Promise.all([cgP,upP,btP]).then(function(res){
+    var dom={},knm={},seen={},list=[];
+    if(Array.isArray(res[1]))res[1].forEach(function(m){
+      if(m&&typeof m.market==="string"&&m.market.indexOf("KRW-")===0){var s=m.market.slice(4);dom[s]=1;UPMK[s]=1;if(m.korean_name)knm[s]=m.korean_name}
     });
+    if(Array.isArray(res[2]))res[2].forEach(function(m){
+      if(m&&typeof m.market==="string"&&m.market.indexOf("KRW-")===0){var s=m.market.slice(4);dom[s]=1;BTMK[s]=1}
+    });
+    (res[0]||[]).forEach(function(pg){
+      if(!Array.isArray(pg))return;
+      pg.forEach(function(c){
+        var s=String((c&&c.symbol)||"").toUpperCase();
+        if(!s||seen[s]||!dom[s])return;
+        seen[s]=1;list.push({s:s,n:knm[s]||c.name||s});
+      });
+    });
+    Object.keys(dom).forEach(function(s){if(!seen[s]){seen[s]=1;list.push({s:s,n:knm[s]||s,left:1})}});
+    if(!list.length)COINS.forEach(function(c){list.push({s:c.s,n:c.n})});
+    UNIV=list;
   });
-  fetch("https://scanner.tradingview.com/crypto/scan",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({symbols:{tickers:syms},columns:FN})})
-  .then(function(r){if(!r.ok)throw new Error("tv "+r.status);return r.json()})
-  .then(function(j){
-    var out={};
-    (j.data||[]).forEach(function(d){
-      var m=symMap[d.s];if(!m)return;
-      var p=num(d.d[0]),c=num(d.d[1]),v=num(d.d[2]);
-      if(!(p>0))return;
-      if(!out[m.coin])out[m.coin]={};
-      out[m.coin][m.x]={p:p,c:(c==null?null:c),v:(v==null?null:v*(m.x==="UPBIT"||m.x==="BITHUMB"?p:p))};
+}
+/* ===== 가격 로딩: 거래소 공개 API 직접 호출 (김프가 방식) =====
+   거래소마다 전체 티커를 한 번의 호출로 받아 MKT를 채운다. 중간 스캐너는 쓰지 않는다. */
+function putPx(out,s,x,p,c,v){
+  if(!(p>0))return;
+  if(!out[s])out[s]={};
+  out[s][x]={p:p,c:(typeof c==="number"&&isFinite(c)?c:null),v:(typeof v==="number"&&isFinite(v)?v:null)};
+}
+/* 업비트: KRW 마켓 전체 티커 (100개씩 나눠 호출, 실패한 덩어리는 반으로 나눠 재시도) */
+function upChunk(out,part){
+  return fetch("https://api.upbit.com/v1/ticker?markets="+part.map(function(s){return "KRW-"+s}).join(","))
+  .then(function(r){if(!r.ok)throw new Error("up");return r.json()})
+  .then(function(arr){
+    (arr||[]).forEach(function(t){
+      var s=String(t.market||"").replace(/^KRW-/,"");
+      putPx(out,s,"UPBIT",num(t.trade_price),typeof t.signed_change_rate==="number"?t.signed_change_rate*100:null,num(t.acc_trade_price_24h));
     });
-    if(!Object.keys(out).length)throw new Error("tv empty");
-    MKT=out;
   })
   .catch(function(){
-    return loadLegacy();
-  })
-  .then(function(){
-    return fillApiGaps();
-  })
-  .then(function(){renderAll()});
+    if(part.length<=1)return;
+    var h=Math.ceil(part.length/2);
+    return Promise.all([upChunk(out,part.slice(0,h)),upChunk(out,part.slice(h))]);
+  });
 }
-/* 하이퍼리퀴드가 TV 스캐너에 없으면 공개 API로 채운다 */
-function loadHlFallback(){
-  if(!MKT)return Promise.resolve();
-  var need=COINS.some(function(c){return !(MKT[c.s]&&MKT[c.s].HYPERLIQUID)});
-  if(!need)return Promise.resolve();
-  return fetch("https://api.hyperliquid.xyz/info",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"metaAndAssetCtxs"})})
-  .then(function(r){if(!r.ok)throw new Error("hl");return r.json()})
+function fetchUpbitAll(out){
+  var listed=Object.keys(UPMK);
+  var syms=listed.length?listed:allSyms();
+  var jobs=[];
+  for(var i=0;i<syms.length;i+=100)jobs.push(upChunk(out,syms.slice(i,i+100)));
+  return Promise.all(jobs);
+}
+/* 빗썸: 전체 티커 한 번에 */
+function fetchBithumbAll(out){
+  return fetch("https://api.bithumb.com/public/ticker/ALL_KRW")
+  .then(function(r){if(!r.ok)throw new Error("bt");return r.json()})
   .then(function(j){
-    var meta=(j&&j[0]&&j[0].universe)||[],ctxs=(j&&j[1])||[];
-    var idx={};
-    meta.forEach(function(u,i){if(u&&u.name)idx[u.name]=i});
-    COINS.forEach(function(c){
-      if(MKT[c.s]&&MKT[c.s].HYPERLIQUID)return;
-      var i=idx[c.s==="PEPE"?"kPEPE":c.s];
-      if(i==null||!ctxs[i])return;
-      var px=parseFloat(ctxs[i].midPx||ctxs[i].markPx),pv=parseFloat(ctxs[i].prevDayPx),vl=parseFloat(ctxs[i].dayNtlVlm);
-      if(c.s==="PEPE"){px=px/1000;pv=pv/1000} /* kPEPE는 1,000개 단위 가격이라 개당 가격으로 환산 */
-      if(!(px>0))return;
-      if(!MKT[c.s])MKT[c.s]={};
-      MKT[c.s].HYPERLIQUID={p:px,c:(pv>0?(px/pv-1)*100:null),v:(isFinite(vl)?vl:null)};
+    var d=(j&&j.data)||{};
+    Object.keys(d).forEach(function(s){
+      var t=d[s];if(!t||typeof t!=="object")return;
+      var p=parseFloat(t.closing_price),po=parseFloat(t.opening_price);
+      var fr=parseFloat(t.fluctate_rate_24H);
+      var v=parseFloat(t.acc_trade_value_24H);
+      if(!isFinite(v)){var u=parseFloat(t.units_traded_24H);v=isFinite(u)&&p>0?u*p:null}
+      putPx(out,s,"BITHUMB",p,isFinite(fr)?fr:(po>0?(p/po-1)*100:null),v);
     });
   }).catch(function(){});
 }
-/* OKX가 비어 있으면 OKX 공개 API(스팟 티커)로 채운다 */
-function fillOkx(){
-  if(!MKT)return Promise.resolve();
-  var need=COINS.some(function(c){return !(MKT[c.s]&&MKT[c.s].OKX)});
-  if(!need)return Promise.resolve();
+/* 바이낸스: 전체 24h 티커 한 번에 (본섭 실패 시 공개 미러) */
+function fetchBinanceAll(out){
+  function go(url){return fetch(url).then(function(r){if(!r.ok)throw new Error("bn");return r.json()})}
+  return go("https://api.binance.com/api/v3/ticker/24hr")
+  .catch(function(){return go("https://data-api.binance.vision/api/v3/ticker/24hr")})
+  .then(function(arr){
+    var by={};
+    (arr||[]).forEach(function(t){by[t.symbol]=t});
+    allSyms().forEach(function(s){
+      var t=by[s+"USDT"],div=1;
+      if(!t&&by["1000"+s+"USDT"]){t=by["1000"+s+"USDT"];div=1000}
+      if(!t)return;
+      putPx(out,s,"BINANCE",parseFloat(t.lastPrice)/div,parseFloat(t.priceChangePercent),parseFloat(t.quoteVolume));
+    });
+  }).catch(function(){});
+}
+/* OKX: 스팟 전체 티커 한 번에 */
+function fetchOkxAll(out){
   return fetch("https://www.okx.com/api/v5/market/tickers?instType=SPOT")
   .then(function(r){if(!r.ok)throw new Error("okx");return r.json()})
   .then(function(j){
     var by={};
     ((j&&j.data)||[]).forEach(function(t){by[t.instId]=t});
-    COINS.forEach(function(c){
-      if(MKT[c.s]&&MKT[c.s].OKX)return;
-      var t=by[c.s+"-USDT"];if(!t)return;
+    allSyms().forEach(function(s){
+      var t=by[s+"-USDT"];if(!t)return;
       var px=parseFloat(t.last),op=parseFloat(t.open24h),vl=parseFloat(t.volCcy24h);
-      if(!(px>0))return;
-      if(!MKT[c.s])MKT[c.s]={};
-      MKT[c.s].OKX={p:px,c:(op>0?(px/op-1)*100:null),v:(isFinite(vl)?vl:null)};
+      putPx(out,s,"OKX",px,op>0?(px/op-1)*100:null,vl);
     });
   }).catch(function(){});
 }
-/* 바이비트가 비어 있으면 바이비트 v5 공개 API(스팟 티커)로 채운다 — 메인 펀딩비 탭과 같은 호스트 폴백 순서 */
-function fillBybit(){
-  if(!MKT)return Promise.resolve();
-  var need=COINS.some(function(c){return !(MKT[c.s]&&MKT[c.s].BYBIT)});
-  if(!need)return Promise.resolve();
+/* 바이비트: 스팟 전체 티커 한 번에 (메인 펀딩비 탭과 같은 호스트 폴백 순서) */
+function fetchBybitAll(out){
   function apply(j){
     if(!j||j.retCode!==0||!j.result||!Array.isArray(j.result.list))return false;
     var by={};
     j.result.list.forEach(function(t){by[t.symbol]=t});
     var filled=false;
-    COINS.forEach(function(c){
-      if(MKT[c.s]&&MKT[c.s].BYBIT)return;
-      var t=by[c.s+"USDT"];if(!t)return;
-      var px=parseFloat(t.lastPrice),pc=parseFloat(t.price24hPcnt),vl=parseFloat(t.turnover24h);
-      if(!(px>0))return;
-      if(!MKT[c.s])MKT[c.s]={};
-      MKT[c.s].BYBIT={p:px,c:(isFinite(pc)?pc*100:null),v:(isFinite(vl)?vl:null)};
+    allSyms().forEach(function(s){
+      var t=by[s+"USDT"];if(!t)return;
+      putPx(out,s,"BYBIT",parseFloat(t.lastPrice),parseFloat(t.price24hPcnt)*100,parseFloat(t.turnover24h));
       filled=true;
     });
     return filled;
@@ -555,86 +607,97 @@ function fillBybit(){
   })
   .catch(function(){});
 }
-/* 스캐너·폴백 뒤에 남은 빈 거래소 칸을 각 거래소 공개 API로 보충한다 */
-function fillApiGaps(){
-  if(!MKT)return Promise.resolve();
-  return Promise.all([fillOkx(),fillBybit(),loadHlFallback()]);
-}
-/* TV 스캐너 전체 실패 시 폴백: 기존 경로(빗썸 공개 API + 바이낸스 API·미러) */
-function loadLegacy(){
-  var out={};
-  var ks=COINS.map(function(c){return c.s}).join(",");
-  var p1=fetch("https://api.bithumb.com/public/ticker/ALL_KRW").then(function(r){return r.json()}).then(function(j){
-    var d=(j&&j.data)||{};
-    COINS.forEach(function(c){
-      var t=d[c.s];if(!t||t.closing_price==null)return;
-      var p=parseFloat(t.closing_price),po=parseFloat(t.opening_price),vl=parseFloat(t.units_traded_24H);
-      if(!(p>0))return;
-      if(!out[c.s])out[c.s]={};
-      out[c.s].BITHUMB={p:p,c:(po>0?(p/po-1)*100:null),v:(isFinite(vl)?vl*p:null)};
-      out[c.s].UPBIT={p:p,c:(po>0?(p/po-1)*100:null),v:(isFinite(vl)?vl*p:null)}; /* 기존 방식: 국내가는 빗썸으로 채움 */
+/* 하이퍼리퀴드: 전체 종목 시세 한 번에 (k 접두사 종목은 1,000개 단위 가격이라 개당으로 환산) */
+function fetchHlAll(out){
+  return fetch("https://api.hyperliquid.xyz/info",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"metaAndAssetCtxs"})})
+  .then(function(r){if(!r.ok)throw new Error("hl");return r.json()})
+  .then(function(j){
+    var meta=(j&&j[0]&&j[0].universe)||[],ctxs=(j&&j[1])||[];
+    var idx={};
+    meta.forEach(function(u,i){if(u&&u.name)idx[u.name]=i});
+    allSyms().forEach(function(s){
+      var nm=s,div=1;
+      if(idx[nm]==null&&idx["k"+s]!=null){nm="k"+s;div=1000}
+      var i=idx[nm];if(i==null||!ctxs[i])return;
+      var px=parseFloat(ctxs[i].midPx||ctxs[i].markPx)/div,pv=parseFloat(ctxs[i].prevDayPx)/div,vl=parseFloat(ctxs[i].dayNtlVlm);
+      putPx(out,s,"HYPERLIQUID",px,pv>0?(px/pv-1)*100:null,vl);
     });
   }).catch(function(){});
-  function bin(url){return fetch(url).then(function(r){if(!r.ok)throw new Error("bn");return r.json()})}
-  var p2=bin("https://api.binance.com/api/v3/ticker/24hr?symbols="+encodeURIComponent(JSON.stringify(COINS.map(function(c){return c.s+"USDT"}))))
-    .catch(function(){return bin("https://data-api.binance.vision/api/v3/ticker/24hr?symbols="+encodeURIComponent(JSON.stringify(COINS.map(function(c){return c.s+"USDT"}))))})
-    .then(function(arr){
-      (arr||[]).forEach(function(t){
-        var s=String(t.symbol||"").replace(/USDT$/,"");
-        var p=parseFloat(t.lastPrice),c=parseFloat(t.priceChangePercent),v=parseFloat(t.quoteVolume);
-        if(!(p>0))return;
-        if(!out[s])out[s]={};
-        out[s].BINANCE={p:p,c:(isFinite(c)?c:null),v:(isFinite(v)?v:null)};
-      });
-    }).catch(function(){});
-  return Promise.all([p1,p2]).then(function(){if(Object.keys(out).length)MKT=out;});
+}
+function loadPrices(){
+  var out={};
+  return Promise.all([fetchUpbitAll(out),fetchBithumbAll(out),fetchBinanceAll(out),fetchOkxAll(out),fetchBybitAll(out),fetchHlAll(out)])
+  .then(function(){if(Object.keys(out).length)MKT=out});
 }
 function loadFx(){
   return fetch("https://open.er-api.com/v6/latest/USD").then(function(r){return r.json()}).then(function(j){
     var v=j&&j.rates&&j.rates.KRW;if(v>0)USDKRW=v;
   }).catch(function(){});
 }
-function kimpOf(dom,conv){if(!(dom>0)||!(conv>0))return null;return (dom/conv-1)*100}
-function renderOvxChips(){
-  var w=$("ovxChips");if(!w)return;
-  w.innerHTML="";
-  OVX.forEach(function(o){
-    var b=document.createElement("button");b.type="button";b.textContent=o[1];
-    b.setAttribute("aria-pressed",ovxSel===o[0]?"true":"false");
-    b.addEventListener("click",function(){ovxSel=o[0];try{localStorage.setItem("hlkrx_coin_ovx",ovxSel)}catch(e){}renderOvxChips();renderKimp();renderGlob();});
-    w.appendChild(b);
+/* ===== 김프 탭: 기준/비교 선택 + 검색 + 시총순 무한 스크롤 ===== */
+var KP={shown:50,query:""};
+var KP_CHUNK=50;
+function domVol(c){
+  var d=MKT&&MKT[c.s];if(!d)return 0;
+  return Math.max((d.UPBIT&&d.UPBIT.v)||0,(d.BITHUMB&&d.BITHUMB.v)||0);
+}
+function curList(){
+  var q=KP.query.replace(/\s+/g,"").toLowerCase();
+  var head=[],tail=[];
+  UNIV.forEach(function(c){(c.left?tail:head).push(c)});
+  if(!q&&tail.length>1)tail.sort(function(a,b){return domVol(b)-domVol(a)});
+  var list=head.concat(tail);
+  if(q)list=list.filter(function(c){
+    return c.s.toLowerCase().indexOf(q)>=0||c.n.toLowerCase().replace(/\s+/g,"").indexOf(q)>=0;
   });
-  var h=$("ovxHead");if(h)h.textContent="해외가 ("+OVX_LABEL[ovxSel]+")";
+  return list;
+}
+function kpRow(c){
+  var d=(MKT&&MKT[c.s])||{};
+  var b=d[baseSel],o=d[compSel];
+  var conv=(o&&o.p>0&&USDKRW)?o.p*USDKRW:null;
+  var kp=(b&&b.p>0&&conv)?(b.p/conv-1)*100:null;
+  var h='<tr><td class="nm"><b>'+esc(c.n)+'</b><small>'+esc(c.s)+'</small></td>';
+  if(b&&b.p>0){
+    h+='<td><span class="kpnow">'+fmtKRW(b.p)+'</span><small class="sub">'+(conv?fmtKRW(conv):"—")+'</small></td>';
+  }else{
+    h+='<td>—</td>';
+  }
+  if(kp==null){
+    h+='<td>—</td>';
+  }else{
+    var diff=b.p-conv;
+    h+='<td>'+pillHtml(kp)+'<small class="sub">'+(diff>=0?"+":"-")+fmtKRWAbs(diff)+'</small></td>';
+  }
+  h+='<td class="chg '+chgCls(b?b.c:null)+'">'+chgTxt(b?b.c:null)+'</td>';
+  h+='<td>'+(b&&b.v?fmtVolK(b.v):"—")+'</td></tr>';
+  return h;
 }
 function renderKimp(){
   var tb=$("kpBody");if(!tb)return;
-  if(!MKT){tb.innerHTML='<tr><td colspan="9" class="fail">가격을 불러오지 못했어요. 잠시 뒤 다시 시도해 주세요.</td></tr>';return}
-  var rows=COINS.map(function(c){
-    var d=MKT[c.s]||{};
-    var up=d.UPBIT,bt=d.BITHUMB,ov=d[ovxSel];
-    var hasDom=(up&&up.p>0)||(bt&&bt.p>0),hasOv=!!(ov&&ov.p>0);
-    var conv=(hasOv&&USDKRW)?ov.p*USDKRW:null;
-    var chg=(up&&up.c!=null)?up.c:((bt&&bt.c!=null)?bt.c:null);
-    var vol=up&&up.v?up.v:(bt&&bt.v?bt.v:null);
-    var rk=vol||0;
-    var html='<tr><td class="nm"><b>'+esc(c.n)+'</b><small>'+esc(c.s)+'</small></td>';
-    if(!hasDom&&!hasOv){
-      html+='<td colspan="8" class="fail">데이터 없음</td></tr>';
-      return {rk:-1,html:html};
-    }
-    html+='<td>'+(up&&up.p>0?fmtKRW(up.p):"—")+'</td>';
-    html+='<td>'+(bt&&bt.p>0?fmtKRW(bt.p):"—")+'</td>';
-    html+='<td>'+(hasOv?"$"+fmtUSD(ov.p):"—")+'</td>';
-    html+='<td>'+(conv?fmtKRW(conv):"—")+'</td>';
-    html+='<td>'+pillHtml(kimpOf(up&&up.p,conv))+'</td>';
-    html+='<td>'+pillHtml(kimpOf(bt&&bt.p,conv))+'</td>';
-    html+='<td class="chg '+chgCls(chg)+'">'+chgTxt(chg)+'</td>';
-    html+='<td>'+fmtVolK(vol)+'</td></tr>';
-    return {rk:rk,html:html};
-  });
-  rows.sort(function(a,b){return b.rk-a.rk});
-  tb.innerHTML=rows.map(function(r){return r.html}).join("");
+  if(!MKT){tb.innerHTML='<tr><td colspan="5" class="fail">가격을 불러오지 못했어요. 잠시 뒤 다시 시도해 주세요.</td></tr>';return}
+  var list=curList();
+  var cnt=$("kpCnt");if(cnt)cnt.textContent=list.length?("암호화폐 총 "+list.length+"개"):"";
+  var n=KP.query?list.length:Math.min(KP.shown,list.length);
+  if(!list.length){
+    tb.innerHTML='<tr><td colspan="5" class="fail">검색 결과가 없어요.</td></tr>';
+  }else{
+    tb.innerHTML=list.slice(0,n).map(kpRow).join("");
+  }
+  var more=$("kpMore");if(more)more.hidden=!(n<list.length);
   updTxt($("kpUpd"));
+}
+function initKpControls(){
+  var bs=$("kpBase"),cs=$("kpComp"),si=$("kpSearch");
+  if(bs){bs.value=baseSel;bs.addEventListener("change",function(){baseSel=bs.value;try{localStorage.setItem("hlkrx_coin_base",baseSel)}catch(e){}renderKimp()})}
+  if(cs){cs.value=compSel;cs.addEventListener("change",function(){compSel=cs.value;try{localStorage.setItem("hlkrx_coin_ovx",compSel)}catch(e){}renderKimp()})}
+  if(si)si.addEventListener("input",function(){KP.query=si.value;KP.shown=KP_CHUNK;renderKimp()});
+  var more=$("kpMore");
+  if(more&&"IntersectionObserver" in window){
+    new IntersectionObserver(function(es){
+      if(es[0].isIntersecting&&!more.hidden){KP.shown+=KP_CHUNK;renderKimp()}
+    },{rootMargin:"600px"}).observe(more);
+  }
 }
 function renderGlob(){
   var tb=$("glBody");if(!tb)return;
@@ -654,6 +717,7 @@ function renderGlob(){
   updTxt($("glUpd"));
 }
 function renderAll(){renderKimp();renderGlob()}
+
 /* 탭 전환 */
 var indInit=false;
 function showTab(t){
@@ -735,10 +799,14 @@ function initInd(){
   if(indTimer)clearInterval(indTimer);
   indTimer=setInterval(function(){loadFunding();loadFng();loadGlobal()},60000);
 }
-/* 시작: 김프·해외 데이터 먼저 */
-renderOvxChips();
-Promise.all([loadFx(),loadMarkets()]).then(function(){renderAll()});
-setInterval(function(){Promise.all([loadFx(),loadMarkets()]).then(function(){renderAll()})},60000);
+/* 시작: 코인 목록(시총순) → 가격 → 렌더. 이후 60초마다 가격만 갱신 */
+initKpControls();
+Promise.all([loadFx(),loadUniverse().then(function(){return loadPrices()})]).then(function(){renderAll()});
+setInterval(function(){
+  var p=UNIV.length?loadPrices():loadUniverse().then(function(){return loadPrices()});
+  Promise.all([loadFx(),p]).then(function(){renderAll()});
+},60000);
+
 </script>
 
 <script>
