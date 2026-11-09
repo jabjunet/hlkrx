@@ -703,6 +703,7 @@ main{padding:2px 12px 40px}
 #pf .phd>div:last-child,#pf .prow>div:last-child{padding-right:12px}
 #pf .fv2{font-size:12.5px;font-weight:600;white-space:nowrap;letter-spacing:-.02em}
 #pf .fper{color:var(--mut);font-size:11px;font-weight:500;white-space:nowrap}
+#pf .fapr{display:block;color:var(--mut);font-size:10.5px;font-weight:500;white-space:nowrap}
 #pf .pempty{padding:11px 10px;font-size:13px;color:var(--mut)}
 #pf #fsent{height:1px}
 #pf .nm b{font-size:13px}
@@ -718,6 +719,7 @@ main{padding:2px 12px 40px}
 #pf .phd>div:last-child,#pf .prow>div:last-child{padding-right:10px}
 #pf .fv2{font-size:11px}
 #pf .fper{font-size:10px}
+#pf .fapr{font-size:9.5px}
 #pf .nm{gap:5px}
 #pf .nm>div{flex-direction:column;align-items:flex-start;gap:1px}
 #pf .nm b{font-size:11.5px;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;line-height:1.3}
@@ -1508,6 +1510,7 @@ var D={
 "김프 = (국내 가격 ÷ 국제 환산가 − 1) × 100":"Kimchi Prem. = (Domestic price ÷ Intl converted price − 1) × 100","+면 국내가 더 비싸고, −면 국내가 더 쌉니다.":"Positive means the domestic price is higher; negative means it is cheaper.",
 "펀딩비 비교":"Funding Rates","펀딩비 불러오는 중…":"Loading funding rates…","HL 펀딩":"HL Funding","BN 펀딩":"BN Funding","OKX 펀딩":"OKX Funding","BY 펀딩":"BY Funding",
 "종목별 펀딩비를 거래소 4곳 나란히 비교합니다. 거래소마다 부과 주기가 달라 값 뒤에 주기를 함께 표시합니다. (하이퍼리퀴드 1시간, 나머지는 보통 8시간)":"Compare funding rates for each symbol across 4 exchanges side by side. Funding intervals differ by exchange, so the interval is shown next to each value. (Hyperliquid: 1 hour; others usually 8 hours)",
+"연환산은 단순 계산 기준 (복리 아님)":"Annualized figures use simple interest (not compounded)",
 "펀딩비는 각 거래소가 공시하는 펀딩 금리입니다. 양수면 롱 포지션이 숏 포지션에게, 음수면 숏이 롱에게 비용을 지급하는 구조입니다. OKX는 종목별 조회라 거래량 상위 40개 위주로 불러오며, 나머지와 미상장 종목은 —로 표시됩니다.":"Funding rates are the rates published by each exchange. When positive, longs pay shorts; when negative, shorts pay longs. OKX is loaded per symbol, focusing on the top 40 by volume; the rest and unlisted symbols are shown as —.",
 "비트코인":"Bitcoin","WTI 원유":"WTI Crude Oil","GOLD · 국제 금":"GOLD · Intl Gold","다른 주식과 비교":"Compare Other Stocks","첫 번째 종목 검색":"Search first stock","두 번째 종목 검색":"Search second stock","바이낸스":"Binance",
 "시장 심리 지표":"Market Sentiment","평균 펀딩비":"Avg Funding Rate",
@@ -1817,6 +1820,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <div id="fsent" aria-hidden="true"></div>
 </div>
 </div></div>
+<p class="note" style="margin-top:8px">연환산은 단순 계산 기준 (복리 아님)</p>
 <p class="note">펀딩비는 각 거래소가 공시하는 펀딩 금리입니다. 양수면 롱 포지션이 숏 포지션에게, 음수면 숏이 롱에게 비용을 지급하는 구조입니다. OKX는 종목별 조회라 거래량 상위 40개 위주로 불러오며, 나머지와 미상장 종목은 —로 표시됩니다.</p>
 </section>
 
@@ -2732,7 +2736,8 @@ function fUniverse(){var seen={},list=[];function add(ex,arr){for(var i=0;i<arr.
 function fName(can){try{if(NM[can])return NM[can];var bt=fromCan("bn",can);if(BNM[bt])return BNM[bt];var ot=fromCan("okx",can);if(ONM[ot])return ONM[ot];var yt=fromCan("by",can);if(YNM[yt])return YNM[yt]}catch(e){}return ""}
 function fVal(ex,can){var e=FUND[ex]&&FUND[ex][can];if(!e||isNaN(e.r))return null;return e}
 var FPREV={};
-function ffCell(ex,can){try{var e=fVal(ex,can);if(!e)return '<span class="na">—</span>';var c=e.r>0?"up":e.r<0?"dn":"";var s=(e.r>0?"+":"")+e.r.toFixed(4)+"%/"+(e.h||8)+"h";var k=ex+":"+can;var ch=FPREV[k]!==undefined&&FPREV[k]!==s;FPREV[k]=s;return '<span class="fcell'+(ch?" fchg":"")+'"><span class="fv2 '+c+'">'+(e.r>0?"+":"")+e.r.toFixed(4)+'%</span><span class="fper">/'+(e.h||8)+'h</span></span>'}catch(e){return '<span class="na">—</span>'}}
+function fApr(e){try{var h=e.h||8;if(!(h>0))return "";var a=e.r*(24/h)*365;if(!isFinite(a))return "";return '<span class="fapr">'+(typeof LANG!=="undefined"&&LANG==="en"?"APR ":"연 ")+(a>0?"+":"")+a.toFixed(2)+'%</span>'}catch(x){return ""}}
+function ffCell(ex,can){try{var e=fVal(ex,can);if(!e)return '<span class="na">—</span>';var c=e.r>0?"up":e.r<0?"dn":"";var s=(e.r>0?"+":"")+e.r.toFixed(4)+"%/"+(e.h||8)+"h";var k=ex+":"+can;var ch=FPREV[k]!==undefined&&FPREV[k]!==s;FPREV[k]=s;return '<span class="fcell'+(ch?" fchg":"")+'"><span class="fv2 '+c+'">'+(e.r>0?"+":"")+e.r.toFixed(4)+'%</span><span class="fper">/'+(e.h||8)+'h</span>'+fApr(e)+'</span>'}catch(e){return '<span class="na">—</span>'}}
 var fShow=10,fTotal=0;
 function drawF(){var fbEl=el("fb");if(!fbEl)return;var qEl=el("fq"),q=qEl?qEl.value.trim().toUpperCase():"",qt=qEl?qEl.value.trim():"";
 var list=fUniverse().filter(function(can){if(!q)return true;return can.toUpperCase().indexOf(q)>=0||fName(can).indexOf(qt)>=0});
