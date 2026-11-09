@@ -960,8 +960,11 @@ main{padding:2px 12px 40px}
 @media(max-width:520px){.indb{font-size:22px}.fgh b{font-size:14px}}
 /* 지표 탭: 실적·지표 캘린더 — 월간 달력 + 선택한 날짜의 일정 목록. 심리 지표 카드와 같은 폭을 쓰되
    칸·글씨를 작게(12~13px) 잡아 카드 높이가 과하게 커지지 않게 한다 */
-.calhd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.calhd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;cursor:pointer}
 .caltitle{font-size:13.5px;font-weight:800;letter-spacing:-.01em}
+.calchev{flex:none;width:16px;text-align:center;font-size:11px;color:var(--mut)}
+.calcard.calclosed .calhd{margin-bottom:0}
+#cal-body[hidden]{display:none}
 .calnav{display:flex;align-items:center;gap:2px}
 .calmon{font-size:12.5px;font-weight:700;min-width:76px;text-align:center}
 .calnb{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;background:var(--sf2);border:1px solid var(--bd);border-radius:7px;color:var(--tx);font-size:15px;line-height:1;cursor:pointer;padding:0}
@@ -1605,7 +1608,7 @@ var D={
 "S&P 500 옵션 가격으로 본 향후 30일 변동성 기대치입니다.":"Expected 30-day volatility implied by S&P 500 option prices.",
 "주요 지수 등락":"Major Indices","옵션 만기일":"Options Expiry","미국 옵션":"US Options","한국 파생상품":"KR Derivatives","오늘 만기":"Expires Today","네 마녀의 날":"Quadruple Witching","선물·옵션 동시만기":"Futures & Options Expiry",
 "날짜 규칙으로 계산 · 미국 매월 셋째 금요일, 한국 매월 둘째 목요일":"Calculated by date rule · US: 3rd Friday of each month, KR: 2nd Thursday",
-"실적·지표 캘린더":"Earnings & Indicators Calendar","일정이 없어요":"No events scheduled","이전 달":"Previous month","다음 달":"Next month","장 마감 후":"After Market Close","장 시작 전":"Before Market Open","일":"Sun","월":"Mon","화":"Tue","수":"Wed","목":"Thu","금":"Fri","토":"Sat",
+"실적·지표 캘린더":"Earnings & Indicators Calendar","실적·지표 캘린더 접기·펼치기":"Collapse or expand the earnings & indicators calendar","일정이 없어요":"No events scheduled","이전 달":"Previous month","다음 달":"Next month","장 마감 후":"After Market Close","장 시작 전":"Before Market Open","일":"Sun","월":"Mon","화":"Tue","수":"Wed","목":"Thu","금":"Fri","토":"Sat",
 "전인구 유튜브":"Jeon In-gu YouTube","영상을 불러오지 못했어요":"Could not load videos","워뇨띠 주식 포지션":"Wonyotti Stock Positions","디시 원글 보기":"View Original Post",
 "주식 평가금액 · 2026년 11월 5일 본인 공개":"Stock valuation · Self-disclosed Nov 5, 2026","보유 종목 접기":"Hide Holdings","공개 당시":"At disclosure",
 "실시간 보유 현황이 아니라 11월 5일 공개 시점 기준입니다. 본인이 5억 원 이상 보유 종목만 공개해 그보다 작은 보유 종목은 빠져 있고, 종목별 평가금액은 공개된 평가손익·수익률로 계산한 대략적인 값입니다.":"This reflects the positions as disclosed on Nov 5, not live holdings. Only holdings of 500M KRW or more were disclosed, so smaller positions are omitted, and per-stock valuations are approximate figures calculated from the disclosed P&L and returns.",
@@ -2004,9 +2007,11 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <p class="indmeta">날짜 규칙으로 계산 · 미국 매월 셋째 금요일, 한국 매월 둘째 목요일</p>
 </div>
 <div class="c calcard">
-<div class="calhd"><span class="caltitle">실적·지표 캘린더</span><span class="calnav"><button type="button" class="calnb" id="cal-prev" aria-label="이전 달">‹</button><span class="calmon" id="cal-mon"></span><button type="button" class="calnb" id="cal-next" aria-label="다음 달">›</button></span></div>
+<div class="calhd" id="cal-hd" role="button" tabindex="0" aria-expanded="true" aria-controls="cal-body" aria-label="실적·지표 캘린더 접기·펼치기"><span class="caltitle">실적·지표 캘린더</span><span class="calnav"><button type="button" class="calnb" id="cal-prev" aria-label="이전 달">‹</button><span class="calmon" id="cal-mon"></span><button type="button" class="calnb" id="cal-next" aria-label="다음 달">›</button></span><span class="calchev" id="cal-chev" aria-hidden="true">▾</span></div>
+<div id="cal-body">
 <div class="calgrid" id="cal-grid"></div>
 <div class="caldayl"><div class="caldhd" id="cal-dhd"></div><div id="cal-list"><div class="calempty">불러오는 중…</div></div></div>
+</div>
 </div>
 <div class="ytwrap">
 <div class="ytsec">
@@ -6061,6 +6066,19 @@ render()});
 var pv=$("cal-prev"),nx=$("cal-next");
 if(pv)pv.addEventListener("click",function(){touched=true;viewM--;if(viewM<1){viewM=12;viewY--}render()});
 if(nx)nx.addEventListener("click",function(){touched=true;viewM++;if(viewM>12){viewM=1;viewY++}render()});
+/* 접기/펼치기: 제목 줄을 누르면 본문(#cal-body)만 숨겼다 보인다. 본문을 지우지 않고 hidden만
+   바꾸므로 보던 달(viewY/viewM)과 선택 날짜(selKey)는 펼쳤을 때 그대로 유지된다.
+   달 이동 버튼(.calnav) 클릭은 접기 동작과 겹치지 않게 제외한다 */
+var chd=$("cal-hd"),cbd=$("cal-body"),chv=$("cal-chev");
+function calToggle(){
+if(!cbd)return;
+var open=cbd.hidden;
+cbd.hidden=!open;
+if(chv)chv.textContent=open?"▾":"▸";
+if(chd){chd.setAttribute("aria-expanded",open?"true":"false");if(chd.parentNode)chd.parentNode.classList.toggle("calclosed",!open)}}
+if(chd&&cbd){
+chd.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest(".calnav"))return;calToggle()});
+chd.addEventListener("keydown",function(e){if(e.target!==chd)return;if(e.key==="Enter"||e.key===" "){e.preventDefault();calToggle()}})}
 refresh();
 var src1=$("he-list"),src2=$("hec-list");
 if(window.MutationObserver){
