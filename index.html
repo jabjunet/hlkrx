@@ -958,6 +958,32 @@ main{padding:2px 12px 40px}
 #ind-vix-card.indmain .indb{font-size:30px}
 @media(min-width:1024px){#ind-vix-card.indmain .indb{font-size:34px}}
 @media(max-width:520px){.indb{font-size:22px}.fgh b{font-size:14px}}
+/* 지표 탭: 실적·지표 캘린더 — 월간 달력 + 선택한 날짜의 일정 목록. 심리 지표 카드와 같은 폭을 쓰되
+   칸·글씨를 작게(12~13px) 잡아 카드 높이가 과하게 커지지 않게 한다 */
+.calhd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.caltitle{font-size:13.5px;font-weight:800;letter-spacing:-.01em}
+.calnav{display:flex;align-items:center;gap:2px}
+.calmon{font-size:12.5px;font-weight:700;min-width:76px;text-align:center}
+.calnb{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;background:var(--sf2);border:1px solid var(--bd);border-radius:7px;color:var(--tx);font-size:15px;line-height:1;cursor:pointer;padding:0}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
+.calwd{text-align:center;font-size:11px;font-weight:700;color:var(--mut);padding:3px 0}
+.calwd.su{color:var(--up)}.calwd.sa{color:var(--dn)}
+.calday{position:relative;border:0;background:none;color:var(--tx);font:inherit;font-size:12.5px;padding:5px 0 8px;border-radius:8px;cursor:pointer;text-align:center}
+.calday.out{color:var(--mut);opacity:.4}
+.calday.today{font-weight:800;background:var(--sf2)}
+.calday.sel{background:var(--ac);color:var(--acx);font-weight:700}
+.caldot{position:absolute;left:50%;bottom:3px;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--ok)}
+.calday.sel .caldot{background:var(--acx)}
+.caldayl{margin-top:8px;border-top:1px solid var(--bd);padding-top:8px}
+.caldhd{font-size:12.5px;font-weight:800;margin-bottom:2px}
+.calit{display:flex;gap:8px;padding:4px 0;border-bottom:1px solid var(--bd)}
+.calit:last-child{border-bottom:0}
+.caltm{flex:none;width:66px;font-size:11.5px;color:var(--mut);padding-top:1px;white-space:nowrap}
+.calmn{min-width:0}
+.calnm{display:block;font-size:12.5px;font-weight:600;line-height:1.35}
+.calsub{display:block;font-size:11.5px;color:var(--mut);line-height:1.4}
+.calsub b{color:var(--tx)}
+.calempty{font-size:12.5px;color:var(--mut);padding:5px 0 2px}
 /* 자체 채팅 (Firebase): 우하단 버튼 + 작은 패널, 패널을 열 때 초기화 */
 .chatbtn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:120;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 16px;border:1px solid var(--bd);border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.22)}
 .chatbtn svg{flex:none;display:block}
@@ -1579,6 +1605,7 @@ var D={
 "S&P 500 옵션 가격으로 본 향후 30일 변동성 기대치입니다.":"Expected 30-day volatility implied by S&P 500 option prices.",
 "주요 지수 등락":"Major Indices","옵션 만기일":"Options Expiry","미국 옵션":"US Options","한국 파생상품":"KR Derivatives","오늘 만기":"Expires Today","네 마녀의 날":"Quadruple Witching","선물·옵션 동시만기":"Futures & Options Expiry",
 "날짜 규칙으로 계산 · 미국 매월 셋째 금요일, 한국 매월 둘째 목요일":"Calculated by date rule · US: 3rd Friday of each month, KR: 2nd Thursday",
+"실적·지표 캘린더":"Earnings & Indicators Calendar","일정이 없어요":"No events scheduled","이전 달":"Previous month","다음 달":"Next month","장 마감 후":"After Market Close","장 시작 전":"Before Market Open","일":"Sun","월":"Mon","화":"Tue","수":"Wed","목":"Thu","금":"Fri","토":"Sat",
 "전인구 유튜브":"Jeon In-gu YouTube","영상을 불러오지 못했어요":"Could not load videos","워뇨띠 주식 포지션":"Wonyotti Stock Positions","디시 원글 보기":"View Original Post",
 "주식 평가금액 · 2026년 11월 5일 본인 공개":"Stock valuation · Self-disclosed Nov 5, 2026","보유 종목 접기":"Hide Holdings","공개 당시":"At disclosure",
 "실시간 보유 현황이 아니라 11월 5일 공개 시점 기준입니다. 본인이 5억 원 이상 보유 종목만 공개해 그보다 작은 보유 종목은 빠져 있고, 종목별 평가금액은 공개된 평가손익·수익률로 계산한 대략적인 값입니다.":"This reflects the positions as disclosed on Nov 5, not live holdings. Only holdings of 500M KRW or more were disclosed, so smaller positions are omitted, and per-stock valuations are approximate figures calculated from the disclosed P&L and returns.",
@@ -1621,6 +1648,7 @@ if(m=c.match(/^내일 (.+)$/))return "Tomorrow "+m[1];
 if(m=c.match(/^다음날 (.+)$/))return "Next day "+m[1];
 if(m=c.match(/^전날 (.+)$/))return "Prev. day "+m[1];
 if(m=c.match(/^(\d+)년 (\d+)월 (\d+)일 \(([일월화수목금토])\)$/))return MON[+m[2]-1]+" "+m[3]+", "+m[1]+" ("+WD[m[4]]+")";
+if(m=c.match(/^(\d+)년 (\d+)월$/))return MON[+m[2]-1]+" "+m[1];
 if(m=c.match(/^(\d+)월 (\d+)일 \(([일월화수목금토])\)$/))return MON[+m[1]-1]+" "+m[2]+" ("+WD[m[3]]+")";
 if(m=c.match(/^(\d+)분 전$/))return m[1]+"m ago";
 if(m=c.match(/^(\d+)시간 전$/))return m[1]+"h ago";
@@ -1974,6 +2002,11 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </div>
 <p class="indsub" id="ind-exp-kr-n">—</p>
 <p class="indmeta">날짜 규칙으로 계산 · 미국 매월 셋째 금요일, 한국 매월 둘째 목요일</p>
+</div>
+<div class="c calcard">
+<div class="calhd"><span class="caltitle">실적·지표 캘린더</span><span class="calnav"><button type="button" class="calnb" id="cal-prev" aria-label="이전 달">‹</button><span class="calmon" id="cal-mon"></span><button type="button" class="calnb" id="cal-next" aria-label="다음 달">›</button></span></div>
+<div class="calgrid" id="cal-grid"></div>
+<div class="caldayl"><div class="caldhd" id="cal-dhd"></div><div id="cal-list"><div class="calempty">불러오는 중…</div></div></div>
 </div>
 <div class="ytwrap">
 <div class="ytsec">
@@ -5893,6 +5926,147 @@ if(src1)mo.observe(src1,{childList:true,subtree:true});
 if(src2)mo.observe(src2,{childList:true,subtree:true})}
 setInterval(function(){if(!document.hidden)render()},60000);
 setInterval(tick,1000);
+})();
+</script>
+<script>
+/* 지표 탭: 실적·지표 캘린더 (2026-11-09) — 실적 일정과 경제지표 일정을 함께 보여주는 작은 월간 달력.
+   새 데이터 소스나 새 호출은 추가하지 않는다: 홈 '다가오는 일정' 카드와 같은 원본을 그대로 읽는다.
+   경제지표는 내장 데이터가 들어 있는 #hec-list의 '발표 예정' 행을, 실적은 기존 실적 스크립트가
+   TradingView 스캐너로 채우는 #he-list의 '발표 예정' 행을 읽어 날짜별로 묶는다. 원본이 닿는 범위
+   (지표 예정 일정·향후 30일 실적) 밖의 날짜는 일정이 없는 것으로 표시된다. 날짜를 누르면 카드
+   아래쪽에 그 날짜의 일정(시각·이름·예상치/예상 EPS)이 작게 뜬다. 처음 선택 날짜는 가장 가까운
+   다가오는 일정이 있는 날짜(없으면 오늘)이고, 사용자가 날짜나 달을 직접 고른 뒤에는 그대로 둔다.
+   행 하나를 읽다 실패해도 그 행만 건너뛰고 나머지는 그대로 보여준다. */
+(function(){
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function p2(n){return (n<10?"0":"")+n}
+var WD=["일","월","화","수","목","금","토"];
+function kstToday(){
+var p=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date()),y=0,m=0,d=0;
+p.forEach(function(x){if(x.type==="year")y=+x.value;else if(x.type==="month")m=+x.value;else if(x.type==="day")d=+x.value});
+return{y:y,m:m,d:d,day:Math.floor(Date.UTC(y,m-1,d)/86400000)}}
+function dateInfo(m,d,now){
+var y=now.y,day=Math.floor(Date.UTC(y,m-1,d)/86400000);
+if(day-now.day<-20){y+=1;day=Math.floor(Date.UTC(y,m-1,d)/86400000)}
+else if(day-now.day>330){y-=1;day=Math.floor(Date.UTC(y,m-1,d)/86400000)}
+return{y:y,m:m,d:d,day:day,diff:day-now.day}}
+function keyOf(y,m,d){return y+"-"+m+"-"+d}
+var byDay={};
+function push(info,it){it.y=info.y;it.m=info.m;it.d=info.d;it.day=info.day;var k=keyOf(info.y,info.m,info.d);if(!byDay[k])byDay[k]=[];byDay[k].push(it)}
+function collect(){
+byDay={};
+var now=kstToday();
+var list=$("hec-list");
+if(list){
+var sec="",kids=list.children;
+for(var i=0;i<kids.length;i++){
+var el=kids[i];
+if(el.classList&&el.classList.contains("heghd")){sec=el.textContent||"";continue}
+if(!el.classList||!el.classList.contains("herow"))continue;
+if(sec&&sec.indexOf("발표 예정")<0)continue;
+try{
+var b=el.querySelector(".he1 b"),dt=el.querySelector(".hedt"),tm=el.querySelector(".hetm"),s2=el.querySelector(".he2"),ab=el.querySelector(".heen");
+if(!b||!dt)continue;
+var dm=/(\d+)월\s*(\d+)일/.exec(dt.textContent||"");if(!dm)continue;
+var info=dateInfo(+dm[1],+dm[2],now);
+if(info.diff<0)continue;
+var tp=/(\d{1,2}):(\d{2})/.exec(tm?(tm.textContent||""):""),hh=tp?+tp[1]:null,mm=tp?+tp[2]:0;
+var name=(b.textContent||"").trim();
+var base=name.replace(/\s*\((전월비|전년비|예비)\)\s*$/,"").trim();
+var core=base.indexOf("근원 ")===0,fam=core?base.slice(3):base;
+var title=base,abTxt=ab?(ab.textContent||"").trim():"";
+if(/^[A-Z]{2,5}$/.test(abTxt))title+=" ("+abTxt+")";
+if(fam==="소비자물가"&&!core)title="미국 "+title;
+push(info,{mins:hh!=null?hh*60+mm:9999,timeLbl:hh!=null?p2(hh)+":"+p2(mm):"",title:title,subHtml:s2?s2.innerHTML:""});
+}catch(e){}}}
+var list2=$("he-list");
+if(list2){
+var sec2="",kids2=list2.children;
+for(var j=0;j<kids2.length;j++){
+var el2=kids2[j];
+if(el2.classList&&el2.classList.contains("heghd")){sec2=el2.textContent||"";continue}
+if(!el2.classList||!el2.classList.contains("erow"))continue;
+if(sec2&&sec2.indexOf("발표 예정")<0)continue;
+try{
+var b2=el2.querySelector(".he1 b"),dt2=el2.querySelector(".hedt"),s22=el2.querySelector(".he2");
+if(!b2||!dt2)continue;
+var dm2=/(\d+)월\s*(\d+)일/.exec(dt2.textContent||"");if(!dm2)continue;
+var info2=dateInfo(+dm2[1],+dm2[2],now);
+var nm=(b2.textContent||"").replace(/\s*\([^)]*\)\s*$/,"").trim();
+if(!nm)continue;
+var txt=s22?(s22.textContent||""):"";
+var em=/예상 EPS\s*(\$[\d.,]+|—)/.exec(txt),eps=em?em[1]:"";
+var sess=txt.indexOf("장 마감 후")>=0?"장 마감 후":(txt.indexOf("장 시작 전")>=0?"장 시작 전":"");
+var kt=/한국 시간\s*(다음날|전날)?\s*(\d{1,2}):(\d{2})/.exec(txt),timeLbl="",mins=9999;
+if(kt){timeLbl=(kt[1]?kt[1]+" ":"")+p2(+kt[2])+":"+p2(+kt[3]);mins=(+kt[2])*60+(+kt[3])+(kt[1]==="다음날"?1440:kt[1]==="전날"?-1440:0)}
+else if(sess)timeLbl=sess;
+var parts=[];
+if(eps)parts.push("예상 EPS <b>"+esc(eps)+"</b>");
+if(sess)parts.push(esc(sess));
+push(info2,{mins:mins,timeLbl:timeLbl,title:nm+" 실적",subHtml:parts.join("<span> · </span>")});
+}catch(e){}}}
+for(var k in byDay)byDay[k].sort(function(a,b){return a.mins-b.mins})}
+var viewY=0,viewM=0,selKey="",touched=false;
+function defaultSel(){
+var now=kstToday(),best=null;
+for(var k in byDay){
+var it=byDay[k][0];
+if(it.day>=now.day&&(!best||it.day<best.day))best=it}
+if(best)return{y:best.y,m:best.m,d:best.d};
+return{y:now.y,m:now.m,d:now.d}}
+function renderDay(){
+var hd=$("cal-dhd"),box=$("cal-list");if(!hd||!box||!selKey)return;
+var p=selKey.split("-"),y=+p[0],m=+p[1],d=+p[2];
+hd.textContent=m+"월 "+d+"일 ("+WD[new Date(Date.UTC(y,m-1,d)).getUTCDay()]+")";
+var items=byDay[selKey]||[];
+if(!items.length){box.innerHTML='<div class="calempty">일정이 없어요</div>';return}
+var html="";
+for(var i=0;i<items.length;i++){
+var it=items[i];
+html+='<div class="calit"><span class="caltm">'+esc(it.timeLbl||"—")+'</span><span class="calmn"><span class="calnm">'+esc(it.title)+"</span>"+(it.subHtml?'<span class="calsub">'+it.subHtml+"</span>":"")+"</span></div>"}
+box.innerHTML=html}
+function render(){
+var grid=$("cal-grid"),mon=$("cal-mon");if(!grid||!mon)return;
+mon.textContent=viewY+"년 "+viewM+"월";
+var now=kstToday(),todayK=keyOf(now.y,now.m,now.d);
+var first=new Date(Date.UTC(viewY,viewM-1,1)).getUTCDay();
+var dim=new Date(Date.UTC(viewY,viewM,0)).getUTCDate();
+var prevDim=new Date(Date.UTC(viewY,viewM-1,0)).getUTCDate();
+var cells=Math.ceil((first+dim)/7)*7,html="";
+for(var w=0;w<7;w++)html+='<span class="calwd'+(w===0?" su":w===6?" sa":"")+'">'+WD[w]+"</span>";
+for(var i=0;i<cells;i++){
+var cy=viewY,cm=viewM,cd=i-first+1,out=false;
+if(cd<1){cd=prevDim+cd;cm=viewM-1;if(cm<1){cm=12;cy--}out=true}
+else if(cd>dim){cd=cd-dim;cm=viewM+1;if(cm>12){cm=1;cy++}out=true}
+var k=keyOf(cy,cm,cd);
+html+='<button type="button" class="calday'+(out?" out":"")+(k===todayK?" today":"")+(k===selKey?" sel":"")+'" data-k="'+k+'">'+cd+(byDay[k]?'<i class="caldot"></i>':"")+"</button>"}
+grid.innerHTML=html;
+renderDay()}
+function refresh(){
+collect();
+if(!touched){
+var s=defaultSel();
+selKey=keyOf(s.y,s.m,s.d);viewY=s.y;viewM=s.m}
+render()}
+var grid=$("cal-grid");
+if(grid){
+grid.addEventListener("click",function(e){
+var t=e.target;
+while(t&&t!==grid&&!(t.classList&&t.classList.contains("calday")))t=t.parentNode;
+if(!t||t===grid)return;
+touched=true;selKey=t.getAttribute("data-k");
+var p=selKey.split("-");viewY=+p[0];viewM=+p[1];
+render()});
+var pv=$("cal-prev"),nx=$("cal-next");
+if(pv)pv.addEventListener("click",function(){touched=true;viewM--;if(viewM<1){viewM=12;viewY--}render()});
+if(nx)nx.addEventListener("click",function(){touched=true;viewM++;if(viewM>12){viewM=1;viewY++}render()});
+refresh();
+var src1=$("he-list"),src2=$("hec-list");
+if(window.MutationObserver){
+var mo=new MutationObserver(function(){refresh()});
+if(src1)mo.observe(src1,{childList:true,subtree:true});
+if(src2)mo.observe(src2,{childList:true,subtree:true})}}
 })();
 </script>
 <script>
