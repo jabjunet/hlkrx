@@ -444,12 +444,14 @@ function chgTxt(v){return (typeof v==="number"&&!isNaN(v))?((v>0?"+":"")+v.toFix
 function num(v){return typeof v==="number"&&isFinite(v)?v:null}
 function updTxt(el){if(el)el.textContent=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"})+" 갱신"}
 
-/* TV 스캐너: 업비트·빗썸(원화쌍)·바이낸스·OKX·바이비트·하이퍼리퀴드(달러쌍) 한 번에 */
+/* TV 스캐너: 업비트·빗썸(원화쌍)·바이낸스·OKX·바이비트(달러쌍) 한 번에.
+   하이퍼리퀴드는 TV 스캐너에 데이터가 없어 공개 API로 채운다 (fillApiGaps).
+   OKX·바이비트도 환경에 따라 스캐너 응답이 비는 경우가 있어 공개 API로 빈 칸을 보충한다. */
 function tvSym(x,s){return x+":"+(x==="UPBIT"||x==="BITHUMB"?s+"KRW":s+"USDT")}
 function loadMarkets(){
   var symMap={},syms=[];
   COINS.forEach(function(c){
-    ["UPBIT","BITHUMB","BINANCE","OKX","BYBIT","HYPERLIQUID"].forEach(function(x){
+    ["UPBIT","BITHUMB","BINANCE","OKX","BYBIT"].forEach(function(x){
       var tv=tvSym(x,c.s);symMap[tv]={coin:c.s,x:x};syms.push(tv);
     });
   });
@@ -466,11 +468,14 @@ function loadMarkets(){
     });
     if(!Object.keys(out).length)throw new Error("tv empty");
     MKT=out;
-    return loadHlFallback().then(function(){renderAll()});
   })
   .catch(function(){
-    return loadLegacy().then(function(){renderAll()});
-  });
+    return loadLegacy();
+  })
+  .then(function(){
+    return fillApiGaps();
+  })
+  .then(function(){renderAll()});
 }
 /* 하이퍼리퀴드가 TV 스캐너에 없으면 공개 API로 채운다 */
 function loadHlFallback(){
@@ -488,11 +493,72 @@ function loadHlFallback(){
       var i=idx[c.s==="PEPE"?"kPEPE":c.s];
       if(i==null||!ctxs[i])return;
       var px=parseFloat(ctxs[i].midPx||ctxs[i].markPx),pv=parseFloat(ctxs[i].prevDayPx),vl=parseFloat(ctxs[i].dayNtlVlm);
+      if(c.s==="PEPE"){px=px/1000;pv=pv/1000} /* kPEPE는 1,000개 단위 가격이라 개당 가격으로 환산 */
       if(!(px>0))return;
       if(!MKT[c.s])MKT[c.s]={};
       MKT[c.s].HYPERLIQUID={p:px,c:(pv>0?(px/pv-1)*100:null),v:(isFinite(vl)?vl:null)};
     });
   }).catch(function(){});
+}
+/* OKX가 비어 있으면 OKX 공개 API(스팟 티커)로 채운다 */
+function fillOkx(){
+  if(!MKT)return Promise.resolve();
+  var need=COINS.some(function(c){return !(MKT[c.s]&&MKT[c.s].OKX)});
+  if(!need)return Promise.resolve();
+  return fetch("https://www.okx.com/api/v5/market/tickers?instType=SPOT")
+  .then(function(r){if(!r.ok)throw new Error("okx");return r.json()})
+  .then(function(j){
+    var by={};
+    ((j&&j.data)||[]).forEach(function(t){by[t.instId]=t});
+    COINS.forEach(function(c){
+      if(MKT[c.s]&&MKT[c.s].OKX)return;
+      var t=by[c.s+"-USDT"];if(!t)return;
+      var px=parseFloat(t.last),op=parseFloat(t.open24h),vl=parseFloat(t.volCcy24h);
+      if(!(px>0))return;
+      if(!MKT[c.s])MKT[c.s]={};
+      MKT[c.s].OKX={p:px,c:(op>0?(px/op-1)*100:null),v:(isFinite(vl)?vl:null)};
+    });
+  }).catch(function(){});
+}
+/* 바이비트가 비어 있으면 바이비트 v5 공개 API(스팟 티커)로 채운다 — 메인 펀딩비 탭과 같은 호스트 폴백 순서 */
+function fillBybit(){
+  if(!MKT)return Promise.resolve();
+  var need=COINS.some(function(c){return !(MKT[c.s]&&MKT[c.s].BYBIT)});
+  if(!need)return Promise.resolve();
+  function apply(j){
+    if(!j||j.retCode!==0||!j.result||!Array.isArray(j.result.list))return false;
+    var by={};
+    j.result.list.forEach(function(t){by[t.symbol]=t});
+    var filled=false;
+    COINS.forEach(function(c){
+      if(MKT[c.s]&&MKT[c.s].BYBIT)return;
+      var t=by[c.s+"USDT"];if(!t)return;
+      var px=parseFloat(t.lastPrice),pc=parseFloat(t.price24hPcnt),vl=parseFloat(t.turnover24h);
+      if(!(px>0))return;
+      if(!MKT[c.s])MKT[c.s]={};
+      MKT[c.s].BYBIT={p:px,c:(isFinite(pc)?pc*100:null),v:(isFinite(vl)?vl:null)};
+      filled=true;
+    });
+    return filled;
+  }
+  function get(host){
+    return fetch("https://"+host+"/v5/market/tickers?category=spot")
+    .then(function(r){if(!r.ok)throw new Error("bybit "+r.status);return r.json()})
+    .then(function(j){if(!apply(j))throw new Error("bybit empty")});
+  }
+  return get("api.bybit.com")
+  .catch(function(){return get("api.bytick.com")})
+  .catch(function(){
+    return fetch("https://api.allorigins.win/raw?url="+encodeURIComponent("https://api.bybit.com/v5/market/tickers?category=spot"))
+    .then(function(r){if(!r.ok)throw new Error("ao");return r.json()})
+    .then(function(j){apply(j)});
+  })
+  .catch(function(){});
+}
+/* 스캐너·폴백 뒤에 남은 빈 거래소 칸을 각 거래소 공개 API로 보충한다 */
+function fillApiGaps(){
+  if(!MKT)return Promise.resolve();
+  return Promise.all([fillOkx(),fillBybit(),loadHlFallback()]);
 }
 /* TV 스캐너 전체 실패 시 폴백: 기존 경로(빗썸 공개 API + 바이낸스 API·미러) */
 function loadLegacy(){
