@@ -462,6 +462,36 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hecwrap .hmhd .heupd{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap}
 .hecbox{max-height:300px;border:1px solid var(--bd);border-radius:10px;background:var(--sf);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .hecbox .he2{white-space:normal;overflow:visible;text-overflow:clip}
+/* 홈 탭: '오늘의 시장' 섹션 제목 줄 + 실시간 급등락 카드 + '다가오는 일정' 카드 (미리보기 시안 반영, 2026-11-09).
+   왼쪽 카드는 데스크톱에서도 모바일과 같은 카드 틀(배경·테두리·16px 둥근 모서리)로 감싼다.
+   오른쪽 일정 카드는 기존 경제지표 박스와 같은 안쪽 스크롤 방식(데스크톱 300px·모바일 340px)을 쓴다.
+   숨긴 데이터 원본(.hmsrc)에는 기존 실적발표·경제지표 박스의 목록이 그대로 들어 있어, 기존 스크립트와
+   경제지표 내장 데이터 교체 위치·형식이 깨지지 않고 새 카드가 그 데이터를 읽어 보여준다 */
+.hm-left{min-width:0}
+.hm-sec{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:2px 2px 8px}
+.hm-sec-t{font-size:19px;font-weight:800;letter-spacing:-.02em;color:var(--tx)}
+.hm-sec-note{font-size:12px;color:var(--mut)}
+#ph .hm-left .hmv{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 4px 6px;margin-bottom:0}
+#ph .hm-left .hmv .hmhd{padding:0 10px}
+#ph .hm-left .hmv .hmseg{padding:0 10px}
+.hm-foot{font-size:12px;color:var(--mut);line-height:1.65;margin:8px 2px 0}
+.hmvr .hpr{flex:none;font-size:13.5px;font-weight:600;white-space:nowrap}
+.hmvr .hch{flex:none;min-width:62px;text-align:right;font-size:13.5px;font-weight:800;white-space:nowrap}
+.hmsrc{display:none}
+.upbox{max-height:300px;border:1px solid var(--bd);border-radius:16px;background:var(--sf);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+@media(max-width:720px){.upbox{max-height:340px}}
+.uprow{display:flex;gap:14px;padding:13px 14px;border-bottom:1px solid var(--bd)}
+.uprow:last-child{border-bottom:0}
+.uprow:hover{background:var(--sf2)}
+.updt{flex:none;width:88px;min-width:0}
+.updt b{display:block;font-size:14.5px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+.updt span{display:block;margin-top:2px;font-size:12.5px;color:var(--mut);white-space:nowrap}
+.upmain{flex:1 1 auto;min-width:0}
+.upname{font-size:14.5px;font-weight:700;line-height:1.4}
+.upsub{display:block;margin-top:1px;font-size:12.5px;color:var(--mut);line-height:1.5}
+.upsub b{color:var(--tx);font-weight:700}
+.upcd{display:block;margin-top:1px;font-size:12.5px;font-weight:600;color:var(--tx)}
+@media(max-width:520px){.uprow{gap:11px;padding:12px}.updt{width:80px}.upname{font-size:14px}}
 @media(max-width:720px){.hecbox{max-height:340px}}
 .heghd{position:sticky;top:0;z-index:2;background:var(--sf2);font-size:12px;font-weight:700;color:var(--mut);padding:7px 12px;border-bottom:1px solid var(--bd)}
 .heghd b{color:var(--tx)}
@@ -1485,6 +1515,9 @@ var D={
 "코스피":"KOSPI","코스닥":"KOSDAQ","나스닥":"NASDAQ","다우":"Dow","달러/원":"USD/KRW","원유":"Crude Oil",
 "실시간 차트":"Live Chart","한국":"Korea","미국":"US","급상승":"Top Gainers","급하락":"Top Losers","불러오는 중…":"Loading…",
 "주요 종목 실적발표":"Key Earnings","주요 경제지표":"Key Economic Indicators","실시간 뉴스":"Live News","국내":"Domestic",
+"오늘의 시장":"Today's Market","실시간 급등락":"Live Movers","다가오는 일정":"Upcoming Schedule","실적":"Earnings","근원":"Core","· 근원":"· Core","전월비 예상":"MoM Forecast","예상 EPS":"EPS Forecast","다가오는 일정이 없습니다":"No upcoming events",
+"급상승 순위는 TradingView 기준, 1분마다 갱신되는 구조":"Top gainers ranked by TradingView · refreshes every minute",
+"등락률은 TradingView 기준 전일 종가 대비이며, 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준입니다.":"Changes are vs. the previous close (TradingView). Low-volume stocks are excluded. When the market is closed, figures are based on the last close.",
 "발표 예정":"Upcoming","최근 발표":"Recent Releases","실제":"Actual","예상":"Forecast","이전":"Prev.","더 보기":"Show more","접기":"Show less","뉴스를 불러오지 못했어요":"Could not load news","불러오지 못했습니다":"Failed to load","표시할 종목이 없습니다":"No stocks to display",
 "등락률은 TradingView 기준 전일 종가 대비이며 1분마다 갱신합니다. 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준으로 표시됩니다.":"Changes are vs. the previous close (TradingView) and refresh every minute. Low-volume stocks are excluded. When the market is closed, figures are based on the last close.",
 "미국 주요 경제지표의 최근 발표 결과와 발표 예정 일정입니다. 발표 시각은 한국 시간 기준이고, 예상치는 시장 전망치입니다.":"Recent results and upcoming release schedule for major US economic indicators. Times are Korea Standard Time; forecasts are market consensus.",
@@ -1567,6 +1600,12 @@ if(m=c.match(/^(\d+)월 (\d+)일 \(([일월화수목금토])\)$/))return MON[+m[
 if(m=c.match(/^(\d+)분 전$/))return m[1]+"m ago";
 if(m=c.match(/^(\d+)시간 전$/))return m[1]+"h ago";
 if(m=c.match(/^(\d+)일 전$/))return m[1]+"d ago";
+if(m=c.match(/^(\d+)시간 (\d+)분 (\d+)초 남음$/))return m[1]+"h "+m[2]+"m "+m[3]+"s left";
+if(m=c.match(/^(\d+)분 (\d+)초 남음$/))return m[1]+"m "+m[2]+"s left";
+if(m=c.match(/^(\d+)초 남음$/))return m[1]+"s left";
+if(m=c.match(/^(\d+)\/(\d+) \(([일월화수목금토])\)$/))return MON[+m[1]-1]+" "+m[2]+" ("+WD[m[3]]+")";
+if(m=c.match(/^미국 (.+) \(([A-Z]{2,5})\)$/))return "US "+trCore(m[1])+" ("+m[2]+")";
+if(m=c.match(/^(.+) 실적$/))return m[1]+" Earnings";
 if(m=c.match(/^([\d,]+(?:\.\d+)?)만$/)){var kv=parseFloat(m[1].replace(/,/g,""))*10;return (Math.round(kv*10)/10).toString()+"K"}
 if(m=c.match(/^약 ([\d,.]+)억$/))return "≈ ₩"+bn(m[1])+"B";
 if(m=c.match(/^([\d,.]+)억 원$/))return "₩"+bn(m[1])+"B";
@@ -1655,19 +1694,23 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <div class="ixt"><small><i id="ixt-oil-d"></i>원유</small><b id="ixt-oil-v">—</b><span class="ixc na" id="ixt-oil-c">—</span></div>
 </div>
 <div class="hmcols">
+<div class="hm-left">
+<div class="hm-sec"><span class="hm-sec-t">오늘의 시장</span><span class="hm-sec-note">급상승 순위는 TradingView 기준, 1분마다 갱신되는 구조</span></div>
 <div class="hmv">
-<div class="hmhd"><h2>실시간 차트</h2><div class="pair hmmk" id="hm-mk"><button type="button" data-hm="kr" aria-pressed="true">한국</button><button type="button" data-hm="us" aria-pressed="false">미국</button></div></div>
+<div class="hmhd"><h2>실시간 급등락</h2><div class="pair hmmk" id="hm-mk"><button type="button" data-hm="kr" aria-pressed="true">한국</button><button type="button" data-hm="us" aria-pressed="false">미국</button></div></div>
 <div class="segrow hmseg">
 <div class="pair" id="hm-dr"><button type="button" data-hd="up" aria-pressed="true">급상승</button><button type="button" data-hd="dn" aria-pressed="false">급하락</button></div>
 </div>
 <div id="hm-list"><div class="hmvempty">불러오는 중…</div></div>
-<p class="note">등락률은 TradingView 기준 전일 종가 대비이며 1분마다 갱신합니다. 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준으로 표시됩니다.</p>
+</div>
+<p class="hm-foot">등락률은 TradingView 기준 전일 종가 대비이며, 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준입니다.</p>
 </div>
 <div class="hew">
-<div class="hmhd"><h2>주요 종목 실적발표</h2><span class="heupd" id="he-upd"></span></div>
+<div class="hmhd"><h2>다가오는 일정</h2></div>
+<div class="upbox" id="up-box"><div id="up-list"><div class="hmvempty">불러오는 중…</div></div></div>
+<div class="hmsrc" aria-hidden="true">
 <div class="hewbox" id="hew-box"><div id="he-list"><div class="hmvempty">불러오는 중…</div></div></div>
-<div class="hecwrap">
-<div class="hmhd"><h2>주요 경제지표</h2><span class="heupd" id="hec-upd"></span></div>
+<span class="heupd" id="he-upd"></span>
 <div class="hecbox" id="hec-box"><div id="hec-list">
 <div class="heghd">발표 예정 <b>6</b></div>
 <div class="herow"><div class="he1"><b>소비자물가 (전월비)</b><span class="heen">CPI</span><span class="hedt">11월 10일 (화)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>0.3%</b> · 이전 0.6%</span></div>
@@ -1677,7 +1720,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <div class="herow"><div class="he1"><b>생산자물가 (전월비)</b><span class="heen">PPI</span><span class="hedt">11월 13일 (금)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>0.4%</b> · 이전 1.3%</span></div>
 <div class="herow"><div class="he1"><b>근원 생산자물가 (전월비)</b><span class="heen">Core PPI</span><span class="hedt">11월 13일 (금)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>0.3%</b> · 이전 0.7%</span></div>
 </div></div>
-<p class="note">미국 주요 경제지표의 최근 발표 결과와 발표 예정 일정입니다. 발표 시각은 한국 시간 기준이고, 예상치는 시장 전망치입니다.</p>
+<span class="heupd" id="hec-upd"></span>
 </div>
 </div>
 </div>
@@ -5370,11 +5413,12 @@ if(lg)return '<span class="av"><img src="https://s3-symbol-logo.tradingview.com/
 if(typeof av==="function")return av(key);
 return '<span class="av" style="background:'+h+'">'+esc(fc)+'</span>'}
 function rowHtml(x,i,kr){
+try{
 var d=x.d||[],nm=d[0]||"",desc=d[1]||"",px=d[2],ch=d[3];
 if(px==null||isNaN(px)||ch==null||isNaN(ch))return "";
 var pr=kr?Math.round(px).toLocaleString("ko-KR")+"원":"$"+Number(px).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
 var head=kr?'<b>'+esc(KRN[nm]||desc||nm)+'</b><span>'+esc(nm)+'</span>':'<b>'+esc(nm)+'</b>';
-return '<div class="hmvr"><span class="hrk">'+(i+1)+'</span>'+ava(x,kr)+'<span class="hwho"><span class="hn1">'+head+'</span><span class="hn2">'+pr+'<em class="'+(ch>=0?"up":"dn")+'">'+(ch>0?"+":"")+ch.toFixed(2)+'%</em></span></span></div>'}
+return '<div class="hmvr"><span class="hrk">'+(i+1)+'</span><span class="hwho"><span class="hn1">'+head+'</span></span><span class="hpr">'+pr+'</span><span class="hch '+(ch>=0?"up":"dn")+'">'+(ch>0?"+":"")+ch.toFixed(2)+'%</span></div>'}catch(e){return ""}}
 function render(){
 var key=mk+(dir>0?"-up":"-dn"),rows=cache[key],box=$("hm-list");
 if(!rows){box.innerHTML='<div class="hmvempty">불러오는 중…</div>';return}
@@ -5677,6 +5721,153 @@ if(nm===HEC_ABBR[j][0]||nm.indexOf(HEC_ABBR[j][0])>=0){
 var s=document.createElement("span");s.className="heen";s.textContent=HEC_ABBR[j][1];
 b.parentNode.insertBefore(s,b.nextSibling);break}}}
 }
+})();
+</script>
+<script>
+/* 홈 탭: 다가오는 일정 (2026-11-09) — 예전 '주요 종목 실적발표' 박스와 '주요 경제지표' 박스를 하나로 합친 카드.
+   새 데이터 소스나 새 호출은 추가하지 않는다: 경제지표는 내장 데이터가 들어 있는 #hec-list를,
+   실적발표는 기존 실적 스크립트가 채우는 #he-list를 읽는다. 두 목록은 화면에 보이지 않는 데이터 원본
+   (.hmsrc)으로 홈에 그대로 남아 있고, 이 카드는 그 내용을 읽어 날짜·시각 오름차순으로 합쳐 보여줄 뿐이다.
+   두 박스 모두 '발표 예정' 섹션만 쓴다('최근 발표'·'발표 완료'와 갱신 시각 표시는 넣지 않는다).
+   같은 날짜의 실적은 한 행으로 묶고(예: '엔비디아 · 홈디포 실적'), 근원 지표는 본 지표와 같은 시각이면
+   한 행으로 합친다(예: 소비자물가 + 근원 소비자물가). 정확한 시각이 정해진 일정 중 가장 가까운 다가오는
+   일정 1건에만 카운트다운을 붙여 매초 갱신한다. 표시는 최대 8건, 넘으면 박스 안 스크롤.
+   행 하나를 읽다 실패해도 그 행만 건너뛰고 나머지 일정은 그대로 보여준다. */
+(function(){
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function p2(n){return (n<10?"0":"")+n}
+var WD=["일","월","화","수","목","금","토"];
+function kstToday(){
+var p=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date()),y=0,m=0,d=0;
+p.forEach(function(x){if(x.type==="year")y=+x.value;else if(x.type==="month")m=+x.value;else if(x.type==="day")d=+x.value});
+return{y:y,day:Math.floor(Date.UTC(y,m-1,d)/86400000)}}
+function dateInfo(m,d,now){
+var y=now.y,day=Math.floor(Date.UTC(y,m-1,d)/86400000);
+if(day-now.day<-20){y+=1;day=Math.floor(Date.UTC(y,m-1,d)/86400000)}
+else if(day-now.day>330){y-=1;day=Math.floor(Date.UTC(y,m-1,d)/86400000)}
+return{y:y,m:m,d:d,day:day,diff:day-now.day,wd:WD[new Date(Date.UTC(y,m-1,d)).getUTCDay()]}}
+function dateLbl(info){
+if(info.diff===0)return "오늘 "+info.m+"/"+info.d;
+if(info.diff===1)return "내일 "+info.m+"/"+info.d;
+return info.m+"/"+info.d+" ("+info.wd+")"}
+function kstTs(y,m,d,hh,mm){return Date.UTC(y,m-1,d,hh-9,mm)/1000}
+function fmtFc(v){if(!v)return "—";if(v.charAt(0)==="-"||v.charAt(0)==="+")return v;if(/%$/.test(v))return "+"+v;return v}
+function econTitle(it){
+var t=it.base;
+if(/^[A-Z]{2,5}$/.test(it.abbr))t+=" ("+it.abbr+")";
+if(it.fam==="소비자물가"&&!it.core)t="미국 "+t;
+return t}
+function econItems(now){
+var out=[],list=$("hec-list");if(!list)return out;
+var sec="",kids=list.children;
+for(var i=0;i<kids.length;i++){
+var el=kids[i];
+if(el.classList&&el.classList.contains("heghd")){sec=el.textContent||"";continue}
+if(!el.classList||!el.classList.contains("herow"))continue;
+if(sec&&sec.indexOf("발표 예정")<0)continue;
+try{
+var b=el.querySelector(".he1 b"),dt=el.querySelector(".hedt"),tm=el.querySelector(".hetm"),s2=el.querySelector(".he2"),ab=el.querySelector(".heen");
+if(!b||!dt)continue;
+var dm=/(\d+)월\s*(\d+)일/.exec(dt.textContent||"");if(!dm)continue;
+var info=dateInfo(+dm[1],+dm[2],now);
+if(info.diff<0)continue;
+var tp=/(\d{1,2}):(\d{2})/.exec(tm?(tm.textContent||""):""),hh=tp?+tp[1]:null,mm=tp?+tp[2]:0;
+var name=(b.textContent||"").trim();
+var base=name.replace(/\s*\((전월비|전년비|예비)\)\s*$/,"").trim();
+var core=base.indexOf("근원 ")===0,fam=core?base.slice(3):base;
+var fc="",fm=s2?/예상\s*([^\s·]+)/.exec(s2.textContent||""):null;
+if(fm)fc=fm[1];
+out.push({kind:"ec",info:info,hh:hh,ts:hh!=null?kstTs(info.y,info.m,info.d,hh,mm):kstTs(info.y,info.m,info.d,23,59),exact:hh!=null,timeLbl:hh!=null?p2(hh)+":"+p2(mm):"",base:base,core:core,fam:fam,abbr:ab?(ab.textContent||"").trim():"",fc:fc,subHtml:s2?s2.innerHTML:""});
+}catch(e){}}
+return out}
+function mergeEcon(items){
+var out=[],used={};
+for(var i=0;i<items.length;i++){
+if(used[i])continue;
+var it=items[i],done=false;
+if(!it.core){
+for(var k=0;k<items.length;k++){
+var c=items[k];
+if(k===i||used[k]||!c.core||c.fam!==it.fam||c.info.day!==it.info.day||c.hh!==it.hh)continue;
+used[k]=1;done=true;
+out.push({kind:"ec",info:it.info,ts:it.ts,exact:it.exact,timeLbl:it.timeLbl,title:econTitle(it),subHtml:"전월비 예상 <b>"+esc(fmtFc(it.fc))+"</b> · 근원 <b>"+esc(fmtFc(c.fc))+"</b>"});
+break}}
+if(done)continue;
+out.push({kind:"ec",info:it.info,ts:it.ts,exact:it.exact,timeLbl:it.timeLbl,title:econTitle(it),subHtml:it.subHtml})}
+return out}
+function earnItems(now){
+var list=$("he-list");if(!list)return [];
+var groups=[],byKey={},sec="",kids=list.children;
+for(var i=0;i<kids.length;i++){
+var el=kids[i];
+if(el.classList&&el.classList.contains("heghd")){sec=el.textContent||"";continue}
+if(!el.classList||!el.classList.contains("erow"))continue;
+if(sec&&sec.indexOf("발표 예정")<0)continue;
+try{
+var b=el.querySelector(".he1 b"),dt=el.querySelector(".hedt"),s2=el.querySelector(".he2");
+if(!b||!dt)continue;
+var dm=/(\d+)월\s*(\d+)일/.exec(dt.textContent||"");if(!dm)continue;
+var info=dateInfo(+dm[1],+dm[2],now);
+var nm=(b.textContent||"").replace(/\s*\([^)]*\)\s*$/,"").trim();
+if(!nm)continue;
+var txt=s2?(s2.textContent||""):"";
+var em=/예상 EPS\s*(\$[\d.,]+|—)/.exec(txt),eps=em?em[1]:"";
+var sess=txt.indexOf("장 마감 후")>=0?"장 마감 후":(txt.indexOf("장 시작 전")>=0?"장 시작 전":"");
+var kt=/한국 시간\s*(다음날|전날)?\s*(\d{1,2}):(\d{2})/.exec(txt),ts=null;
+if(kt){
+var bd=new Date(Date.UTC(info.y,info.m-1,info.d));
+if(kt[1]==="다음날")bd.setUTCDate(bd.getUTCDate()+1);
+else if(kt[1]==="전날")bd.setUTCDate(bd.getUTCDate()-1);
+ts=kstTs(bd.getUTCFullYear(),bd.getUTCMonth()+1,bd.getUTCDate(),+kt[2],+kt[3])}
+var key=info.y+"-"+info.m+"-"+info.d,g=byKey[key];
+if(!g){g={kind:"er",info:info,names:[],firstNm:"",firstEps:"",firstSess:"",ts:kstTs(info.y,info.m,info.d,12,0),exact:false};byKey[key]=g;groups.push(g)}
+g.names.push(nm);
+if(!g.firstNm){g.firstNm=nm;g.firstEps=eps;g.firstSess=sess}
+if(ts!=null&&(!g.exact||ts<g.ts)){g.ts=ts;g.exact=true}
+}catch(e){}}
+groups.forEach(function(g){
+g.title=g.names.join(" · ")+" 실적";
+var parts=[];
+if(g.names.length>1&&g.firstNm)parts.push(esc(g.firstNm)+" ");
+if(g.firstEps)parts.push("예상 EPS <b>"+esc(g.firstEps)+"</b>");
+var sub=parts.join("");
+if(g.firstSess)sub+=(sub?" ":"")+"("+esc(g.firstSess)+")";
+g.subHtml=sub});
+return groups}
+var cdTs=0,cdEl=null;
+function tick(){
+if(!cdEl||!cdTs)return;
+var left=Math.floor(cdTs-Date.now()/1000);
+if(left<0){render();return}
+var h=Math.floor(left/3600),mi=Math.floor((left%3600)/60),s=left%60;
+cdEl.textContent=h>0?(h+"시간 "+mi+"분 "+s+"초 남음"):(mi>0?(mi+"분 "+s+"초 남음"):(s+"초 남음"))}
+function render(){
+var box=$("up-list");if(!box)return;
+var now=kstToday(),items=[];
+try{items=items.concat(mergeEcon(econItems(now)))}catch(e){}
+try{items=items.concat(earnItems(now))}catch(e){}
+items.sort(function(a,b){return a.ts-b.ts});
+items=items.slice(0,8);
+cdTs=0;cdEl=null;
+if(!items.length){box.innerHTML='<div class="hmvempty">다가오는 일정이 없습니다</div>';return}
+var nowSec=Date.now()/1000,cdIdx=-1;
+for(var i=0;i<items.length;i++){if(items[i].exact&&items[i].ts>nowSec){cdIdx=i;break}}
+var html="";
+for(var j=0;j<items.length;j++){
+try{
+var it=items[j];
+html+='<div class="uprow"><div class="updt"><b>'+esc(dateLbl(it.info))+'</b><span>'+esc(it.kind==="er"?"실적":it.timeLbl)+'</span></div><div class="upmain"><div class="upname">'+esc(it.title)+'</div>'+(it.subHtml?'<span class="upsub">'+it.subHtml+'</span>':"")+(j===cdIdx?'<span class="upcd" id="up-cd"></span>':"")+'</div></div>'}catch(e){}}
+box.innerHTML=html||'<div class="hmvempty">다가오는 일정이 없습니다</div>';
+if(cdIdx>=0){cdTs=items[cdIdx].ts;cdEl=$("up-cd");tick()}}
+render();
+var src1=$("he-list"),src2=$("hec-list");
+if(window.MutationObserver){
+var mo=new MutationObserver(function(){render()});
+if(src1)mo.observe(src1,{childList:true,subtree:true});
+if(src2)mo.observe(src2,{childList:true,subtree:true})}
+setInterval(function(){if(!document.hidden)render()},60000);
+setInterval(tick,1000);
 })();
 </script>
 <script>
