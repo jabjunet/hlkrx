@@ -509,7 +509,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .uprow:first-child{border-top:0}
 .uprow:hover{background:var(--sf2)}
 .updt{flex:none;width:86px;min-width:0;font-size:12.5px;color:var(--mut);line-height:1.45}
-.updt b{display:block;font-size:13px;font-weight:700;color:var(--tx);white-space:nowrap}
+.updt b{display:block;font-size:13px;font-weight:700;color:var(--tx)}
 .updt span{display:block;font-size:12.5px;color:var(--mut);white-space:nowrap}
 .upmain{flex:1 1 auto;min-width:0}
 .upname{font-size:14px;font-weight:600;line-height:1.4}
@@ -1680,6 +1680,7 @@ if(m=c.match(/^(\d+)분 (\d+)초 남음$/))return m[1]+"m "+m[2]+"s left";
 if(m=c.match(/^(\d+)초 남음$/))return m[1]+"s left";
 if(m=c.match(/^(\d+)\/(\d+) \(([일월화수목금토])\)$/))return MON[+m[1]-1]+" "+m[2]+" ("+WD[m[3]]+")";
 if(m=c.match(/^미국 (.+) \(([A-Z]{2,5})\)$/))return "US "+trCore(m[1])+" ("+m[2]+")";
+if(m=c.match(/^(.+) \(([A-Z]{2,5})\)$/))return trCore(m[1])+" ("+m[2]+")";
 if(m=c.match(/^(.+) 실적$/))return m[1]+" Earnings";
 if(m=c.match(/^([\d,]+(?:\.\d+)?)만$/)){var kv=parseFloat(m[1].replace(/,/g,""))*10;return (Math.round(kv*10)/10).toString()+"K"}
 if(m=c.match(/^약 ([\d,.]+)억$/))return "≈ ₩"+bn(m[1])+"B";
@@ -1726,9 +1727,14 @@ if(m=c.match(/^(.+)님이 내 글을 좋아해요$/))return m[1]+" liked your po
 return c}
 function trStr(s){var m=s.match(/^(\s*)([\s\S]*?)(\s*)$/);if(!m||!m[2])return s;return m[1]+trCore(m[2])+m[3]}
 var TM=new WeakMap(),AM=new WeakMap(),ATTRS=["placeholder","title","aria-label","alt"];
-function excluded(n){var e=n.nodeType===3?n.parentElement:n;if(!e||!e.closest)return true;if(e.closest("script,style,.cmsg-tx,.cm-rt,.cm-rprev,.cm-rcprev-tx,.pv-ctx,#pv-title,#pv-text,#th-btn,#lang-btn,.ntf-title"))return true;return false}
-function procText(n){var v=n.nodeValue;if(v==null||!/[가-힣]/.test(v))return;var rec=TM.get(n);if(rec&&v===rec.en)return;var en=trStr(v);TM.set(n,{ko:v,en:en});if(LANG==="en"&&en!==v)n.nodeValue=en}
-function procAttrs(el){if(!el.getAttribute)return;var rec=AM.get(el);for(var i=0;i<ATTRS.length;i++){var a=ATTRS[i],v=el.getAttribute(a);if(v==null||!/[가-힣]/.test(v))continue;if(rec&&rec[a]&&v===rec[a].en)continue;var en=trStr(v);if(!rec)rec={};if(!rec[a]||rec[a].ko!==v)rec[a]={ko:v,en:en};AM.set(el,rec);if(LANG==="en"&&en!==v)el.setAttribute(a,en)}}
+/* .hmsrc는 홈 '다가오는 일정' 카드와 지표 탭 '실적·지표 캘린더'가 읽는 숨김 데이터 원본(#he-list·#hec-list)이다.
+   두 일정 표시가 원본의 한국어 문자열(날짜 'N월 N일', 섹션 머리글 '발표 예정', '예상 EPS', '한국 시간' 등)을
+   기준으로 파싱하므로, 원본까지 번역하면 영어 모드에서 파싱이 전부 실패해 일정이 0건이 된다.
+   그래서 원본 컨테이너는 번역 대상에서 제외해 UI 언어와 무관하게 항상 한국어로 유지한다.
+   일정 카드 쪽에 복사돼 그려지는 표시 문구는 .hmsrc 밖이라 기존처럼 번역된다. */
+function excluded(n){var e=n.nodeType===3?n.parentElement:n;if(!e||!e.closest)return true;if(e.closest("script,style,.hmsrc,.cmsg-tx,.cm-rt,.cm-rprev,.cm-rcprev-tx,.pv-ctx,#pv-title,#pv-text,#th-btn,#lang-btn,.ntf-title"))return true;return false}
+function procText(n){if(excluded(n))return;var v=n.nodeValue;if(v==null||!/[가-힣]/.test(v))return;var rec=TM.get(n);if(rec&&v===rec.en)return;var en=trStr(v);TM.set(n,{ko:v,en:en});if(LANG==="en"&&en!==v)n.nodeValue=en}
+function procAttrs(el){if(excluded(el))return;if(!el.getAttribute)return;var rec=AM.get(el);for(var i=0;i<ATTRS.length;i++){var a=ATTRS[i],v=el.getAttribute(a);if(v==null||!/[가-힣]/.test(v))continue;if(rec&&rec[a]&&v===rec[a].en)continue;var en=trStr(v);if(!rec)rec={};if(!rec[a]||rec[a].ko!==v)rec[a]={ko:v,en:en};AM.set(el,rec);if(LANG==="en"&&en!==v)el.setAttribute(a,en)}}
 function walk(node){
 if(!node||excluded(node))return;
 if(node.nodeType===3){procText(node);return}
