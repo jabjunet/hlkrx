@@ -239,6 +239,20 @@ td .xc{font-size:11.5px}
  td.nm b{font-size:13.5px}
  .fng .fv2{font-size:32px}
  .statcell .fv{font-size:20px}
+ /* 김프 표: 다섯 열이 가로 스크롤 없이 폰 폭 안에 다 들어오게 고정 배치 */
+ #panel-kimp table{table-layout:fixed}
+ #panel-kimp th,#panel-kimp td{padding:7px 4px;font-size:12px}
+ #panel-kimp thead th{font-size:10.5px;white-space:normal;line-height:1.3}
+ #panel-kimp th:nth-child(1),#panel-kimp td:nth-child(1){width:27%}
+ #panel-kimp th:nth-child(2),#panel-kimp td:nth-child(2){width:27%}
+ #panel-kimp th:nth-child(3),#panel-kimp td:nth-child(3){width:18%}
+ #panel-kimp th:nth-child(4),#panel-kimp td:nth-child(4){width:13%}
+ #panel-kimp th:nth-child(5),#panel-kimp td:nth-child(5){width:15%}
+ #panel-kimp td.nm b{font-size:13px;display:block;overflow:hidden;text-overflow:ellipsis}
+ #panel-kimp td.nm small{font-size:10.5px}
+ #panel-kimp td .kpnow{font-size:13.5px}
+ #panel-kimp td small.sub{font-size:10.5px}
+ #panel-kimp .pill{font-size:11px;padding:1px 5px}
 }
 </style>
 </head>
@@ -591,6 +605,7 @@ function fetchBithumbAll(out){
     var d=(j&&j.data)||{};
     Object.keys(d).forEach(function(s){
       var t=d[s];if(!t||typeof t!=="object")return;
+      BTMK[s]=1; /* 티커 응답 키 = 빗썸 상장 마켓 전체. market/all을 못 받은 환경에서도 기준 필터용 상장 집합을 채운다 */
       var p=parseFloat(t.closing_price),po=parseFloat(t.opening_price);
       var fr=parseFloat(t.fluctate_rate_24H);
       var v=parseFloat(t.acc_trade_value_24H);
@@ -717,8 +732,13 @@ function domVol(c){
 }
 function curList(){
   var q=KP.query.replace(/\s+/g,"").toLowerCase();
+  /* 기준 거래소에 상장된 코인만 보여준다. 상장 판정은 loadUniverse가 market/all로 채운
+     상장 집합(UPMK·BTMK) 기준 — 가격 도착 여부가 아니다.
+     집합이 비어 있으면 상장 정보를 아직 못 받은 상태라 필터를 걸지 않는다(목록이 통째로 비는 사고 방지). */
+  var set=baseSel==="UPBIT"?UPMK:(baseSel==="BITHUMB"?BTMK:null);
+  var useSet=!!(set&&Object.keys(set).length);
   var head=[],tail=[];
-  UNIV.forEach(function(c){(c.left?tail:head).push(c)});
+  UNIV.forEach(function(c){if(useSet&&!set[c.s])return;(c.left?tail:head).push(c)});
   if(!q&&tail.length>1)tail.sort(function(a,b){return domVol(b)-domVol(a)});
   var list=head.concat(tail);
   if(q)list=list.filter(function(c){
@@ -765,7 +785,7 @@ function renderKimp(){
 }
 function initKpControls(){
   var bs=$("kpBase"),cs=$("kpComp"),si=$("kpSearch");
-  if(bs){bs.value=baseSel;bs.addEventListener("change",function(){baseSel=bs.value;try{localStorage.setItem("hlkrx_coin_base",baseSel)}catch(e){}renderKimp()})}
+  if(bs){bs.value=baseSel;bs.addEventListener("change",function(){baseSel=bs.value;KP.shown=KP_CHUNK;try{localStorage.setItem("hlkrx_coin_base",baseSel)}catch(e){}renderKimp()})}
   if(cs){cs.value=compSel;cs.addEventListener("change",function(){compSel=cs.value;try{localStorage.setItem("hlkrx_coin_ovx",compSel)}catch(e){}renderKimp()})}
   if(si)si.addEventListener("input",function(){KP.query=si.value;KP.shown=KP_CHUNK;renderKimp()});
   var more=$("kpMore");
