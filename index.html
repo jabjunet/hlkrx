@@ -998,22 +998,22 @@ main{padding:2px 12px 40px}
    그 안에서 스크롤하게 해서 취소·등록 버튼이 항상 보이게 한다 */
 .cm-latest:has(> .cm-form:not([hidden])){max-height:none}
 .cm-latest:has(> .cm-form:not([hidden])) #cm-list{flex:none;height:220px}
-/* 글 목록 행: 디시인사이드 목록처럼 왼쪽 작은 썸네일(첨부 사진이 있으면 그 사진, 없으면 글쓴이 프로필 사진, 그것도 없으면 닉네임 첫 글자),
-   가운데 제목, 오른쪽 끝에 작성자 | 날짜를 한 줄로 보여 준다. 조회수는 제목 아래 작은 글씨 */
-.cm-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--bd);background:none;color:var(--tx);font:inherit;padding:7px 2px;cursor:pointer}
+/* 글 목록 행: 다른 모바일 커뮤니티와 같은 2줄 구조(최신글·게시물 전체보기 공용).
+   첫째 줄은 배지(공지·카테고리·HOT)와 제목만, 댓글 1개 이상이면 제목 바로 뒤에 [N].
+   둘째 줄은 작성자 · 날짜 · 조회 N · 좋아요 N을 작은 회색 글씨로(댓글 표기는 [N]으로 대체).
+   썸네일은 첨부 사진이 있는 글만 행 오른쪽 끝에 붙이고, 없으면 썸네일·아바타 자리를
+   만들지 않아 제목이 왼쪽 끝부터 시작한다. 삭제 같은 관리 버튼은 행에 두지 않는다
+   (삭제는 글 팝업 안의 삭제 버튼으로만, 확인 절차 포함) */
+.cm-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--bd);background:none;color:var(--tx);font:inherit;padding:9px 2px;cursor:pointer}
 .cm-row:last-child{border-bottom:0}
-.cm-th{position:relative;flex:none;width:56px;height:56px;border-radius:6px;background:var(--sf2);color:var(--mut);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;overflow:hidden}
+.cm-th{position:relative;flex:none;width:52px;height:52px;border-radius:6px;overflow:hidden}
 .cm-th img{width:100%;height:100%;object-fit:cover;display:block}
 .cm-thn{position:absolute;right:3px;bottom:3px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:rgba(0,0,0,.65);color:#fff;font-size:11px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center}
 .cm-rmain{flex:1;min-width:0}
 .cm-rt{display:block;font-size:15px;font-weight:600;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cm-rv{display:block;margin-top:2px;font-size:12px;color:var(--mut)}
-.cm-rmeta{flex:none;display:flex;align-items:center;gap:5px;max-width:42%;font-size:12px;color:var(--mut);white-space:nowrap}
-.cm-ra{min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:12.5px;font-weight:600;color:var(--tx)}
-.cm-rsep{flex:none;color:var(--bd)}
-/* 목록 행 삭제 버튼: 댓글 삭제 버튼(.cmsg-del)처럼 작고 튀지 않게. 행이 <button>이라 안에 실제 버튼을 넣을 수 없어 span으로 만든다 */
-.cm-rdel{flex:none;display:inline-flex;align-items:center;border:1px solid var(--bd);background:none;color:var(--mut);border-radius:6px;font-size:11px;font-weight:600;padding:3px 8px;min-height:24px;cursor:pointer}
-@media(max-width:520px){.cm-rmeta{max-width:36%}}
+/* 제목 바로 뒤 댓글 수 [N]: 댓글 많은 글이 한눈에 띄게 강조색으로 */
+.cm-rcnt{flex:none;font-size:13.5px;font-weight:700;color:var(--up)}
+.cm-rv{display:block;margin-top:3px;font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* 글 보기 팝업: 로그인 팝업(.lgov/.lgbox)과 같은 틀, 본문만 더 넓고 길게.
    좋아요·댓글까지 들어가 팝업 전체가 화면 높이를 넘지 않게 카드 안에서 스크롤한다 */
 .pvbox{max-width:560px;max-height:calc(100dvh - 32px);overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -3581,7 +3581,8 @@ else if(inPk)leave();
    imgs(첨부 사진 전체 배열, 있으면), uid, ts(서버시각), views(조회수),
    likes(좋아요 수), likers/{uid}=true(좋아요한 사람), comments/{댓글ID}={text, name, uid, ts, photo}}.
    좋아요는 글 팝업의 하트 버튼으로 로그인한 사람만 토글할 수 있고(다시 누르면 취소), 댓글도 팝업 아래에서
-   로그인한 사람만 쓸 수 있으며 삭제는 댓글 쓴 사람과 운영자만 할 수 있다. 목록 행에는 조회·좋아요·댓글 수를 함께 보인다.
+   로그인한 사람만 쓸 수 있으며 삭제는 댓글 쓴 사람과 운영자만 할 수 있다. 목록 행은 2줄 구조로
+   첫째 줄에 배지+제목(+댓글 수 [N]), 둘째 줄에 작성자 · 날짜 · 조회 · 좋아요를 보인다.
    첨부 사진은 고른 파일을 브라우저에서 긴 변 1024px 이하 JPEG으로 줄여 data URL로 글에 함께 저장한다
    (별도 스토리지 없이 프로필 사진과 같은 방식). 사진은 한 글에 4장까지 넣을 수 있고, imgs 배열에 전부 저장하며
    img에는 첫 장을 함께 넣어 예전 방식으로 읽는 화면에서도 썸네일이 뜨게 한다. imgs가 없는 예전 글은 img 한 장으로 읽는다.
@@ -3676,7 +3677,7 @@ if(cfCancelBtn)cfCancelBtn.addEventListener("click",cfHide);
 if(cfDoneBtn)cfDoneBtn.addEventListener("click",cfHide);
 if(cfOv)cfOv.addEventListener("click",function(e){if(e.target===cfOv)cfHide()});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&cfOv&&!cfOv.hidden){e.stopImmediatePropagation();cfHide()}});
-/* 글 삭제는 이 한 경로로만 한다(목록 행 버튼·글 팝업 삭제 버튼 공용):
+/* 글 삭제는 이 한 경로로만 한다(글 팝업 안의 삭제 버튼 전용 — 목록 행에는 삭제 버튼을 두지 않는다):
    지우기 전에 확인 다이얼로그를 한 번 거치고, 취소하면 아무 일도 일어나지 않는다.
    실패하면 조용히 삼키지 않고 안내 다이얼로그를 띄운다. 지우면 글 하위 comments(댓글·대댓글)도 함께 사라진다.
    목록 반영은 기존 구독 갱신이 맡고, 전체보기(#pp) 전용 배열(allPosts)에서도 빼서 바로 사라지게 한다.
@@ -3748,29 +3749,31 @@ function isLiked(p){return !!(p&&fbUser&&fbUser.uid&&p.likers&&p.likers[fbUser.u
 function canDelCmt(c){return !!fbUser&&(isOp()||(c.uid&&c.uid===fbUser.uid))}
 function rowEl(p,pinned){
 var b=document.createElement("button");b.type="button";b.className=pinned?"cm-row pin":"cm-row";
-var th=document.createElement("span");th.className="cm-th";th.setAttribute("aria-hidden","true");
-var pimgs=postImgsOf(p);var firstImg=pimgs[0]||"";
-var tsrc=firstImg||p.photo;
-if(tsrc){var im=document.createElement("img");im.src=tsrc;im.alt="";im.referrerPolicy="no-referrer";im.addEventListener("error",function(){if(firstImg&&p.photo&&im.src!==p.photo){im.src=p.photo}else{th.textContent=(p.name||"익명").charAt(0)}});th.appendChild(im);if(pimgs.length>1){var bd=document.createElement("span");bd.className="cm-thn";bd.textContent=String(pimgs.length);th.appendChild(bd)}}
-else th.textContent=(p.name||"익명").charAt(0);
-b.appendChild(th);
 var main=document.createElement("span");main.className="cm-rmain";
-var tl=document.createElement("span");tl.className="cm-tline";if(pinned){var pinB=document.createElement("span");pinB.className="cm-pinbdg";pinB.textContent="공지";tl.appendChild(pinB)}else{var cat=document.createElement("span");cat.className="cm-cat";cat.textContent=catOf(p);tl.appendChild(cat)}var t=document.createElement("span");t.className="cm-rt";t.textContent=p.title||"(제목 없음)";tl.appendChild(t);if(cmtN(p)>=3||likeN(p)>=3){var hot=document.createElement("span");hot.className="cm-hot";hot.textContent="HOT";tl.appendChild(hot)}main.appendChild(tl);
-var v=document.createElement("span");v.className="cm-rv";v.textContent="조회 "+(p.views||0)+" · 좋아요 "+likeN(p)+" · 댓글 "+cmtN(p);main.appendChild(v);
+/* 첫째 줄: 배지 + 제목. 고정이면 공지 배지, 아니면 카테고리 배지를 앞에 붙이고(기존 규칙 그대로),
+   댓글 1개 이상이면 제목 바로 뒤에 [N], HOT 조건이면 HOT 배지를 붙인다 */
+var tl=document.createElement("span");tl.className="cm-tline";
+if(pinned){var pinB=document.createElement("span");pinB.className="cm-pinbdg";pinB.textContent="공지";tl.appendChild(pinB)}else{var cat=document.createElement("span");cat.className="cm-cat";cat.textContent=catOf(p);tl.appendChild(cat)}
+var t=document.createElement("span");t.className="cm-rt";t.textContent=p.title||"(제목 없음)";tl.appendChild(t);
+if(cmtN(p)>=1){var cc=document.createElement("span");cc.className="cm-rcnt";cc.textContent="["+cmtN(p)+"]";tl.appendChild(cc)}
+if(cmtN(p)>=3||likeN(p)>=3){var hot=document.createElement("span");hot.className="cm-hot";hot.textContent="HOT";tl.appendChild(hot)}
+main.appendChild(tl);
+/* 둘째 줄: 작성자 · 날짜 · 조회 N · 좋아요 N (댓글 수는 제목 옆 [N]으로 대체해 여기서는 뺀다) */
+var parts=[p.name||"익명"];var ds=fmtD(p.ts);if(ds)parts.push(ds);parts.push("조회 "+(p.views||0));parts.push("좋아요 "+likeN(p));
+var v=document.createElement("span");v.className="cm-rv";v.textContent=parts.join(" · ");main.appendChild(v);
 b.appendChild(main);
-var mt=document.createElement("span");mt.className="cm-rmeta";
-var au=document.createElement("span");au.className="cm-ra";au.textContent=p.name||"익명";mt.appendChild(au);
-var sep=document.createElement("span");sep.className="cm-rsep";sep.setAttribute("aria-hidden","true");sep.textContent="|";mt.appendChild(sep);
-var dt=document.createElement("span");dt.textContent=fmtD(p.ts);mt.appendChild(dt);
-/* 본인 글(또는 운영자)이면 메타 오른쪽 끝에 삭제 버튼을 붙인다. 행이 <button>이라 실제 버튼을
-   중첩할 수 없어 span(role=button)으로 만들고, 클릭이 행 클릭(팝업 열기)으로 전파되지 않게 막는다 */
-if(canDel(p)){
-var del=document.createElement("span");del.className="cm-rdel";del.setAttribute("role","button");del.setAttribute("tabindex","0");del.setAttribute("aria-label","이 글 삭제");del.textContent="삭제";
-del.addEventListener("click",function(e){e.stopPropagation();deletePost(p.key)});
-del.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();e.stopPropagation();deletePost(p.key)}});
-mt.appendChild(del);
+/* 썸네일: 첨부 사진이 있는 글만 행 오른쪽 끝에 첫 사진을 작게 붙인다(여러 장이면 장수 배지 유지).
+   사진이 없는 글은 썸네일·닉네임 첫 글자 아바타 자리를 만들지 않는다. 사진을 못 불러오면 자리도 없앤다 */
+var pimgs=postImgsOf(p);
+if(pimgs.length){
+var th=document.createElement("span");th.className="cm-th";th.setAttribute("aria-hidden","true");
+var im=document.createElement("img");im.src=pimgs[0];im.alt="";im.referrerPolicy="no-referrer";
+im.addEventListener("error",function(){if(th.parentNode)th.parentNode.removeChild(th)});
+th.appendChild(im);
+if(pimgs.length>1){var bd=document.createElement("span");bd.className="cm-thn";bd.textContent=String(pimgs.length);th.appendChild(bd)}
+b.appendChild(th);
 }
-b.appendChild(mt);
+/* 삭제 버튼은 행에 두지 않는다: 삭제는 글 팝업 안의 삭제 버튼(deletePost, 확인 절차 포함)으로만 한다 */
 b.addEventListener("click",function(){openPost(p.key)});
 return b;
 }
