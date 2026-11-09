@@ -605,6 +605,24 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .pfcard .pfout{background:var(--sf2);border-radius:12px;min-height:38px;margin-top:8px}
 .pfcard .lgnote{margin-top:8px}
 @media(max-width:520px){#pf-ov{align-items:center;padding:16px}#pf-ov .lgbox{max-width:320px;border-radius:16px;border-bottom:1px solid var(--bd);padding-bottom:12px}}
+/* 프로필 사진 조정 화면: 프로필 팝업 위에 뜨는 별도 오버레이. 동그란 영역 안은 또렷하게,
+   바깥은 같은 사진을 흐리게 깔아 최종 모습을 바로 알 수 있게 한다 */
+#pc-ov{z-index:260}
+.pcbox{max-width:340px;border-radius:16px}
+.pcstage{position:relative;width:min(264px,74vw);aspect-ratio:1/1;margin:2px auto 12px;border-radius:12px;overflow:hidden;background:#111;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.pcstage:active{cursor:grabbing}
+.pcimg{position:absolute;display:block;max-width:none;pointer-events:none}
+.pcimg.blur{filter:blur(7px) brightness(.5)}
+.pcsharp{position:absolute;inset:0;clip-path:circle(50% at 50% 50%);pointer-events:none}
+.pcring{position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 2px rgba(255,255,255,.9);pointer-events:none}
+.pchint{margin:0 0 10px;font-size:12.5px;color:var(--mut);text-align:center;line-height:1.55}
+.pcslider{display:flex;align-items:center;gap:10px;margin:0 2px 14px}
+.pcslider span{font-size:12.5px;font-weight:600;color:var(--mut);white-space:nowrap}
+.pcslider input[type=range]{flex:1;accent-color:var(--ac);height:30px;cursor:pointer}
+.pcbtns{display:flex;gap:8px}
+.pcbtns .lgsub{flex:1;border-radius:12px;min-height:44px}
+.pcancel{flex:0 0 auto;min-height:44px;padding:0 20px;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:12px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+@media(max-width:520px){#pc-ov{align-items:center;padding:16px}#pc-ov .lgbox{max-width:340px;border-radius:16px;border-bottom:1px solid var(--bd);padding-bottom:14px}}
 /* 글 보기 팝업도 프로필 설정처럼 바텀시트가 아니라 화면 가운데 둥근 카드로 띄운다 */
 @media(max-width:520px){#pv-ov{align-items:center;padding:16px}#pv-ov .lgbox{max-width:560px;border-radius:16px;border-bottom:1px solid var(--bd);padding-bottom:18px}}
 @media(max-width:520px){.lgov{align-items:flex-end;padding:0}.lgbox{max-width:none;border-radius:16px 16px 0 0;border-bottom:0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}}
@@ -1630,7 +1648,7 @@ var D={
 "예: 삼성전자":"e.g. Samsung Electronics","포지션 방향":"Position Direction","롱":"Long","숏":"Short","레버리지 (배)":"Leverage (x)","현재 평단가":"Current Avg Price","현재 보유 수량":"Current Quantity","추가 매수 가격":"Add Price","추가 투자 금액":"Add Amount","추가 수량 (자동 계산)":"Added Quantity (Auto)","새 평단가":"New Avg Price","평단 변화":"Avg Price Change","청산가 (추가 전 → 후)":"Liquidation Price (Before → After)","총 수량":"Total Quantity","총 투자금":"Total Invested",
 "청산가는 격리 기준 단순 계산(롱: 평단×(1−1/레버리지), 숏: 평단×(1+1/레버리지))이라 실제 거래소 청산가와는 유지증거금 때문에 차이가 있을 수 있어요.":"The liquidation price is a simple isolated-margin estimate (Long: avg x (1 - 1/leverage), Short: avg x (1 + 1/leverage)) and may differ from actual exchange liquidation prices because of maintenance margin.",
 "Google로 계속하기":"Continue with Google","로그인하면 채팅도 바로 쓸 수 있어요. 프로필·테마·언어·계산기 저장 종목은 구글 계정별로 저장돼, 다른 기기에서 로그인해도 그대로 복원됩니다.":"Signing in also enables chat right away. Your profile, theme, language and saved calculator entries are stored per Google account and restored when you sign in on another device.",
-"사진 고르기":"Choose Photo","닉네임":"Nickname","닉네임을 입력하세요":"Enter a nickname","건너뛰기":"Skip","로그아웃":"Log Out","프로필·테마·언어·계산기 버튼 설정은 구글 계정별로 저장됩니다. 로그인하면 다른 기기에서도 그대로 복원돼요.":"Your profile, theme, language and calculator button setting are stored per Google account and restored when you sign in on another device.","닉네임을 입력해 주세요.":"Please enter a nickname.","저장에 실패했어요. 사진 없이 다시 시도해 보세요.":"Failed to save. Please try again without a photo.",
+"사진 고르기":"Choose Photo","사진 맞추기":"Adjust Photo","이대로 저장":"Use This Photo","확대":"Zoom","드래그해서 위치를 옮기고, 확대·축소해서 동그란 영역에 맞춰 주세요.":"Drag to reposition, and zoom to fit the circle.","닉네임":"Nickname","닉네임을 입력하세요":"Enter a nickname","건너뛰기":"Skip","로그아웃":"Log Out","프로필·테마·언어·계산기 버튼 설정은 구글 계정별로 저장됩니다. 로그인하면 다른 기기에서도 그대로 복원돼요.":"Your profile, theme, language and calculator button setting are stored per Google account and restored when you sign in on another device.","닉네임을 입력해 주세요.":"Please enter a nickname.","저장에 실패했어요. 사진 없이 다시 시도해 보세요.":"Failed to save. Please try again without a photo.",
 "문의는 트위터로만 받습니다.":"Inquiries are accepted via Twitter only.","트위터":"Twitter","카카오톡":"KakaoTalk","쓰레드":"Threads","네이버 블로그":"Naver Blog","다른 링크":"Other Links",
 "주요 지수":"Key Indices","장 운영 시간 안내":"Market Hours","김프 종목 검색":"Search Kimchi Premium Stocks","해외 종목 검색":"Search Global Stocks","펀딩비 종목 검색":"Search Funding Symbols","비교 첫 번째 종목 검색":"Search First Stock","비교 두 번째 종목 검색":"Search Second Stock","원자재 선택":"Select Commodity","ETF 테마 선택 열기·닫기":"Toggle ETF Theme Picker","나스닥 섹터 선택 열기·닫기":"Toggle NASDAQ Sector Picker","가격·차트 출처":"Price & Chart Source","계산기 종류":"Calculator Type","오픈 채팅방":"Open Chat Room","채팅 닫기":"Close Chat","계산기 닫기":"Close Calculator","이 메시지 삭제":"Delete This Message","이 댓글 삭제":"Delete This Comment","글 제목":"Post Title","글 내용":"Post Content","첨부한 사진 미리보기":"Attached Photo Preview","채팅 메시지 입력":"Chat Message Input","계산기 종목 이름":"Calculator Stock Name","약관 및 방침":"Terms and Policies",
 "장전":"Pre-market","장후":"After-hours","한국 시간":"Korean Time","아래로 내리면 이전 글을 더 볼 수 있어요":"Scroll down to load older posts","이전 글을 불러오는 중…":"Loading older posts…","EPS 예상":"EPS Forecast","발표 완료":"Reported","EPS 실제":"EPS Actual","서프라이즈":"Surprise","실적 일정을 불러오지 못했어요":"Could not load the earnings schedule","연결 문제로 실적 데이터를 불러오지 못했어요.":"Could not load earnings data due to a connection problem.","다시 시도":"Retry","앞으로 30일 안에 예정된 주요 종목 실적발표가 없습니다":"No key earnings are scheduled in the next 30 days",
@@ -2182,6 +2200,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <button type="button" class="pfskip" id="pf-skip" hidden>건너뛰기</button>
 <button type="button" class="pfout" id="pf-out">로그아웃</button>
 <p class="lgnote">프로필·테마·언어·계산기 버튼 설정은 구글 계정별로 저장됩니다. 로그인하면 다른 기기에서도 그대로 복원돼요.</p>
+</div></div>
+<div class="lgov" id="pc-ov" hidden><div class="lgbox pcbox" role="dialog" aria-modal="true" aria-labelledby="pc-t">
+<h2 id="pc-t">사진 맞추기</h2>
+<div class="pcstage" id="pc-stage"><img class="pcimg blur" id="pc-img-b" alt=""><div class="pcsharp"><img class="pcimg" id="pc-img-s" alt=""></div><div class="pcring"></div></div>
+<p class="pchint">드래그해서 위치를 옮기고, 확대·축소해서 동그란 영역에 맞춰 주세요.</p>
+<div class="pcslider"><span>확대</span><input type="range" id="pc-range" min="1" max="4" step="0.01" value="1" aria-label="확대"></div>
+<div class="pcbtns"><button type="button" class="pcancel" id="pc-cancel">취소</button><button type="button" class="lgsub" id="pc-ok">이대로 저장</button></div>
 </div></div>
 <div class="legalov" id="legal-priv-ov" hidden><div class="legalbox" role="dialog" aria-modal="true" aria-labelledby="legal-priv-t">
 <div class="legalbox-hd"><h2 id="legal-priv-t">개인정보처리방침</h2><button type="button" class="lgx" id="legal-priv-x" aria-label="닫기" style="position:static;margin-left:auto">×</button></div>
@@ -3488,14 +3513,38 @@ pnick.addEventListener("input",pfDraw);
 el("pf-pick").addEventListener("click",function(){pfile.click()});
 el("pf-del").addEventListener("click",function(){tmpImg="";pfile.value="";pfDraw()});
 pfile.addEventListener("change",function(){var f=pfile.files&&pfile.files[0];if(!f)return;
-var rd=new FileReader();rd.onload=function(){var img=new Image();img.onload=function(){var S=160,w=img.naturalWidth,h=img.naturalHeight,m=Math.min(w,h),cv=document.createElement("canvas");cv.width=S;cv.height=S;var cx=cv.getContext("2d");cx.drawImage(img,(w-m)/2,(h-m)/2,m,m,0,0,S,S);try{tmpImg=cv.toDataURL("image/jpeg",0.85)}catch(e){tmpImg=""}pfDraw()};img.onerror=function(){perr.textContent="이미지를 불러오지 못했어요.";perr.hidden=false};img.src=rd.result};rd.readAsDataURL(f)});
+var rd=new FileReader();rd.onload=function(){var img=new Image();img.onload=function(){pcOpen(img)};img.onerror=function(){perr.textContent="이미지를 불러오지 못했어요.";perr.hidden=false};img.src=rd.result};rd.readAsDataURL(f)});
+/* 프로필 사진 조정 단계: 사진을 고르면 곧바로 자르지 않고 조정 화면(#pc-ov)을 먼저 연다.
+   드래그로 위치 이동, 핀치·마우스 휠·슬라이더로 확대·축소. '이대로 저장'을 누르면 미리보기에
+   보이는 정사각형 영역 그대로 160×160 JPEG으로 잘라 기존 저장 경로(tmpImg)에 넣는다.
+   취소하면 기존 사진(tmpImg)은 그대로 둔다 */
+var pcOv=el("pc-ov"),pcStage=el("pc-stage"),pcImgB=el("pc-img-b"),pcImgS=el("pc-img-s"),pcRange=el("pc-range");
+var pcImg=null,pcScale=1,pcOx=0,pcOy=0,pcPtrs={};
+function pcGeom(){var St=pcStage.clientWidth||264,nw=pcImg.naturalWidth,nh=pcImg.naturalHeight,bw,bh;if(nw>=nh){bh=St;bw=St*nw/nh}else{bw=St;bh=St*nh/nw}return{St:St,bw:bw,bh:bh}}
+function pcApply(){if(!pcImg)return;var g=pcGeom(),dw=g.bw*pcScale,dh=g.bh*pcScale,mx=Math.max(0,(dw-g.St)/2),my=Math.max(0,(dh-g.St)/2);pcOx=Math.max(-mx,Math.min(mx,pcOx));pcOy=Math.max(-my,Math.min(my,pcOy));var L=((g.St-dw)/2+pcOx)+"px",T=((g.St-dh)/2+pcOy)+"px",W=dw+"px",H=dh+"px";pcImgB.style.width=W;pcImgB.style.height=H;pcImgB.style.left=L;pcImgB.style.top=T;pcImgS.style.width=W;pcImgS.style.height=H;pcImgS.style.left=L;pcImgS.style.top=T}
+function pcSyncRange(){pcRange.value=pcScale}
+function pcZoomAt(sx,sy,ns){if(!pcImg)return;var g=pcGeom(),dw0=g.bw*pcScale,dh0=g.bh*pcScale,L0=(g.St-dw0)/2+pcOx,T0=(g.St-dh0)/2+pcOy,fx=(sx-L0)/dw0,fy=(sy-T0)/dh0;pcScale=Math.max(1,Math.min(4,ns));var dw1=g.bw*pcScale,dh1=g.bh*pcScale;pcOx=sx-fx*dw1-(g.St-dw1)/2;pcOy=sy-fy*dh1-(g.St-dh1)/2;pcApply();pcSyncRange()}
+function pcOpen(img){pcImg=img;pcScale=1;pcOx=0;pcOy=0;pcPtrs={};pcImgB.src=img.src;pcImgS.src=img.src;pfile.value="";pcOv.hidden=false;requestAnimationFrame(function(){pcApply();pcSyncRange()})}
+function pcClose(){pcOv.hidden=true;pcImg=null;pcPtrs={};pfile.value=""}
+el("pc-cancel").addEventListener("click",pcClose);
+pcOv.addEventListener("click",function(e){if(e.target===pcOv)pcClose()});
+el("pc-ok").addEventListener("click",function(){if(!pcImg)return;var g=pcGeom(),dw=g.bw*pcScale,L=(g.St-dw)/2+pcOx,T=(g.St-g.bh*pcScale)/2+pcOy,k=pcImg.naturalWidth/dw,S=160,cv=document.createElement("canvas");cv.width=S;cv.height=S;try{cv.getContext("2d").drawImage(pcImg,-L*k,-T*k,g.St*k,g.St*k,0,0,S,S);tmpImg=cv.toDataURL("image/jpeg",0.85)}catch(e){}pcClose();pfDraw()});
+pcStage.addEventListener("pointerdown",function(e){if(!pcImg)return;e.preventDefault();try{pcStage.setPointerCapture(e.pointerId)}catch(x){}pcPtrs[e.pointerId]={x:e.clientX,y:e.clientY}});
+pcStage.addEventListener("pointermove",function(e){var p=pcPtrs[e.pointerId];if(!p||!pcImg)return;var ids=Object.keys(pcPtrs);
+if(ids.length===1){pcOx+=e.clientX-p.x;pcOy+=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;pcApply()}
+else if(ids.length===2){var o=pcPtrs[ids[0]]===p?pcPtrs[ids[1]]:pcPtrs[ids[0]],d0=Math.hypot(p.x-o.x,p.y-o.y);p.x=e.clientX;p.y=e.clientY;var d1=Math.hypot(p.x-o.x,p.y-o.y);if(d0>0&&d1>0){var r=pcStage.getBoundingClientRect();pcZoomAt((p.x+o.x)/2-r.left,(p.y+o.y)/2-r.top,pcScale*d1/d0)}}});
+function pcUp(e){delete pcPtrs[e.pointerId]}
+pcStage.addEventListener("pointerup",pcUp);
+pcStage.addEventListener("pointercancel",pcUp);
+pcStage.addEventListener("wheel",function(e){e.preventDefault();if(!pcImg)return;var r=pcStage.getBoundingClientRect();pcZoomAt(e.clientX-r.left,e.clientY-r.top,pcScale*(e.deltaY<0?1.09:0.92))},{passive:false});
+pcRange.addEventListener("input",function(){if(!pcImg)return;var g=pcGeom();pcZoomAt(g.St/2,g.St/2,parseFloat(pcRange.value)||1)});
 el("pf-save").addEventListener("click",function(){var nick=pnick.value.trim();if(!nick){perr.textContent="닉네임을 입력해 주세요.";perr.hidden=false;pnick.focus();return}
 var p=prof();p.nick=nick;p.img=tmpImg;p.done=1;p.custom=1;setUImg(tmpImg);if(!saveProf(p)){perr.textContent="저장에 실패했어요. 사진 없이 다시 시도해 보세요.";perr.hidden=false;return}
 srvPushCur();
 pfFirst=false;pov.hidden=true;show()});
 el("pf-out").addEventListener("click",function(){try{if(typeof firebase!=="undefined"&&firebase.auth)firebase.auth().signOut()}catch(e){}try{localStorage.removeItem(KEY)}catch(e){}pfFirst=false;pov.hidden=true;show()});
 who.addEventListener("click",function(){pfOpen(false)});
-document.addEventListener("keydown",function(e){if(e.key!=="Escape")return;if(!pov.hidden)pfClose();else if(!ov.hidden)close()});
+document.addEventListener("keydown",function(e){if(e.key!=="Escape")return;if(!pcOv.hidden)pcClose();else if(!pov.hidden)pfClose();else if(!ov.hidden)close()});
 show();
 fbSync();
 window.addEventListener("load",fbSync);
@@ -5511,6 +5560,12 @@ setInterval(function(){if(!document.hidden)load()},60000);
    피드 주소는 빌드 시점에 실제 응답을 확인했다: 한국경제 증권 https://www.hankyung.com/feed/finance (200, RSS 2.0, 채널명 '한국경제 | 뉴스 | 증권'),
    매일경제 증권 https://www.mk.co.kr/rss/50200011/ (직접 호출은 403으로 막혀 rss2json 경유로 당일 증권 기사 응답 확인),
    인베스팅 한국어판 https://kr.investing.com/rss/news.rss (200, RSS 2.0).
+   해외(인베스팅) 피드는 사이트 언어 설정을 따른다: 한국어 모드에서는 한국어판 피드를 그대로 쓰고,
+   영어(EN) 모드에서는 같은 카테고리(/rss/news.rss)의 영어판 피드 https://www.investing.com/rss/news.rss
+   (200, RSS 2.0, 채널명 'All News', 영어 원문 제목)를 써서 영어 기사 제목이 그대로 뜬다.
+   페이지 로드 시 언어가 영어면 처음부터 영어판으로 불러오고, 사용 중 언어를 바꾸면
+   (언어 모듈이 <html data-lang> 속성을 바꾸는 것을 감지해) 해외 그룹만 해당 언어판 피드로 다시 불러와 교체한다.
+   국내(한국경제·매일경제) 그룹은 언어와 관계없이 지금 그대로 둔다.
    국내 그룹은 두 매체 모두 증권 섹션 피드만 쓴다. 그래도 섹션 피드에 섞여 들어오는 주식 무관 기사
    (정치·부동산·연예·스포츠·날씨·사건사고 등)는 제목 보조 필터(isStockTitle)로 표시 목록에서 제외한다.
    주식 관련 표현이 제목에 하나라도 있으면 무조건 남기는 보수적 방식이라 주식 뉴스가 잘못 걸러지지 않고,
@@ -5524,6 +5579,12 @@ var SRC={
 hk:{name:"한국경제",feed:"https://www.hankyung.com/feed/finance"},
 mk:{name:"매일경제",feed:"https://www.mk.co.kr/rss/50200011/"},
 iv:{name:"인베스팅",feed:"https://kr.investing.com/rss/news.rss"}};
+/* 해외(인베스팅) 영어판 피드: 한국어판과 같은 카테고리(/rss/news.rss)의 영어판 주소.
+   현재 언어는 언어 모듈이 제공하는 읽기 창구(__hlkrxPrefsGet)로 확인하고, 없으면 기기 저장값(hlkrx_lang)으로 폴백한다. */
+var FEED_IV_EN="https://www.investing.com/rss/news.rss";
+function siteLang(){try{if(window.__hlkrxPrefsGet)return window.__hlkrxPrefsGet().lang==="en"?"en":"ko"}catch(e){}try{return localStorage.getItem("hlkrx_lang")==="en"?"en":"ko"}catch(e){return "ko"}}
+function feedFor(key){if(key==="iv"&&siteLang()==="en")return FEED_IV_EN;return SRC[key].feed}
+var ivLang=siteLang();
 var cache={},settled={};
 /* 국내 전용 제목 보조 필터: 주식 관련 표현이 제목에 하나라도 있으면 무조건 통과시키고(keep 우선),
    없을 때만 주식과 무관한 주제의 강한 표현이 있는 제목을 제외한다. 어느 쪽에도 걸리지 않으면 통과(보수적 적용). */
@@ -5561,7 +5622,8 @@ if(title&&/^https?:\/\//.test(link))out.push({t:title,u:link,d:parseDate(it.pubD
 if(!out.length)throw new Error("empty");
 return out}
 function loadSrc(key){
-var feed=SRC[key].feed,dom=(key==="hk"||key==="mk"),lim=dom?30:12;
+var feed=feedFor(key);if(key==="iv")ivLang=siteLang();
+var dom=(key==="hk"||key==="mk"),lim=dom?30:12;
 return fetchT(feed).then(function(t){return parseXml(t,lim)})
 .catch(function(){return fetchT("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(feed)).then(function(t){return parseR2J(t,lim)})})
 .catch(function(){return fetchT("https://api.allorigins.win/raw?url="+encodeURIComponent(feed)).then(function(t){return parseXml(t,lim)})})
@@ -5613,6 +5675,10 @@ html+='</div>'});
 html+='</div>';
 box.innerHTML=html}
 function load(){exp.dom=false;exp.intl=false;loadSrc("hk");loadSrc("mk");loadSrc("iv")}
+function loadIv(){delete cache.iv;delete settled.iv;render();loadSrc("iv")}
+/* 언어 전환 감지: 언어 모듈이 언어를 적용할 때 <html data-lang> 속성을 바꾸므로(버튼 전환·계정 설정 복원 공통),
+   그 변화를 보면 현재 언어와 해외 피드를 불러온 언어가 다를 때만 해외 그룹을 해당 언어판 피드로 다시 불러온다. */
+if(window.MutationObserver){new MutationObserver(function(){if(siteLang()!==ivLang)loadIv()}).observe(document.documentElement,{attributes:true,attributeFilter:["data-lang"]})}
 $("hn-list").addEventListener("click",function(e){var b=e.target.closest(".hnmore");if(!b)return;var id=b.getAttribute("data-g");if(!(id in exp))return;exp[id]=!exp[id];render()});
 render();load();
 setInterval(function(){if(!document.hidden)load()},7*60000);
