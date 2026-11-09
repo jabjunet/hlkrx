@@ -1386,7 +1386,8 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    커뮤니티 탭 호버 드롭다운의 '게시물'을 누르면 헤더·탭 줄은 그대로 둔 채
    내용 영역만 이 화면으로 바뀐다. 목록은 박스 안 스크롤이 아니라 페이지 흐름을
    그대로 쓰고, 행 모양은 커뮤니티 최신글과 같은 .cm-row를 그대로 쓴다 */
-.pp-box{padding:0;overflow:hidden}
+.pp-box{padding:0;overflow:hidden;background:none;border:0;border-radius:0}
+.pp-box .cm-row.pin{background:none}
 .pp-box .cm-hd{padding:13px 16px 5px;margin-bottom:0}
 .pp-box .cm-toolbar{background:none;padding:8px 16px 6px}
 #pp-list{padding:2px 16px 8px}
@@ -1946,7 +1947,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </section>
 <section id="pp" hidden>
 <div class="cmbox pp-box">
-<div class="cm-hd"><h2>게시물</h2></div>
+<div class="cm-hd"><h2>게시물</h2><button type="button" class="cm-wbtn" id="pp-write-btn" hidden>글쓰기</button></div>
 <div class="cm-toolbar"><div class="cm-filters" id="pp-filters" role="group" aria-label="카테고리 필터"></div><select class="cm-sort" id="pp-sort" aria-label="정렬"><option value="latest">최신순</option><option value="popular">인기순</option><option value="comments">댓글순</option></select></div>
 <div id="pp-list"><p class="cm-empty">불러오는 중…</p></div>
 <button type="button" class="pp-morebtn" id="pp-more" hidden>더 보기</button>
@@ -3824,6 +3825,7 @@ try{q.on("value",postCb,function(){postLoading=false;emptyMsg(listEl,"글을 불
 function syncGate(){
 var logged=!!fbUser;
 writeBtn.hidden=!(authKnown&&logged);
+if(ppWriteBtn)ppWriteBtn.hidden=!(authKnown&&logged);
 if(catManBtn)catManBtn.hidden=!(authKnown&&isOp());
 gateEl.hidden=!(authKnown&&!logged);
 if(logged)errEl.hidden=true;
@@ -4306,7 +4308,7 @@ if(postsRef){try{postsRef.child(key).once("value").then(function(snap){var v=sna
    표시는 30개씩 그리고 '더 보기'로 이어 본다. 행과 글 팝업은 최신글과 같은 rowEl/openPost를 쓴다 */
 var ppSec=document.getElementById("pp"),ppListEl=document.getElementById("pp-list"),
 ppFiltersEl=document.getElementById("pp-filters"),ppSortEl=document.getElementById("pp-sort"),
-ppMoreBtn=document.getElementById("pp-more");
+ppMoreBtn=document.getElementById("pp-more"),ppWriteBtn=document.getElementById("pp-write-btn");
 var allPosts=null,ppBusy=false,ppFilter="전체",ppSort="latest",ppShown=30;
 var PP_PAGE=30;
 function ppVisiblePosts(){var arr=(allPosts||[]).filter(function(p){return !p.pin&&(ppFilter==="전체"||catOf(p)===ppFilter)});arr.sort(function(a,b){if(ppSort==="popular"){var d=likeN(b)-likeN(a);if(d)return d;var dv=(b.views||0)-(a.views||0);if(dv)return dv;return (b.ts||0)-(a.ts||0)}if(ppSort==="comments"){var dc=cmtN(b)-cmtN(a);if(dc)return dc;return (b.ts||0)-(a.ts||0)}return (b.ts||0)-(a.ts||0)});return arr}
@@ -4352,6 +4354,16 @@ allPosts=arr;ppBusy=false;renderPp();
 if(ppFiltersEl)ppFiltersEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;ppFilter=b.dataset.f||"전체";ppFiltersEl.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});ppShown=PP_PAGE;renderPp()});
 if(ppSortEl)ppSortEl.addEventListener("change",function(){ppSort=ppSortEl.value||"latest";ppShown=PP_PAGE;renderPp()});
 if(ppMoreBtn)ppMoreBtn.addEventListener("click",function(){ppShown+=PP_PAGE;renderPp()});
+/* 제목 줄 '글쓰기' 버튼: 커뮤니티 탭의 글쓰기 버튼과 완전히 같은 흐름을 쓴다.
+   커뮤니티 탭으로 전환한 뒤 기존 글쓰기 버튼을 그대로 눌러 글쓰기 폼을 연다.
+   표시 여부도 syncGate에서 그 버튼과 똑같이 맞추므로, 로그인 전에는 숨겨져 있고
+   커뮤니티 탭의 로그인 안내(게이트)가 기존처럼 보인다 */
+if(ppWriteBtn)ppWriteBtn.addEventListener("click",function(){
+var tb=tabs?tabs.querySelector('button[data-t="pk"]'):null;
+if(tb)tb.click();
+start();
+if(fbUser)writeBtn.click();
+});
 /* 행 클릭: openPost는 구독 배열(posts)에서 글을 찾으므로, 아직 구독 범위에 없는 옛 글은
    전체 목록에서 찾아 배열에 넣어 둔 뒤 기존 행 클릭(openPost)이 그대로 열게 한다.
    캡처 단계에서 먼저 실행돼 행 자체의 클릭보다 앞서 처리된다 */
