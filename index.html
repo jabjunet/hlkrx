@@ -999,14 +999,15 @@ main{padding:2px 12px 40px}
 .cm-latest:has(> .cm-form:not([hidden])){max-height:none}
 .cm-latest:has(> .cm-form:not([hidden])) #cm-list{flex:none;height:220px}
 /* 글 목록 행: 다른 모바일 커뮤니티와 같은 2줄 구조(최신글·게시물 전체보기 공용).
-   첫째 줄은 배지(공지·카테고리·HOT)와 제목만, 댓글 1개 이상이면 제목 바로 뒤에 [N].
+   첫째 줄은 제목만으로 시작한다(카테고리 라벨·고정 '공지' 배지는 행에 표시하지 않음),
+   댓글 1개 이상이면 제목 바로 뒤에 [N], HOT 조건이면 뒤에 HOT 배지.
    둘째 줄은 작성자 · 날짜 · 조회 N · 좋아요 N을 작은 회색 글씨로(댓글 표기는 [N]으로 대체).
-   썸네일은 첨부 사진이 있는 글만 행 오른쪽 끝에 붙이고, 없으면 썸네일·아바타 자리를
+   썸네일은 첨부 사진이 있는 글만 행 왼쪽 앞(제목 자리)에 붙이고, 없으면 썸네일·아바타 자리를
    만들지 않아 제목이 왼쪽 끝부터 시작한다. 삭제 같은 관리 버튼은 행에 두지 않는다
    (삭제는 글 팝업 안의 삭제 버튼으로만, 확인 절차 포함) */
 .cm-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--bd);background:none;color:var(--tx);font:inherit;padding:9px 2px;cursor:pointer}
 .cm-row:last-child{border-bottom:0}
-.cm-th{position:relative;flex:none;width:52px;height:52px;border-radius:6px;overflow:hidden}
+.cm-th{position:relative;flex:none;width:44px;height:44px;border-radius:6px;overflow:hidden}
 .cm-th img{width:100%;height:100%;object-fit:cover;display:block}
 .cm-thn{position:absolute;right:3px;bottom:3px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:rgba(0,0,0,.65);color:#fff;font-size:11px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center}
 .cm-rmain{flex:1;min-width:0}
@@ -3749,10 +3750,10 @@ function canDelCmt(c){return !!fbUser&&(isOp()||(c.uid&&c.uid===fbUser.uid))}
 function rowEl(p,pinned){
 var b=document.createElement("button");b.type="button";b.className=pinned?"cm-row pin":"cm-row";
 var main=document.createElement("span");main.className="cm-rmain";
-/* 첫째 줄: 배지 + 제목. 고정이면 공지 배지, 아니면 카테고리 배지를 앞에 붙이고(기존 규칙 그대로),
+/* 첫째 줄: 제목만으로 시작한다. 카테고리 라벨(질문·자유 등)과 고정 글의 '공지' 배지는
+   목록 행에 표시하지 않는다(2026-11-09 지시 — 필터 칩·카테고리 기능·고정 동작은 유지).
    댓글 1개 이상이면 제목 바로 뒤에 [N], HOT 조건이면 HOT 배지를 붙인다 */
 var tl=document.createElement("span");tl.className="cm-tline";
-if(pinned){var pinB=document.createElement("span");pinB.className="cm-pinbdg";pinB.textContent="공지";tl.appendChild(pinB)}else{var cat=document.createElement("span");cat.className="cm-cat";cat.textContent=catOf(p);tl.appendChild(cat)}
 var t=document.createElement("span");t.className="cm-rt";t.textContent=p.title||"(제목 없음)";tl.appendChild(t);
 if(cmtN(p)>=1){var cc=document.createElement("span");cc.className="cm-rcnt";cc.textContent="["+cmtN(p)+"]";tl.appendChild(cc)}
 if(cmtN(p)>=3||likeN(p)>=3){var hot=document.createElement("span");hot.className="cm-hot";hot.textContent="HOT";tl.appendChild(hot)}
@@ -3760,9 +3761,9 @@ main.appendChild(tl);
 /* 둘째 줄: 작성자 · 날짜 · 조회 N · 좋아요 N (댓글 수는 제목 옆 [N]으로 대체해 여기서는 뺀다) */
 var parts=[p.name||"익명"];var ds=fmtD(p.ts);if(ds)parts.push(ds);parts.push("조회 "+(p.views||0));parts.push("좋아요 "+likeN(p));
 var v=document.createElement("span");v.className="cm-rv";v.textContent=parts.join(" · ");main.appendChild(v);
-b.appendChild(main);
-/* 썸네일: 첨부 사진이 있는 글만 행 오른쪽 끝에 첫 사진을 작게 붙인다(여러 장이면 장수 배지 유지).
-   사진이 없는 글은 썸네일·닉네임 첫 글자 아바타 자리를 만들지 않는다. 사진을 못 불러오면 자리도 없앤다 */
+/* 썸네일: 첨부 사진이 있는 글만 행 왼쪽 앞(제목이 시작하는 자리)에 첫 사진을 작게 붙인다
+   (여러 장이면 장수 배지 유지). 사진이 없는 글은 썸네일·닉네임 첫 글자 아바타 자리를
+   만들지 않아 제목이 왼쪽 끝부터 시작한다. 사진을 못 불러오면 자리도 없앤다 */
 var pimgs=postImgsOf(p);
 if(pimgs.length){
 var th=document.createElement("span");th.className="cm-th";th.setAttribute("aria-hidden","true");
@@ -3772,6 +3773,7 @@ th.appendChild(im);
 if(pimgs.length>1){var bd=document.createElement("span");bd.className="cm-thn";bd.textContent=String(pimgs.length);th.appendChild(bd)}
 b.appendChild(th);
 }
+b.appendChild(main);
 /* 삭제 버튼은 행에 두지 않는다: 삭제는 글 팝업 안의 삭제 버튼(deletePost, 확인 절차 포함)으로만 한다 */
 b.addEventListener("click",function(){openPost(p.key)});
 return b;
