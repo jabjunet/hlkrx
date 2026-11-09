@@ -917,6 +917,7 @@ main{padding:2px 12px 40px}
 .chat-state[hidden]{display:none}
 .cmsg{display:flex;gap:8px;align-items:flex-start}
 .cav{flex:none;width:36px;height:36px;border-radius:50%;background:var(--sf2);color:var(--mut);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;overflow:hidden}
+.cdate{align-self:center;font-size:11px;font-weight:600;color:var(--mut);background:var(--sf2);border-radius:999px;padding:3px 11px}
 .cav img{width:100%;height:100%;object-fit:cover;display:block}
 .cmsg-main{flex:1;min-width:0}
 .cmsg-hd{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
@@ -1110,6 +1111,7 @@ main{padding:2px 12px 40px}
    버튼을 눌러 패널을 넣었다 뺐다 할 수 있다. 패널 안에서는 국내 가격·해외 가격·환율로 김프를 바로 계산한다 */
 .kcbtn{position:fixed;right:16px;bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:120;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 16px;border:1px solid var(--bd);border-radius:999px;background:var(--sf);color:var(--tx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.18)}
 .kcbtn svg{flex:none;display:block}
+.kcbtn[hidden]{display:none}
 .kcpanel{position:fixed;right:16px;bottom:calc(128px + env(safe-area-inset-bottom,0px));z-index:122;width:min(276px,calc(100vw - 24px));max-height:calc(100dvh - 150px);overflow-y:auto;background:var(--sf);border:1px solid var(--bd);border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,.28);padding:14px;-webkit-overflow-scrolling:touch}
 .kcpanel[hidden]{display:none}
 .kc-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
@@ -1461,10 +1463,17 @@ function prefsPush(){try{if(typeof window.__hlkrxPrefsPush==="function")window._
    Get은 사용자가 직접 골라 저장된 값만 돌려준다(기본값 다크는 저장된 선택이 아니다).
    Apply에서 theme이 "dark"/"light"가 아니면(계정에 테마 저장이 없으면) 저장값은
    비운 채 화면만 기본값인 다크 모드로 보이고, lang은 "en"이 아니면 한국어로 되돌린다 */
-window.__hlkrxPrefsGet=function(){var t=null;try{t=localStorage.getItem("hlkrx_theme")}catch(e){}return{theme:(t==="dark"||t==="light")?t:null,lang:LANG}};
+/* 계산기 버튼 표시 여부(hlkrx_calcbtn): 테마·언어와 같은 방식으로 기기에 저장하고
+   계정에도 함께 저장한다(prefCalc). 저장값이 없으면 기본값인 켜짐이다.
+   끄면 플로팅 '계산기' 버튼이 전 탭에서 숨고, 패널이 열려 있으면 함께 닫는다 */
+function calcBtnOn(){try{return localStorage.getItem("hlkrx_calcbtn")!=="off"}catch(e){return true}}
+function applyCalcBtn(){var b=document.getElementById("kc-open");if(!b)return;var on=calcBtnOn();b.hidden=!on;if(!on){var pn=document.getElementById("kc-panel");if(pn&&!pn.hidden){pn.hidden=true;b.setAttribute("aria-expanded","false")}}}
+window.__hlkrxApplyCalcBtn=applyCalcBtn;
+window.__hlkrxPrefsGet=function(){var t=null,c=null;try{t=localStorage.getItem("hlkrx_theme");c=localStorage.getItem("hlkrx_calcbtn")}catch(e){}return{theme:(t==="dark"||t==="light")?t:null,lang:LANG,calc:(c==="off"||c==="on")?c:null}};
 window.__hlkrxApplyPrefs=function(p){if(!p||typeof p!=="object")return;
 if(p.theme==="dark"||p.theme==="light"){root.setAttribute("data-theme",p.theme);try{localStorage.setItem("hlkrx_theme",p.theme)}catch(e){}}
 else{root.setAttribute("data-theme","dark");try{localStorage.removeItem("hlkrx_theme")}catch(e){}}
+if("calc" in p){if(p.calc==="off"||p.calc==="on"){try{localStorage.setItem("hlkrx_calcbtn",p.calc)}catch(e){}}else{try{localStorage.removeItem("hlkrx_calcbtn")}catch(e){}}applyCalcBtn()}
 var nl=p.lang==="en"?"en":"ko";if(nl!==LANG){LANG=nl;try{localStorage.setItem("hlkrx_lang",LANG)}catch(e){}}
 applyLang()};
 if(window.matchMedia){var mm=window.matchMedia("(prefers-color-scheme: dark)");if(mm.addEventListener)mm.addEventListener("change",syncThBtn)}
@@ -1513,7 +1522,7 @@ var D={
 "주식 평가금액 · 2026년 11월 5일 본인 공개":"Stock valuation · Self-disclosed Nov 5, 2026","보유 종목 접기":"Hide Holdings","공개 당시":"At disclosure",
 "실시간 보유 현황이 아니라 11월 5일 공개 시점 기준입니다. 본인이 5억 원 이상 보유 종목만 공개해 그보다 작은 보유 종목은 빠져 있고, 종목별 평가금액은 공개된 평가손익·수익률로 계산한 대략적인 값입니다.":"This reflects the positions as disclosed on Nov 5, not live holdings. Only holdings of 500M KRW or more were disclosed, so smaller positions are omitted, and per-stock valuations are approximate figures calculated from the disclosed P&L and returns.",
 "디시인사이드 코스피 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인":"Self-disclosed on DC Inside KOSPI Gallery · Prices via TradingView · Checked every 1 min",
-"최신글":"Latest Posts","글쓰기":"Write","구글 로그인":"Google Sign-in","자유":"Free","코인":"Coins","질문":"Q&A","카테고리":"Category","카테고리 필터":"Category filter","최신순":"Newest","인기순":"Most Liked","댓글순":"Most Commented","답글":"Reply","답글을 입력하세요":"Write a reply","답글 입력":"Reply input","답글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to reply. Press the Google sign-in button above.","답글을 입력해 주세요.":"Please enter a reply.","답글 등록에 실패했어요. 다시 시도해 주세요.":"Failed to post the reply. Please try again.","다크 모드":"Dark Mode","언어":"Language","켜짐":"On","꺼짐":"Off","해당 카테고리에 글이 없습니다.":"No posts in this category yet.","아직 글이 없어요. 첫 글을 올려보세요":"No posts yet. Be the first to write one.","최근 댓글:":"Latest comment:","카테고리 관리":"Manage Categories","추가":"Add","고정":"Pin","고정 해제":"Unpin","공지":"Notice","새 카테고리 이름":"New category name","카테고리 이름을 입력해 주세요.":"Please enter a category name.","이미 있는 카테고리예요.":"That category already exists.","카테고리 이름은 10자까지예요.":"Category names can be up to 10 characters.","카테고리 저장에 실패했어요. 다시 시도해 주세요.":"Failed to save categories. Please try again.","카테고리는 최소 1개가 필요해요.":"At least one category is required.","'공지'는 고정 글 배지 이름이라 쓸 수 없어요.":"'Notice' is reserved for pinned-post badges and can't be used as a category name.",
+"최신글":"Latest Posts","글쓰기":"Write","구글 로그인":"Google Sign-in","자유":"Free","코인":"Coins","질문":"Q&A","카테고리":"Category","카테고리 필터":"Category filter","최신순":"Newest","인기순":"Most Liked","댓글순":"Most Commented","답글":"Reply","답글을 입력하세요":"Write a reply","답글 입력":"Reply input","답글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to reply. Press the Google sign-in button above.","답글을 입력해 주세요.":"Please enter a reply.","답글 등록에 실패했어요. 다시 시도해 주세요.":"Failed to post the reply. Please try again.","다크 모드":"Dark Mode","언어":"Language","계산기 버튼":"Calculator Button","켜짐":"On","꺼짐":"Off","해당 카테고리에 글이 없습니다.":"No posts in this category yet.","아직 글이 없어요. 첫 글을 올려보세요":"No posts yet. Be the first to write one.","최근 댓글:":"Latest comment:","카테고리 관리":"Manage Categories","추가":"Add","고정":"Pin","고정 해제":"Unpin","공지":"Notice","새 카테고리 이름":"New category name","카테고리 이름을 입력해 주세요.":"Please enter a category name.","이미 있는 카테고리예요.":"That category already exists.","카테고리 이름은 10자까지예요.":"Category names can be up to 10 characters.","카테고리 저장에 실패했어요. 다시 시도해 주세요.":"Failed to save categories. Please try again.","카테고리는 최소 1개가 필요해요.":"At least one category is required.","'공지'는 고정 글 배지 이름이라 쓸 수 없어요.":"'Notice' is reserved for pinned-post badges and can't be used as a category name.",
 "글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.":"You need to sign in with Google to write a post. Once signed in, you can post right away.",
 "제목을 입력하세요":"Enter a title","내용을 입력하세요":"Enter content","사진 첨부":"Attach Photo","사진 4장까지 넣을 수 있어요":"You can attach up to 4 photos","사진은 4장까지 넣을 수 있어요.":"You can attach up to 4 photos.","이미지 파일만 넣을 수 있어요.":"Only image files can be attached.","사진 지우기":"Remove Photo","취소":"Cancel","등록":"Post","삭제":"Delete","수정":"Edit","수정 완료":"Save Changes","닫기":"Close",
 "아직 글이 없습니다. 첫 글을 남겨 보세요.":"No posts yet. Write the first post.","글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to write. Press the Google sign-in button above.","아직 연결이 준비되지 않았어요. 잠시 후 다시 시도해 주세요.":"The connection is not ready yet. Please try again shortly.","제목을 입력해 주세요.":"Please enter a title.","내용을 입력하거나 사진을 넣어 주세요.":"Please enter content or add a photo.","등록에 실패했어요. 다시 시도해 주세요.":"Failed to post. Please try again.","수정에 실패했어요. 다시 시도해 주세요.":"Failed to save changes. Please try again.","글을 올린 지 10분이 지나 수정할 수 없어요.":"You can no longer edit this post — 10 minutes have passed since it was posted.","이미지를 불러오지 못했어요.":"Could not load the image.",
@@ -1530,7 +1539,7 @@ var D={
 "예: 삼성전자":"e.g. Samsung Electronics","포지션 방향":"Position Direction","롱":"Long","숏":"Short","레버리지 (배)":"Leverage (x)","현재 평단가":"Current Avg Price","현재 보유 수량":"Current Quantity","추가 매수 가격":"Add Price","추가 투자 금액":"Add Amount","추가 수량 (자동 계산)":"Added Quantity (Auto)","새 평단가":"New Avg Price","평단 변화":"Avg Price Change","청산가 (추가 전 → 후)":"Liquidation Price (Before → After)","총 수량":"Total Quantity","총 투자금":"Total Invested",
 "청산가는 격리 기준 단순 계산(롱: 평단×(1−1/레버리지), 숏: 평단×(1+1/레버리지))이라 실제 거래소 청산가와는 유지증거금 때문에 차이가 있을 수 있어요.":"The liquidation price is a simple isolated-margin estimate (Long: avg x (1 - 1/leverage), Short: avg x (1 + 1/leverage)) and may differ from actual exchange liquidation prices because of maintenance margin.",
 "Google로 계속하기":"Continue with Google","로그인하면 채팅도 바로 쓸 수 있어요. 프로필·테마·언어·계산기 저장 종목은 구글 계정별로 저장돼, 다른 기기에서 로그인해도 그대로 복원됩니다.":"Signing in also enables chat right away. Your profile, theme, language and saved calculator entries are stored per Google account and restored when you sign in on another device.",
-"사진 고르기":"Choose Photo","닉네임":"Nickname","닉네임을 입력하세요":"Enter a nickname","건너뛰기":"Skip","로그아웃":"Log Out","프로필·테마·언어는 구글 계정별로 저장됩니다. 로그인하면 다른 기기에서도 그대로 복원돼요.":"Your profile, theme and language are stored per Google account and restored when you sign in on another device.","닉네임을 입력해 주세요.":"Please enter a nickname.","저장에 실패했어요. 사진 없이 다시 시도해 보세요.":"Failed to save. Please try again without a photo.",
+"사진 고르기":"Choose Photo","닉네임":"Nickname","닉네임을 입력하세요":"Enter a nickname","건너뛰기":"Skip","로그아웃":"Log Out","프로필·테마·언어·계산기 버튼 설정은 구글 계정별로 저장됩니다. 로그인하면 다른 기기에서도 그대로 복원돼요.":"Your profile, theme, language and calculator button setting are stored per Google account and restored when you sign in on another device.","닉네임을 입력해 주세요.":"Please enter a nickname.","저장에 실패했어요. 사진 없이 다시 시도해 보세요.":"Failed to save. Please try again without a photo.",
 "문의는 트위터로만 받습니다.":"Inquiries are accepted via Twitter only.","트위터":"Twitter","카카오톡":"KakaoTalk","쓰레드":"Threads","네이버 블로그":"Naver Blog","다른 링크":"Other Links",
 "주요 지수":"Key Indices","장 운영 시간 안내":"Market Hours","김프 종목 검색":"Search Kimchi Premium Stocks","해외 종목 검색":"Search Global Stocks","펀딩비 종목 검색":"Search Funding Symbols","비교 첫 번째 종목 검색":"Search First Stock","비교 두 번째 종목 검색":"Search Second Stock","원자재 선택":"Select Commodity","ETF 테마 선택 열기·닫기":"Toggle ETF Theme Picker","나스닥 섹터 선택 열기·닫기":"Toggle NASDAQ Sector Picker","가격·차트 출처":"Price & Chart Source","계산기 종류":"Calculator Type","오픈 채팅방":"Open Chat Room","채팅 닫기":"Close Chat","계산기 닫기":"Close Calculator","이 메시지 삭제":"Delete This Message","이 댓글 삭제":"Delete This Comment","글 제목":"Post Title","글 내용":"Post Content","첨부한 사진 미리보기":"Attached Photo Preview","채팅 메시지 입력":"Chat Message Input","계산기 종목 이름":"Calculator Stock Name","약관 및 방침":"Terms and Policies",
 "장전":"Pre-market","장후":"After-hours","한국 시간":"Korean Time","아래로 내리면 이전 글을 더 볼 수 있어요":"Scroll down to load older posts","이전 글을 불러오는 중…":"Loading older posts…","EPS 예상":"EPS Forecast","발표 완료":"Reported","EPS 실제":"EPS Actual","서프라이즈":"Surprise","실적 일정을 불러오지 못했어요":"Could not load the earnings schedule","연결 문제로 실적 데이터를 불러오지 못했어요.":"Could not load earnings data due to a connection problem.","다시 시도":"Retry","앞으로 30일 안에 예정된 주요 종목 실적발표가 없습니다":"No key earnings are scheduled in the next 30 days",
@@ -2058,11 +2067,12 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <div class="pfset" id="pf-set">
 <button type="button" class="pfset-row" id="pf-theme"><span class="pfset-lb">다크 모드</span><span class="pfset-val" id="pf-theme-v">꺼짐</span></button>
 <button type="button" class="pfset-row" id="pf-lang"><span class="pfset-lb">언어</span><span class="pfset-val" id="pf-lang-v">한국어</span></button>
+<button type="button" class="pfset-row" id="pf-calc"><span class="pfset-lb">계산기 버튼</span><span class="pfset-val" id="pf-calc-v">켜짐</span></button>
 </div>
 <button type="button" class="lgsub" id="pf-save">저장</button>
 <button type="button" class="pfskip" id="pf-skip" hidden>건너뛰기</button>
 <button type="button" class="pfout" id="pf-out">로그아웃</button>
-<p class="lgnote">프로필·테마·언어는 구글 계정별로 저장됩니다. 로그인하면 다른 기기에서도 그대로 복원돼요.</p>
+<p class="lgnote">프로필·테마·언어·계산기 버튼 설정은 구글 계정별로 저장됩니다. 로그인하면 다른 기기에서도 그대로 복원돼요.</p>
 </div></div>
 <div class="legalov" id="legal-priv-ov" hidden><div class="legalbox" role="dialog" aria-modal="true" aria-labelledby="legal-priv-t">
 <div class="legalbox-hd"><h2 id="legal-priv-t">개인정보처리방침</h2><button type="button" class="lgx" id="legal-priv-x" aria-label="닫기" style="position:static;margin-left:auto">×</button></div>
@@ -3252,18 +3262,18 @@ var lc=calcLocal();if(lc.s||lc.h)srvPushCalc(u);
 var PREF_OWNER_KEY="hlkrx_prefs_uid";
 function prefsOwner(){try{return localStorage.getItem(PREF_OWNER_KEY)||""}catch(e){return""}}
 function setPrefsOwner(uid){try{if(uid)localStorage.setItem(PREF_OWNER_KEY,uid);else localStorage.removeItem(PREF_OWNER_KEY)}catch(e){}}
-function srvPushPrefs(u){var r=srvRef(u);if(!r)return;var cur=null;try{cur=window.__hlkrxPrefsGet?window.__hlkrxPrefsGet():null}catch(e){}if(!cur)return;var upd={};upd.prefTheme=cur.theme||null;upd.prefLang=cur.lang==="en"?"en":"ko";upd.prefsTs=Date.now();try{var pr=r.update(upd);if(pr&&pr.catch)pr.catch(function(){})}catch(e){}setPrefsOwner(u.uid)}
+function srvPushPrefs(u){var r=srvRef(u);if(!r)return;var cur=null;try{cur=window.__hlkrxPrefsGet?window.__hlkrxPrefsGet():null}catch(e){}if(!cur)return;var upd={};upd.prefTheme=cur.theme||null;upd.prefLang=cur.lang==="en"?"en":"ko";upd.prefCalc=cur.calc||null;upd.prefsTs=Date.now();try{var pr=r.update(upd);if(pr&&pr.catch)pr.catch(function(){})}catch(e){}setPrefsOwner(u.uid)}
 window.__hlkrxPrefsPush=function(){try{if(typeof firebase==="undefined"||!firebase.auth)return;if(!firebase.apps||!firebase.apps.length){if(!fbCfgReady())return;firebase.initializeApp(FIREBASE_CONFIG)}var cu=firebase.auth().currentUser;if(cu)srvPushPrefs(cu)}catch(e){}};
 function srvSyncPrefs(u,s){
-var hasAcct=!!(s&&((typeof s.prefTheme==="string"&&(s.prefTheme==="dark"||s.prefTheme==="light"))||(typeof s.prefLang==="string"&&(s.prefLang==="en"||s.prefLang==="ko"))));
+var hasAcct=!!(s&&((typeof s.prefTheme==="string"&&(s.prefTheme==="dark"||s.prefTheme==="light"))||(typeof s.prefLang==="string"&&(s.prefLang==="en"||s.prefLang==="ko"))||(typeof s.prefCalc==="string"&&(s.prefCalc==="on"||s.prefCalc==="off"))));
 if(hasAcct){
 /* 계정에 저장된 설정이 있으면 그 계정의 값을 이 기기에 적용한다 (다른 계정·기기 값이 섞이지 않는다) */
-try{if(window.__hlkrxApplyPrefs)window.__hlkrxApplyPrefs({theme:(s.prefTheme==="dark"||s.prefTheme==="light")?s.prefTheme:null,lang:s.prefLang==="en"?"en":"ko"})}catch(e){}
+try{if(window.__hlkrxApplyPrefs)window.__hlkrxApplyPrefs({theme:(s.prefTheme==="dark"||s.prefTheme==="light")?s.prefTheme:null,lang:s.prefLang==="en"?"en":"ko",calc:(s.prefCalc==="off"||s.prefCalc==="on")?s.prefCalc:null})}catch(e){}
 setPrefsOwner(u.uid);
 }else if(prefsOwner()&&prefsOwner()!==u.uid){
 /* 이 기기의 설정은 다른 계정이 남긴 것인데 이 계정에는 저장된 설정이 없다:
-   앞 계정 설정을 물려주지 않고 기본값(다크·한국어)으로 시작해 이 계정 것으로 저장한다 */
-try{if(window.__hlkrxApplyPrefs)window.__hlkrxApplyPrefs({theme:null,lang:"ko"})}catch(e){}
+   앞 계정 설정을 물려주지 않고 기본값(다크·한국어·계산기 버튼 켜짐)으로 시작해 이 계정 것으로 저장한다 */
+try{if(window.__hlkrxApplyPrefs)window.__hlkrxApplyPrefs({theme:null,lang:"ko",calc:null})}catch(e){}
 srvPushPrefs(u);
 }else{
 /* 계정에 설정이 없고 기기 값도 이 계정 것이거나 아직 주인이 없으면 첫 로그인으로 보고 기기 값을 계정에 올린다 */
@@ -3352,9 +3362,14 @@ function pfOpen(first){var p=prof();pfFirst=!!first;tmpImg=effImg(p);pnick.value
    기존 경로로 처리한다 */
 function pfIsDark(){var t=document.documentElement.getAttribute("data-theme");if(t==="light")return false;return true}
 function pfLangEn(){try{return localStorage.getItem("hlkrx_lang")==="en"}catch(e){return false}}
-function pfSetSync(){var en=pfLangEn();var tv=el("pf-theme-v");if(tv)tv.textContent=pfIsDark()?(en?"On":"켜짐"):(en?"Off":"꺼짐");var lv=el("pf-lang-v");if(lv)lv.textContent=en?"EN":"한국어"}
+function pfCalcOn(){try{return localStorage.getItem("hlkrx_calcbtn")!=="off"}catch(e){return true}}
+function pfSetSync(){var en=pfLangEn();var tv=el("pf-theme-v");if(tv)tv.textContent=pfIsDark()?(en?"On":"켜짐"):(en?"Off":"꺼짐");var lv=el("pf-lang-v");if(lv)lv.textContent=en?"EN":"한국어";var cv=el("pf-calc-v");if(cv)cv.textContent=pfCalcOn()?(en?"On":"켜짐"):(en?"Off":"꺼짐")}
 var pfThemeB=el("pf-theme");if(pfThemeB)pfThemeB.addEventListener("click",function(){var b=document.getElementById("th-btn");if(b)b.click();pfSetSync()});
 var pfLangB=el("pf-lang");if(pfLangB)pfLangB.addEventListener("click",function(){var b=document.getElementById("lang-btn");if(b)b.click();pfSetSync()});
+/* 계산기 버튼 온오프: 테마·언어와 같은 방식 — 기기에 저장하고(hlkrx_calcbtn),
+   로그인 상태에서는 계정(profiles/{uid}의 prefCalc)에도 올린다. 끄면 플로팅 버튼이
+   숨고 열려 있던 패널도 함께 닫힌다(적용은 헤더 스크립트의 창구가 맡는다) */
+var pfCalcB=el("pf-calc");if(pfCalcB)pfCalcB.addEventListener("click",function(){try{localStorage.setItem("hlkrx_calcbtn",pfCalcOn()?"off":"on")}catch(e){}try{if(window.__hlkrxApplyCalcBtn)window.__hlkrxApplyCalcBtn()}catch(e){}try{if(typeof window.__hlkrxPrefsPush==="function")window.__hlkrxPrefsPush()}catch(e){}pfSetSync()});
 function pfClose(){if(pfFirst){var p=prof();p.done=1;saveProf(p)}pfFirst=false;pov.hidden=true}
 el("pf-x").addEventListener("click",pfClose);
 pov.addEventListener("click",function(e){if(e.target===pov)pfClose()});
@@ -3391,7 +3406,13 @@ function opEmail(){return (typeof OPERATOR_EMAIL!=="undefined"?String(OPERATOR_E
 function isOpEmail(em){var oe=opEmail();return !!oe&&String(em||"").trim().toLowerCase()===oe}
 function chatProf(){try{var p=JSON.parse(localStorage.getItem("hlkrx_prof")||"{}");if(!p||typeof p!=="object")p={};var ui=localStorage.getItem("hlkrx_uimg");if(ui!==null)p.img=ui;/* 직접 고른 사진(data URL)만 사이트 프로필로 인정한다: 구글 계정 사진(http 주소)은 버린다 */if(typeof p.img!=="string"||p.img.indexOf("data:")!==0)p.img="";return p}catch(e){return{}}}
 function initial(nm){var a=Array.from(String(nm||""));return a.length?a[0]:"?"}
-function fmtTime(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts),now=new Date();var hm=d.toLocaleTimeString("ko-KR",{hour:"numeric",minute:"2-digit"});return d.toDateString()===now.toDateString()?hm:(d.getMonth()+1)+"/"+d.getDate()+" "+hm}
+/* 프로필 사진이 없는 사용자의 아바타 색: 닉네임(없으면 uid) 해시로 차분한 팔레트에서 고른다.
+   같은 사람은 어느 기기에서 봐도 항상 같은 색이 된다 */
+var AVC=["#5f7f9e","#4f8a84","#6f8f5f","#a0854f","#b0705c","#707a8a","#a06a78","#7d8461"];
+function avColor(seed){var s=String(seed||"");if(!s)return AVC[0];var h=0;for(var i=0;i<s.length;i++){h=((h<<5)-h+s.charCodeAt(i))|0}return AVC[Math.abs(h)%AVC.length]}
+function fmtTime(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts);return d.toLocaleTimeString("ko-KR",{hour:"numeric",minute:"2-digit"})}
+function dayKey(ts){if(!ts||typeof ts!=="number")return "";var d=new Date(ts);return d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()}
+function fmtDate(ts){var d=new Date(ts);if(document.documentElement.getAttribute("lang")==="en")return d.toLocaleDateString("en-US",{month:"long",day:"numeric"});return (d.getMonth()+1)+"월 "+d.getDate()+"일"}
 function syncFt(){var logged=!!fbUser;form.hidden=false;
 if(gbtn)gbtn.hidden=!(authKnown&&!logged);
 if(hint){
@@ -3405,8 +3426,9 @@ function restoreDraft(){try{var d=sessionStorage.getItem("hlkrx_chat_draft");if(
 function msgEl(key,m){
 var row=document.createElement("div");row.className="cmsg";
 var av=document.createElement("div");av.className="cav";av.setAttribute("aria-hidden","true");
-if(m.photo){var im=document.createElement("img");im.src=String(m.photo);im.alt="";im.referrerPolicy="no-referrer";im.addEventListener("error",function(){av.textContent=initial(m.name)});av.appendChild(im)}
-else av.textContent=initial(m.name);
+function avFallback(){av.textContent=initial(m.name);av.style.background=avColor(m.uid||m.name);av.style.color="#fff"}
+if(m.photo){var im=document.createElement("img");im.src=String(m.photo);im.alt="";im.referrerPolicy="no-referrer";im.addEventListener("error",avFallback);av.appendChild(im)}
+else avFallback();
 row.appendChild(av);
 var main=document.createElement("div");main.className="cmsg-main";
 var hd=document.createElement("div");hd.className="cmsg-hd";
@@ -3422,8 +3444,10 @@ function render(){
 if(!lastSnap)return;
 var nearBottom=msgs.scrollHeight-msgs.scrollTop-msgs.clientHeight<140;
 msgs.textContent="";
-var count=0;
-lastSnap.forEach(function(child){count++;msgs.appendChild(msgEl(child.key,child.val()||{}))});
+var count=0,prevDay="";
+lastSnap.forEach(function(child){var m=child.val()||{};var dk=dayKey(m.ts);
+if(dk&&dk!==prevDay){prevDay=dk;var dv=document.createElement("div");dv.className="cdate";dv.textContent=fmtDate(m.ts);msgs.appendChild(dv)}
+count++;msgs.appendChild(msgEl(child.key,m))});
 if(count===0){msgs.hidden=true;state.textContent="아직 메시지가 없어요. 첫 메시지를 남겨 보세요.";state.hidden=false}
 else{state.hidden=true;msgs.hidden=false;if(firstRender||nearBottom)msgs.scrollTop=msgs.scrollHeight}
 firstRender=false;
@@ -5739,6 +5763,8 @@ setInterval(function(){if(!document.hidden)load()},10*60000);
 (function(){
 function $(id){return document.getElementById(id)}
 var panel=$("kc-panel"),openB=$("kc-open");if(!panel||!openB)return;
+/* 프로필에서 계산기 버튼을 꺼 둔 기기·계정이면 시작부터 버튼을 숨긴다 */
+try{if(window.__hlkrxApplyCalcBtn)window.__hlkrxApplyCalcBtn()}catch(e){}
 function num(s){return parseFloat(String(s==null?"":s).replace(/,/g,""))}
 function fmt(n,d){return n.toLocaleString("ko-KR",{minimumFractionDigits:d||0,maximumFractionDigits:d||0})}
 var nameEl=$("kc-name"),follow=true;
