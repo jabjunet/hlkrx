@@ -5570,9 +5570,13 @@ setInterval(function(){if(!document.hidden)load()},60000);
    해외(인베스팅) 피드는 사이트 언어 설정을 따른다: 한국어 모드에서는 한국어판 피드를 그대로 쓰고,
    영어(EN) 모드에서는 같은 카테고리(/rss/news.rss)의 영어판 피드 https://www.investing.com/rss/news.rss
    (200, RSS 2.0, 채널명 'All News', 영어 원문 제목)를 써서 영어 기사 제목이 그대로 뜬다.
-   페이지 로드 시 언어가 영어면 처음부터 영어판으로 불러오고, 사용 중 언어를 바꾸면
-   (언어 모듈이 <html data-lang> 속성을 바꾸는 것을 감지해) 해외 그룹만 해당 언어판 피드로 다시 불러와 교체한다.
-   국내(한국경제·매일경제) 그룹은 언어와 관계없이 지금 그대로 둔다.
+   국내 그룹도 같은 방식으로 언어를 따른다: 한국어 모드에서는 한국경제·매일경제 증권 피드를 그대로 쓰고,
+   영어(EN) 모드에서는 연합뉴스 영문판 Economy/Finance 피드 https://en.yna.co.kr/RSS/economy-finance.xml
+   (빌드 시점 실측: 직접 호출 200, RSS 2.0, 채널명 'Yonhap News Agency | Economy/Finance', 한국 경제·증시
+   영어 기사; CORS 헤더가 없어 브라우저 직접 호출이 막히면 기존 프록시 순서대로 경유하는데,
+   rss2json·allorigins 경유 응답도 모두 확인함)로 바꿔 영어 기사 제목이 그대로 뜬다.
+   페이지 로드 시 언어가 영어면 처음부터 해당 언어 피드로 불러오고, 사용 중 언어를 바꾸면
+   (언어 모듈이 <html data-lang> 속성을 바꾸는 것을 감지해) 두 그룹 모두 해당 언어 피드로 다시 불러와 교체한다.
    국내 그룹은 두 매체 모두 증권 섹션 피드만 쓴다. 그래도 섹션 피드에 섞여 들어오는 주식 무관 기사
    (정치·부동산·연예·스포츠·날씨·사건사고 등)는 제목 보조 필터(isStockTitle)로 표시 목록에서 제외한다.
    주식 관련 표현이 제목에 하나라도 있으면 무조건 남기는 보수적 방식이라 주식 뉴스가 잘못 걸러지지 않고,
@@ -5585,6 +5589,7 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){retur
 var SRC={
 hk:{name:"한국경제",feed:"https://www.hankyung.com/feed/finance"},
 mk:{name:"매일경제",feed:"https://www.mk.co.kr/rss/50200011/"},
+ye:{name:"연합뉴스 영문",feed:"https://en.yna.co.kr/RSS/economy-finance.xml"},
 iv:{name:"인베스팅",feed:"https://kr.investing.com/rss/news.rss"}};
 /* 해외(인베스팅) 영어판 피드: 한국어판과 같은 카테고리(/rss/news.rss)의 영어판 주소.
    현재 언어는 언어 모듈이 제공하는 읽기 창구(__hlkrxPrefsGet)로 확인하고, 없으면 기기 저장값(hlkrx_lang)으로 폴백한다. */
@@ -5592,6 +5597,10 @@ var FEED_IV_EN="https://www.investing.com/rss/news.rss";
 function siteLang(){try{if(window.__hlkrxPrefsGet)return window.__hlkrxPrefsGet().lang==="en"?"en":"ko"}catch(e){}try{return localStorage.getItem("hlkrx_lang")==="en"?"en":"ko"}catch(e){return "ko"}}
 function feedFor(key){if(key==="iv"&&siteLang()==="en")return FEED_IV_EN;return SRC[key].feed}
 var ivLang=siteLang();
+/* 국내 그룹 출처도 언어를 따른다: 한국어 모드=한국경제·매일경제, 영어(EN) 모드=연합뉴스 영문 Economy/Finance.
+   domLang은 국내 그룹을 마지막으로 불러온 언어를 기억해 언어 전환 감지에 쓴다(해외의 ivLang과 같은 방식). */
+var domLang=siteLang();
+function domKeys(){return siteLang()==="en"?["ye"]:["hk","mk"]}
 var cache={},settled={};
 /* 국내 전용 제목 보조 필터: 주식 관련 표현이 제목에 하나라도 있으면 무조건 통과시키고(keep 우선),
    없을 때만 주식과 무관한 주제의 강한 표현이 있는 제목을 제외한다. 어느 쪽에도 걸리지 않으면 통과(보수적 적용). */
@@ -5630,7 +5639,10 @@ if(!out.length)throw new Error("empty");
 return out}
 function loadSrc(key){
 var feed=feedFor(key);if(key==="iv")ivLang=siteLang();
-var dom=(key==="hk"||key==="mk"),lim=dom?30:12;
+if(key==="hk"||key==="mk"||key==="ye")domLang=siteLang();
+/* 연합뉴스 영문 피드는 경제·금융 섹션 전용이라 한국어 제목 필터(isStockTitle)는 걸지 않고,
+   개수 상한만 국내 출처와 같은 30개로 읽는다(표시는 그룹 합산 10개까지로 기존과 동일). */
+var dom=(key==="hk"||key==="mk"),lim=(dom||key==="ye")?30:12;
 return fetchT(feed).then(function(t){return parseXml(t,lim)})
 .catch(function(){return fetchT("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(feed)).then(function(t){return parseR2J(t,lim)})})
 .catch(function(){return fetchT("https://api.allorigins.win/raw?url="+encodeURIComponent(feed)).then(function(t){return parseXml(t,lim)})})
@@ -5648,8 +5660,8 @@ var GROUPS=[
 {id:"intl",name:"해외",keys:["iv"]}];
 var exp={dom:false,intl:false};
 function groupData(g){
-var merged=[],ready=0;
-g.keys.forEach(function(k){
+var merged=[],ready=0,keys=(g.id==="dom")?domKeys():g.keys;
+keys.forEach(function(k){
 if(settled[k])ready++;
 var rows=cache[k];
 if(rows&&rows!=="err"){for(var i=0;i<rows.length;i++)merged.push(rows[i])}});
@@ -5658,7 +5670,7 @@ var seen={},list=[];
 for(var i=0;i<merged.length&&list.length<10;i++){
 if(seen[merged[i].u])continue;
 seen[merged[i].u]=1;list.push(merged[i])}
-return{list:list,ready:ready,total:g.keys.length}}
+return{list:list,ready:ready,total:keys.length}}
 function render(){
 var box=$("hn-list");
 var parts=GROUPS.map(function(g){return{g:g,r:groupData(g)}});
@@ -5681,11 +5693,12 @@ html+='<div class="hmvempty">'+(p.r.ready<p.r.total?"불러오는 중…":"뉴�
 html+='</div>'});
 html+='</div>';
 box.innerHTML=html}
-function load(){exp.dom=false;exp.intl=false;loadSrc("hk");loadSrc("mk");loadSrc("iv")}
+function load(){exp.dom=false;exp.intl=false;domKeys().forEach(function(k){loadSrc(k)});loadSrc("iv")}
 function loadIv(){delete cache.iv;delete settled.iv;render();loadSrc("iv")}
+function loadDom(){var ks=domKeys();ks.forEach(function(k){delete cache[k];delete settled[k]});render();ks.forEach(function(k){loadSrc(k)})}
 /* 언어 전환 감지: 언어 모듈이 언어를 적용할 때 <html data-lang> 속성을 바꾸므로(버튼 전환·계정 설정 복원 공통),
-   그 변화를 보면 현재 언어와 해외 피드를 불러온 언어가 다를 때만 해외 그룹을 해당 언어판 피드로 다시 불러온다. */
-if(window.MutationObserver){new MutationObserver(function(){if(siteLang()!==ivLang)loadIv()}).observe(document.documentElement,{attributes:true,attributeFilter:["data-lang"]})}
+   그 변화를 보면 현재 언어와 각 그룹 피드를 불러온 언어가 다를 때만 그 그룹을 해당 언어 피드로 다시 불러온다. */
+if(window.MutationObserver){new MutationObserver(function(){if(siteLang()!==ivLang)loadIv();if(siteLang()!==domLang)loadDom()}).observe(document.documentElement,{attributes:true,attributeFilter:["data-lang"]})}
 $("hn-list").addEventListener("click",function(e){var b=e.target.closest(".hnmore");if(!b)return;var id=b.getAttribute("data-g");if(!(id in exp))return;exp[id]=!exp[id];render()});
 render();load();
 setInterval(function(){if(!document.hidden)load()},7*60000);
