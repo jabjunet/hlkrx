@@ -1179,11 +1179,15 @@ main{padding:2px 12px 40px}
 .cm-latest .cm-toolbar{flex:none}
 .cm-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 16px 2px;background:var(--bg)}
 .cm-filters{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
-.cm-filters button,.cm-fcats button{min-height:32px;padding:5px 12px;border:1px solid var(--bd);background:var(--sf);color:var(--mut);border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
-.cm-filters button[aria-pressed="true"],.cm-fcats button[aria-pressed="true"]{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+.cm-filters button{min-height:32px;padding:5px 12px;border:1px solid var(--bd);background:var(--sf);color:var(--mut);border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.cm-filters button[aria-pressed="true"]{background:var(--ac);color:var(--acx);border-color:var(--ac)}
 .cm-sort{margin-left:auto;flex:none;min-height:32px;padding:5px 9px;border:1px solid var(--bd);border-radius:999px;background:var(--sf);color:var(--tx);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
 @media(max-width:520px){.cm-sort{margin-left:0}}
-.cm-fcats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+/* 글쓰기 폼의 카테고리 선택: 목록 필터 칩 줄과 겹쳐 보이지 않게 칩이 아니라
+   한 줄짜리 드롭다운(select)으로 둔다. 라벨과 나란히 놓고 입력칸과 같은 높이·모양으로 맞춘다 */
+.cm-fcatrow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cm-fcatlb{flex:none;font-size:13px;font-weight:600;color:var(--mut)}
+.cm-fcatsel{flex:1;min-width:0;min-height:42px;padding:9px 12px;border:1px solid var(--bd);border-radius:9px;background:var(--sf);color:var(--tx);font:inherit;font-size:14px;font-weight:500;cursor:pointer}
 .cm-tline{display:flex;align-items:center;gap:6px;min-width:0}
 .cm-tline .cm-rt{flex:1 1 auto;min-width:0}
 .cm-cat{flex:none;font-size:11px;font-weight:700;color:var(--mut);background:var(--sf2);border:1px solid var(--bd);border-radius:5px;padding:1px 6px;line-height:1.5;white-space:nowrap}
@@ -2100,7 +2104,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <div class="cm-toolbar" id="cm-toolbar"><div class="cm-filters" id="cm-filters" role="group" aria-label="카테고리 필터"><button type="button" data-f="전체" aria-pressed="true">전체</button><button type="button" data-f="자유" aria-pressed="false">자유</button><button type="button" data-f="주식" aria-pressed="false">주식</button><button type="button" data-f="코인" aria-pressed="false">코인</button><button type="button" data-f="질문" aria-pressed="false">질문</button></div><select class="cm-sort" id="cm-sort" aria-label="정렬"><option value="latest">최신순</option><option value="popular">인기순</option><option value="comments">댓글순</option></select><button type="button" class="cm-catman-btn" id="cm-catman-btn" hidden>카테고리 관리</button></div>
 <div class="cm-gate" id="cm-gate" hidden><p>글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.</p><button type="button" class="cm-login" id="cm-login-btn">구글 로그인</button></div>
 <form class="cm-form" id="cm-form" hidden>
-<div class="cm-fcats" id="cm-fcats" role="group" aria-label="카테고리"><button type="button" data-cat="자유" aria-pressed="true">자유</button><button type="button" data-cat="주식" aria-pressed="false">주식</button><button type="button" data-cat="코인" aria-pressed="false">코인</button><button type="button" data-cat="질문" aria-pressed="false">질문</button></div>
+<div class="cm-fcatrow"><label class="cm-fcatlb" for="cm-fcat-sel">카테고리</label><select class="cm-fcatsel" id="cm-fcat-sel" aria-label="카테고리"></select></div>
 <input id="cm-title" type="text" maxlength="80" placeholder="제목을 입력하세요" aria-label="글 제목" autocomplete="off">
 <textarea id="cm-body" maxlength="3000" placeholder="내용을 입력하세요" aria-label="글 내용"></textarea>
 <div class="cm-imgrow"><label class="cm-imgbtn" for="cm-file">사진 첨부</label><input type="file" id="cm-file" accept="image/*" multiple hidden><span class="cm-imgnote" id="cm-img-note">사진 4장까지 넣을 수 있어요</span></div>
@@ -3837,7 +3841,7 @@ pvCmtN=document.getElementById("pv-cmt-n"),pvCList=document.getElementById("pv-c
 pvCGate=document.getElementById("pv-cgate"),pvCLogin=document.getElementById("pv-clogin"),
 pvCForm=document.getElementById("pv-cform"),pvCInput=document.getElementById("pv-cinput"),
 pvCErr=document.getElementById("pv-cerr");
-var filterEl=document.getElementById("cm-filters"),sortEl=document.getElementById("cm-sort"),fcatsEl=document.getElementById("cm-fcats");
+var filterEl=document.getElementById("cm-filters"),sortEl=document.getElementById("cm-sort"),fcatSel=document.getElementById("cm-fcat-sel");
 if(!tabs||!listEl||!form||!ov)return;
 var started=false,postsRef=null,fbUser=null,authKnown=false,posts=[],curKey=null,postImgs=[],editKey=null,editHideTimer=null;
 var MAX_POST_IMGS=4;
@@ -3961,20 +3965,27 @@ filterEl.textContent="";
 var all=document.createElement("button");all.type="button";all.dataset.f="전체";all.setAttribute("aria-pressed",String(cmFilter==="전체"));all.textContent="전체";filterEl.appendChild(all);
 cmCats.forEach(function(name){var b=document.createElement("button");b.type="button";b.dataset.f=name;b.setAttribute("aria-pressed",String(cmFilter===name));b.textContent=name;filterEl.appendChild(b)});
 }
+/* 글쓰기 폼의 카테고리 선택은 칩 줄이 아니라 드롭다운(select)이다: 저장 목록(cmCats)을
+   선택지로 다시 채우고 formCat을 선택값으로 맞춘다. 목록 필터 칩과는 모양이 달라
+   폼이 열려도 칩이 두 줄로 겹쳐 보이지 않는다 */
 function renderFcatsChips(){
-if(!fcatsEl)return;
-fcatsEl.textContent="";
-cmCats.forEach(function(name){var b=document.createElement("button");b.type="button";b.dataset.cat=name;b.setAttribute("aria-pressed",String(formCat===name));b.textContent=name;fcatsEl.appendChild(b)});
+if(!fcatSel)return;
+fcatSel.textContent="";
+var has=false;
+cmCats.forEach(function(name){var o=document.createElement("option");o.value=name;o.textContent=name;fcatSel.appendChild(o);if(name===formCat)has=true});
 /* 글쓰기를 연 카테고리가 저장 목록에 없으면(게시물 전체보기의 카테고리 화면에서
-   그 카테고리로 미리 골라 여는 경우) 표시 전용 임시 칩을 맨 뒤에 하나 더 붙여,
+   그 카테고리로 미리 골라 여는 경우) 표시 전용 임시 선택지를 맨 뒤에 하나 더 붙여,
    그 카테고리가 선택된 상태로 보이고 저장되는 글에도 그대로 들어가게 한다.
    저장 목록(cmCats) 자체는 바꾸지 않는다 */
-if(formCat&&cmCats.indexOf(formCat)<0){var tb=document.createElement("button");tb.type="button";tb.dataset.cat=formCat;tb.setAttribute("aria-pressed","true");tb.textContent=formCat;fcatsEl.appendChild(tb)}
+if(formCat&&!has){var to=document.createElement("option");to.value=formCat;to.textContent=formCat;fcatSel.appendChild(to);has=true}
+fcatSel.value=has?formCat:firstCat();
 }
-function syncFcats(){if(!fcatsEl)return;fcatsEl.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.cat===formCat))})}
+function syncFcats(){renderFcatsChips()}
 if(filterEl)filterEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;cmFilter=b.dataset.f||"전체";filterEl.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});cmDisplay=5;try{listEl.scrollTop=0}catch(err){}renderLists()});
 if(sortEl)sortEl.addEventListener("change",function(){cmSort=sortEl.value||"latest";cmDisplay=5;try{listEl.scrollTop=0}catch(err){}renderLists()});
-if(fcatsEl)fcatsEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;formCat=b.dataset.cat||firstCat();syncFcats()});
+if(fcatSel)fcatSel.addEventListener("change",function(){formCat=fcatSel.value||firstCat()});
+/* 저장 목록 구독이 닿기 전에도 선택지가 비지 않게 기본 카테고리로 한 번 채워 둔다 */
+renderFcatsChips();
 function isLiked(p){return !!(p&&fbUser&&fbUser.uid&&p.likers&&p.likers[fbUser.uid]===true)}
 function canDelCmt(c){return !!fbUser&&(isOp()||(c.uid&&c.uid===fbUser.uid))}
 function rowEl(p,pinned){
@@ -4409,7 +4420,10 @@ var hadSaved=clean.length>0;
    저장된 목록이 아직 없을 때만 채운다 */
 cmCats=hadSaved?clean.slice():DEFAULT_CATS.slice();
 var changed=false;
-if(cmCats.indexOf(formCat)<0){formCat=firstCat();changed=true}
+/* 전체보기 카테고리 화면에서 그 자리 글쓰기를 열어 둔 동안에는, 저장 목록에 없는
+   카테고리(분석·시황)를 미리 골라 둔 것이므로 구독 갱신이 formCat을 기본값으로
+   되돌리지 않게 한다 */
+if(cmCats.indexOf(formCat)<0&&!ppWriteMode){formCat=firstCat();changed=true}
 if(cmFilter!=="전체"&&cmCats.indexOf(cmFilter)<0){cmFilter="전체";cmDisplay=5;changed=true}
 renderFilterChips();renderFcatsChips();renderCatList();
 if(posts.length||changed)renderLists();
@@ -4620,16 +4634,20 @@ if(ppFiltersEl)ppFiltersEl.addEventListener("click",function(e){var b=e.target.c
 if(ppSortEl)ppSortEl.addEventListener("change",function(){ppSort=ppSortEl.value||"latest";ppShown=PP_PAGE;renderPp()});
 if(ppMoreBtn)ppMoreBtn.addEventListener("click",function(){ppShown+=PP_PAGE;renderPp()});
 /* ===== 전체보기 안에서 그 자리 글쓰기 =====
-   카테고리(주식·분석·시황) 화면에서 '글쓰기'를 누르면 커뮤니티 탭으로 튀지 않고,
-   글쓰기 폼(#cm-form)을 전체보기 박스 안(툴바 아래·목록 위)으로 옮겨 그 자리에서
-   연다. 카테고리는 지금 보고 있는 카테고리로 미리 골라 둔다(저장 목록에 없는
-   이름이면 renderFcatsChips가 표시 전용 임시 칩을 붙인다). 등록·취소로 폼이
-   닫히면 폼은 원래 자리(커뮤니티 탭)로 되돌리고, 화면은 같은 카테고리 전체보기로
-   남아 방금 쓴 글이 그 목록에 보이게 한다 */
-var ppWriteMode=false,ppFormHome=null;
+   게시물 전체보기에서 특정 카테고리를 보고 있을 때(칸·칩 어떤 경로로 들어왔든
+   ppFilter가 그 카테고리인 상태) '글쓰기'를 누르면 커뮤니티 최신글 영역으로
+   이동하지 않고, 글쓰기 폼(#cm-form)을 전체보기 박스 안(툴바 아래·목록 위)으로
+   옮겨 그 자리에서 연다. 카테고리는 지금 보고 있는 카테고리로 미리 골라 둔다
+   (저장 목록에 없는 이름이면 renderFcatsChips가 표시 전용 임시 선택지를 붙인다).
+   등록·취소로 폼이 닫히면 폼은 원래 자리(커뮤니티 탭)로 되돌리고, 화면은 같은
+   카테고리 전체보기로 남아 방금 쓴 글이 그 목록에 보이게 한다. 탭 이동 등
+   화면 전환으로 닫힐 때는 폼을 옮기기 전의 열림 상태를 그대로 되돌려, 최신글
+   쪽에서 입력 중이던 내용·열림 상태가 깨지지 않게 한다 */
+var ppWriteMode=false,ppFormHome=null,ppFormWasOpen=false;
 function openPpWrite(cat){
 if(!ppSec||!ppListEl)return;
 if(!ppFormHome)ppFormHome={parent:form.parentNode,next:form.nextSibling};
+ppFormWasOpen=!form.hidden;
 ppWriteMode=true;
 endEdit();
 formCat=cat;renderFcatsChips();
@@ -4638,24 +4656,30 @@ if(box)box.insertBefore(form,ppListEl);
 form.hidden=false;errEl.hidden=true;
 try{titleIn.focus()}catch(e){}
 }
-function closePpWrite(){
+function closePpWrite(restore){
 if(!ppWriteMode)return;
 ppWriteMode=false;
-form.hidden=true;errEl.hidden=true;
 if(ppFormHome&&ppFormHome.parent){
 if(ppFormHome.next&&ppFormHome.next.parentNode===ppFormHome.parent)ppFormHome.parent.insertBefore(form,ppFormHome.next);
 else ppFormHome.parent.appendChild(form);
 }
+/* 등록·취소로 닫는 경우(restore 없음)는 폼을 닫은 채로 되돌리고, 화면 전환으로
+   닫는 경우(restore)만 옮기기 전의 열림 상태를 복원한다 */
+form.hidden=restore?(!ppFormWasOpen):true;
+errEl.hidden=true;
 }
 /* 제목 줄 '글쓰기' 버튼.
-   카테고리 화면(ppHideCats)에서는 위 openPpWrite로 그 자리에서 폼을 연다.
-   '게시물' 전체 화면에서는 지금까지와 같은 흐름이다: 커뮤니티 탭으로 전환한 뒤
-   기존 글쓰기 버튼을 그대로 눌러 글쓰기 폼을 연다.
+   특정 카테고리를 보고 있는 동안에는(ppFilter가 '전체'가 아닌 동안 — 카테고리
+   칸으로 들어왔든, 전체보기 안에서 칩으로 골랐든 상관없이) 위 openPpWrite로
+   그 자리에서 폼을 연다. 예전에는 칩 숨김 상태(ppHideCats)까지 조건으로 걸어,
+   칩으로 카테고리를 고른 화면에서는 이 분기를 타지 못하고 최신글로 튀었다.
+   '게시물' 전체 화면(ppFilter='전체')에서는 지금까지와 같은 흐름이다: 커뮤니티
+   탭으로 전환한 뒤 기존 글쓰기 버튼을 그대로 눌러 글쓰기 폼을 연다.
    표시 여부도 syncGate에서 그 버튼과 똑같이 맞추므로, 로그인 전에는 숨겨져 있고
    커뮤니티 탭의 로그인 안내(게이트)가 기존처럼 보인다 */
 if(ppWriteBtn)ppWriteBtn.addEventListener("click",function(){
 start();
-if(ppHideCats&&ppFilter!=="전체"){if(fbUser)openPpWrite(ppFilter);return}
+if(ppFilter&&ppFilter!=="전체"){if(fbUser)openPpWrite(ppFilter);return}
 var tb=tabs?tabs.querySelector('button[data-t="pk"]'):null;
 if(tb)tb.click();
 start();
@@ -4673,7 +4697,7 @@ for(var i=0;i<arr.length;i++){if(arr[i].key===key){posts.push(arr[i]);break}}
 },true);
 function showPostsView(cat){
 if(!ppSec)return;
-closePpWrite();
+closePpWrite(true);
 /* 카테고리를 지정해 열면(드롭다운 오른쪽 칸·모바일 카테고리 칸) 그 카테고리로
    걸러서 열고 첫 페이지부터 보여준다. 저장된 카테고리 목록에 없는 이름이어도
    그대로 걸러서 열고, renderPpChips가 맨 뒤에 표시 전용 임시 칩을 붙여
@@ -4689,7 +4713,7 @@ if(allPosts)renderPp();else ppFetch();
 }
 window.__kimpwonShowPosts=showPostsView;
 /* 다른 탭을 누르면 게시물 화면은 닫히고 그 탭 화면이 뜬다(기존 탭 전환 핸들러가 패널을 토글한다) */
-if(tabs)tabs.addEventListener("click",function(e){if(e.target.closest("button")&&ppSec){closePpWrite();ppSec.hidden=true}});
+if(tabs)tabs.addEventListener("click",function(e){if(e.target.closest("button")&&ppSec){closePpWrite(true);ppSec.hidden=true}});
 tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.t==="pk")start()});
 })();
 </script>
