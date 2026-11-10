@@ -99,7 +99,7 @@ td small.sub{display:block;color:var(--mut);font-size:11.5px}
 .ksearch .kcnt{flex:none;font-size:12.5px;color:var(--mut);white-space:nowrap}
 td .kpnow{font-size:15px;font-weight:700}
 .kpmore{padding:12px;text-align:center;color:var(--mut);font-size:12.5px}
-/* 지수 타일 줄 (메인 홈 타일과 같은 모양) — 코인 4종은 항상 업비트 기준, 금은 온스당 달러 */
+/* 지수 타일 줄 (메인 홈 타일과 같은 모양) — 5종 전부 바이낸스 기준 달러 표시 */
 .tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:2px 0 12px}
 .tile{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:11px 13px;min-width:0;overflow:hidden}
 .tile .tn{font-size:12.5px;color:var(--mut);font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -308,11 +308,11 @@ td .xc{font-size:11.5px}
 <section id="panel-kimp">
   <div class="ghd"><h2>코인 김치프리미엄</h2><span class="upd" id="kpUpd">불러오는 중…</span></div>
   <div class="tiles" id="kpTiles">
-    <div class="tile"><div class="tn"><i class="dot"></i>비트코인 <small>BTC · 업비트</small></div><div class="tv2" id="tileV-BTC">—</div><div class="tc chg flat" id="tileC-BTC">—</div></div>
-    <div class="tile"><div class="tn"><i class="dot"></i>이더리움 <small>ETH · 업비트</small></div><div class="tv2" id="tileV-ETH">—</div><div class="tc chg flat" id="tileC-ETH">—</div></div>
-    <div class="tile"><div class="tn"><i class="dot"></i>테더 <small>USDT · 업비트</small></div><div class="tv2" id="tileV-USDT">—</div><div class="tc chg flat" id="tileC-USDT">—</div></div>
-    <div class="tile"><div class="tn"><i class="dot"></i>유에스디코인 <small>USDC · 업비트</small></div><div class="tv2" id="tileV-USDC">—</div><div class="tc chg flat" id="tileC-USDC">—</div></div>
-    <div class="tile"><div class="tn"><i class="dot"></i>금 <small>XAU · 달러</small></div><div class="tv2" id="tileV-XAU">—</div><div class="tc chg flat" id="tileC-XAU">—</div></div>
+    <div class="tile"><div class="tn"><i class="dot"></i>비트코인 <small>BTC · 바이낸스</small></div><div class="tv2" id="tileV-BTC">—</div><div class="tc chg flat" id="tileC-BTC">—</div></div>
+    <div class="tile"><div class="tn"><i class="dot"></i>이더리움 <small>ETH · 바이낸스</small></div><div class="tv2" id="tileV-ETH">—</div><div class="tc chg flat" id="tileC-ETH">—</div></div>
+    <div class="tile"><div class="tn"><i class="dot"></i>테더 <small>USDT · 바이낸스</small></div><div class="tv2" id="tileV-USDT">—</div><div class="tc chg flat" id="tileC-USDT">—</div></div>
+    <div class="tile"><div class="tn"><i class="dot"></i>유에스디코인 <small>USDC · 바이낸스</small></div><div class="tv2" id="tileV-USDC">—</div><div class="tc chg flat" id="tileC-USDC">—</div></div>
+    <div class="tile"><div class="tn"><i class="dot"></i>금 <small>XAU · 바이낸스</small></div><div class="tv2" id="tileV-XAU">—</div><div class="tc chg flat" id="tileC-XAU">—</div></div>
   </div>
   <div class="xselrow">
     <label class="xsel"><span class="xlb">기준 거래소</span>
@@ -661,6 +661,8 @@ function fetchBinanceAll(out){
       if(!t)return;
       putPx(out,s,"BINANCE",parseFloat(t.lastPrice)/div,parseFloat(t.priceChangePercent),parseFloat(t.quoteVolume));
     });
+    var tu=by["USDTUSD"]; /* USDT 자체는 USDTUSDT 쌍이 없어 USDT/USD 쌍으로 채운다 (상단 타일 표시용) */
+    if(tu)putPx(out,"USDT","BINANCE",parseFloat(tu.lastPrice),parseFloat(tu.priceChangePercent),parseFloat(tu.quoteVolume));
   }).catch(function(){});
 }
 /* OKX: 스팟 전체 티커 한 번에 */
@@ -907,10 +909,10 @@ function renderGlob(){
   tb.innerHTML=rows.map(function(r){return r.html}).join("");
   updTxt($("glUpd"));
 }
-/* ===== 지수 타일 줄: 코인 4종은 기준 거래소 선택과 무관하게 항상 업비트 값, 금(XAU)은 TV 스캐너 온스당 달러 =====
+/* ===== 지수 타일 줄: 5종 전부 바이낸스 기준. 코인 4종은 바이낸스 현물 달러 가격, 금(XAU)은 바이낸스 선물 XAUUSDT =====
    타일은 값만 바꿔 쓴다(표 전체를 다시 그리지 않음). 한 타일의 데이터가 없어도 그 타일만 '—'로 남는다. */
-var GOLD=null; /* {p:온스당 USD, c:등락%} — 조회 실패 시 직전 값 유지, 처음부터 실패하면 null */
-function loadGold(){
+var GOLD=null; /* {p:USD, c:등락%} — XAU 타일 값. 바이낸스 XAUUSDT 우선, 못 가져오면 TVC:GOLD로 폴백. 조회 실패 시 직전 값 유지, 처음부터 실패하면 null */
+function loadGoldTV(){
   fetch("https://scanner.tradingview.com/global/scan",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({symbols:{tickers:["TVC:GOLD"],query:{types:[]}},columns:["close","change"]})})
   .then(function(r){if(!r.ok)throw new Error("tv");return r.json()})
   .then(function(j){
@@ -919,12 +921,22 @@ function loadGold(){
     renderTiles();
   }).catch(function(){});
 }
+function loadXau(){
+  fetch("https://fapi.binance.com/fapi/v1/ticker/24hr?symbol=XAUUSDT")
+  .then(function(r){if(!r.ok)throw new Error("fapi");return r.json()})
+  .then(function(j){
+    var p=parseFloat(j&&j.lastPrice),c=parseFloat(j&&j.priceChangePercent);
+    if(!(p>0))throw new Error("xau empty");
+    GOLD={p:p,c:isFinite(c)?c:null};
+    renderTiles();
+  }).catch(function(){loadGoldTV()});
+}
 var TILE_SYMS=["BTC","ETH","USDT","USDC"];
 function renderTiles(){
   TILE_SYMS.forEach(function(s){
     var v=$("tileV-"+s),cEl=$("tileC-"+s);if(!v||!cEl)return;
-    var d=MKT&&MKT[s]&&MKT[s].UPBIT;
-    if(d&&d.p>0){v.textContent=fmtKRW(d.p);cEl.textContent=chgTxt(d.c);cEl.className="tc chg "+chgCls(d.c)}
+    var d=MKT&&MKT[s]&&MKT[s].BINANCE;
+    if(d&&d.p>0){v.textContent="$"+fmtUSD(d.p);cEl.textContent=chgTxt(d.c);cEl.className="tc chg "+chgCls(d.c)}
     else{v.textContent="—";cEl.textContent="—";cEl.className="tc chg flat"}
   });
   var gv=$("tileV-XAU"),gc=$("tileC-XAU");
@@ -1023,9 +1035,9 @@ setInterval(function(){
   var p=UNIV.length?loadPrices():loadUniverse().then(function(){upWsStart();return loadPrices()});
   Promise.all([loadFx(),p]).then(function(){renderAll()});
 },60000);
-/* 금(XAU) 타일: 60초마다 TV 스캐너로 갱신 (실패하면 타일만 '—' 유지) */
-loadGold();
-setInterval(loadGold,60000);
+/* 금(XAU) 타일: 60초마다 바이낸스 XAUUSDT로 갱신 (못 가져오면 TVC:GOLD 폴백, 실패하면 타일만 '—' 유지) */
+loadXau();
+setInterval(loadXau,60000);
 
 </script>
 
