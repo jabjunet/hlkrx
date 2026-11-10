@@ -1661,7 +1661,7 @@ var D={
 "코스피":"KOSPI","코스닥":"KOSDAQ","나스닥":"NASDAQ","다우":"Dow","달러/원":"USD/KRW","원유":"Crude Oil",
 "실시간 차트":"Live Chart","한국":"Korea","미국":"US","급상승":"Top Gainers","급하락":"Top Losers","불러오는 중…":"Loading…",
 "주요 종목 실적발표":"Key Earnings","주요 경제지표":"Key Economic Indicators","실시간 뉴스":"Live News","커뮤니티 최신글":"Latest Community Posts","더보기":"More","국내":"Domestic",
-"오늘의 시장":"Today's Market","실시간 급등락":"Live Movers","다가오는 일정":"Upcoming Schedule","실적":"Earnings","근원":"Core","· 근원":"· Core","전월비 예상":"MoM Forecast","전월비 실제":"MoM Actual","· 근원 실제":"· Core Actual","예상 EPS":"EPS Forecast","다가오는 일정이 없습니다":"No upcoming events",
+"오늘의 시장":"Today's Market","실시간 급등락":"Live Movers","다가오는 일정":"Upcoming Schedule","실적":"Earnings","근원":"Core","· 근원":"· Core","· 실제":"· Actual","· 근원 예상":"· Core Forecast","전월비 예상":"MoM Forecast","전월비 실제":"MoM Actual","· 근원 실제":"· Core Actual","예상 EPS":"EPS Forecast","다가오는 일정이 없습니다":"No upcoming events",
 "급상승 순위는 TradingView 기준, 1분마다 갱신되는 구조":"Top gainers ranked by TradingView · refreshes every minute",
 "등락률은 TradingView 기준 전일 종가 대비이며, 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준입니다.":"Changes are vs. the previous close (TradingView). Low-volume stocks are excluded. When the market is closed, figures are based on the last close.",
 "발표 예정":"Upcoming","최근 발표":"Recent Releases","실제":"Actual","예상":"Forecast","이전":"Prev.","더 보기":"Show more","접기":"Show less","뉴스를 불러오지 못했어요":"Could not load news","불러오지 못했습니다":"Failed to load","표시할 종목이 없습니다":"No stocks to display",
@@ -6159,8 +6159,8 @@ b.parentNode.insertBefore(s,b.nextSibling);break}}}
    한 행으로 합친다(예: 소비자물가 + 근원 소비자물가). 정확한 시각이 정해진 일정 중 가장 가까운 다가오는
    일정 1건에만 카운트다운을 붙여 매초 갱신한다. 표시는 실적·지표를 구분하지 않고 날짜·시각순
    가장 가까운 4건만 보여준다(스크롤 없음) — 4건이 전부 실적이어도, 전부 지표여도 그대로 표시한다.
-   발표 시각이 지난 경제지표는 아래 ECON_ACTUALS 맵에 실제값이 있을 때만 '예상' 대신 '실제'로 실제값을
-   보여준다(근원 지표의 실제값도 함께). 실제값은 .hmsrc 원본과 분리해 보관하므로 갱신 크론과 충돌하지 않는다.
+   발표 시각이 지난 경제지표는 아래 ECON_ACTUALS 맵에 실제값이 있을 때만 예상과 실제를 나란히
+   보여주고 '이전' 값은 빼서 단순하게 유지한다(근원 지표도 예상·실제를 함께). 실제값은 .hmsrc 원본과 분리해 보관하므로 갱신 크론과 충돌하지 않는다.
    행 하나를 읽다 실패해도 그 행만 건너뛰고 나머지 일정은 그대로 보여준다. */
 (function(){
 function $(id){return document.getElementById(id)}
@@ -6184,7 +6184,7 @@ function kstTs(y,m,d,hh,mm){return Date.UTC(y,m-1,d,hh-9,mm)/1000}
 function fmtFc(v){if(!v)return "—";if(v.charAt(0)==="-"||v.charAt(0)==="+")return v;if(/%$/.test(v))return "+"+v;return v}
 /* 발표가 끝난 경제지표의 실제값 보관소 (2026-11-10 추가). .hmsrc 원본은 갱신 크론이 그대로 읽고 쓰는
    구조라 건드리지 않고, 실제값은 이 맵에 '연도-월-일|지표명(원본 표기 그대로)' 키로 따로 둔다.
-   표시할 때 발표 시각이 이미 지났고 이 맵에 실제값이 있는 항목만 '예상' 대신 '실제'로 보여준다.
+   표시할 때 발표 시각이 이미 지났고 이 맵에 실제값이 있는 항목만 예상과 실제를 나란히 보여준다('이전' 값은 제외).
    실제값이 없는 지난 항목과 아직 발표 전인 항목은 기존 예상 표시를 그대로 유지한다(값을 지어내지 않는다).
    새 실제값이 나오면 여기에 한 줄씩 추가하면 된다. */
 var ECON_ACTUALS={
@@ -6220,7 +6220,7 @@ var tsV=hh!=null?kstTs(info.y,info.m,info.d,hh,mm):kstTs(info.y,info.m,info.d,23
 var act=ECON_ACTUALS[info.y+"-"+info.m+"-"+info.d+"|"+name]||"";
 var actSubHtml="";
 if(act&&s2){
-actSubHtml=s2.innerHTML.replace("예상","실제").replace(/<b>[^<]*<\/b>/,"<b>"+esc(fmtFc(act))+"</b>")}
+actSubHtml="예상 <b>"+esc(fmtFc(fc))+"</b> · 실제 <b>"+esc(fmtFc(act))+"</b>"}
 out.push({kind:"ec",info:info,hh:hh,ts:tsV,exact:hh!=null,timeLbl:hh!=null?p2(hh)+":"+p2(mm):"",base:base,core:core,fam:fam,abbr:ab?(ab.textContent||"").trim():"",fc:fc,act:act,actSubHtml:actSubHtml,subHtml:s2?s2.innerHTML:""});
 }catch(e){}}
 return out}
@@ -6234,8 +6234,8 @@ for(var k=0;k<items.length;k++){
 var c=items[k];
 if(k===i||used[k]||!c.core||c.fam!==it.fam||c.info.day!==it.info.day||c.hh!==it.hh)continue;
 used[k]=1;done=true;
-var hPart=(it.act&&it.ts<=nowSec)?"전월비 실제 <b>"+esc(fmtFc(it.act))+"</b>":"전월비 예상 <b>"+esc(fmtFc(it.fc))+"</b>";
-var cPart=(c.act&&c.ts<=nowSec)?" · 근원 실제 <b>"+esc(fmtFc(c.act))+"</b>":" · 근원 <b>"+esc(fmtFc(c.fc))+"</b>";
+var hPart=(it.act&&it.ts<=nowSec)?"전월비 예상 <b>"+esc(fmtFc(it.fc))+"</b> · 실제 <b>"+esc(fmtFc(it.act))+"</b>":"전월비 예상 <b>"+esc(fmtFc(it.fc))+"</b>";
+var cPart=(c.act&&c.ts<=nowSec)?" · 근원 예상 <b>"+esc(fmtFc(c.fc))+"</b> · 실제 <b>"+esc(fmtFc(c.act))+"</b>":" · 근원 <b>"+esc(fmtFc(c.fc))+"</b>";
 out.push({kind:"ec",info:it.info,ts:it.ts,exact:it.exact,timeLbl:it.timeLbl,title:econTitle(it),subHtml:hPart+cPart});
 break}}
 if(done)continue;
