@@ -1508,6 +1508,8 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .pp-box .cm-hd{padding:13px 16px 5px;margin-bottom:0}
 .pp-box .cm-toolbar{background:none;padding:8px 16px 6px}
 .pp-box .cm-filters[hidden]{display:none}
+/* 카테고리 화면에서 그 자리로 옮겨 온 글쓰기 폼: 제목·목록과 같은 양옆 여백으로 맞춘다 */
+.pp-box .cm-form{margin:2px 16px 12px}
 #pp-list{padding:2px 16px 8px}
 .pp-morebtn{display:block;width:calc(100% - 32px);margin:2px 16px 16px;min-height:44px;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--sf2);color:var(--tx);font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
 .pp-morebtn:hover{background:var(--sf)}
@@ -1543,6 +1545,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .pp-box .cm-hd{padding-left:12px;padding-right:12px}
 .pp-box .cm-toolbar{padding-left:12px;padding-right:12px}
 #pp-list{padding-left:12px;padding-right:12px}
+.pp-box .cm-form{margin-left:12px;margin-right:12px}
 .pp-morebtn{width:calc(100% - 24px);margin-left:12px;margin-right:12px}
 .pp-box .cm-row{gap:8px}
 }
@@ -3962,6 +3965,11 @@ function renderFcatsChips(){
 if(!fcatsEl)return;
 fcatsEl.textContent="";
 cmCats.forEach(function(name){var b=document.createElement("button");b.type="button";b.dataset.cat=name;b.setAttribute("aria-pressed",String(formCat===name));b.textContent=name;fcatsEl.appendChild(b)});
+/* 글쓰기를 연 카테고리가 저장 목록에 없으면(게시물 전체보기의 카테고리 화면에서
+   그 카테고리로 미리 골라 여는 경우) 표시 전용 임시 칩을 맨 뒤에 하나 더 붙여,
+   그 카테고리가 선택된 상태로 보이고 저장되는 글에도 그대로 들어가게 한다.
+   저장 목록(cmCats) 자체는 바꾸지 않는다 */
+if(formCat&&cmCats.indexOf(formCat)<0){var tb=document.createElement("button");tb.type="button";tb.dataset.cat=formCat;tb.setAttribute("aria-pressed","true");tb.textContent=formCat;fcatsEl.appendChild(tb)}
 }
 function syncFcats(){if(!fcatsEl)return;fcatsEl.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.cat===formCat))})}
 if(filterEl)filterEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;cmFilter=b.dataset.f||"전체";filterEl.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});cmDisplay=5;try{listEl.scrollTop=0}catch(err){}renderLists()});
@@ -4428,7 +4436,7 @@ closePost();
 form.hidden=false;errEl.hidden=true;titleIn.focus();
 });
 writeBtn.addEventListener("click",function(){endEdit();form.hidden=false;errEl.hidden=true;titleIn.focus()});
-cancelBtn.addEventListener("click",function(){form.hidden=true;errEl.hidden=true;endEdit();clearPostImgs()});
+cancelBtn.addEventListener("click",function(){form.hidden=true;errEl.hidden=true;endEdit();clearPostImgs();closePpWrite()});
 function clearPostImgs(){postImgs=[];renderImgPv();syncImgNote()}
 function syncImgNote(){if(imgNote)imgNote.textContent=postImgs.length?("사진 "+postImgs.length+"장 첨부됨 · 4장까지 넣을 수 있어요"):"사진 4장까지 넣을 수 있어요"}
 /* 첨부 미리보기 다시 그리기: postImgs 순서대로 2열로 보여 주고, 각 사진의 지우기 버튼은 그 사진만 뺀다 */
@@ -4501,7 +4509,7 @@ if(ep&&fbUser&&!isOp()&&ep.uid&&ep.uid===fbUser.uid&&editExpired(ep)){errEl.text
 errEl.textContent="수정에 실패했어요. 다시 시도해 주세요.";errEl.hidden=false;return}
 var upd={title:t.slice(0,80),body:b.slice(0,3000),cat:formCat,img:postImgs.length?postImgs[0]:null,imgs:postImgs.length?postImgs.slice(0,MAX_POST_IMGS):null};
 var epr=postsRef.child(editKey).update(upd);
-function edone(){titleIn.value="";bodyIn.value="";editKey=null;submitBtn.textContent="등록";clearPostImgs();form.hidden=true;errEl.hidden=true}
+function edone(){titleIn.value="";bodyIn.value="";editKey=null;submitBtn.textContent="등록";clearPostImgs();form.hidden=true;errEl.hidden=true;if(ppWriteMode){closePpWrite();renderPp()}}
 if(epr&&typeof epr.then==="function")epr.then(edone).catch(function(){errEl.textContent="수정에 실패했어요. 다시 시도해 주세요.";errEl.hidden=false});
 else edone();
 return;
@@ -4509,7 +4517,18 @@ return;
 var rec={title:t.slice(0,80),body:b.slice(0,3000),cat:formCat,name:myNick(),photo:myPhoto(),uid:fbUser.uid||"",ts:firebase.database.ServerValue.TIMESTAMP,views:0,likes:0};
 if(postImgs.length){rec.img=postImgs[0];rec.imgs=postImgs.slice(0,MAX_POST_IMGS)}
 var pr=postsRef.push(rec);
-function done(){titleIn.value="";bodyIn.value="";clearPostImgs();form.hidden=true;errEl.hidden=true}
+var newKey=(pr&&pr.key)||null;
+function done(){
+titleIn.value="";bodyIn.value="";clearPostImgs();form.hidden=true;errEl.hidden=true;
+/* 전체보기 카테고리 화면에서 쓴 글이면 전체보기 전용 목록(allPosts)에도 바로 넣어,
+   같은 카테고리 화면으로 돌아왔을 때 방금 쓴 글이 목록에 보이게 한다.
+   구독(posts)이 뒤이어 같은 글을 가져오면 renderPp가 키로 맞춰 최신 수치로 덮는다 */
+if(ppWriteMode){
+if(newKey&&allPosts){var dup=false;for(var di=0;di<allPosts.length;di++){if(allPosts[di].key===newKey){dup=true;break}}
+if(!dup)allPosts.unshift({key:newKey,title:rec.title,body:rec.body,name:rec.name,photo:rec.photo,img:postImgsOf(rec)[0]||"",imgs:postImgsOf(rec),cat:rec.cat,uid:rec.uid,ts:Date.now(),views:0,likes:0,likers:{},cmtCount:0,lastCmt:"",pin:false,pinTs:0})}
+closePpWrite();renderPp();
+}
+}
 if(pr&&typeof pr.then==="function")pr.then(done).catch(function(){errEl.textContent="등록에 실패했어요. 다시 시도해 주세요.";errEl.hidden=false});
 else done();
 });
@@ -4545,9 +4564,15 @@ ppFiltersEl=document.getElementById("pp-filters"),ppSortEl=document.getElementBy
 ppMoreBtn=document.getElementById("pp-more"),ppWriteBtn=document.getElementById("pp-write-btn");
 var allPosts=null,ppBusy=false,ppFilter="전체",ppSort="latest",ppShown=30,ppHideCats=false;
 var PP_PAGE=30;
-function ppVisiblePosts(){var arr=(allPosts||[]).filter(function(p){return !p.pin&&(ppFilter==="전체"||catOf(p)===ppFilter)});arr.sort(function(a,b){if(ppSort==="popular"){var d=likeN(b)-likeN(a);if(d)return d;var dv=(b.views||0)-(a.views||0);if(dv)return dv;return (b.ts||0)-(a.ts||0)}if(ppSort==="comments"){var dc=cmtN(b)-cmtN(a);if(dc)return dc;return (b.ts||0)-(a.ts||0)}return (b.ts||0)-(a.ts||0)});return arr}
+/* 글에 저장된 카테고리 이름 그 자체(예전 코드값은 이름으로 바꾼 값). catOf는 저장
+   목록에 없는 이름을 첫 카테고리로 접어 버리므로, 카테고리 화면의 걸러 보기는
+   저장된 이름과 직접 대조하는 쪽도 함께 본다 — 저장 목록에 아직 없는 카테고리
+   (분석·시황 등)로 쓴 글도 그 화면에 바로 보이게 하기 위해서다 */
+function ppCatName(p){var c=(p&&typeof p.cat==="string")?p.cat.trim():"";if(!c)return "";if(CAT_CODES[c])return CAT_CODES[c];var lc=c.toLowerCase();if(CAT_CODES[lc])return CAT_CODES[lc];return c}
+function ppCatMatch(p){return ppFilter==="전체"||catOf(p)===ppFilter||ppCatName(p)===ppFilter}
+function ppVisiblePosts(){var arr=(allPosts||[]).filter(function(p){return !p.pin&&ppCatMatch(p)});arr.sort(function(a,b){if(ppSort==="popular"){var d=likeN(b)-likeN(a);if(d)return d;var dv=(b.views||0)-(a.views||0);if(dv)return dv;return (b.ts||0)-(a.ts||0)}if(ppSort==="comments"){var dc=cmtN(b)-cmtN(a);if(dc)return dc;return (b.ts||0)-(a.ts||0)}return (b.ts||0)-(a.ts||0)});return arr}
 /* 고정 글: 최신글과 같은 규칙 — 필터가 전체이거나 그 글의 카테고리와 같을 때만, 최근에 고정한 순으로 최대 5개 */
-function ppPinnedPosts(){var arr=(allPosts||[]).filter(function(p){return p.pin&&(ppFilter==="전체"||catOf(p)===ppFilter)});arr.sort(function(a,b){var d=(b.pinTs||0)-(a.pinTs||0);if(d)return d;return (b.ts||0)-(a.ts||0)});return arr.slice(0,5)}
+function ppPinnedPosts(){var arr=(allPosts||[]).filter(function(p){return p.pin&&ppCatMatch(p)});arr.sort(function(a,b){var d=(b.pinTs||0)-(a.pinTs||0);if(d)return d;return (b.ts||0)-(a.ts||0)});return arr.slice(0,5)}
 function renderPpChips(){
 if(!ppFiltersEl)return;
 /* 카테고리(주식·분석·시황)로 진입한 전체보기에서는 칩 줄 전체(임시 칩 포함)를 숨긴다.
@@ -4594,11 +4619,43 @@ allPosts=arr;ppBusy=false;renderPp();
 if(ppFiltersEl)ppFiltersEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;ppFilter=b.dataset.f||"전체";ppFiltersEl.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});ppShown=PP_PAGE;renderPp()});
 if(ppSortEl)ppSortEl.addEventListener("change",function(){ppSort=ppSortEl.value||"latest";ppShown=PP_PAGE;renderPp()});
 if(ppMoreBtn)ppMoreBtn.addEventListener("click",function(){ppShown+=PP_PAGE;renderPp()});
-/* 제목 줄 '글쓰기' 버튼: 커뮤니티 탭의 글쓰기 버튼과 완전히 같은 흐름을 쓴다.
-   커뮤니티 탭으로 전환한 뒤 기존 글쓰기 버튼을 그대로 눌러 글쓰기 폼을 연다.
+/* ===== 전체보기 안에서 그 자리 글쓰기 =====
+   카테고리(주식·분석·시황) 화면에서 '글쓰기'를 누르면 커뮤니티 탭으로 튀지 않고,
+   글쓰기 폼(#cm-form)을 전체보기 박스 안(툴바 아래·목록 위)으로 옮겨 그 자리에서
+   연다. 카테고리는 지금 보고 있는 카테고리로 미리 골라 둔다(저장 목록에 없는
+   이름이면 renderFcatsChips가 표시 전용 임시 칩을 붙인다). 등록·취소로 폼이
+   닫히면 폼은 원래 자리(커뮤니티 탭)로 되돌리고, 화면은 같은 카테고리 전체보기로
+   남아 방금 쓴 글이 그 목록에 보이게 한다 */
+var ppWriteMode=false,ppFormHome=null;
+function openPpWrite(cat){
+if(!ppSec||!ppListEl)return;
+if(!ppFormHome)ppFormHome={parent:form.parentNode,next:form.nextSibling};
+ppWriteMode=true;
+endEdit();
+formCat=cat;renderFcatsChips();
+var box=ppSec.querySelector(".pp-box");
+if(box)box.insertBefore(form,ppListEl);
+form.hidden=false;errEl.hidden=true;
+try{titleIn.focus()}catch(e){}
+}
+function closePpWrite(){
+if(!ppWriteMode)return;
+ppWriteMode=false;
+form.hidden=true;errEl.hidden=true;
+if(ppFormHome&&ppFormHome.parent){
+if(ppFormHome.next&&ppFormHome.next.parentNode===ppFormHome.parent)ppFormHome.parent.insertBefore(form,ppFormHome.next);
+else ppFormHome.parent.appendChild(form);
+}
+}
+/* 제목 줄 '글쓰기' 버튼.
+   카테고리 화면(ppHideCats)에서는 위 openPpWrite로 그 자리에서 폼을 연다.
+   '게시물' 전체 화면에서는 지금까지와 같은 흐름이다: 커뮤니티 탭으로 전환한 뒤
+   기존 글쓰기 버튼을 그대로 눌러 글쓰기 폼을 연다.
    표시 여부도 syncGate에서 그 버튼과 똑같이 맞추므로, 로그인 전에는 숨겨져 있고
    커뮤니티 탭의 로그인 안내(게이트)가 기존처럼 보인다 */
 if(ppWriteBtn)ppWriteBtn.addEventListener("click",function(){
+start();
+if(ppHideCats&&ppFilter!=="전체"){if(fbUser)openPpWrite(ppFilter);return}
 var tb=tabs?tabs.querySelector('button[data-t="pk"]'):null;
 if(tb)tb.click();
 start();
@@ -4616,6 +4673,7 @@ for(var i=0;i<arr.length;i++){if(arr[i].key===key){posts.push(arr[i]);break}}
 },true);
 function showPostsView(cat){
 if(!ppSec)return;
+closePpWrite();
 /* 카테고리를 지정해 열면(드롭다운 오른쪽 칸·모바일 카테고리 칸) 그 카테고리로
    걸러서 열고 첫 페이지부터 보여준다. 저장된 카테고리 목록에 없는 이름이어도
    그대로 걸러서 열고, renderPpChips가 맨 뒤에 표시 전용 임시 칩을 붙여
@@ -4631,7 +4689,7 @@ if(allPosts)renderPp();else ppFetch();
 }
 window.__kimpwonShowPosts=showPostsView;
 /* 다른 탭을 누르면 게시물 화면은 닫히고 그 탭 화면이 뜬다(기존 탭 전환 핸들러가 패널을 토글한다) */
-if(tabs)tabs.addEventListener("click",function(e){if(e.target.closest("button")&&ppSec)ppSec.hidden=true});
+if(tabs)tabs.addEventListener("click",function(e){if(e.target.closest("button")&&ppSec){closePpWrite();ppSec.hidden=true}});
 tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.t==="pk")start()});
 })();
 </script>
