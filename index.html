@@ -1486,30 +1486,17 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 }
 </style>
 <style>
-/* ===== 커뮤니티 탭 호버 드롭다운 (2026-11-09) =====
-   마우스가 있는 기기에서만 커뮤니티 탭 아래에 '게시물' 링크 메뉴가 뜬다.
+/* ===== 커뮤니티 탭 호버 가로 바 (2026-11-10) =====
+   마우스가 있는 기기에서만 커뮤니티 탭에 마우스를 올리면 곧바로
+   게시물 · 주식 · 분석 · 시황 가로 한 줄 바가 탭 아래에 뜬다.
    position:fixed로 띄워 탭 줄의 overflow에 잘리지 않게 하고, 위치는 JS가
    버튼의 getBoundingClientRect 기준으로 잡는다. 터치 기기에서는 절대 뜨지 않는다.
    색은 기존 테마 변수만 써서 라이트/다크 모두에서 깨지지 않게 한다 */
 .pkdd-wrap{position:relative;display:inline-flex;align-items:stretch;flex:none}
-.pkdd{display:none;position:fixed;z-index:200;background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 10px 28px var(--adsh);padding:9px 5px 5px}
-.pkdd a{display:block;padding:9px 14px;text-align:center;color:var(--tx);text-decoration:none;font:inherit;font-size:14.5px;font-weight:700;border-radius:8px;white-space:nowrap}
+.pkdd{display:none;position:fixed;z-index:200;background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 10px 28px var(--adsh);padding:6px;flex-direction:row;align-items:center;gap:4px}
+.pkdd a{display:inline-flex;align-items:center;justify-content:center;padding:9px 16px;text-align:center;color:var(--tx);text-decoration:none;font:inherit;font-size:14.5px;font-weight:700;border-radius:8px;white-space:nowrap;flex:none}
 .pkdd a:hover{background:var(--sf2)}
-@media (hover:hover) and (pointer:fine){.pkdd.open{display:block}}
-/* '게시물'에 마우스를 올리면 오른쪽으로 가로 한 줄로 펼쳐지는 카테고리 칸
-   (전체·주식·분석·시황을 왼쪽에서 오른쪽 순서로 나열). 드롭다운 박스와 간격
-   없이 붙어 같은 높이·배경·테두리로 하나의 가로 바처럼 이어지게 한다 —
-   붙는 쪽 모서리는 직각으로 맞춰 끊김 없이 연결하고, 드롭다운 머리쪽
-   여백(9px)만큼 위로 올려 바 윗변이 드롭다운 윗변과 한 줄로 맞춘다.
-   드롭다운 박스 쪽으로 7px 겹쳐 마우스가 이동하는 동안에도 hover가 끊기지
-   않고, 겹친 부분은 드롭다운의 오른쪽 위 모서리 둥근 모양이 보여지지 않게
-   바가 덮는다. 오른쪽 공간이 모자라면 JS가 .flip을 붙여 왼쪽으로 펼치되
-   붙는 쪽 모서리만 거울로 뒤집고 가로 한 줄 모양은 유지한다 */
-.pkdd-item{position:relative}
-.pkdd-sub{display:none;position:absolute;left:calc(100% - 7px);top:-9px;background:var(--sf);border:1px solid var(--bd);border-left:none;border-radius:0 12px 12px 0;box-shadow:0 10px 28px var(--adsh);padding:9px 12px 7px 10px;z-index:201;flex-direction:row;align-items:center;gap:8px}
-.pkdd-sub a{flex:none;padding:7px 13px}
-.pkdd-sub.flip{left:auto;right:calc(100% - 7px);border-left:1px solid var(--bd);border-right:none;border-radius:12px 0 0 12px;padding:9px 10px 7px 12px}
-@media (hover:hover) and (pointer:fine){.pkdd-item:hover .pkdd-sub{display:flex}}
+@media (hover:hover) and (pointer:fine){.pkdd.open{display:flex}}
 </style>
 <style>
 /* ===== 게시물 전체보기 화면 (2026-11-09) =====
@@ -1534,8 +1521,8 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .cm-posts-btn{display:inline-flex;align-items:center;justify-content:center;flex:none;min-height:36px;padding:7px 13px;border:1px solid var(--bd);border-radius:999px;background:var(--sf2);color:var(--tx);font:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-left:auto}
 .cm-posts-btn + .cm-wbtn{margin-left:0}
 /* 모바일 '게시물' 버튼을 누르면 버튼 줄 아래에 가로 한 줄로 펼쳐지는 카테고리
-   칸(전체·주식·분석·시황). 제목 줄(.cm-hd) 기준 양쪽 12px에 맞춰 폰 폭을
-   넘지 않게 하고, 같은 배경·테두리·그림자로 데스크톱 드롭다운 칸과 톤을
+   칸(주식·분석·시황). 제목 줄(.cm-hd) 기준 양쪽 12px에 맞춰 폰 폭을
+   넘지 않게 하고, 같은 배경·테두리·그림자로 데스크톱 가로 바와 톤을
    맞춰 버튼 줄과 한 덩어리처럼 이어져 보이게 한다 */
 .cm-latest .cm-hd{position:relative}
 .cm-cat-pop{position:absolute;top:calc(100% + 4px);left:12px;right:12px;z-index:80;background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 10px 28px var(--adsh);padding:7px 6px;flex-direction:row;align-items:center;gap:4px}
@@ -2105,7 +2092,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <section id="pk" hidden>
 <div class="cm-top">
 <div class="cmbox cm-latest">
-<div class="cm-hd"><h2>최신글</h2><button type="button" class="cm-posts-btn" id="cm-posts-btn">게시물</button><button type="button" class="cm-wbtn" id="cm-write-btn" hidden>글쓰기</button><div class="cm-cat-pop" id="cm-cat-pop"><button type="button" data-cat="전체">전체</button><button type="button" data-cat="주식">주식</button><button type="button" data-cat="분석">분석</button><button type="button" data-cat="시황">시황</button></div></div>
+<div class="cm-hd"><h2>최신글</h2><button type="button" class="cm-posts-btn" id="cm-posts-btn">게시물</button><button type="button" class="cm-wbtn" id="cm-write-btn" hidden>글쓰기</button><div class="cm-cat-pop" id="cm-cat-pop"><button type="button" data-cat="주식">주식</button><button type="button" data-cat="분석">분석</button><button type="button" data-cat="시황">시황</button></div></div>
 <div class="cm-toolbar" id="cm-toolbar"><div class="cm-filters" id="cm-filters" role="group" aria-label="카테고리 필터"><button type="button" data-f="전체" aria-pressed="true">전체</button><button type="button" data-f="자유" aria-pressed="false">자유</button><button type="button" data-f="주식" aria-pressed="false">주식</button><button type="button" data-f="코인" aria-pressed="false">코인</button><button type="button" data-f="질문" aria-pressed="false">질문</button></div><select class="cm-sort" id="cm-sort" aria-label="정렬"><option value="latest">최신순</option><option value="popular">인기순</option><option value="comments">댓글순</option></select><button type="button" class="cm-catman-btn" id="cm-catman-btn" hidden>카테고리 관리</button></div>
 <div class="cm-gate" id="cm-gate" hidden><p>글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.</p><button type="button" class="cm-login" id="cm-login-btn">구글 로그인</button></div>
 <form class="cm-form" id="cm-form" hidden>
@@ -6543,10 +6530,10 @@ setTimeout(function(){window.location.href=brand.href},650);
 });
 })();
 </script>
-<div class="pkdd" id="pkdd"><div class="pkdd-item"><a href="#" id="pkdd-posts">게시물</a><div class="pkdd-sub" id="pkdd-sub"><a href="#" data-cat="전체">전체</a><a href="#" data-cat="주식">주식</a><a href="#" data-cat="분석">분석</a><a href="#" data-cat="시황">시황</a></div></div></div>
+<div class="pkdd" id="pkdd"><a href="#" id="pkdd-posts">게시물</a><a href="#" data-cat="주식">주식</a><a href="#" data-cat="분석">분석</a><a href="#" data-cat="시황">시황</a></div>
 <script>
-/* 커뮤니티 탭 호버 드롭다운: 마우스 기기에서만 동작한다. 래퍼(커뮤니티 버튼)와
-   드롭다운 중 어느 한쪽에라도 마우스가 있으면 열려 있고, 둘 다 벗어나면 닫힌다.
+/* 커뮤니티 탭 호버 가로 바: 마우스 기기에서만 동작한다. 래퍼(커뮤니티 버튼)와
+   바 중 어느 한쪽에라도 마우스가 있으면 열려 있고, 둘 다 벗어나면 닫힌다.
    버튼 클릭 시 커뮤니티 탭으로 전환되는 기존 동작은 건드리지 않는다 */
 (function(){
 var wrap=document.getElementById("pkdd-wrap"),dd=document.getElementById("pkdd");
@@ -6554,17 +6541,13 @@ if(!wrap||!dd)return;
 if(!(window.matchMedia&&window.matchMedia("(hover: hover) and (pointer: fine)").matches))return;
 var btn=wrap.querySelector('button[data-t="pk"]');
 if(!btn)return;
-var sub=document.getElementById("pkdd-sub");
 function place(){
 var r=btn.getBoundingClientRect();
-dd.style.minWidth=Math.ceil(r.width)+"px";
 var w=dd.offsetWidth,left=r.left;
 if(left+w>window.innerWidth-6)left=window.innerWidth-6-w;
 if(left<4)left=4;
 dd.style.left=left+"px";
 dd.style.top=r.bottom+"px";
-/* 가로 카테고리 칸(약 256px + 간격)이 오른쪽 화면 밖으로 나가면 왼쪽으로 펼친다 */
-if(sub){if(left+w+268>window.innerWidth-4)sub.classList.add("flip");else sub.classList.remove("flip")}
 }
 var closeTimer=0;
 function cancelClose(){if(closeTimer){clearTimeout(closeTimer);closeTimer=0}}
@@ -6578,25 +6561,14 @@ dd.addEventListener("mouseleave",function(e){if(!wrap.contains(e.relatedTarget))
 window.addEventListener("resize",function(){if(dd.classList.contains("open"))place()});
 window.addEventListener("scroll",function(){if(dd.classList.contains("open"))place()},true);
 document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
-/* 카테고리 칸이 실제로 뜬 뒤에도 오른쪽 끝이 화면을 넘으면 왼쪽으로 붙이고,
-   왼쪽으로 붙인 칸이 왼쪽 화면 밖으로 나가면 되돌린다(가로 한 줄은 유지) */
-var itemEl=dd.querySelector(".pkdd-item");
-if(itemEl&&sub)itemEl.addEventListener("mouseenter",function(){
-requestAnimationFrame(function(){
-var r=sub.getBoundingClientRect();
-if(r.width===0)return;
-if(!sub.classList.contains("flip")&&r.right>window.innerWidth-4)sub.classList.add("flip");
-else if(sub.classList.contains("flip")&&r.left<4)sub.classList.remove("flip");
-});
-});
 })();
 </script>
 <script>
-/* 드롭다운 '게시물' 클릭: 별도 페이지로 이동하지 않고, 헤더·탭 줄은 그대로 둔 채
+/* 가로 바 '게시물' 클릭: 별도 페이지로 이동하지 않고, 헤더·탭 줄은 그대로 둔 채
    내용 영역만 게시물 전체보기 화면으로 바꾼다(커뮤니티 모듈의 __kimpwonShowPosts).
-   드롭다운의 호버 표시·위치·닫힘 지연은 위 스크립트 그대로 둔다.
-   '게시물' 자체를 누르면 지금까지처럼 전체로 열고, 오른쪽 카테고리 칸에서
-   항목을 누르면 그 카테고리로 걸러진 전체보기로 연다 */
+   바의 호버 표시·위치·닫힘 지연은 위 스크립트 그대로 둔다.
+   '게시물'을 누르면 전체로 열고, 주식·분석·시황을 누르면 그 카테고리로
+   걸러진 전체보기로 연다 */
 (function(){
 var dd=document.getElementById("pkdd");
 function openPosts(cat){
@@ -6605,16 +6577,17 @@ if(typeof window.__kimpwonShowPosts==="function")window.__kimpwonShowPosts(cat||
 }
 var a=document.getElementById("pkdd-posts");
 if(a)a.addEventListener("click",function(e){e.preventDefault();openPosts("전체")});
-if(dd)dd.querySelectorAll(".pkdd-sub a").forEach(function(sa){
+if(dd)dd.querySelectorAll("a[data-cat]").forEach(function(sa){
 sa.addEventListener("click",function(e){e.preventDefault();openPosts(sa.dataset.cat||"전체")});
 });
 /* 모바일 전용 '게시물' 버튼(최신글 제목 줄, 글쓰기 바로 왼쪽): 누르면 버튼 줄
-   아래에 카테고리 칸(전체·주식·분석·시황)이 펼쳐지고, 항목을 누르면 그
-   카테고리로 걸러진 게시물 전체보기 화면으로 전환한다. 칸 바깥을 누르거나
-   다른 탭으로 이동하면 칸은 닫힌다 */
+   아래에 카테고리 칸(주식·분석·시황)이 펼쳐지고, 항목을 누르면 그
+   카테고리로 걸러진 게시물 전체보기 화면으로 전환한다. 칸이 열린 상태에서
+   버튼을 한 번 더 누르면 칸이 닫히면서 게시물 전체보기(전체)로 이동한다.
+   칸 바깥을 누르거나 다른 탭으로 이동하면 칸은 닫힌다 */
 var mb=document.getElementById("cm-posts-btn"),mpop=document.getElementById("cm-cat-pop");
 if(mb&&mpop){
-mb.addEventListener("click",function(e){e.stopPropagation();mpop.classList.toggle("open")});
+mb.addEventListener("click",function(e){e.stopPropagation();if(mpop.classList.contains("open")){mpop.classList.remove("open");openPosts("전체")}else{mpop.classList.add("open")}});
 mpop.querySelectorAll("button").forEach(function(b){
 b.addEventListener("click",function(){mpop.classList.remove("open");openPosts(b.dataset.cat||"전체")});
 });
