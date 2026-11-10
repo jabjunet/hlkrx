@@ -445,11 +445,18 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 @media(max-width:520px){.hnwr{padding:8px 10px}.hnghd{padding-left:10px;padding-right:10px}}
 .hnmore{display:block;width:100%;min-height:44px;border:0;border-top:1px solid var(--bd);background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .hnmore:hover{background:var(--sf2);color:var(--tx)}
-/* 홈 탭: 커뮤니티 최신글 박스 — 실시간 뉴스 바로 아래에 두며, 다른 홈 카드와 같은 톤
+/* 홈 탭: 커뮤니티 최신글 박스 — '오늘의 시장' 2열의 왼쪽 칸에 두며, 다른 홈 카드와 같은 톤
    (카드 배경·테두리·16px 둥근 모서리·안쪽 여백)을 쓴다. 행은 한 줄로, 제목(넘치면
    말줄임)이 왼쪽에, 작성자 · 상대 시간 · 댓글 수는 오른쪽에 작은 회색 글씨로 붙는다.
-   썸네일·HOT 배지·본문 미리보기는 이 박스 행에 넣지 않는다 */
+   썸네일·HOT 배지·본문 미리보기는 이 박스 행에 넣지 않는다.
+   2열 안에 들어갈 때는 위 여백을 없애 오른쪽 일정 카드와 윗변을 맞추고, 그리드 칸 안에서
+   줄어들 수 있게 min-width:0을 준다 */
 #ph .hmcm{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 4px 6px;margin-top:14px}
+.hmcols .hmcm{margin-top:0;min-width:0}
+/* 홈 탭: 실시간 급등락 카드 전체 폭 배치 — 2열 아래로 내린 래퍼(.hm-full)의 위 간격과
+   카드 자체의 위 여백을 정리한다(카드 틀·토글·각주는 기존 .hm-left/.hmv 규칙 그대로) */
+.hm-full{margin-top:14px}
+.hm-full .hmv{margin-top:0}
 #ph .hmcm .hmhd{padding:0 10px}
 .hmcm-more{margin-left:auto;flex:none;border:0;background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:6px 2px}
 .hmcm-more:hover{color:var(--tx)}
@@ -1031,6 +1038,10 @@ main{padding:2px 12px 40px}
 .chat-bd{flex:1;min-height:0;display:flex;flex-direction:column}
 .chat-msgs{flex:1;min-height:0;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:12px;-webkit-overflow-scrolling:touch}
 .chat-msgs[hidden]{display:none}
+/* 플로팅 채팅만: 스크롤 동작은 그대로 두고 옆에 보이는 스크롤 막대만 숨긴다
+   (인페이지 채팅은 .inpage 규칙이 따로 있어 이 선택자에서 제외된다) */
+.chatpanel:not(.inpage) .chat-msgs{scrollbar-width:none;-ms-overflow-style:none}
+.chatpanel:not(.inpage) .chat-msgs::-webkit-scrollbar{display:none;width:0;height:0}
 .chat-state{flex:1;display:flex;align-items:center;justify-content:center;margin:0;padding:24px 20px;text-align:center;color:var(--mut);font-size:13px;line-height:1.55}
 .chat-state[hidden]{display:none}
 .cmsg{display:flex;gap:8px;align-items:flex-start}
@@ -1838,15 +1849,9 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </div>
 <div class="hm-sec"><span class="hm-sec-t">오늘의 시장</span><span class="hm-sec-note">급상승 순위는 TradingView 기준, 1분마다 갱신되는 구조</span></div>
 <div class="hmcols">
-<div class="hm-left">
-<div class="hmv">
-<div class="hmhd"><h2>실시간 급등락</h2><div class="pair hmmk" id="hm-mk"><button type="button" data-hm="kr" aria-pressed="true">한국</button><button type="button" data-hm="us" aria-pressed="false">미국</button></div></div>
-<div class="segrow hmseg">
-<div class="pair" id="hm-dr"><button type="button" data-hd="up" aria-pressed="true">급상승</button><button type="button" data-hd="dn" aria-pressed="false">급하락</button></div>
-</div>
-<div id="hm-list"><div class="hmvempty">불러오는 중…</div></div>
-</div>
-<p class="hm-foot">등락률은 TradingView 기준 전일 종가 대비이며, 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준입니다.</p>
+<div class="hmcm">
+<div class="hmhd"><h2>커뮤니티 최신글</h2><button type="button" class="hmcm-more" id="hm-cm-more">더보기</button></div>
+<div id="hm-cm-list"><p class="cm-empty">아직 글이 없어요. 첫 글을 올려보세요.</p></div>
 </div>
 <div class="hew">
 <div class="upbox" id="up-box"><div class="hmhd"><h2>다가오는 일정</h2></div><div id="up-list"><div class="hmvempty">불러오는 중…</div></div></div>
@@ -1866,13 +1871,19 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </div>
 </div>
 </div>
+<div class="hm-left hm-full">
+<div class="hmv">
+<div class="hmhd"><h2>실시간 급등락</h2><div class="pair hmmk" id="hm-mk"><button type="button" data-hm="kr" aria-pressed="true">한국</button><button type="button" data-hm="us" aria-pressed="false">미국</button></div></div>
+<div class="segrow hmseg">
+<div class="pair" id="hm-dr"><button type="button" data-hd="up" aria-pressed="true">급상승</button><button type="button" data-hd="dn" aria-pressed="false">급하락</button></div>
+</div>
+<div id="hm-list"><div class="hmvempty">불러오는 중…</div></div>
+</div>
+<p class="hm-foot">등락률은 TradingView 기준 전일 종가 대비이며, 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준입니다.</p>
+</div>
 <div class="hnw">
 <div class="hmhd"><h2>실시간 뉴스</h2></div>
 <div id="hn-list"><div class="hmvempty">불러오는 중…</div></div>
-</div>
-<div class="hmcm">
-<div class="hmhd"><h2>커뮤니티 최신글</h2><button type="button" class="hmcm-more" id="hm-cm-more">더보기</button></div>
-<div id="hm-cm-list"><p class="cm-empty">아직 글이 없어요. 첫 글을 올려보세요.</p></div>
 </div>
 </section>
 <section id="pa" hidden>
