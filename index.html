@@ -1548,6 +1548,59 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .pp-box .cm-row{gap:8px}
 }
 </style>
+<style>
+/* ===== 모바일 커뮤니티 (미리보기 mobail-keomyuniti-miribogi 수치 이식, 2026-11-10) =====
+   전부 max-width:720px 안에서만, 커뮤니티 탭(#pk)과 본문 채팅(.chatpanel.inpage)에만
+   적용한다. 데스크톱·다른 탭·홈 최신글 박스(.hmcm)는 건드리지 않는다.
+   칩 줄: 카테고리 칩은 한 줄 가로 스크롤, 정렬(select)은 오른쪽 끝에 고정,
+   카테고리 관리 버튼은 CSS 순서만으로 칩 줄 아래 오른쪽 작은 텍스트 버튼으로 내린다
+   (DOM·동작 무변경, 운영자에게만 보이는 hidden 조건 그대로). */
+@media(max-width:720px){
+/* 카드 사이 간격·제목 줄: 미리보기 .content gap 12px, .card-title 16.5px/800 */
+#pk .cm-top{gap:12px}
+#pk .cm-latest .cm-hd{padding:14px 14px 0}
+#pk .cm-hd h2{font-size:16.5px;font-weight:800}
+/* 글쓰기 pill: 미리보기 .write-btn — min-height 36px, 0 16px, 13.5px/700, #262b31 */
+#pk .cm-wbtn{min-height:36px;padding:0 16px;border:1px solid var(--bd);background:#262b31;color:#fff;font-size:13.5px;font-weight:700}
+/* 칩 줄 한 줄 고정: 미리보기 .chip-row(gap 8px) + .chips(gap 6px, 가로 스크롤) */
+#pk .cm-toolbar{flex-wrap:wrap;gap:8px;padding:12px 14px 6px}
+#pk .cm-filters{flex:1 1 auto;min-width:0;flex-wrap:nowrap;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:1px;-webkit-overflow-scrolling:touch}
+#pk .cm-filters::-webkit-scrollbar{display:none}
+#pk .cm-filters button{flex:none;min-height:36px;padding:0 14px;font-size:13.5px;font-weight:500}
+#pk .cm-filters button[aria-pressed="true"]{font-weight:700}
+/* 정렬: 미리보기 .sort-label — 테두리·배경 없는 13px/500 회색 글자, 오른쪽 끝 고정 */
+#pk .cm-sort{flex:none;margin-left:auto;min-height:36px;padding:0 18px 0 4px;border:0;border-radius:0;background-color:transparent;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%238f99a6' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 9 5-5 5 5'/%3E%3Cpath d='m7 15 5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right center;-webkit-appearance:none;appearance:none;color:var(--mut);font-size:13px;font-weight:500;cursor:pointer}
+/* 카테고리 관리: 미리보기 .manage-row/.manage-btn — 칩 줄 아래 오른쪽, 12px 밑줄 텍스트 */
+#pk .cm-catman-btn{order:3;flex:0 0 100%;min-height:32px;padding:0 2px;border:0;border-radius:0;background:transparent;color:var(--mut);font-size:12px;font-weight:400;text-align:right;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+/* 글 행: 미리보기 .post — 상하 8px/9px, 제목 15px/700·1.35, 미리보기 13px·1.45,
+   메타 12px, 최근 댓글 12px, 오늘 점 6px */
+#pk .cm-row{padding:8px 0 9px}
+#pk .cm-rt{font-size:15px;line-height:1.35}
+#pk .cm-rprev{font-size:13px;line-height:1.45}
+#pk .cm-rv{font-size:12px}
+#pk .cm-rcprev{font-size:12px;margin-top:4px}
+#pk .cm-ndot{width:6px;height:6px}
+/* 글쓰기 양식 칸 모서리: 미리보기 .field 10px (동작·배치 무변경) */
+#pk .cm-form input,#pk .cm-form textarea,#pk .cm-fcatsel{border-radius:10px}
+/* 오픈 채팅: 미리보기 .chat-card — 제목 16.5px/800, 보조 12.5px, 여백 14px */
+.chatpanel.inpage .chat-hd{padding:14px 14px 0}
+.chatpanel.inpage .chat-hd b{font-size:16.5px}
+.chatpanel.inpage .chat-hd span{font-size:12.5px}
+.chatpanel.inpage .chat-msgs{padding:6px 14px 12px}
+/* 날짜 구분선: 미리보기 .date-pill — 가운데 작은 pill (14px 0 4px) */
+.chatpanel.inpage .cdate{align-self:center;background:var(--sf2);border:1px solid var(--bd);border-radius:999px;padding:5px 14px;margin:14px 0 4px;font-size:12px}
+.chatpanel.inpage .cdate::before,.chatpanel.inpage .cdate::after{display:none}
+/* 메시지: 미리보기 .msg — 간격 9px, 아바타 34px, 본문 13.5px/1.5·위 2px, 삭제 버튼 32px·8px */
+.chatpanel.inpage .cmsg{gap:9px}
+.chatpanel.inpage .cav{width:34px;height:34px;font-size:14px}
+.chatpanel.inpage .cmsg-tx{margin-top:2px;line-height:1.5}
+.chatpanel.inpage .cmsg-del{min-height:32px;padding:0 10px;border-radius:8px;font-size:12px}
+/* 입력 줄: 미리보기 .chat-input-row/.chat-input/.send-btn — pill 입력칸 + #262b31 전송 */
+.chatpanel.inpage .chat-ft{padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px))}
+.chatpanel.inpage .chat-form input{border-radius:999px;padding:0 16px}
+.chatpanel.inpage .chat-send{border:1px solid var(--bd);background:#262b31;color:#fff}
+}
+</style>
 </head>
 <body>
 <main>
