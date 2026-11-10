@@ -573,6 +573,7 @@ function loadUniverse(){
     Object.keys(dom).forEach(function(s){if(!seen[s]){seen[s]=1;list.push({s:s,n:knm[s]||s,left:1})}});
     if(!list.length)COINS.forEach(function(c){list.push({s:c.s,n:c.n})});
     UNIV=list;
+    renderAll(); /* 정식 목록이 도착하면 임시 순서로 그려 둔 표를 시총 순으로 바로 교체한다 (정렬·검색 상태는 curList가 그대로 다시 적용하므로 깨지지 않는다) */
   });
 }
 /* ===== 가격 로딩: 거래소 공개 데이터 직접 수신 (김프가 방식) =====
@@ -596,7 +597,7 @@ function upCodes(){
 function upFlush(){
   upRenderTimer=null;
   if(!upDirty)return;
-  if(!MKT){upRenderTimer=setTimeout(upFlush,2000);return} /* 가격 맵이 아직 안 만들어졌으면 버리지 말고 조금 뒤에 다시 시도 */
+  if(!MKT)MKT={}; /* 가격 맵이 아직 없으면 여기서 만들어 바로 반영한다 — 목록(CoinGecko) 구성이 끝날 때까지 기다리면 첫 가격이 그만큼 늦어진다 */
   upDirty=false;
   Object.keys(UPDATA).forEach(function(s){
     if(!MKT[s])MKT[s]={};
@@ -885,15 +886,45 @@ function domVol(c){
   var d=MKT&&MKT[c.s];if(!d)return 0;
   return Math.max((d.UPBIT&&d.UPBIT.v)||0,(d.BITHUMB&&d.BITHUMB.v)||0);
 }
+/* 임시 목록: 정식 목록(CoinGecko 시총 순 UNIV)이 도착하기 전이라도, 기준 거래소 상장 집합과
+   첫 가격 데이터가 갖춰지면 표를 먼저 그리기 위한 목록이다.
+   순서는 기준 거래소의 24시간 거래대금 큰 순으로 잡는다 (시총 순과 상위권이 거의 비슷하게 보인다).
+   한글명은 아는 범위(업비트 마켓 목록)에서만 채우고, 로고는 없으므로 행 렌더에서 대체 표시(심볼 첫 글자 색 원)로 나간다.
+   멤버십(기준 거래소·상장 수·가격이 붙은 코인 수)이 바뀔 때만 다시 만들어, 실시간 갱신 때마다 순서가 흔들리지 않게 한다.
+   UNIV가 도착하면 curList가 정식 목록으로 갈아타므로 이 목록은 그때까지만 쓰인다. */
+var provCache={sig:"",list:[]};
+function provVol(s){
+  var d=MKT&&MKT[s];if(!d)return 0;
+  var b=d[baseSel];return (b&&b.v>0)?b.v:0;
+}
+function provList(){
+  var set=baseSel==="UPBIT"?UPMK:(baseSel==="BITHUMB"?BTMK:null);
+  var setN=set?Object.keys(set).length:0,mN=0;
+  if(MKT)Object.keys(MKT).forEach(function(s){if(MKT[s]&&MKT[s][baseSel])mN++});
+  var sig=baseSel+"|"+setN+"|"+mN;
+  if(provCache.sig===sig)return provCache.list;
+  var seen={},out=[];
+  function add(s){if(!s||seen[s])return;seen[s]=1;out.push({s:s,n:UPKNM[s]||s,prov:1})}
+  if(set)Object.keys(set).forEach(add);
+  if(MKT)Object.keys(MKT).forEach(function(s){if(MKT[s]&&MKT[s][baseSel])add(s)});
+  out.sort(function(a,b){return provVol(b.s)-provVol(a.s)});
+  provCache={sig:sig,list:out};
+  return out;
+}
 function curList(){
   var q=KP.query.replace(/\s+/g,"").toLowerCase();
+  /* 정식 목록이 아직 없으면 임시 목록으로 그린다. 임시 목록은 기준 거래소 상장 집합으로 이미
+     걸러져 있어 상장 필터를 다시 걸지 않는다. 정렬·검색은 어느 목록이든 아래에서 똑같이 적용되므로,
+     정식 목록이 도착해 기본 순서가 교체돼도 사용자가 건 정렬·검색 상태는 깨지지 않는다. */
+  var prov=!UNIV.length;
+  var src=prov?provList():UNIV;
   /* 기준 거래소에 상장된 코인만 보여준다. 상장 판정은 loadUniverse가 market/all로 채운
      상장 집합(UPMK·BTMK) 기준 — 가격 도착 여부가 아니다.
      집합이 비어 있으면 상장 정보를 아직 못 받은 상태라 필터를 걸지 않는다(목록이 통째로 비는 사고 방지). */
   var set=baseSel==="UPBIT"?UPMK:(baseSel==="BITHUMB"?BTMK:null);
-  var useSet=!!(set&&Object.keys(set).length);
+  var useSet=!!(!prov&&set&&Object.keys(set).length);
   var head=[],tail=[];
-  UNIV.forEach(function(c){if(useSet&&!set[c.s])return;(c.left?tail:head).push(c)});
+  src.forEach(function(c){if(useSet&&!set[c.s])return;(c.left?tail:head).push(c)});
   if(!q&&tail.length>1)tail.sort(function(a,b){return domVol(b)-domVol(a)});
   var list=head.concat(tail);
   if(q)list=list.filter(function(c){
@@ -942,8 +973,8 @@ function kpRow(c){
 function renderKimp(){
   var tb=$("kpBody");if(!tb)return;
   renderKpHead();
-  if(!UNIV.length)return; /* 목록이 아직 구성 중이면 초기 '불러오는 중…' 표시를 그대로 둔다 (가격·타일은 먼저 그려도 됨) */
-  if(!MKT){tb.innerHTML='<tr><td colspan="5" class="fail">가격을 불러오지 못했어요. 잠시 뒤 다시 시도해 주세요.</td></tr>';return}
+  if(!UNIV.length&&!provList().length)return; /* 정식·임시 목록 둘 다 아직 없으면 초기 '불러오는 중…' 표시를 그대로 둔다 (가격·타일은 먼저 그려도 됨) */
+  if(!MKT){if(UNIV.length){tb.innerHTML='<tr><td colspan="5" class="fail">가격을 불러오지 못했어요. 잠시 뒤 다시 시도해 주세요.</td></tr>'}return} /* 임시 단계에서 가격 맵이 아직 없으면 실패로 단정하지 말고 불러오는 중 표시를 유지한다 */
   var list=curList();
   var cnt=$("kpCnt");if(cnt)cnt.textContent=list.length?("암호화폐 총 "+list.length+"개"):"";
   var n=KP.query?list.length:Math.min(KP.shown,list.length);
@@ -1153,11 +1184,13 @@ function initInd(){
   indTimer=setInterval(function(){loadFunding();loadFng();loadGlobal()},60000);
 }
 /* 시작: 지난 가격 캐시를 먼저 깔고, 업비트 마켓 목록→웹소켓은 CoinGecko 목록 구성을 기다리지 않고 즉시 시작한다.
-   목록(시총순)이 완성되면 가격을 모아 그리고, 이후 60초마다 가격만 갱신한다. */
+   가격 수집(거래소별 독립 반영)도 목록 구성과 병렬로 시작한다 — 상장 집합과 첫 가격이 갖춰지면
+   임시 목록(거래대금 순)으로 표를 먼저 그리고, 목록(시총순)이 완성되면 정식 순서로 교체한다.
+   이후 60초마다 가격만 갱신한다. */
 initKpControls();
 loadCachePx();
 fetchUpbitMarkets().then(function(){upWsStart();upRestArm()},function(){upWsStart();upRestArm()});
-Promise.all([loadFx(),loadUniverse().then(function(){return loadPrices()})]).then(function(){renderAll()});
+Promise.all([loadFx(),loadUniverse(),loadPrices()]).then(function(){renderAll()});
 setInterval(function(){
   var p=UNIV.length?loadPrices():loadUniverse().then(function(){upWsStart();return loadPrices()});
   Promise.all([loadFx(),p]).then(function(){renderAll()});
