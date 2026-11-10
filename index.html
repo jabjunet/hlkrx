@@ -1507,6 +1507,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .pp-box .cm-row.pin{background:none}
 .pp-box .cm-hd{padding:13px 16px 5px;margin-bottom:0}
 .pp-box .cm-toolbar{background:none;padding:8px 16px 6px}
+.pp-box .cm-filters[hidden]{display:none}
 #pp-list{padding:2px 16px 8px}
 .pp-morebtn{display:block;width:calc(100% - 32px);margin:2px 16px 16px;min-height:44px;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--sf2);color:var(--tx);font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
 .pp-morebtn:hover{background:var(--sf)}
@@ -4542,13 +4543,16 @@ if(postsRef){try{postsRef.child(key).once("value").then(function(snap){var v=sna
 var ppSec=document.getElementById("pp"),ppListEl=document.getElementById("pp-list"),
 ppFiltersEl=document.getElementById("pp-filters"),ppSortEl=document.getElementById("pp-sort"),
 ppMoreBtn=document.getElementById("pp-more"),ppWriteBtn=document.getElementById("pp-write-btn");
-var allPosts=null,ppBusy=false,ppFilter="전체",ppSort="latest",ppShown=30;
+var allPosts=null,ppBusy=false,ppFilter="전체",ppSort="latest",ppShown=30,ppHideCats=false;
 var PP_PAGE=30;
 function ppVisiblePosts(){var arr=(allPosts||[]).filter(function(p){return !p.pin&&(ppFilter==="전체"||catOf(p)===ppFilter)});arr.sort(function(a,b){if(ppSort==="popular"){var d=likeN(b)-likeN(a);if(d)return d;var dv=(b.views||0)-(a.views||0);if(dv)return dv;return (b.ts||0)-(a.ts||0)}if(ppSort==="comments"){var dc=cmtN(b)-cmtN(a);if(dc)return dc;return (b.ts||0)-(a.ts||0)}return (b.ts||0)-(a.ts||0)});return arr}
 /* 고정 글: 최신글과 같은 규칙 — 필터가 전체이거나 그 글의 카테고리와 같을 때만, 최근에 고정한 순으로 최대 5개 */
 function ppPinnedPosts(){var arr=(allPosts||[]).filter(function(p){return p.pin&&(ppFilter==="전체"||catOf(p)===ppFilter)});arr.sort(function(a,b){var d=(b.pinTs||0)-(a.pinTs||0);if(d)return d;return (b.ts||0)-(a.ts||0)});return arr.slice(0,5)}
 function renderPpChips(){
 if(!ppFiltersEl)return;
+/* 카테고리(주식·분석·시황)로 진입한 전체보기에서는 칩 줄 전체(임시 칩 포함)를 숨긴다.
+   정렬 등 나머지 툴바 요소는 그대로 두고, 숨김 상태는 ppHideCats가 정한다 */
+ppFiltersEl.hidden=ppHideCats;
 ppFiltersEl.textContent="";
 var all=document.createElement("button");all.type="button";all.dataset.f="전체";all.setAttribute("aria-pressed",String(ppFilter==="전체"));all.textContent="전체";ppFiltersEl.appendChild(all);
 cmCats.forEach(function(name){var b=document.createElement("button");b.type="button";b.dataset.f=name;b.setAttribute("aria-pressed",String(ppFilter===name));b.textContent=name;ppFiltersEl.appendChild(b)});
@@ -4616,7 +4620,8 @@ if(!ppSec)return;
    걸러서 열고 첫 페이지부터 보여준다. 저장된 카테고리 목록에 없는 이름이어도
    그대로 걸러서 열고, renderPpChips가 맨 뒤에 표시 전용 임시 칩을 붙여
    선택된 카테고리를 보여준다 */
-if(typeof cat==="string"&&cat){ppFilter=cat;ppShown=PP_PAGE}
+if(typeof cat==="string"&&cat){ppFilter=cat;ppShown=PP_PAGE;ppHideCats=(cat!=="전체")}
+if(ppFiltersEl)ppFiltersEl.hidden=ppHideCats;
 ["ph","pa","pb","pg","pf","pc","pi","pk"].forEach(function(id){var s=document.getElementById(id);if(s)s.hidden=true});
 ppSec.hidden=false;
 if(tabs)tabs.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x.dataset.t==="pk"))});
