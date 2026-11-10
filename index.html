@@ -1509,21 +1509,8 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 }
 </style>
 <style>
-/* ===== 커뮤니티 탭 호버 가로 바 (2026-11-10) =====
-   마우스가 있는 기기에서만 커뮤니티 탭에 마우스를 올리면 곧바로
-   게시물 · 자유 · 주식 · 시황 · 질문 가로 한 줄 바가 탭 아래에 뜬다.
-   position:fixed로 띄워 탭 줄의 overflow에 잘리지 않게 하고, 위치는 JS가
-   버튼의 getBoundingClientRect 기준으로 잡는다. 터치 기기에서는 절대 뜨지 않는다.
-   색은 기존 테마 변수만 써서 라이트/다크 모두에서 깨지지 않게 한다 */
-.pkdd-wrap{position:relative;display:inline-flex;align-items:stretch;flex:none}
-.pkdd{display:none;position:fixed;z-index:200;background:#1a1e24;border:1px solid #2a2f36;border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.45);padding:8px 10px;flex-direction:row;align-items:center;gap:6px}
-.pkdd a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 16px;text-align:center;color:#fff;text-decoration:none;font:inherit;font-size:15.5px;font-weight:700;border-radius:10px;white-space:nowrap;flex:none}
-.pkdd a:hover{background:rgba(255,255,255,.06)}
-@media (hover:hover) and (pointer:fine){.pkdd.open{display:flex}}
-</style>
-<style>
 /* ===== 게시물 전체보기 화면 (2026-11-09) =====
-   커뮤니티 탭 호버 드롭다운의 '게시물'을 누르면 헤더·탭 줄은 그대로 둔 채
+   최신글 제목 줄의 '게시물' 버튼을 누르면 헤더·탭 줄은 그대로 둔 채
    내용 영역만 이 화면으로 바뀐다. 목록은 박스 안 스크롤이 아니라 페이지 흐름을
    그대로 쓰고, 행 모양은 커뮤니티 최신글과 같은 .cm-row를 그대로 쓴다 */
 .pp-box{padding:0;overflow:hidden;background:var(--sf);border:1px solid var(--bd);border-radius:16px}
@@ -1537,24 +1524,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .pp-morebtn{display:block;width:calc(100% - 40px);margin:2px 20px 16px;min-height:44px;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--sf2);color:var(--tx);font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
 .pp-morebtn:hover{background:var(--sf)}
 .pp-morebtn[hidden]{display:none}
-/* ===== 모바일 전용 '게시물' 버튼 (2026-11-09) =====
-   커뮤니티 탭 '최신글' 제목 줄에서 '글쓰기' 버튼 바로 왼쪽에 붙는 보조 버튼.
-   데스크톱에서는 호버 드롭다운만 쓰므로 숨기고, 720px 이하에서만 보인다.
-   모양은 '글쓰기'(채워진 주 버튼)보다 튀지 않게 기존 칩/보조 버튼 언어를 쓴다 */
-.cm-posts-btn{display:none}
-.cm-cat-pop{display:none}
 @media(max-width:720px){
-.cm-posts-btn{display:inline-flex;align-items:center;justify-content:center;flex:none;min-height:36px;padding:7px 13px;border:1px solid var(--bd);border-radius:999px;background:var(--sf2);color:var(--tx);font:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-left:auto}
-.cm-posts-btn + .cm-wbtn{margin-left:0}
-/* 모바일 '게시물' 버튼을 누르면 버튼 줄 아래에 가로 한 줄로 펼쳐지는 카테고리
-   칸(자유·주식·시황·질문). 제목 줄(.cm-hd) 기준 양쪽 12px에 맞춰 폰 폭을
-   넘지 않게 하고, 같은 배경·테두리·그림자로 데스크톱 가로 바와 톤을
-   맞춰 버튼 줄과 한 덩어리처럼 이어져 보이게 한다 */
-.cm-latest .cm-hd{position:relative}
-.cm-cat-pop{position:absolute;top:calc(100% + 4px);left:12px;right:12px;z-index:80;background:#1a1e24;border:1px solid #2a2f36;border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.45);padding:6px;flex-direction:row;align-items:center;gap:2px}
-.cm-cat-pop.open{display:flex}
-.cm-cat-pop button{flex:1 1 0;min-width:0;min-height:38px;padding:8px 11px;text-align:center;white-space:nowrap;background:none;border:0;border-radius:10px;color:#fff;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
-.cm-cat-pop button:hover,.cm-cat-pop button:active{background:rgba(255,255,255,.06)}
 /* 최신글 카드 모바일 여백: 미리보기 posts-card(16px 14px) 기준 */
 .cm-latest .cm-hd{padding:16px 14px 0}
 .cm-latest .cm-toolbar{padding:12px 14px 6px}
@@ -1581,7 +1551,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><span class="pkdd-wrap" id="pkdd-wrap"><button data-t="pk" aria-pressed="false">커뮤니티</button></span></div></div>
+<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="live" role="status"><span class="dot" id="lvdot"></span><span id="lv">연결 중…</span></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><button data-t="ph" aria-pressed="true">홈</button><button data-t="pa" aria-pressed="false">김프</button><button data-t="pb" aria-pressed="false">해외</button><button data-t="pg" aria-pressed="false">원자재</button><button data-t="pf" aria-pressed="false">펀딩비</button><button data-t="pc" aria-pressed="false">비교</button><button data-t="pi" aria-pressed="false">지표</button><button data-t="pk" aria-pressed="false">커뮤니티</button></div></div>
 
 <script>
 /* ===== 헤더 테마(다크/라이트)·언어(한/영) 전환 =====
@@ -2128,7 +2098,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <section id="pk" hidden>
 <div class="cm-top">
 <div class="cmbox cm-latest">
-<div class="cm-hd"><h2>최신글</h2><button type="button" class="cm-posts-btn" id="cm-posts-btn">게시물</button><button type="button" class="cm-wbtn" id="cm-write-btn" hidden>글쓰기</button><div class="cm-cat-pop" id="cm-cat-pop"><button type="button" data-cat="자유">자유</button><button type="button" data-cat="주식">주식</button><button type="button" data-cat="시황">시황</button><button type="button" data-cat="질문">질문</button></div></div>
+<div class="cm-hd"><h2>최신글</h2><button type="button" class="cm-wbtn" id="cm-write-btn" hidden>글쓰기</button></div>
 <div class="cm-toolbar" id="cm-toolbar"><div class="cm-filters" id="cm-filters" role="group" aria-label="카테고리 필터"><button type="button" data-f="전체" aria-pressed="true">전체</button><button type="button" data-f="자유" aria-pressed="false">자유</button><button type="button" data-f="주식" aria-pressed="false">주식</button><button type="button" data-f="코인" aria-pressed="false">코인</button><button type="button" data-f="질문" aria-pressed="false">질문</button></div><select class="cm-sort" id="cm-sort" aria-label="정렬"><option value="latest">최신순</option><option value="popular">인기순</option><option value="comments">댓글순</option></select><button type="button" class="cm-catman-btn" id="cm-catman-btn" hidden>카테고리 관리</button></div>
 <div class="cm-gate" id="cm-gate" hidden><p>글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.</p><button type="button" class="cm-login" id="cm-login-btn">구글 로그인</button></div>
 <form class="cm-form" id="cm-form" hidden>
@@ -6690,75 +6660,6 @@ navigating=true;
 showTip();
 setTimeout(function(){window.location.href=brand.href},650);
 });
-})();
-</script>
-<div class="pkdd" id="pkdd"><a href="#" id="pkdd-posts">게시물</a><a href="#" data-cat="자유">자유</a><a href="#" data-cat="주식">주식</a><a href="#" data-cat="시황">시황</a><a href="#" data-cat="질문">질문</a></div>
-<script>
-/* 커뮤니티 탭 호버 가로 바: 마우스 기기에서만 동작한다. 래퍼(커뮤니티 버튼)와
-   바 중 어느 한쪽에라도 마우스가 있으면 열려 있고, 둘 다 벗어나면 닫힌다.
-   버튼 클릭 시 커뮤니티 탭으로 전환되는 기존 동작은 건드리지 않는다 */
-(function(){
-var wrap=document.getElementById("pkdd-wrap"),dd=document.getElementById("pkdd");
-if(!wrap||!dd)return;
-if(!(window.matchMedia&&window.matchMedia("(hover: hover) and (pointer: fine)").matches))return;
-var btn=wrap.querySelector('button[data-t="pk"]');
-if(!btn)return;
-function place(){
-var r=btn.getBoundingClientRect();
-var w=dd.offsetWidth,left=r.left;
-if(left+w>window.innerWidth-6)left=window.innerWidth-6-w;
-if(left<4)left=4;
-dd.style.left=left+"px";
-dd.style.top=r.bottom+"px";
-}
-var closeTimer=0;
-function cancelClose(){if(closeTimer){clearTimeout(closeTimer);closeTimer=0}}
-function scheduleClose(){cancelClose();closeTimer=setTimeout(function(){closeTimer=0;dd.classList.remove("open")},250)}
-function open(){cancelClose();dd.classList.add("open");place()}
-function close(){cancelClose();dd.classList.remove("open")}
-wrap.addEventListener("mouseenter",open);
-wrap.addEventListener("mouseleave",function(e){if(!dd.contains(e.relatedTarget))scheduleClose()});
-dd.addEventListener("mouseenter",cancelClose);
-dd.addEventListener("mouseleave",function(e){if(!wrap.contains(e.relatedTarget))scheduleClose()});
-window.addEventListener("resize",function(){if(dd.classList.contains("open"))place()});
-window.addEventListener("scroll",function(){if(dd.classList.contains("open"))place()},true);
-document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
-})();
-</script>
-<script>
-/* 가로 바 '게시물' 클릭: 별도 페이지로 이동하지 않고, 헤더·탭 줄은 그대로 둔 채
-   내용 영역만 게시물 전체보기 화면으로 바꾼다(커뮤니티 모듈의 __kimpwonShowPosts).
-   바의 호버 표시·위치·닫힘 지연은 위 스크립트 그대로 둔다.
-   '게시물'을 누르면 전체로 열고, 자유·주식·시황·질문을 누르면 그 카테고리로
-   걸러진 전체보기로 연다 */
-(function(){
-var dd=document.getElementById("pkdd");
-function openPosts(cat){
-if(dd)dd.classList.remove("open");
-if(typeof window.__kimpwonShowPosts==="function")window.__kimpwonShowPosts(cat||"전체");
-}
-var a=document.getElementById("pkdd-posts");
-if(a)a.addEventListener("click",function(e){e.preventDefault();openPosts("전체")});
-if(dd)dd.querySelectorAll("a[data-cat]").forEach(function(sa){
-sa.addEventListener("click",function(e){e.preventDefault();openPosts(sa.dataset.cat||"전체")});
-});
-/* 모바일 전용 '게시물' 버튼(최신글 제목 줄, 글쓰기 바로 왼쪽): 누르면 버튼 줄
-   아래에 카테고리 칸(자유·주식·시황·질문)이 펼쳐지고, 항목을 누르면 그
-   카테고리로 걸러진 게시물 전체보기 화면으로 전환한다. 칸이 열린 상태에서
-   버튼을 한 번 더 누르면 칸이 닫히면서 게시물 전체보기(전체)로 이동한다.
-   칸 바깥을 누르거나 다른 탭으로 이동하면 칸은 닫힌다 */
-var mb=document.getElementById("cm-posts-btn"),mpop=document.getElementById("cm-cat-pop");
-if(mb&&mpop){
-mb.addEventListener("click",function(e){e.stopPropagation();if(mpop.classList.contains("open")){mpop.classList.remove("open");openPosts("전체")}else{mpop.classList.add("open")}});
-mpop.querySelectorAll("button").forEach(function(b){
-b.addEventListener("click",function(){mpop.classList.remove("open");openPosts(b.dataset.cat||"전체")});
-});
-document.addEventListener("click",function(e){if(mpop.classList.contains("open")&&!mpop.contains(e.target))mpop.classList.remove("open")});
-var tabsEl=document.getElementById("tabs");
-if(tabsEl)tabsEl.addEventListener("click",function(){mpop.classList.remove("open")});
-}else if(mb){
-mb.addEventListener("click",function(){openPosts("전체")});
-}
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c6e8ab4e4ea4777bf54ca7e737337b9"}'></script><!-- End Cloudflare Web Analytics -->
