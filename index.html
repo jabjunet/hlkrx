@@ -1496,16 +1496,20 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .pkdd a{display:block;padding:9px 14px;text-align:center;color:var(--tx);text-decoration:none;font:inherit;font-size:14.5px;font-weight:700;border-radius:8px;white-space:nowrap}
 .pkdd a:hover{background:var(--sf2)}
 @media (hover:hover) and (pointer:fine){.pkdd.open{display:block}}
-/* '게시물'에 마우스를 올리면 오른쪽으로 펼쳐지는 카테고리 칸(전체·주식·분석·시황).
-   드롭다운과 같은 카드 톤을 쓰고, 사이 간격은 ::before 다리로 메워 마우스가
-   이동하는 동안에도 hover가 끊기지 않는다. 오른쪽 공간이 모자라면 JS가
-   .flip을 붙여 왼쪽으로 펼친다 */
+/* '게시물'에 마우스를 올리면 오른쪽으로 가로 한 줄로 펼쳐지는 카테고리 칸
+   (전체·주식·분석·시황을 왼쪽에서 오른쪽 순서로 나열). 드롭다운 박스와 간격
+   없이 붙어 같은 높이·배경·테두리로 하나의 가로 바처럼 이어지게 한다 —
+   붙는 쪽 모서리는 직각으로 맞춰 끊김 없이 연결하고, 드롭다운 머리쪽
+   여백(9px)만큼 위로 올려 바 윗변이 드롭다운 윗변과 한 줄로 맞춘다.
+   드롭다운 박스 쪽으로 7px 겹쳐 마우스가 이동하는 동안에도 hover가 끊기지
+   않고, 겹친 부분은 드롭다운의 오른쪽 위 모서리 둥근 모양이 보여지지 않게
+   바가 덮는다. 오른쪽 공간이 모자라면 JS가 .flip을 붙여 왼쪽으로 펼치되
+   붙는 쪽 모서리만 거울로 뒤집고 가로 한 줄 모양은 유지한다 */
 .pkdd-item{position:relative}
-.pkdd-sub{display:none;position:absolute;left:calc(100% + 6px);top:-5px;width:112px;background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 10px 28px var(--adsh);padding:5px;z-index:201}
-.pkdd-sub::before{content:"";position:absolute;left:-8px;top:0;width:8px;height:100%}
-.pkdd-sub.flip{left:auto;right:calc(100% + 6px)}
-.pkdd-sub.flip::before{left:auto;right:-8px}
-@media (hover:hover) and (pointer:fine){.pkdd-item:hover .pkdd-sub{display:block}}
+.pkdd-sub{display:none;position:absolute;left:calc(100% - 7px);top:-9px;background:var(--sf);border:1px solid var(--bd);border-left:none;border-radius:0 12px 12px 0;box-shadow:0 10px 28px var(--adsh);padding:9px 12px 7px 10px;z-index:201;flex-direction:row;align-items:center;gap:8px}
+.pkdd-sub a{flex:none;padding:7px 13px}
+.pkdd-sub.flip{left:auto;right:calc(100% - 7px);border-left:1px solid var(--bd);border-right:none;border-radius:12px 0 0 12px;padding:9px 10px 7px 12px}
+@media (hover:hover) and (pointer:fine){.pkdd-item:hover .pkdd-sub{display:flex}}
 </style>
 <style>
 /* ===== 게시물 전체보기 화면 (2026-11-09) =====
@@ -1529,13 +1533,14 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 @media(max-width:720px){
 .cm-posts-btn{display:inline-flex;align-items:center;justify-content:center;flex:none;min-height:36px;padding:7px 13px;border:1px solid var(--bd);border-radius:999px;background:var(--sf2);color:var(--tx);font:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-left:auto}
 .cm-posts-btn + .cm-wbtn{margin-left:0}
-/* 모바일 '게시물' 버튼을 누르면 버튼 줄 아래 오른쪽에 펼쳐지는 카테고리 칸
-   (전체·주식·분석·시황). 제목 줄(.cm-hd) 기준으로 오른쪽에 붙여 화면 밖으로
-   나가지 않게 하고, 톤은 데스크톱 드롭다운 칸과 맞춘다 */
+/* 모바일 '게시물' 버튼을 누르면 버튼 줄 아래에 가로 한 줄로 펼쳐지는 카테고리
+   칸(전체·주식·분석·시황). 제목 줄(.cm-hd) 기준 양쪽 12px에 맞춰 폰 폭을
+   넘지 않게 하고, 같은 배경·테두리·그림자로 데스크톱 드롭다운 칸과 톤을
+   맞춰 버튼 줄과 한 덩어리처럼 이어져 보이게 한다 */
 .cm-latest .cm-hd{position:relative}
-.cm-cat-pop{position:absolute;top:calc(100% + 2px);right:12px;z-index:80;min-width:118px;background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 10px 28px var(--adsh);padding:5px}
-.cm-cat-pop.open{display:block}
-.cm-cat-pop button{display:block;width:100%;padding:9px 14px;text-align:left;background:none;border:0;border-radius:8px;color:var(--tx);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.cm-cat-pop{position:absolute;top:calc(100% + 4px);left:12px;right:12px;z-index:80;background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 10px 28px var(--adsh);padding:7px 6px;flex-direction:row;align-items:center;gap:4px}
+.cm-cat-pop.open{display:flex}
+.cm-cat-pop button{flex:1 1 0;min-width:0;padding:9px 4px;text-align:center;white-space:nowrap;background:none;border:0;border-radius:8px;color:var(--tx);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
 .cm-cat-pop button:hover,.cm-cat-pop button:active{background:var(--sf2)}
 /* 게시물 전체보기 모바일: 카테고리 칩 줄은 줄바꿈되고, 글 행은 가로로 넘치지 않는다 */
 .pp-box .cm-toolbar{flex-wrap:wrap}
@@ -6558,8 +6563,8 @@ if(left+w>window.innerWidth-6)left=window.innerWidth-6-w;
 if(left<4)left=4;
 dd.style.left=left+"px";
 dd.style.top=r.bottom+"px";
-/* 카테고리 칸(너비 112px + 간격)이 오른쪽 화면 밖으로 나가면 왼쪽으로 펼친다 */
-if(sub){if(left+w+124>window.innerWidth-4)sub.classList.add("flip");else sub.classList.remove("flip")}
+/* 가로 카테고리 칸(약 256px + 간격)이 오른쪽 화면 밖으로 나가면 왼쪽으로 펼친다 */
+if(sub){if(left+w+268>window.innerWidth-4)sub.classList.add("flip");else sub.classList.remove("flip")}
 }
 var closeTimer=0;
 function cancelClose(){if(closeTimer){clearTimeout(closeTimer);closeTimer=0}}
@@ -6573,6 +6578,17 @@ dd.addEventListener("mouseleave",function(e){if(!wrap.contains(e.relatedTarget))
 window.addEventListener("resize",function(){if(dd.classList.contains("open"))place()});
 window.addEventListener("scroll",function(){if(dd.classList.contains("open"))place()},true);
 document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
+/* 카테고리 칸이 실제로 뜬 뒤에도 오른쪽 끝이 화면을 넘으면 왼쪽으로 붙이고,
+   왼쪽으로 붙인 칸이 왼쪽 화면 밖으로 나가면 되돌린다(가로 한 줄은 유지) */
+var itemEl=dd.querySelector(".pkdd-item");
+if(itemEl&&sub)itemEl.addEventListener("mouseenter",function(){
+requestAnimationFrame(function(){
+var r=sub.getBoundingClientRect();
+if(r.width===0)return;
+if(!sub.classList.contains("flip")&&r.right>window.innerWidth-4)sub.classList.add("flip");
+else if(sub.classList.contains("flip")&&r.left<4)sub.classList.remove("flip");
+});
+});
 })();
 </script>
 <script>
