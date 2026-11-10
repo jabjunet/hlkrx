@@ -1061,26 +1061,36 @@ main{padding:2px 12px 40px}
    모바일에서는 최신글 → 채팅 순서로 세로로 쌓인다.
    채팅은 새 창이 아니라 기존 플로팅 채팅 패널을 오른쪽 칸으로 옮겨 보여 준다 */
 #pk{margin:0}
-.cm-top{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-bottom:12px}
-.cm-chat{height:480px}
-@media(min-width:861px){.cm-top{grid-template-columns:minmax(0,1fr) 330px}.cm-chat{height:560px}.cm-latest{max-height:560px}}
-.chatpanel.inpage{position:static;width:100%;height:100%;border-radius:16px;box-shadow:none}
+.cm-top{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-bottom:12px;align-items:start}
+.cm-chat{height:auto}
+@media(min-width:861px){.cm-top{grid-template-columns:minmax(0,1fr) 330px}}
+/* 인페이지 채팅: 미리보기(keomyuniti-gaeseon-miribogi) .chat-card 수치 —
+   제목 16px/800, 날짜 구분선은 가운데 날짜 + 양쪽 선, 메시지 행 간격 9px·상하 7px,
+   아바타 30px, 닉네임 굵게 + 시간 같은 줄·본문은 아래 줄, 입력 영역은 둥근 박스.
+   고정 높이와 내부 스크롤 없이 내용만큼 늘어나 페이지 스크롤로 본다 */
+.chatpanel.inpage{position:static;width:100%;height:auto;border-radius:16px;box-shadow:none}
 .chatpanel.inpage .chat-x{display:none}
-.chatpanel.inpage .chat-hd{padding:16px 16px 4px}
+.chatpanel.inpage .chat-hd{padding:16px 16px 4px;border-bottom:0}
 .chatpanel.inpage .chat-hd b{font-size:16px;font-weight:800}
-.chatpanel.inpage .chat-msgs{padding:6px 16px 12px;gap:0}
-.chatpanel.inpage .cmsg{padding:7px 0}
-.chatpanel.inpage .chat-ft{padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.chatpanel.inpage .chat-hd span{display:none}
+.chatpanel.inpage .chat-bd{flex:none;min-height:0}
+.chatpanel.inpage .chat-msgs{flex:none;min-height:0;overflow-y:visible;padding:6px 16px 12px;gap:0}
+.chatpanel.inpage .cmsg{padding:7px 0;gap:9px}
+.chatpanel.inpage .cmsg-hd{align-items:baseline;gap:7px}
+.chatpanel.inpage .cmsg-del{align-self:center}
+.chatpanel.inpage .cdate{margin:10px 0 4px}
+.chatpanel.inpage .chat-ft{margin:0 16px 12px;padding:11px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--sf2)}
+.chatpanel.inpage .chat-hint{font-size:13px;color:var(--mut);margin:0 2px 8px}
 .chatpanel.inpage .chat-form input{border-radius:10px}
 /* 커뮤니티 게시글 박스 (최신글): 색은 위쪽 '최신글' 제목 줄에만 입히고,
    아래 글 목록 부분은 페이지 배경(var(--bg))과 같은 색으로 둔다.
-   채팅 칸과 높이를 맞추고(모바일 480px·데스크톱 560px) 목록은 박스 안에서 스크롤한다 */
+   고정 높이와 박스 안 스크롤 없이 박스가 내용만큼 늘어나 페이지 스크롤로 본다 */
 .cmbox{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:16px}
-.cm-latest{display:flex;flex-direction:column;max-height:480px;background:var(--sf);padding:0;overflow:hidden;border:1px solid var(--bd);border-radius:16px}
+.cm-latest{display:flex;flex-direction:column;background:var(--sf);padding:0;overflow:hidden;border:1px solid var(--bd);border-radius:16px}
 .cm-latest .cm-hd,.cm-latest .cm-gate,.cm-latest .cm-form{flex:none}
 .cm-latest .cm-hd{background:none;padding:18px 20px 0;margin-bottom:0;border-bottom:0}
 .cm-latest .cm-gate,.cm-latest .cm-form{margin:0 20px;border-top:0}
-#cm-list{overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch;padding:2px 20px 10px;background:none}
+#cm-list{flex:none;padding:2px 20px 10px;background:none}
 .cm-more{margin:0;padding:12px 4px 2px;text-align:center;color:var(--mut);font-size:12px}
 #cm-sent{height:1px}
 .cm-hd{display:flex;align-items:center;gap:8px;margin-bottom:4px}
@@ -1116,12 +1126,8 @@ main{padding:2px 12px 40px}
 .cm-frow{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
 .cm-cancel{min-height:40px;padding:8px 14px;border:1px solid var(--bd);border-radius:999px;background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .cm-submit{min-height:40px;padding:8px 18px;border:0;border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
-/* 글쓰기 폼이 열려 있을 때: 폼(제목·본문·사진 미리보기·취소/등록 버튼)이 최신글 박스의
-   높이 제한(480/560px)에 잘려 등록 버튼이 안 보이는 문제가 있었다.
-   폼이 열린 동안에는 박스가 폼 높이에 맞게 늘어나게 하고, 글 목록은 자체 높이를 갖고
-   그 안에서 스크롤하게 해서 취소·등록 버튼이 항상 보이게 한다 */
-.cm-latest:has(> .cm-form:not([hidden])){max-height:none}
-.cm-latest:has(> .cm-form:not([hidden])) #cm-list{flex:none;height:220px}
+/* 최신글 박스는 고정 높이·내부 스크롤이 없어 글쓰기 폼이 열려 있어도 폼과 목록이
+   페이지 흐름에 그대로 펼쳐지므로 취소·등록 버튼이 잘릴 일이 없다 */
 /* 글 목록 행: 다른 모바일 커뮤니티와 같은 구조(최신글·게시물 전체보기 공용).
    제목 줄은 제목만으로 시작한다(카테고리 라벨·고정 '공지' 배지는 행에 표시하지 않음).
    오늘 올라온 글이면 제목 바로 앞에 작은 초록 점, 댓글 1개 이상이면 제목 바로 뒤에 [N].
@@ -1206,7 +1212,7 @@ main{padding:2px 12px 40px}
    한 줄짜리 드롭다운(select)으로 둔다. 라벨과 나란히 놓고 입력칸과 같은 높이·모양으로 맞춘다 */
 .cm-fcatrow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .cm-fcatlb{flex:none;font-size:13px;font-weight:600;color:var(--mut)}
-.cm-fcatsel{flex:1;min-width:0;min-height:42px;padding:9px 12px;border:1px solid var(--bd);border-radius:9px;background:var(--sf);color:var(--tx);font:inherit;font-size:14px;font-weight:500;cursor:pointer}
+.cm-fcatsel{flex:none;width:180px;max-width:55%;min-height:36px;padding:6px 10px;border:1px solid var(--bd);border-radius:9px;background:var(--sf);color:var(--tx);font:inherit;font-size:14px;font-weight:500;cursor:pointer}
 .cm-tline{display:flex;align-items:center;gap:7px;min-width:0}
 .cm-tline .cm-rt{flex:1 1 auto;min-width:0}
 .cm-cat{flex:none;font-size:11px;font-weight:700;color:var(--mut);background:var(--sf2);border:1px solid var(--bd);border-radius:5px;padding:1px 6px;line-height:1.5;white-space:nowrap}
@@ -1582,23 +1588,13 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pk .cm-ndot{width:6px;height:6px}
 /* 글쓰기 양식 칸 모서리: 미리보기 .field 10px (동작·배치 무변경) */
 #pk .cm-form input,#pk .cm-form textarea,#pk .cm-fcatsel{border-radius:10px}
-/* 오픈 채팅: 미리보기 .chat-card — 제목 16.5px/800, 보조 12.5px, 여백 14px */
+/* 오픈 채팅: 미리보기(keomyuniti-gaeseon-miribogi) .chat-card와 같은 모양을 모바일에도 적용 —
+   제목 16px/800, 날짜 구분선은 pill이 아니라 가운데 날짜 + 양쪽 선, 아바타 30px,
+   입력 영역은 둥근 박스. 좌우 여백만 14px로 좁힌다(수치는 본문 규칙과 동일) */
 .chatpanel.inpage .chat-hd{padding:14px 14px 0}
-.chatpanel.inpage .chat-hd b{font-size:16.5px}
-.chatpanel.inpage .chat-hd span{font-size:12.5px}
 .chatpanel.inpage .chat-msgs{padding:6px 14px 12px}
-/* 날짜 구분선: 미리보기 .date-pill — 가운데 작은 pill (14px 0 4px) */
-.chatpanel.inpage .cdate{align-self:center;background:var(--sf2);border:1px solid var(--bd);border-radius:999px;padding:5px 14px;margin:14px 0 4px;font-size:12px}
-.chatpanel.inpage .cdate::before,.chatpanel.inpage .cdate::after{display:none}
-/* 메시지: 미리보기 .msg — 간격 9px, 아바타 34px, 본문 13.5px/1.5·위 2px, 삭제 버튼 32px·8px */
-.chatpanel.inpage .cmsg{gap:9px}
-.chatpanel.inpage .cav{width:34px;height:34px;font-size:14px}
-.chatpanel.inpage .cmsg-tx{margin-top:2px;line-height:1.5}
 .chatpanel.inpage .cmsg-del{min-height:32px;padding:0 10px;border-radius:8px;font-size:12px}
-/* 입력 줄: 미리보기 .chat-input-row/.chat-input/.send-btn — pill 입력칸 + #262b31 전송 */
-.chatpanel.inpage .chat-ft{padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px))}
-.chatpanel.inpage .chat-form input{border-radius:999px;padding:0 16px}
-.chatpanel.inpage .chat-send{border:1px solid var(--bd);background:#262b31;color:#fff}
+.chatpanel.inpage .chat-ft{margin:0 14px 12px}
 }
 </style>
 </head>
@@ -3817,6 +3813,7 @@ panel=document.getElementById("chat-panel"),btn=document.getElementById("chat-op
 slot=document.getElementById("cm-chat-slot");
 if(!tabs||!pk||!panel||!btn||!slot)return;
 var homeParent=panel.parentNode,homeNext=panel.nextSibling;
+var hdB=panel.querySelector(".chat-hd b");
 var inPk=false;
 function enter(){
 inPk=true;
@@ -3824,6 +3821,7 @@ btn.hidden=true;
 document.body.classList.add("cm-on");
 slot.appendChild(panel);
 panel.classList.add("inpage");
+if(hdB)hdB.textContent="채팅";
 panel.removeAttribute("role");
 if(typeof window.__openChat==="function")window.__openChat();
 }
@@ -3833,6 +3831,7 @@ btn.hidden=false;
 document.body.classList.remove("cm-on");
 if(typeof window.__closeChat==="function")window.__closeChat();
 panel.classList.remove("inpage");
+if(hdB)hdB.textContent="오픈 채팅";
 panel.setAttribute("role","dialog");
 if(homeNext&&homeNext.parentNode===homeParent)homeParent.insertBefore(panel,homeNext);
 else homeParent.appendChild(panel);
@@ -3856,9 +3855,10 @@ else if(inPk)leave();
    (별도 스토리지 없이 프로필 사진과 같은 방식). 사진은 한 글에 4장까지 넣을 수 있고, imgs 배열에 전부 저장하며
    img에는 첫 장을 함께 넣어 예전 방식으로 읽는 화면에서도 썸네일이 뜨게 한다. imgs가 없는 예전 글은 img 한 장으로 읽는다.
    최신글은 작성 시각 최신순으로 왼쪽 넓은 칸에 보여 준다. 처음에는 가장 최근 글 5개만 불러와 보여 주고,
-   목록 박스 안에서 아래로 스크롤하면 예전 글을 5개씩 이어서 불러와 가장 오래된 글까지 볼 수 있다
-   (펀딩비 탭과 같은 박스 안 스크롤 방식: 박스 끝 센티넬이 하단 근처에 닿으면 다음 5개를 붙인다.
-   글이 박스 높이를 채우지 못해 스크롤이 생기지 않는 경우에는 채울 때까지 자동으로 이어서 불러온다).
+   페이지 스크롤로 목록 끝에 가까워지면 예전 글을 5개씩 이어서 불러와 가장 오래된 글까지 볼 수 있다
+   (목록 끝 센티넬이 화면 하단 근처에 닿으면 다음 5개를 붙인다.
+   글이 화면을 채우지 못하는 경우에는 채울 때까지 자동으로 이어서 불러온다).
+   사진은 파일 선택뿐 아니라 양식에 이미지를 복사-붙여넣기(Ctrl+V)해도 같은 방식으로 첨부된다.
    목록 행은 디시인사이드처럼
    왼쪽 작은 썸네일(첨부 사진이 있으면 그 사진, 없으면 프로필 사진) · 제목 · 오른쪽 작성자 | 날짜 순서로 놓는다.
    조회수는 한 사람당 한 번만 오른다: 이 기기에서 이미 연 글은 다시 열어도 오르지 않고
@@ -3909,10 +3909,10 @@ if(!out.length&&typeof p.img==="string"&&p.img)out.push(p.img);
 return out.slice(0,MAX_POST_IMGS);
 }
 var cmtsRef=null,cmtsCb=null,lastCmts=[],likeBusy=false;
-/* 최신글 이어 불러오기 상태: 처음에는 최근 5개(limitToLast(5))만 듣고, 목록 박스 스크롤로
-   하단에 가까워질 때마다 한도를 5개씩 늘려 다시 듣는다. 받아온 개수가 한도보다 적으면
+/* 최신글 이어 불러오기 상태: 처음에는 최근 5개(limitToLast(5))만 듣고, 페이지 스크롤로
+   목록 끝에 가까워질 때마다 한도를 5개씩 늘려 다시 듣는다. 받아온 개수가 한도보다 적으면
    가장 오래된 글까지 다 불러온 것으로 보고(postExhausted) 더 늘리지 않는다 */
-var postLimit=5,postLoading=false,postExhausted=false,postQuery=null,postCb=null,postSentArmed=false,cmIO=null;
+var postLimit=5,postLoading=false,postExhausted=false,postQuery=null,postCb=null,cmIO=null;
 var cmFilter="전체",cmSort="latest",cmDisplay=5,formCat="자유";
 function cfgReady(){try{var c=(typeof FIREBASE_CONFIG!=="undefined")?FIREBASE_CONFIG:null;return !!(c&&typeof c.apiKey==="string"&&c.apiKey.trim()&&typeof c.databaseURL==="string"&&c.databaseURL.trim())}catch(e){return false}}
 function isOp(){if(!fbUser)return false;var oe=(typeof OPERATOR_EMAIL!=="undefined"?String(OPERATOR_EMAIL||""):"").trim().toLowerCase();return !!oe&&String(fbUser.email||"").trim().toLowerCase()===oe}
@@ -4135,8 +4135,10 @@ hmCmListEl.appendChild(b);
 });
 }catch(e){}
 }
-/* 박스 안 스크롤로 이어 불러오기 (펀딩비 탭 방식): 목록 박스(#cm-list)를 실제로 스크롤한 뒤에만
-   무장되고, 박스 끝 센티넬이 하단 320px 안에 들어오면 다음 5개를 불러온다 */
+/* 페이지 스크롤로 이어 불러오기: 목록 박스에 내부 스크롤이 없어 글이 페이지 흐름에
+   펼쳐지므로, 목록 끝 센티넬(#cm-sent)이 화면 하단 400px 안으로 들어오면 다음 5개를
+   불러온다. 센티넬 관찰은 뷰포트 기준이고, 렌더 직후 점검(cmFillCheck)이 화면을 아직
+   채우지 못한 경우까지 이어 불러와 글이 일부만 보이는 상태로 남지 않게 한다 */
 function pkOpen(){var pkEl=document.getElementById("pk");return !!(pkEl&&!pkEl.hidden)}
 function cmMore(){
 if(postLoading||!postsRef)return;
@@ -4145,15 +4147,21 @@ if(postExhausted)return;
 if(posts.length<postLimit)return;
 postLoading=true;cmDisplay+=5;postLimit+=5;subscribePosts();renderLists();
 }
-function cmSentCheck(){if(!postSentArmed||!pkOpen())return;if(listEl.scrollTop+listEl.clientHeight>=listEl.scrollHeight-320)cmMore()}
-function cmFillCheck(){if(postLoading||!posts.length||!pkOpen())return;if(listEl.scrollHeight<=listEl.clientHeight+8&&(cmDisplay<getVisiblePosts().length||!postExhausted))cmMore()}
+function cmSentNear(){
+var s=document.getElementById("cm-sent");if(!s)return false;
+var r=s.getBoundingClientRect();
+return r.top<=window.innerHeight+400&&r.bottom>=-400;
+}
+function cmSentCheck(){if(!pkOpen())return;if(cmSentNear())cmMore()}
+function cmFillCheck(){if(postLoading||!posts.length||!pkOpen())return;if((cmDisplay<getVisiblePosts().length||!postExhausted)&&cmSentNear())cmMore()}
 function cmObserveSent(sent){
 if(!window.IntersectionObserver||!sent)return;
 if(cmIO){try{cmIO.disconnect()}catch(e){}cmIO=null}
-cmIO=new IntersectionObserver(function(es){if(!postSentArmed||!pkOpen())return;for(var i=0;i<es.length;i++){if(es[i].isIntersecting){cmMore();break}}},{root:listEl,rootMargin:"0px 0px 320px 0px"});
+cmIO=new IntersectionObserver(function(es){if(!pkOpen())return;for(var i=0;i<es.length;i++){if(es[i].isIntersecting){cmMore();break}}},{root:null,rootMargin:"0px 0px 400px 0px"});
 cmIO.observe(sent);
 }
-listEl.addEventListener("scroll",function(){if(!postSentArmed)postSentArmed=true;cmSentCheck()},{passive:true});
+window.addEventListener("scroll",cmSentCheck,{passive:true});
+window.addEventListener("resize",cmSentCheck);
 /* 글 목록 구독: limitToLast(postLimit)로 듣고, 한도가 늘면 기존 리스너를 떼고 새로 붙인다 */
 function subscribePosts(){
 if(!postsRef)return;
@@ -4584,9 +4592,10 @@ img.src=rd.result;
 rd.onerror=function(){cb("")};
 rd.readAsDataURL(f);
 }
-if(fileIn)fileIn.addEventListener("change",function(){
-var files=fileIn.files?Array.prototype.slice.call(fileIn.files):[];fileIn.value="";
-if(!files.length)return;
+/* 고른 파일·붙여넣은 이미지를 공통으로 첨부한다: 기존 첨부와 합쳐 4장까지, 긴 변 1024px
+   JPEG 축소(loadPostImgFile), 미리보기·안내 문구 갱신까지 파일 선택과 같은 흐름이다 */
+function addPostImgFiles(files){
+if(!files||!files.length)return;
 var room=MAX_POST_IMGS-postImgs.length;
 if(room<=0){errEl.textContent="사진은 4장까지 넣을 수 있어요.";errEl.hidden=false;return}
 var over=files.length>room;
@@ -4601,6 +4610,21 @@ else if(over){errEl.textContent="사진은 4장까지 넣을 수 있어요.";err
 else errEl.hidden=true;
 }
 picked.forEach(function(f,i){loadPostImgFile(f,function(out){results[i]=out;if(!out)failed=true;step()})});
+}
+if(fileIn)fileIn.addEventListener("change",function(){
+var files=fileIn.files?Array.prototype.slice.call(fileIn.files):[];fileIn.value="";
+addPostImgFiles(files);
+});
+/* 복사-붙여넣기 첨부: 양식(제목·본문 등) 안에서 이미지를 붙여넣으면 파일 선택과 똑같이
+   첨부한다. 이미지가 없는 붙여넣기(글자)는 가로채지 않고 평소처럼 동작한다 */
+form.addEventListener("paste",function(e){
+var cd=e.clipboardData||window.clipboardData;if(!cd)return;
+var files=[];
+if(cd.items){for(var i=0;i<cd.items.length;i++){var it=cd.items[i];if(it.kind==="file"&&/^image\//.test(it.type||"")){var f=it.getAsFile();if(f)files.push(f)}}}
+if(!files.length&&cd.files&&cd.files.length){for(var j=0;j<cd.files.length;j++){if(/^image\//.test(cd.files[j].type||""))files.push(cd.files[j])}}
+if(!files.length)return;
+e.preventDefault();
+addPostImgFiles(files);
 });
 if(loginBtn)loginBtn.addEventListener("click",function(){if(typeof window.__hlkrxFbSignIn==="function")window.__hlkrxFbSignIn(false)});
 form.addEventListener("submit",function(e){
