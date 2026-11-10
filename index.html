@@ -445,6 +445,20 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 @media(max-width:520px){.hnwr{padding:8px 10px}.hnghd{padding-left:10px;padding-right:10px}}
 .hnmore{display:block;width:100%;min-height:44px;border:0;border-top:1px solid var(--bd);background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .hnmore:hover{background:var(--sf2);color:var(--tx)}
+/* 홈 탭: 커뮤니티 최신글 박스 — 실시간 뉴스 바로 아래에 두며, 다른 홈 카드와 같은 톤
+   (카드 배경·테두리·16px 둥근 모서리·안쪽 여백)을 쓴다. 행은 한 줄로, 제목(넘치면
+   말줄임)이 왼쪽에, 작성자 · 상대 시간 · 댓글 수는 오른쪽에 작은 회색 글씨로 붙는다.
+   썸네일·HOT 배지·본문 미리보기는 이 박스 행에 넣지 않는다 */
+#ph .hmcm{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 4px 6px;margin-top:14px}
+#ph .hmcm .hmhd{padding:0 10px}
+.hmcm-more{margin-left:auto;flex:none;border:0;background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:6px 2px}
+.hmcm-more:hover{color:var(--tx)}
+.hmcm-row{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border:0;border-bottom:1px solid var(--bd);background:none;color:var(--tx);font:inherit;text-align:left;cursor:pointer}
+.hmcm-row:last-child{border-bottom:0}
+.hmcm-row:hover{background:var(--sf2)}
+.hmcm-t{flex:1 1 auto;min-width:0;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hmcm-m{flex:none;font-size:12px;color:var(--mut);white-space:nowrap}
+@media(max-width:520px){.hmcm-row{padding:9px 10px}}
 /* 홈 탭: 실시간 차트 + 실적발표 2열 — 데스크톱에서는 오른쪽 열 320px 고정·왼쪽이 나머지를 차지하고(1023px 이하에서는 절반씩), 720px 이하에서는 차트 위·실적발표 아래로 쌓는다.
    오른쪽 실적발표 박스는 고정 높이에 안쪽 스크롤 — 발표한 지 24시간이 안 지난 '발표 완료'(실제 EPS·서프라이즈)만 위에, 앞으로 나올 '발표 예정'을 아래에 보여준다 */
 .hmcols{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start;margin-top:0}
@@ -1112,7 +1126,7 @@ main{padding:2px 12px 40px}
    썸네일은 첨부 사진이 있는 글만 행 왼쪽 앞(제목 자리)에 붙이고, 없으면 썸네일·아바타 자리를
    만들지 않아 제목이 왼쪽 끝부터 시작한다. 삭제 같은 관리 버튼은 행에 두지 않는다
    (삭제는 글 팝업 안의 삭제 버튼으로만, 확인 절차 포함) */
-.cm-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--bd);background:none;color:var(--tx);font:inherit;padding:9px 2px;cursor:pointer}
+.cm-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--bd);background:none;color:var(--tx);font:inherit;padding:6px 2px;cursor:pointer}
 .cm-row:last-child{border-bottom:0}
 .cm-th{position:relative;flex:none;width:44px;height:44px;border-radius:6px;overflow:hidden}
 .cm-th img{width:100%;height:100%;object-fit:cover;display:block}
@@ -1492,7 +1506,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 <style>
 /* ===== 커뮤니티 탭 호버 가로 바 (2026-11-10) =====
    마우스가 있는 기기에서만 커뮤니티 탭에 마우스를 올리면 곧바로
-   게시물 · 주식 · 분석 · 시황 가로 한 줄 바가 탭 아래에 뜬다.
+   게시물 · 자유 · 주식 · 시황 · 질문 가로 한 줄 바가 탭 아래에 뜬다.
    position:fixed로 띄워 탭 줄의 overflow에 잘리지 않게 하고, 위치는 JS가
    버튼의 getBoundingClientRect 기준으로 잡는다. 터치 기기에서는 절대 뜨지 않는다.
    색은 기존 테마 변수만 써서 라이트/다크 모두에서 깨지지 않게 한다 */
@@ -1528,7 +1542,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .cm-posts-btn{display:inline-flex;align-items:center;justify-content:center;flex:none;min-height:36px;padding:7px 13px;border:1px solid var(--bd);border-radius:999px;background:var(--sf2);color:var(--tx);font:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-left:auto}
 .cm-posts-btn + .cm-wbtn{margin-left:0}
 /* 모바일 '게시물' 버튼을 누르면 버튼 줄 아래에 가로 한 줄로 펼쳐지는 카테고리
-   칸(주식·분석·시황). 제목 줄(.cm-hd) 기준 양쪽 12px에 맞춰 폰 폭을
+   칸(자유·주식·시황·질문). 제목 줄(.cm-hd) 기준 양쪽 12px에 맞춰 폰 폭을
    넘지 않게 하고, 같은 배경·테두리·그림자로 데스크톱 가로 바와 톤을
    맞춰 버튼 줄과 한 덩어리처럼 이어져 보이게 한다 */
 .cm-latest .cm-hd{position:relative}
@@ -1606,7 +1620,7 @@ var D={
 "실시간":"Live","연결 중…":"Connecting…","로그인":"Log in","접속자":"Online","명":"","프로필 설정":"Profile settings",
 "코스피":"KOSPI","코스닥":"KOSDAQ","나스닥":"NASDAQ","다우":"Dow","달러/원":"USD/KRW","원유":"Crude Oil",
 "실시간 차트":"Live Chart","한국":"Korea","미국":"US","급상승":"Top Gainers","급하락":"Top Losers","불러오는 중…":"Loading…",
-"주요 종목 실적발표":"Key Earnings","주요 경제지표":"Key Economic Indicators","실시간 뉴스":"Live News","국내":"Domestic",
+"주요 종목 실적발표":"Key Earnings","주요 경제지표":"Key Economic Indicators","실시간 뉴스":"Live News","커뮤니티 최신글":"Latest Community Posts","더보기":"More","국내":"Domestic",
 "오늘의 시장":"Today's Market","실시간 급등락":"Live Movers","다가오는 일정":"Upcoming Schedule","실적":"Earnings","근원":"Core","· 근원":"· Core","전월비 예상":"MoM Forecast","예상 EPS":"EPS Forecast","다가오는 일정이 없습니다":"No upcoming events",
 "급상승 순위는 TradingView 기준, 1분마다 갱신되는 구조":"Top gainers ranked by TradingView · refreshes every minute",
 "등락률은 TradingView 기준 전일 종가 대비이며, 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준입니다.":"Changes are vs. the previous close (TradingView). Low-volume stocks are excluded. When the market is closed, figures are based on the last close.",
@@ -1751,7 +1765,7 @@ var TM=new WeakMap(),AM=new WeakMap(),ATTRS=["placeholder","title","aria-label",
    기준으로 파싱하므로, 원본까지 번역하면 영어 모드에서 파싱이 전부 실패해 일정이 0건이 된다.
    그래서 원본 컨테이너는 번역 대상에서 제외해 UI 언어와 무관하게 항상 한국어로 유지한다.
    일정 카드 쪽에 복사돼 그려지는 표시 문구는 .hmsrc 밖이라 기존처럼 번역된다. */
-function excluded(n){var e=n.nodeType===3?n.parentElement:n;if(!e||!e.closest)return true;if(e.closest("script,style,.hmsrc,.cmsg-tx,.cm-rt,.cm-rprev,.cm-rcprev-tx,.pv-ctx,#pv-title,#pv-text,#th-btn,#lang-btn,.ntf-title"))return true;return false}
+function excluded(n){var e=n.nodeType===3?n.parentElement:n;if(!e||!e.closest)return true;if(e.closest("script,style,.hmsrc,.cmsg-tx,.cm-rt,.cm-rprev,.cm-rcprev-tx,.pv-ctx,#pv-title,#pv-text,#th-btn,#lang-btn,.ntf-title,.hmcm-t,.hmcm-au"))return true;return false}
 function procText(n){if(excluded(n))return;var v=n.nodeValue;if(v==null||!/[가-힣]/.test(v))return;var rec=TM.get(n);if(rec&&v===rec.en)return;var en=trStr(v);TM.set(n,{ko:v,en:en});if(LANG==="en"&&en!==v)n.nodeValue=en}
 function procAttrs(el){if(excluded(el))return;if(!el.getAttribute)return;var rec=AM.get(el);for(var i=0;i<ATTRS.length;i++){var a=ATTRS[i],v=el.getAttribute(a);if(v==null||!/[가-힣]/.test(v))continue;if(rec&&rec[a]&&v===rec[a].en)continue;var en=trStr(v);if(!rec)rec={};if(!rec[a]||rec[a].ko!==v)rec[a]={ko:v,en:en};AM.set(el,rec);if(LANG==="en"&&en!==v)el.setAttribute(a,en)}}
 function walk(node){
@@ -1826,6 +1840,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <div class="hnw">
 <div class="hmhd"><h2>실시간 뉴스</h2></div>
 <div id="hn-list"><div class="hmvempty">불러오는 중…</div></div>
+</div>
+<div class="hmcm">
+<div class="hmhd"><h2>커뮤니티 최신글</h2><button type="button" class="hmcm-more" id="hm-cm-more">더보기</button></div>
+<div id="hm-cm-list"><p class="cm-empty">아직 글이 없어요. 첫 글을 올려보세요.</p></div>
 </div>
 </section>
 <section id="pa" hidden>
@@ -2100,7 +2118,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <section id="pk" hidden>
 <div class="cm-top">
 <div class="cmbox cm-latest">
-<div class="cm-hd"><h2>최신글</h2><button type="button" class="cm-posts-btn" id="cm-posts-btn">게시물</button><button type="button" class="cm-wbtn" id="cm-write-btn" hidden>글쓰기</button><div class="cm-cat-pop" id="cm-cat-pop"><button type="button" data-cat="주식">주식</button><button type="button" data-cat="분석">분석</button><button type="button" data-cat="시황">시황</button></div></div>
+<div class="cm-hd"><h2>최신글</h2><button type="button" class="cm-posts-btn" id="cm-posts-btn">게시물</button><button type="button" class="cm-wbtn" id="cm-write-btn" hidden>글쓰기</button><div class="cm-cat-pop" id="cm-cat-pop"><button type="button" data-cat="자유">자유</button><button type="button" data-cat="주식">주식</button><button type="button" data-cat="시황">시황</button><button type="button" data-cat="질문">질문</button></div></div>
 <div class="cm-toolbar" id="cm-toolbar"><div class="cm-filters" id="cm-filters" role="group" aria-label="카테고리 필터"><button type="button" data-f="전체" aria-pressed="true">전체</button><button type="button" data-f="자유" aria-pressed="false">자유</button><button type="button" data-f="주식" aria-pressed="false">주식</button><button type="button" data-f="코인" aria-pressed="false">코인</button><button type="button" data-f="질문" aria-pressed="false">질문</button></div><select class="cm-sort" id="cm-sort" aria-label="정렬"><option value="latest">최신순</option><option value="popular">인기순</option><option value="comments">댓글순</option></select><button type="button" class="cm-catman-btn" id="cm-catman-btn" hidden>카테고리 관리</button></div>
 <div class="cm-gate" id="cm-gate" hidden><p>글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.</p><button type="button" class="cm-login" id="cm-login-btn">구글 로그인</button></div>
 <form class="cm-form" id="cm-form" hidden>
@@ -4027,6 +4045,7 @@ b.addEventListener("click",function(){openPost(p.key)});
 return b;
 }
 function renderLists(){
+renderHomePosts();
 if(!posts.length){emptyMsg(listEl,"아직 글이 없어요. 첫 글을 올려보세요.");return}
 var pins=getPinnedPosts();
 var vis=getVisiblePosts();
@@ -4040,6 +4059,48 @@ var sent=document.createElement("div");sent.id="cm-sent";sent.setAttribute("aria
 if(cmDisplay<vis.length||!postExhausted){var more=document.createElement("p");more.className="cm-more";more.textContent=postLoading?"이전 글을 불러오는 중…":"아래로 내리면 이전 글을 더 볼 수 있어요";listEl.appendChild(more)}
 cmObserveSent(sent);
 setTimeout(cmFillCheck,0);
+}
+/* 홈 탭 '커뮤니티 최신글' 박스(#hm-cm-list): 최신글 구독(posts, 작성 시각 최신순)이 갱신될
+   때마다 최신 4개를 한 줄 행(제목 · 작성자 · 상대 시간 · 댓글 수)으로 다시 그린다.
+   썸네일·HOT 배지·본문 미리보기는 이 박스 행에 넣지 않는다. '더보기'와 행 클릭은
+   커뮤니티 탭으로 옮기고, 행 클릭은 거기서 기존 글 팝업(openPost)까지 연다.
+   방어: 박스 렌더 전체와 행 하나하나를 각각 try로 감싼다 — 이 박스에서 예외가 나도
+   홈의 다른 요소와 커뮤니티 목록 렌더는 멈추지 않고, 한 행이 이상해도 나머지 행은
+   그대로 그려진다. 구독 오류가 나면 박스는 빈 상태 문구만 남긴다(hmCmEmpty) */
+var hmCmListEl=document.getElementById("hm-cm-list"),hmCmMoreBtn=document.getElementById("hm-cm-more");
+function hmCmEmpty(){
+try{
+if(!hmCmListEl)return;
+hmCmListEl.textContent="";
+var ep=document.createElement("p");ep.className="cm-empty";ep.textContent="아직 글이 없어요. 첫 글을 올려보세요.";hmCmListEl.appendChild(ep);
+}catch(e){}
+}
+function hmCmGoTab(){
+try{var tb=document.querySelector('#tabs button[data-t="pk"]');if(tb)tb.click()}catch(e){}
+}
+if(hmCmMoreBtn)hmCmMoreBtn.addEventListener("click",function(){hmCmGoTab()});
+function renderHomePosts(){
+try{
+if(!hmCmListEl)return;
+var top=(posts||[]).slice(0,4);
+if(!top.length){hmCmEmpty();return}
+hmCmListEl.textContent="";
+top.forEach(function(p){
+try{
+var b=document.createElement("button");b.type="button";b.className="hmcm-row";
+var t=document.createElement("span");t.className="hmcm-t";t.textContent=p.title||"(제목 없음)";b.appendChild(t);
+var m=document.createElement("span");m.className="hmcm-m";
+var au=document.createElement("span");au.className="hmcm-au";au.textContent=p.name||"익명";m.appendChild(au);
+var rt=relT(p.ts);if(rt){m.appendChild(document.createTextNode(" · "));var tsEl=document.createElement("span");tsEl.textContent=rt;m.appendChild(tsEl)}
+m.appendChild(document.createTextNode(" · "));
+var cl=document.createElement("span");cl.textContent="댓글";m.appendChild(cl);
+m.appendChild(document.createTextNode(" "+cmtN(p)));
+b.appendChild(m);
+b.addEventListener("click",function(){try{hmCmGoTab();openPost(p.key)}catch(e){}});
+hmCmListEl.appendChild(b);
+}catch(e){}
+});
+}catch(e){}
 }
 /* 박스 안 스크롤로 이어 불러오기 (펀딩비 탭 방식): 목록 박스(#cm-list)를 실제로 스크롤한 뒤에만
    무장되고, 박스 끝 센티넬이 하단 320px 안에 들어오면 다음 5개를 불러온다 */
@@ -4073,7 +4134,7 @@ postExhausted=arr.length<postLimit;
 postLoading=false;
 posts=arr;renderLists();if(!ov.hidden&&curKey){syncLikeUI();var _cp=postByKey(curKey);if(_cp){pvDel.hidden=!canDel(_cp);pvEdit.hidden=!canEdit(_cp);syncPinBtn(_cp);scheduleEditHide(_cp)}}
 };
-try{q.on("value",postCb,function(){postLoading=false;emptyMsg(listEl,"글을 불러오지 못했어요.")})}catch(e){postLoading=false;emptyMsg(listEl,"글을 불러오지 못했어요.")}
+try{q.on("value",postCb,function(){postLoading=false;emptyMsg(listEl,"글을 불러오지 못했어요.");try{hmCmEmpty()}catch(e2){}})}catch(e){postLoading=false;emptyMsg(listEl,"글을 불러오지 못했어요.");try{hmCmEmpty()}catch(e2){}}
 }
 function syncGate(){
 var logged=!!fbUser;
@@ -4715,6 +4776,10 @@ window.__kimpwonShowPosts=showPostsView;
 /* 다른 탭을 누르면 게시물 화면은 닫히고 그 탭 화면이 뜬다(기존 탭 전환 핸들러가 패널을 토글한다) */
 if(tabs)tabs.addEventListener("click",function(e){if(e.target.closest("button")&&ppSec){closePpWrite(true);ppSec.hidden=true}});
 tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.t==="pk")start()});
+/* 홈 탭 '커뮤니티 최신글' 박스가 있는 동안은 커뮤니티 탭을 열지 않아도 홈에서 최신 글이
+   바로 보이도록, 페이지가 열릴 때 기존 초기화를 그대로 시작한다(start는 한 번만 실제로
+   동작하므로 탭을 눌렀을 때의 동작은 달라지지 않는다) */
+if(hmCmListEl){try{start()}catch(e){}}
 })();
 </script>
 
@@ -6617,7 +6682,7 @@ setTimeout(function(){window.location.href=brand.href},650);
 });
 })();
 </script>
-<div class="pkdd" id="pkdd"><a href="#" id="pkdd-posts">게시물</a><a href="#" data-cat="주식">주식</a><a href="#" data-cat="분석">분석</a><a href="#" data-cat="시황">시황</a></div>
+<div class="pkdd" id="pkdd"><a href="#" id="pkdd-posts">게시물</a><a href="#" data-cat="자유">자유</a><a href="#" data-cat="주식">주식</a><a href="#" data-cat="시황">시황</a><a href="#" data-cat="질문">질문</a></div>
 <script>
 /* 커뮤니티 탭 호버 가로 바: 마우스 기기에서만 동작한다. 래퍼(커뮤니티 버튼)와
    바 중 어느 한쪽에라도 마우스가 있으면 열려 있고, 둘 다 벗어나면 닫힌다.
@@ -6654,7 +6719,7 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
 /* 가로 바 '게시물' 클릭: 별도 페이지로 이동하지 않고, 헤더·탭 줄은 그대로 둔 채
    내용 영역만 게시물 전체보기 화면으로 바꾼다(커뮤니티 모듈의 __kimpwonShowPosts).
    바의 호버 표시·위치·닫힘 지연은 위 스크립트 그대로 둔다.
-   '게시물'을 누르면 전체로 열고, 주식·분석·시황을 누르면 그 카테고리로
+   '게시물'을 누르면 전체로 열고, 자유·주식·시황·질문을 누르면 그 카테고리로
    걸러진 전체보기로 연다 */
 (function(){
 var dd=document.getElementById("pkdd");
@@ -6668,7 +6733,7 @@ if(dd)dd.querySelectorAll("a[data-cat]").forEach(function(sa){
 sa.addEventListener("click",function(e){e.preventDefault();openPosts(sa.dataset.cat||"전체")});
 });
 /* 모바일 전용 '게시물' 버튼(최신글 제목 줄, 글쓰기 바로 왼쪽): 누르면 버튼 줄
-   아래에 카테고리 칸(주식·분석·시황)이 펼쳐지고, 항목을 누르면 그
+   아래에 카테고리 칸(자유·주식·시황·질문)이 펼쳐지고, 항목을 누르면 그
    카테고리로 걸러진 게시물 전체보기 화면으로 전환한다. 칸이 열린 상태에서
    버튼을 한 번 더 누르면 칸이 닫히면서 게시물 전체보기(전체)로 이동한다.
    칸 바깥을 누르거나 다른 탭으로 이동하면 칸은 닫힌다 */
