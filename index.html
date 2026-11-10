@@ -1034,13 +1034,14 @@ main{padding:2px 12px 40px}
 .chat-state{flex:1;display:flex;align-items:center;justify-content:center;margin:0;padding:24px 20px;text-align:center;color:var(--mut);font-size:13px;line-height:1.55}
 .chat-state[hidden]{display:none}
 .cmsg{display:flex;gap:8px;align-items:flex-start}
-.cav{flex:none;width:36px;height:36px;border-radius:50%;background:var(--sf2);color:var(--mut);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;overflow:hidden}
-.cdate{align-self:center;font-size:11px;font-weight:600;color:var(--mut);background:var(--sf2);border-radius:999px;padding:3px 11px}
+.cav{flex:none;width:30px;height:30px;border-radius:50%;background:var(--sf2);color:var(--mut);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;overflow:hidden}
+.cdate{align-self:stretch;display:flex;align-items:center;gap:10px;font-size:12px;font-weight:400;color:var(--mut);background:none;border-radius:0;padding:0;margin:4px 0 0}
+.cdate::before,.cdate::after{content:"";flex:1;height:1px;background:var(--bd)}
 .cav img{width:100%;height:100%;object-fit:cover;display:block}
 .cmsg-main{flex:1;min-width:0}
 .cmsg-hd{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.cmsg-hd b{font-size:13px}
-.cmsg-tm{font-size:11px;color:var(--mut)}
+.cmsg-hd b{font-size:13.5px}
+.cmsg-tm{font-size:11.5px;color:var(--mut)}
 .cmsg-del{margin-left:auto;flex:none;border:1px solid var(--bd);background:none;color:var(--mut);border-radius:6px;font:inherit;font-size:11px;font-weight:600;padding:3px 8px;min-height:24px;cursor:pointer}
 .cmsg-tx{margin:1px 0 0;font-size:13.5px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
 .chat-ft{flex:none;border-top:1px solid var(--bd);padding:10px 10px calc(10px + env(safe-area-inset-bottom,0px))}
@@ -1060,29 +1061,33 @@ main{padding:2px 12px 40px}
    모바일에서는 최신글 → 채팅 순서로 세로로 쌓인다.
    채팅은 새 창이 아니라 기존 플로팅 채팅 패널을 오른쪽 칸으로 옮겨 보여 준다 */
 #pk{margin:0}
-.cm-top{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-bottom:12px}
+.cm-top{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-bottom:12px}
 .cm-chat{height:480px}
 @media(min-width:861px){.cm-top{grid-template-columns:minmax(0,1fr) 330px}.cm-chat{height:560px}.cm-latest{max-height:560px}}
-.chatpanel.inpage{position:static;width:100%;height:100%;border-radius:14px;box-shadow:none}
+.chatpanel.inpage{position:static;width:100%;height:100%;border-radius:16px;box-shadow:none}
 .chatpanel.inpage .chat-x{display:none}
-.chatpanel.inpage .chat-hd{padding:11px 14px}
-.chatpanel.inpage .chat-msgs{padding:12px 14px;gap:9px}
-.chatpanel.inpage .chat-ft{padding:10px 10px calc(10px + env(safe-area-inset-bottom,0px))}
+.chatpanel.inpage .chat-hd{padding:16px 16px 4px}
+.chatpanel.inpage .chat-hd b{font-size:16px;font-weight:800}
+.chatpanel.inpage .chat-msgs{padding:6px 16px 12px;gap:0}
+.chatpanel.inpage .cmsg{padding:7px 0}
+.chatpanel.inpage .chat-ft{padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.chatpanel.inpage .chat-form input{border-radius:10px}
 /* 커뮤니티 게시글 박스 (최신글): 색은 위쪽 '최신글' 제목 줄에만 입히고,
    아래 글 목록 부분은 페이지 배경(var(--bg))과 같은 색으로 둔다.
    채팅 칸과 높이를 맞추고(모바일 480px·데스크톱 560px) 목록은 박스 안에서 스크롤한다 */
 .cmbox{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:16px}
-.cm-latest{display:flex;flex-direction:column;max-height:480px;background:var(--bg);padding:0;overflow:hidden;border:0}
+.cm-latest{display:flex;flex-direction:column;max-height:480px;background:var(--sf);padding:0;overflow:hidden;border:1px solid var(--bd);border-radius:16px}
 .cm-latest .cm-hd,.cm-latest .cm-gate,.cm-latest .cm-form{flex:none}
-.cm-latest .cm-hd{background:var(--sf);padding:9px 14px;margin-bottom:0;border-bottom:0}
-.cm-latest .cm-gate,.cm-latest .cm-form{margin:0 16px;border-top:0}
-#cm-list{overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch;padding:4px 16px 12px;background:var(--bg)}
+.cm-latest .cm-hd{background:none;padding:18px 20px 0;margin-bottom:0;border-bottom:0}
+.cm-latest .cm-gate,.cm-latest .cm-form{margin:0 20px;border-top:0}
+#cm-list{overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch;padding:2px 20px 10px;background:none}
 .cm-more{margin:0;padding:12px 4px 2px;text-align:center;color:var(--mut);font-size:12px}
 #cm-sent{height:1px}
 .cm-hd{display:flex;align-items:center;gap:8px;margin-bottom:4px}
-.cm-hd h2{margin:0;font-size:15px;font-weight:700}
+.cm-hd h2{margin:0;font-size:18px;font-weight:800}
 .cm-empty{margin:0;padding:22px 4px;text-align:center;color:var(--mut);font-size:13px;line-height:1.55}
-.cm-wbtn{margin-left:auto;flex:none;min-height:36px;padding:7px 14px;border:0;border-radius:999px;background:var(--ac);color:var(--acx);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.cm-wbtn{margin-left:auto;flex:none;min-height:38px;padding:8px 18px;border:1px solid #24282e;border-radius:999px;background:#24282e;color:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+.cm-wbtn:active{opacity:.85}
 .cm-wbtn[hidden]{display:none}
 .cm-gate{margin-top:8px;border-top:1px solid var(--bd);padding-top:12px}
 .cm-gate[hidden]{display:none}
@@ -1119,30 +1124,30 @@ main{padding:2px 12px 40px}
 .cm-latest:has(> .cm-form:not([hidden])) #cm-list{flex:none;height:220px}
 /* 글 목록 행: 다른 모바일 커뮤니티와 같은 구조(최신글·게시물 전체보기 공용).
    제목 줄은 제목만으로 시작한다(카테고리 라벨·고정 '공지' 배지는 행에 표시하지 않음).
-   오늘 올라온 글이면 제목 바로 앞에 작은 초록 점, 댓글 1개 이상이면 제목 바로 뒤에 [N],
-   HOT 조건이면 뒤에 HOT 배지. 제목 아래에는 본문 첫 줄 미리보기(본문 있을 때만),
+   오늘 올라온 글이면 제목 바로 앞에 작은 초록 점, 댓글 1개 이상이면 제목 바로 뒤에 [N].
+   HOT 배지는 표시하지 않는다(판정·정렬 동작만 유지). 제목 아래에는 본문 첫 줄 미리보기(본문 있을 때만),
    그 아래 메타 줄은 작성자 · 상대 시간 · 조회 N · 좋아요 N을 작은 회색 글씨로(댓글 표기는 [N]으로 대체),
    댓글이 있으면 메타 아래에 최근 댓글 한 줄 미리보기를 붙인다.
    썸네일은 첨부 사진이 있는 글만 행 왼쪽 앞(제목 자리)에 붙이고, 없으면 썸네일·아바타 자리를
    만들지 않아 제목이 왼쪽 끝부터 시작한다. 삭제 같은 관리 버튼은 행에 두지 않는다
    (삭제는 글 팝업 안의 삭제 버튼으로만, 확인 절차 포함) */
-.cm-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--bd);background:none;color:var(--tx);font:inherit;padding:6px 2px;cursor:pointer}
+.cm-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--bd);background:none;color:var(--tx);font:inherit;padding:10px 2px 11px;cursor:pointer}
 .cm-row:last-child{border-bottom:0}
 .cm-th{position:relative;flex:none;width:44px;height:44px;border-radius:6px;overflow:hidden}
 .cm-th img{width:100%;height:100%;object-fit:cover;display:block}
 .cm-thn{position:absolute;right:3px;bottom:3px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:rgba(0,0,0,.65);color:#fff;font-size:11px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center}
 .cm-rmain{flex:1;min-width:0}
-.cm-rt{display:block;font-size:15px;font-weight:600;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-/* 제목 바로 뒤 댓글 수 [N]: 댓글 많은 글이 한눈에 띄게 강조색으로 */
-.cm-rcnt{flex:none;font-size:13.5px;font-weight:700;color:var(--up)}
-.cm-rv{display:block;margin-top:3px;font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cm-rt{display:block;font-size:15.5px;font-weight:700;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 제목 바로 뒤 댓글 수 [N]: 색 없는 일반 텍스트로 둔다 */
+.cm-rcnt{flex:none;font-size:13.5px;font-weight:700;color:inherit}
+.cm-rv{display:block;margin-top:3px;font-size:12.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* 오늘 올라온 글 표시: 제목 바로 앞에 붙는 작은 초록 점(사이트 포인트 색) */
 .cm-ndot{flex:none;width:7px;height:7px;border-radius:50%;background:var(--ok)}
 /* 본문 미리보기: 제목 줄 아래·메타 줄 위에 본문 첫 줄 한 줄만, 흐린 회색 작은 글씨(넘치면 말줄임) */
-.cm-rprev{display:block;margin-top:3px;font-size:12.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cm-rprev{display:block;margin-top:3px;font-size:13.5px;color:var(--mut);opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* 최근 댓글 미리보기: 메타 줄 아래 한 줄(넘치면 말줄임). 라벨만 살짝 굵게 */
-.cm-rcprev{display:block;margin-top:3px;font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cm-rcprev b{font-weight:700}
+.cm-rcprev{display:block;margin-top:3px;font-size:12.5px;color:var(--mut);opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cm-rcprev b{font-weight:600;opacity:1}
 /* 글 보기 팝업: 로그인 팝업(.lgov/.lgbox)과 같은 틀, 본문만 더 넓고 길게.
    좋아요·댓글까지 들어가 팝업 전체가 화면 높이를 넘지 않게 카드 안에서 스크롤한다 */
 .pvbox{max-width:560px;max-height:calc(100dvh - 32px);overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -1191,23 +1196,23 @@ main{padding:2px 12px 40px}
 .pv-cerr[hidden]{display:none}
 /* 커뮤니티 카테고리·정렬·HOT·대댓글 (기존 변수만 사용) */
 .cm-latest .cm-toolbar{flex:none}
-.cm-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 16px 2px;background:var(--bg)}
-.cm-filters{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
-.cm-filters button{min-height:32px;padding:5px 12px;border:1px solid var(--bd);background:var(--sf);color:var(--mut);border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.cm-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:14px 20px 6px;background:none}
+.cm-filters{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
+.cm-filters button{min-height:36px;padding:7px 15px;border:1px solid var(--bd);background:var(--sf2);color:var(--mut);border-radius:999px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
 .cm-filters button[aria-pressed="true"]{background:var(--ac);color:var(--acx);border-color:var(--ac)}
-.cm-sort{margin-left:auto;flex:none;min-height:32px;padding:5px 9px;border:1px solid var(--bd);border-radius:999px;background:var(--sf);color:var(--tx);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.cm-sort{margin-left:auto;flex:none;min-height:36px;padding:5px 12px;border:1px solid var(--bd);border-radius:999px;background:var(--sf);color:var(--tx);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
 @media(max-width:520px){.cm-sort{margin-left:0}}
 /* 글쓰기 폼의 카테고리 선택: 목록 필터 칩 줄과 겹쳐 보이지 않게 칩이 아니라
    한 줄짜리 드롭다운(select)으로 둔다. 라벨과 나란히 놓고 입력칸과 같은 높이·모양으로 맞춘다 */
 .cm-fcatrow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .cm-fcatlb{flex:none;font-size:13px;font-weight:600;color:var(--mut)}
 .cm-fcatsel{flex:1;min-width:0;min-height:42px;padding:9px 12px;border:1px solid var(--bd);border-radius:9px;background:var(--sf);color:var(--tx);font:inherit;font-size:14px;font-weight:500;cursor:pointer}
-.cm-tline{display:flex;align-items:center;gap:6px;min-width:0}
+.cm-tline{display:flex;align-items:center;gap:7px;min-width:0}
 .cm-tline .cm-rt{flex:1 1 auto;min-width:0}
 .cm-cat{flex:none;font-size:11px;font-weight:700;color:var(--mut);background:var(--sf2);border:1px solid var(--bd);border-radius:5px;padding:1px 6px;line-height:1.5;white-space:nowrap}
 .cm-hot{flex:none;font-size:10.5px;font-weight:800;color:#fff;background:var(--up);border-radius:5px;padding:2px 6px;letter-spacing:.04em;line-height:1.3}
 /* 운영자 전용: 카테고리 관리 버튼·팝업, 고정(공지) 글 */
-.cm-catman-btn{flex:none;min-height:32px;padding:5px 12px;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:999px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.cm-catman-btn{flex:none;min-height:36px;padding:5px 12px;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:999px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .cm-catman-btn[hidden]{display:none}
 .cm-pinbdg{flex:none;font-size:10.5px;font-weight:800;color:var(--acx);background:var(--ac);border-radius:5px;padding:2px 6px;letter-spacing:.04em;line-height:1.3}
 .catbox{max-width:400px;max-height:calc(100dvh - 32px);overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -1511,9 +1516,9 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    버튼의 getBoundingClientRect 기준으로 잡는다. 터치 기기에서는 절대 뜨지 않는다.
    색은 기존 테마 변수만 써서 라이트/다크 모두에서 깨지지 않게 한다 */
 .pkdd-wrap{position:relative;display:inline-flex;align-items:stretch;flex:none}
-.pkdd{display:none;position:fixed;z-index:200;background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 10px 28px var(--adsh);padding:6px;flex-direction:row;align-items:center;gap:4px}
-.pkdd a{display:inline-flex;align-items:center;justify-content:center;padding:9px 16px;text-align:center;color:var(--tx);text-decoration:none;font:inherit;font-size:14.5px;font-weight:700;border-radius:8px;white-space:nowrap;flex:none}
-.pkdd a:hover{background:var(--sf2)}
+.pkdd{display:none;position:fixed;z-index:200;background:#1a1e24;border:1px solid #2a2f36;border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.45);padding:8px 10px;flex-direction:row;align-items:center;gap:6px}
+.pkdd a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 16px;text-align:center;color:#fff;text-decoration:none;font:inherit;font-size:15.5px;font-weight:700;border-radius:10px;white-space:nowrap;flex:none}
+.pkdd a:hover{background:rgba(255,255,255,.06)}
 @media (hover:hover) and (pointer:fine){.pkdd.open{display:flex}}
 </style>
 <style>
@@ -1521,15 +1526,15 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    커뮤니티 탭 호버 드롭다운의 '게시물'을 누르면 헤더·탭 줄은 그대로 둔 채
    내용 영역만 이 화면으로 바뀐다. 목록은 박스 안 스크롤이 아니라 페이지 흐름을
    그대로 쓰고, 행 모양은 커뮤니티 최신글과 같은 .cm-row를 그대로 쓴다 */
-.pp-box{padding:0;overflow:hidden;background:none;border:0;border-radius:0}
+.pp-box{padding:0;overflow:hidden;background:var(--sf);border:1px solid var(--bd);border-radius:16px}
 .pp-box .cm-row.pin{background:none}
-.pp-box .cm-hd{padding:13px 16px 5px;margin-bottom:0}
-.pp-box .cm-toolbar{background:none;padding:8px 16px 6px}
+.pp-box .cm-hd{padding:18px 20px 0;margin-bottom:0}
+.pp-box .cm-toolbar{background:none;padding:14px 20px 6px}
 .pp-box .cm-filters[hidden]{display:none}
 /* 카테고리 화면에서 그 자리로 옮겨 온 글쓰기 폼: 제목·목록과 같은 양옆 여백으로 맞춘다 */
-.pp-box .cm-form{margin:2px 16px 12px}
-#pp-list{padding:2px 16px 8px}
-.pp-morebtn{display:block;width:calc(100% - 32px);margin:2px 16px 16px;min-height:44px;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--sf2);color:var(--tx);font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
+.pp-box .cm-form{margin:2px 20px 12px}
+#pp-list{padding:2px 20px 10px}
+.pp-morebtn{display:block;width:calc(100% - 40px);margin:2px 20px 16px;min-height:44px;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--sf2);color:var(--tx);font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
 .pp-morebtn:hover{background:var(--sf)}
 .pp-morebtn[hidden]{display:none}
 /* ===== 모바일 전용 '게시물' 버튼 (2026-11-09) =====
@@ -1546,10 +1551,15 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    넘지 않게 하고, 같은 배경·테두리·그림자로 데스크톱 가로 바와 톤을
    맞춰 버튼 줄과 한 덩어리처럼 이어져 보이게 한다 */
 .cm-latest .cm-hd{position:relative}
-.cm-cat-pop{position:absolute;top:calc(100% + 4px);left:12px;right:12px;z-index:80;background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 10px 28px var(--adsh);padding:7px 6px;flex-direction:row;align-items:center;gap:4px}
+.cm-cat-pop{position:absolute;top:calc(100% + 4px);left:12px;right:12px;z-index:80;background:#1a1e24;border:1px solid #2a2f36;border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.45);padding:6px;flex-direction:row;align-items:center;gap:2px}
 .cm-cat-pop.open{display:flex}
-.cm-cat-pop button{flex:1 1 0;min-width:0;padding:9px 4px;text-align:center;white-space:nowrap;background:none;border:0;border-radius:8px;color:var(--tx);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
-.cm-cat-pop button:hover,.cm-cat-pop button:active{background:var(--sf2)}
+.cm-cat-pop button{flex:1 1 0;min-width:0;min-height:38px;padding:8px 11px;text-align:center;white-space:nowrap;background:none;border:0;border-radius:10px;color:#fff;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
+.cm-cat-pop button:hover,.cm-cat-pop button:active{background:rgba(255,255,255,.06)}
+/* 최신글 카드 모바일 여백: 미리보기 posts-card(16px 14px) 기준 */
+.cm-latest .cm-hd{padding:16px 14px 0}
+.cm-latest .cm-toolbar{padding:12px 14px 6px}
+#cm-list{padding:2px 14px 8px}
+.cm-latest .cm-gate,.cm-latest .cm-form{margin:0 14px}
 /* 게시물 전체보기 모바일: 카테고리 칩 줄은 줄바꿈되고, 글 행은 가로로 넘치지 않는다 */
 .pp-box .cm-toolbar{flex-wrap:wrap}
 .pp-box .cm-filters{flex-wrap:wrap;flex:1 1 auto;min-width:0}
@@ -1560,11 +1570,11 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pp-list{overflow-x:hidden}
 }
 @media(max-width:520px){
-.pp-box .cm-hd{padding-left:12px;padding-right:12px}
-.pp-box .cm-toolbar{padding-left:12px;padding-right:12px}
-#pp-list{padding-left:12px;padding-right:12px}
-.pp-box .cm-form{margin-left:12px;margin-right:12px}
-.pp-morebtn{width:calc(100% - 24px);margin-left:12px;margin-right:12px}
+.pp-box .cm-hd{padding-left:14px;padding-right:14px}
+.pp-box .cm-toolbar{padding-left:14px;padding-right:14px}
+#pp-list{padding-left:14px;padding-right:14px}
+.pp-box .cm-form{margin-left:14px;margin-right:14px}
+.pp-morebtn{width:calc(100% - 28px);margin-left:14px;margin-right:14px}
 .pp-box .cm-row{gap:8px}
 }
 </style>
@@ -4011,13 +4021,13 @@ var b=document.createElement("button");b.type="button";b.className=pinned?"cm-ro
 var main=document.createElement("span");main.className="cm-rmain";
 /* 첫째 줄: 제목만으로 시작한다. 카테고리 라벨(질문·자유 등)과 고정 글의 '공지' 배지는
    목록 행에 표시하지 않는다(2026-11-09 지시 — 필터 칩·카테고리 기능·고정 동작은 유지).
-   댓글 1개 이상이면 제목 바로 뒤에 [N], HOT 조건이면 HOT 배지를 붙인다 */
+   댓글 1개 이상이면 제목 바로 뒤에 [N]을 붙인다. HOT 배지는 표시하지 않는다
+   (HOT 판정·인기순 정렬 동작 자체는 유지하고 렌더링에서만 뺀다) */
 var tl=document.createElement("span");tl.className="cm-tline";
 /* 오늘 올라온 글이면 제목 바로 앞에 작은 초록 점을 붙인다(어제 이전 글에는 붙이지 않음) */
 if(isTodayPost(p.ts)){var nd=document.createElement("span");nd.className="cm-ndot";nd.setAttribute("aria-hidden","true");tl.appendChild(nd)}
 var t=document.createElement("span");t.className="cm-rt";t.textContent=p.title||"(제목 없음)";tl.appendChild(t);
 if(cmtN(p)>=1){var cc=document.createElement("span");cc.className="cm-rcnt";cc.textContent="["+cmtN(p)+"]";tl.appendChild(cc)}
-if(cmtN(p)>=3||likeN(p)>=3){var hot=document.createElement("span");hot.className="cm-hot";hot.textContent="HOT";tl.appendChild(hot)}
 main.appendChild(tl);
 /* 본문 미리보기: 제목 줄 아래·메타 줄 위에 본문 첫 줄 한 줄(본문이 비어 있는 글은 이 줄을 만들지 않는다) */
 var bp=bodyFirstLine(p.body);
