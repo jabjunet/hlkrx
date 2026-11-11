@@ -1363,6 +1363,76 @@ body.cm-on .kcpanel{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .legalbox-bd .ctlist .ctlbl{font-size:14px;font-weight:700;flex:none}
 .legalbox-bd .ctlist .cturl{font-size:12.5px;color:var(--mut);word-break:break-all;text-align:right}
 @media(max-width:520px){.legalov{padding:0;align-items:flex-end}.legalbox{max-width:none;max-height:92dvh;border-radius:16px 16px 0 0;border-bottom:0}}
+/* 모바일 글자·칸 크기 통일(2026-11-11): 화면마다 제각각이던 글자 크기와 셀 여백을 한 단계로 맞추고 전체적으로 조금 작게.
+   기준 단계: 본문 12.5px · 보조 11px · 작은 라벨 10px · 가격 강조 15.5px · 표 머리글 11px.
+   스타일 맨 끝에 두어 기존 모바일 규칙과 특이성이 같을 때 이 블록이 실제로 이기게 한다 */
+@media(max-width:720px){
+body{font-size:13px}
+h1{font-size:20px}
+h2{font-size:15px}
+.sub{font-size:12px}
+.tabs button{font-size:14.5px}
+.note{font-size:11.5px}
+.pair button{font-size:12.5px}
+.sum b,.xsum b{font-size:16px}
+th,td{font-size:12.5px}
+thead th{font-size:11px}
+td small{font-size:11px}
+/* 김프 표 */
+.kp td{letter-spacing:-.01em}
+.kp td b{font-size:13px}
+.kp .l{font-size:11px}
+.kp td .cln .cvv{font-size:13.5px}
+.pcv{font-size:14px}
+/* 해외 목록 */
+#pb .phd>div{font-size:11px}
+#pb .prow>div{font-size:12.5px;letter-spacing:-.01em}
+#pb .prow .pv{font-size:15.5px}
+#pb .nm small{font-size:11px}
+/* 펀딩비 목록 */
+#pf .phd>div{font-size:11px}
+#pf .prow>div{font-size:12.5px}
+#pf .fv2{font-size:12px}
+#pf .fper{font-size:10.5px}
+#pf .fapr{font-size:10px}
+#pf .nm b{font-size:12.5px}
+#pf .nm small{font-size:11px}
+/* 종목 아래 붙는 차트의 머리글·범례 글자 */
+.nchd{font-size:11px}
+.nchd b{font-size:11.5px}
+.cmp-lwclg{font-size:11px}
+.tvhint{font-size:11.5px}
+.tvmsg{font-size:12.5px}
+.tvmsg b{font-size:14px}
+}
+@media(max-width:520px){
+.tabs button{font-size:13.5px}
+/* 김프 표: 두 줄 행의 글자 크기와 자간을 한 단계로 */
+.kp7 th{font-size:10.5px}
+.kp7 td{font-size:11.5px}
+.kp7 td b{font-size:13px}
+.kp7 .nm b{font-size:12.5px}
+.kp7 .l{font-size:10.5px}
+.kp7 td .cln .cvv{font-size:11.5px}
+.kp7 .pcv{font-size:12.5px}
+.kp7 .cln .cb{font-size:9px;padding:1px 4px}
+.kp7 td:nth-child(n+4){font-size:10.5px;letter-spacing:-.03em}
+.kp7 td:nth-child(n+4) b{font-size:10.5px}
+.kp7 td:nth-child(n+4)::before{font-size:9px}
+.kp7 td:nth-child(4) .pill{font-size:10.5px}
+.kp7 .pill{font-size:11px}
+.msort span{font-size:11px}
+.msort button{font-size:11.5px}
+/* 해외 목록: 셀 여백·글자 통일 */
+#pb .phd>div{padding:6px 6px;font-size:11px}
+#pb .prow>div{padding:6px 6px;font-size:11.5px}
+#pb .nm b{font-size:12px}
+#pb .prow .pv{font-size:15px}
+#pb .prow .xdf,#pb .prow .hlw{font-size:9.5px;letter-spacing:-.03em}
+/* 펀딩비 목록: 셀 여백 통일 */
+#pf .phd>div{padding:6px 6px}
+#pf .prow>div{padding:6px 6px;font-size:11.5px}
+}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
@@ -1439,6 +1509,26 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .c{border-radius:16px}
 .sum div,.xsum div{border-radius:14px}
 .cmp-cell{border-radius:14px}
+}
+/* 모바일 글자 크기 한 단계 축소·통일(2026-11-11 추가): 위 리디자인 규칙과 같은 선택자로 뒤에서 덮어
+   탭·히어로·지수 타일·김프 표의 큰 글자들을 조금씩 작게 내리고, 표 행 세로 여백을 9px로 맞춘다 */
+@media(max-width:720px){
+.hd .tabs button{font-size:14px}
+.m-hero-t{font-size:30px}
+.m-hero-sub{font-size:13.5px}
+.m-hero-chips span{font-size:12px}
+#ph .ixt small{font-size:12px}
+#ph .ixt b{font-size:clamp(20px,6vw,25px)}
+#ph .ixt .ixc{font-size:12px}
+#ph .hmhd h2{font-size:16px}
+#ph .hnwr .nt1{font-size:13.5px}
+#ph .hnghd{font-size:12px}
+#ph .herow .he1 b{font-size:13.5px}
+#ph .herow .he2{font-size:12px}
+#pa .kp7 .pcv{font-size:15.5px}
+#pa .kp7 td b{font-size:14px}
+#pa .kp7 td:nth-child(3) .pill{font-size:12px}
+#pf .prow>div{padding-top:9px;padding-bottom:9px}
 }
 @media(max-width:720px) and (prefers-reduced-motion:reduce){
 .hd .tabs button{transition:none}
@@ -1891,7 +1981,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </div>
 </section>
 <section id="pa" hidden>
-<div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button><button data-m="us" aria-pressed="false">해외 주식</button></div><div class="mhours" role="note" aria-label="장 운영 시간 안내">
+<div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button></div><div class="mhours" role="note" aria-label="장 운영 시간 안내">
 <div class="mhrow" id="mh-rkr"><span class="mhdot" id="mh-krd" aria-hidden="true"></span><b>국장</b><span>프리 08:00–08:50 · 정규 09:00–15:30 · 애프터 15:40–20:00</span><span class="mhst" id="mh-krs"></span></div>
 <div class="mhrow" id="mh-rus" hidden><span class="mhdot" id="mh-usd" aria-hidden="true"></span><b>미장</b><span id="mh-ust">프리 18:00–23:30 · 정규 23:30–06:00 · 애프터 06:00–10:00</span><span class="mhst" id="mh-uss"></span></div>
 <p class="mhnt"><span id="mh-nkr">한국 시간 기준 · 국내 프리·애프터는 넥스트레이드(NXT) 포함</span><span id="mh-nus" hidden>한국 시간 기준 · 미장은 서머타임 자동 반영</span></p>
@@ -3191,7 +3281,7 @@ var slot=pw/cs.length,bw=Math.max(1,Math.min(9,slot*0.62)),out="";
 out+='<rect x="0" y="0" width="'+W+'" height="'+H+'" style="fill:var(--sf)"/>';
 for(i=0;i<=4;i++){var v=mn+(mx-mn)*i/4,y=Y(v);
 out+='<line x1="'+padL+'" y1="'+y.toFixed(1)+'" x2="'+(padL+pw)+'" y2="'+y.toFixed(1)+'" style="stroke:var(--bd)" stroke-width="1"/>';
-out+='<text x="'+(padL+pw+6)+'" y="'+(y+4).toFixed(1)+'" style="fill:var(--mut);font-size:11px">'+f(v,dec)+'</text>'}
+out+='<text x="'+(padL+pw+6)+'" y="'+(y+4).toFixed(1)+'" style="fill:var(--mut);font-size:10px">'+f(v,dec)+'</text>'}
 var last=cs[cs.length-1],ly=Y(last.c);
 out+='<line x1="'+padL+'" y1="'+ly.toFixed(1)+'" x2="'+(padL+pw)+'" y2="'+ly.toFixed(1)+'" style="stroke:var(--mut)" stroke-width="1" stroke-dasharray="4 3"/>';
 for(i=0;i<cs.length;i++){var c=cs[i],x=padL+slot*i+slot/2,up=c.c>=c.o,col=up?"var(--up)":"var(--dn)";
@@ -3200,7 +3290,7 @@ var y1=Y(Math.max(c.o,c.c)),y2=Y(Math.min(c.o,c.c));
 out+='<rect x="'+(x-bw/2).toFixed(1)+'" y="'+y1.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+Math.max(1,y2-y1).toFixed(1)+'" style="fill:'+col+'"/>'}
 var seen={};
 [0,Math.floor(cs.length/3),Math.floor(2*cs.length/3),cs.length-1].forEach(function(ix){if(seen[ix])return;seen[ix]=1;var x=padL+slot*ix+slot/2;
-out+='<text x="'+Math.min(Math.max(x-12,padL),padL+pw-24).toFixed(1)+'" y="'+(H-4)+'" style="fill:var(--mut);font-size:11px">'+ncFmtT(cs[ix].t)+'</text>'});
+out+='<text x="'+Math.min(Math.max(x-12,padL),padL+pw-24).toFixed(1)+'" y="'+(H-4)+'" style="fill:var(--mut);font-size:10px">'+ncFmtT(cs[ix].t)+'</text>'});
 return '<svg class="ncsvg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="가격 차트" style="display:block;border:1px solid var(--bd);border-radius:6px">'+out+'</svg>'}
 var NCW=[];
 function ncDrawSvg(w){
@@ -5189,7 +5279,7 @@ function X(i2){return lineMode?padL+pw*(n===1?0:i2/(n-1)):padL+slot*i2+slot/2}
 var out='<rect x="0" y="0" width="'+W+'" height="'+H+'" style="fill:var(--sf)"/>';
 for(i=0;i<=4;i++){var v=mn+(mx-mn)*i/4,y=Y(v);
 out+='<line x1="'+padL+'" y1="'+y.toFixed(1)+'" x2="'+(padL+pw)+'" y2="'+y.toFixed(1)+'" style="stroke:var(--bd)" stroke-width="1"/>';
-out+='<text x="'+(padL+pw+6)+'" y="'+(y+4).toFixed(1)+'" style="fill:var(--mut);font-size:11px">'+f(v,dec)+'</text>'}
+out+='<text x="'+(padL+pw+6)+'" y="'+(y+4).toFixed(1)+'" style="fill:var(--mut);font-size:10px">'+f(v,dec)+'</text>'}
 var col=(view[n-1].c>=view[0].o)?"var(--up)":"var(--dn)";
 if(lineMode){
 var pts="",step=Math.max(1,Math.floor(n/900));
@@ -5205,12 +5295,12 @@ var y1=Y(Math.max(c.o,c.c)),y2=Y(Math.min(c.o,c.c));
 out+='<rect x="'+(x-bw/2).toFixed(1)+'" y="'+y1.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+Math.max(1,y2-y1).toFixed(1)+'" style="fill:'+cc+'"/>'}}
 if(listT){var lx=X(n-1);
 out+='<line x1="'+lx.toFixed(1)+'" y1="'+padT+'" x2="'+lx.toFixed(1)+'" y2="'+(padT+ph)+'" style="stroke:var(--warn)" stroke-width="1" stroke-dasharray="4 3"/>';
-out+='<text x="'+(lx-5).toFixed(1)+'" y="'+(padT+11)+'" text-anchor="end" style="fill:var(--warn);font-size:11px;font-weight:700">선물 상장일</text>'}
+out+='<text x="'+(lx-5).toFixed(1)+'" y="'+(padT+11)+'" text-anchor="end" style="fill:var(--warn);font-size:10px;font-weight:700">선물 상장일</text>'}
 var spanD=(view[n-1].t-view[0].t)/86400000;
 function fmtD(t){var d=new Date(t+9*3600*1000);if(spanD>1100)return d.getUTCFullYear()+"년";if(spanD>400)return d.getUTCFullYear()+"-"+hP2(d.getUTCMonth()+1);return (d.getUTCMonth()+1)+"/"+d.getUTCDate()}
 var seen={};
 [0,Math.floor(n/3),Math.floor(2*n/3),n-1].forEach(function(ix){if(seen[ix])return;seen[ix]=1;var x=X(ix);
-out+='<text x="'+Math.min(Math.max(x-14,padL),padL+pw-30).toFixed(1)+'" y="'+(H-4)+'" style="fill:var(--mut);font-size:11px">'+fmtD(view[ix].t)+'</text>'});
+out+='<text x="'+Math.min(Math.max(x-14,padL),padL+pw-30).toFixed(1)+'" y="'+(H-4)+'" style="fill:var(--mut);font-size:10px">'+fmtD(view[ix].t)+'</text>'});
 out+='<g class="hxg" style="display:none"><line class="hxl" y1="'+padT+'" y2="'+(padT+ph)+'" style="stroke:var(--mut)" stroke-width="1" stroke-dasharray="3 3"/><circle class="hxc" r="3.5" style="fill:var(--tx)"/></g>';
 return{svg:'<svg class="hsvg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="선물 상장 전 실제 주식 일봉 차트" style="display:block;border:1px solid var(--bd);border-radius:6px">'+out+'</svg>',geo:{padL:padL,padT:padT,pw:pw,ph:ph,mn:mn,mx:mx,lineMode:lineMode,slot:slot}}}
 function histPaint(w){
@@ -5305,7 +5395,7 @@ w.innerHTML="";
    minBarSpacing을 0.01로 낮춰 전체 구간을 한 화면에 담을 수 있게 하고,
    maxBarSpacing을 1000으로 올려 한계 없이 깊이 확대할 수 있게 푼다(v5 전용 옵션).
    모바일 핀치 확대(handleScale.pinch)와 휠 확대는 명시적으로 켜 둔다. */
-var chart=LightweightCharts.createChart(w,{autoSize:true,layout:{background:{type:"solid",color:th.bg},textColor:th.mut,fontSize:11},grid:{vertLines:{color:th.bd},horzLines:{color:th.bd}},rightPriceScale:{borderColor:th.bd},timeScale:{borderColor:th.bd,timeVisible:!!opt.intra,secondsVisible:false,minBarSpacing:0.01,maxBarSpacing:1000},crosshair:{vertLine:{labelBackgroundColor:th.mut},horzLine:{labelBackgroundColor:th.mut}},handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:true},handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:{time:true,price:true},axisDoubleClickReset:{time:true,price:true}},kineticScroll:{touch:true,mouse:false}});
+var chart=LightweightCharts.createChart(w,{autoSize:true,layout:{background:{type:"solid",color:th.bg},textColor:th.mut,fontSize:10},grid:{vertLines:{color:th.bd},horzLines:{color:th.bd}},rightPriceScale:{borderColor:th.bd},timeScale:{borderColor:th.bd,timeVisible:!!opt.intra,secondsVisible:false,minBarSpacing:0.01,maxBarSpacing:1000},crosshair:{vertLine:{labelBackgroundColor:th.mut},horzLine:{labelBackgroundColor:th.mut}},handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:true},handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:{time:true,price:true},axisDoubleClickReset:{time:true,price:true}},kineticScroll:{touch:true,mouse:false}});
 var ser=(typeof chart.addSeries==="function"&&LightweightCharts.CandlestickSeries)?chart.addSeries(LightweightCharts.CandlestickSeries,{upColor:th.up,downColor:th.dn,borderUpColor:th.up,borderDownColor:th.dn,wickUpColor:th.up,wickDownColor:th.dn}):chart.addCandlestickSeries({upColor:th.up,downColor:th.dn,borderUpColor:th.up,borderDownColor:th.dn,wickUpColor:th.up,wickDownColor:th.dn});
 var data=lwcData(cs);
 ser.setData(data);
