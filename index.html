@@ -801,7 +801,14 @@ main{padding:2px 12px 40px}
 @media(max-width:720px){#pf .frow .srch{flex-basis:45%}}
 #pf .fcell{display:inline-block;padding:0 3px;margin:0 -3px;border-radius:4px}
 @keyframes ffl{0%{background:var(--sf2)}100%{background:transparent}}
-@media (prefers-reduced-motion:no-preference){#pf .fcell.fchg{animation:ffl 1.4s ease-out}}
+@media (prefers-reduced-motion:no-preference){#pf .fcell.fchg{animation:ffl .6s ease-out}}
+/* 갱신 체감 표시: 값이 실제로 바뀐 숫자에만 붙는 은은한 배경 반짝임 (김프 표 셀·홈 펀딩비 순위 값 공용).
+   배경만 잠깐 빛났다 사라져 상승 빨강·하락 파랑 글자색과는 충돌하지 않는다 */
+@media (prefers-reduced-motion:no-preference){.vfl{animation:ffl .6s ease-out}}
+.hmfrow .hmfval{border-radius:4px;padding:0 3px;margin:0 -3px}
+/* 원자재 탭 기준 라벨: 국내 고시/국제 실시간처럼 시세 기준을 또렷하게 알리는 작은 칩 */
+.mtlab{display:inline-block;font-size:11px;font-weight:600;color:var(--mut);border:1px solid var(--bd);border-radius:999px;padding:2px 8px;line-height:1.5}
+.mtlabrow{margin:0 0 6px}
 #pf .phd,#pf .prow{display:grid;grid-template-columns:28% 18% 18% 18% 18%;align-items:center;width:100%}
 #pf .phd{position:sticky;top:0;z-index:3;background:var(--sf2);box-shadow:inset 0 -1px 0 var(--bd)}
 /* 펀딩비 종목 목록 전용 내부 스크롤: 화면 전체가 아니라 이 박스 안에서만 종목이 스크롤된다.
@@ -1796,7 +1803,7 @@ var D={
 "금 (GOLD)":"Gold (GOLD)","은 (SILVER)":"Silver (SILVER)","구리 (COPPER)":"Copper (COPPER)","유가 (WTI 원유)":"Oil (WTI Crude)",
 "국제 현물 · 트로이온스(oz) 기준 · gold-api.com":"Intl spot · per troy ounce (oz) · gold-api.com","국제 현물 · 파운드(lb) 기준 · gold-api.com":"Intl spot · per pound (lb) · gold-api.com","국제 선물 · 배럴(bbl) 기준 · NYMEX WTI":"Intl futures · per barrel (bbl) · NYMEX WTI",
 "국내시세 출처: 한국금거래소 고시 · 2026-11-11":"Domestic prices: Korea Gold Exchange notice · 2026-11-11","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 9월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Sep 2026 (monthly notice)",
-"유가는 국내 고시 가격이 없어 김프를 표시하지 않습니다. 국제 시세(WTI) 기준입니다.":"Oil has no domestic posted price, so no Kimchi Premium is shown. Based on international (WTI) prices.",
+"유가는 국내 고시 가격이 없어 김프를 표시하지 않습니다. 국제 시세(WTI) 기준입니다.":"Oil has no domestic posted price, so no Kimchi Premium is shown. Based on international (WTI) prices.","국내 고시 기준 · 하루 1회 갱신":"Domestic official price · updated daily","국제 실시간 시세":"Global live price",
 "김프 (국내 vs 국제 환산)":"Kimchi Prem. (Domestic vs Intl)","국내 유통가 (1kg)":"Domestic price (1kg)","국제 환산가 (1kg)":"Intl converted price (1kg)","국내 살 때 (1돈)":"Domestic buy (1 don)","국내 팔 때 (1돈)":"Domestic sell (1 don)","국제 원화 환산 (1배럴)":"Intl conversion (1 barrel)","당일 고가 (1배럴)":"Day high (1 barrel)","당일 저가 (1배럴)":"Day low (1 barrel)","국내 · 1kg":"Domestic · 1kg","국제 환산 · 1kg":"Intl conv. · 1kg","국내 · 팔 때 1돈":"Domestic · Sell 1 don","국제 환산 · 1돈":"Intl conv. · 1 don",
 "김프 = (국내 가격 ÷ 국제 환산가 − 1) × 100":"Kimchi Prem. = (Domestic price ÷ Intl converted price − 1) × 100","+면 국내가 더 비싸고, −면 국내가 더 쌉니다.":"Positive means the domestic price is higher; negative means it is cheaper.",
 "펀딩비 비교":"Funding Rates","펀딩비 불러오는 중…":"Loading funding rates…","실시간 펀딩비 순위":"Live Funding Rate Rankings","비교 거래소에 없는 종목은 — 로 표시됩니다":"Symbols not listed on the comparison exchange are shown as —","(없는 종목은 —로 표시)":"(Unlisted symbols shown as —)","HL 펀딩":"HL Funding","BN 펀딩":"BN Funding","OKX 펀딩":"OKX Funding","BY 펀딩":"BY Funding",
@@ -1821,7 +1828,7 @@ var D={
 "글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.":"You need to sign in with Google to write a post. Once signed in, you can post right away.",
 "제목을 입력하세요":"Enter a title","내용을 입력하세요":"Enter content","사진 첨부":"Attach Photo","사진 4장까지 넣을 수 있어요":"You can attach up to 4 photos","사진은 4장까지 넣을 수 있어요.":"You can attach up to 4 photos.","이미지 파일만 넣을 수 있어요.":"Only image files can be attached.","사진 지우기":"Remove Photo","취소":"Cancel","등록":"Post","삭제":"Delete","수정":"Edit","수정 완료":"Save Changes","닫기":"Close",
 "아직 글이 없습니다. 첫 글을 남겨 보세요.":"No posts yet. Write the first post.","글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to write. Press the Google sign-in button above.","아직 연결이 준비되지 않았어요. 잠시 후 다시 시도해 주세요.":"The connection is not ready yet. Please try again shortly.","제목을 입력해 주세요.":"Please enter a title.","내용을 입력하거나 사진을 넣어 주세요.":"Please enter content or add a photo.","등록에 실패했어요. 다시 시도해 주세요.":"Failed to post. Please try again.","수정에 실패했어요. 다시 시도해 주세요.":"Failed to save changes. Please try again.","글을 올린 지 10분이 지나 수정할 수 없어요.":"You can no longer edit this post — 10 minutes have passed since it was posted.","이미지를 불러오지 못했어요.":"Could not load the image.",
-"좋아요":"Like","댓글":"Comments","댓글을 입력하세요":"Write a comment","댓글 입력":"Comment input","댓글을 불러오는 중…":"Loading comments…","댓글을 불러오지 못했어요.":"Could not load comments.","아직 댓글이 없습니다. 첫 댓글을 남겨 보세요.":"No comments yet. Leave the first comment.","댓글을 쓰려면 로그인이 필요해요.":"You need to sign in to comment.","좋아요를 누르려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to like. Press the Google sign-in button above.","댓글을 입력해 주세요.":"Please enter a comment.","댓글 등록에 실패했어요. 다시 시도해 주세요.":"Failed to post the comment. Please try again.","댓글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to comment. Press the Google sign-in button above.",
+"좋아요":"Like","댓글":"Comments","댓글을 입력하세요":"Write a comment","댓글 입력":"Comment input","댓글을 불러오는 중…":"Loading comments…","글 불러오는 중…":"Loading posts…","댓글을 불러오지 못했어요.":"Could not load comments.","아직 댓글이 없습니다. 첫 댓글을 남겨 보세요.":"No comments yet. Leave the first comment.","댓글을 쓰려면 로그인이 필요해요.":"You need to sign in to comment.","좋아요를 누르려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to like. Press the Google sign-in button above.","댓글을 입력해 주세요.":"Please enter a comment.","댓글 등록에 실패했어요. 다시 시도해 주세요.":"Failed to post the comment. Please try again.","댓글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to comment. Press the Google sign-in button above.",
 "데이터 갱신 안내":"Data Update Notes","개인정보처리방침":"Privacy Policy","이용약관":"Terms of Service","문의":"Contact","가이드":"Guide",
 "김프원은 국내외 금융시장 데이터와 김치프리미엄, 펀딩비 및 주식·ETF 정보를 비교하고 제공하는 독립 금융 정보 플랫폼입니다.":"Kimpwon is an independent financial information platform that compares and provides domestic and global market data, Kimchi Premium, funding rates, and stock and ETF information.",
 "채팅":"Chat","오픈 채팅":"Open Chat","방문자들이 함께 이야기하는 공간":"A place for visitors to chat together","채팅 준비 중이에요":"Chat is getting ready","메시지를 입력하세요":"Type a message","전송":"Send","구글 로그인하고 글쓰기":"Sign in with Google to Write",
@@ -1997,7 +2004,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </div>
 <div class="hmcm">
 <div class="hmhd"><h2>커뮤니티 최신글</h2><button type="button" class="hmcm-more" id="hm-cm-more">더보기</button></div>
-<div id="hm-cm-list"><p class="cm-empty">아직 글이 없어요. 첫 글을 올려보세요.</p></div>
+<div id="hm-cm-list"><p class="cm-empty">글 불러오는 중…</p></div>
 </div>
 </div>
 <div class="hnw">
@@ -2013,6 +2020,9 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
 var box=document.getElementById("hm-fund-list");if(!box)return;
 function fail(){try{box.innerHTML='<div class="hmvempty">펀딩비 불러오는 중…</div>'}catch(e){}}
+/* 갱신 체감 표시: 심볼별 직전 값을 기억해 두고, 값이 실제로 바뀐 숫자에만 반짝임(.vfl)을 붙인다.
+   실패(fail)로 목록이 비워져도 prev는 지우지 않아, 복구 뒤 같은 값이면 반짝이지 않는다 */
+var prev={};
 function render(list){
 try{
 box.textContent="";
@@ -2020,7 +2030,9 @@ list.forEach(function(x,i){
 var row=document.createElement("div");row.className="hmfrow";
 var rk=document.createElement("span");rk.className="hmfrk";rk.textContent=(i+1);row.appendChild(rk);
 var sy=document.createElement("span");sy.className="hmfsym";sy.textContent=x[0];row.appendChild(sy);
-var vl=document.createElement("span");vl.className="hmfval"+(x[1]>0?" up":x[1]<0?" dn":"");vl.textContent=(x[1]>0?"+":"")+x[1].toFixed(4)+"%";row.appendChild(vl);
+var vl=document.createElement("span");vl.className="hmfval"+(x[1]>0?" up":x[1]<0?" dn":"");var txt=(x[1]>0?"+":"")+x[1].toFixed(4)+"%";vl.textContent=txt;
+try{if(prev[x[0]]!==undefined&&prev[x[0]]!==txt)vl.classList.add("vfl");prev[x[0]]=txt}catch(e){}
+row.appendChild(vl);
 box.appendChild(row);
 });
 }catch(e){fail()}
@@ -2121,29 +2133,31 @@ load();setInterval(load,10000);
 <div class="pick"><span class="xselw mtw"><button type="button" class="xsel" id="mt-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="원자재 선택"><span class="xnm" id="mt-nm">금</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="mt-menu" role="listbox" aria-label="원자재 선택" hidden><button type="button" role="option" data-mtv="au" aria-selected="true">금</button><button type="button" role="option" data-mtv="ag" aria-selected="false">은</button><button type="button" role="option" data-mtv="cu" aria-selected="false">구리</button><button type="button" role="option" data-mtv="oil" aria-selected="false">유가</button></div></span><div class="mtx"><small id="mt-xhl-l">Hyperliquid · 1oz 가격</small><b id="mt-xhl">—</b></div><div class="mtx"><small id="mt-xbn-l">Binance · 1oz 가격</small><b id="mt-xbn">—</b></div></div>
 <div class="mtsum" id="mt-sline" aria-live="polite"></div>
 <div id="mt-au">
-<div class="tvbar"><button type="button" class="mt-tgl" id="au-tgl" aria-expanded="false" aria-controls="au-tvwrap">차트보기</button><span class="gread" id="au-tv"></span></div>
+<div class="tvbar"><button type="button" class="mt-tgl" id="au-tgl" aria-expanded="false" aria-controls="au-tvwrap">차트보기</button><span class="gread" id="au-tv"></span><span class="mtlab">국제 실시간 시세</span></div>
 <div id="au-tvwrap" hidden><div class="tvw" id="au-tvw"></div></div>
 <div class="c">
 <div class="ghd"><span class="av" style="background:#b8860b">G</span><div><b>금 (GOLD)</b><span class="gsub">국제 현물 · 트로이온스(oz) 기준 · gold-api.com</span></div></div>
 <div class="gpr"><span class="pm" id="au-p">$3,965.80</span><span class="gsub stat" id="au-t">스냅샷 · 2026-11-12 조회</span></div>
 <span class="gsub" id="au-krw"></span>
 </div>
+<div class="mtlabrow"><span class="mtlab">국내 고시 기준 · 하루 1회 갱신</span></div>
 <div class="sum" id="au-sum"></div>
 <span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-11</span>
 </div>
 <div id="mt-ag" hidden>
-<div class="tvbar"><button type="button" class="mt-tgl" id="ag-tgl" aria-expanded="false" aria-controls="ag-tvwrap">차트보기</button><span class="gread" id="ag-tv"></span></div>
+<div class="tvbar"><button type="button" class="mt-tgl" id="ag-tgl" aria-expanded="false" aria-controls="ag-tvwrap">차트보기</button><span class="gread" id="ag-tv"></span><span class="mtlab">국제 실시간 시세</span></div>
 <div id="ag-tvwrap" hidden><div class="tvw" id="ag-tvw"></div></div>
 <div class="c">
 <div class="ghd"><span class="av" style="background:#7d8590">S</span><div><b>은 (SILVER)</b><span class="gsub">국제 현물 · 트로이온스(oz) 기준 · gold-api.com</span></div></div>
 <div class="gpr"><span class="pm" id="ag-p">$51.595</span><span class="gsub stat" id="ag-t">스냅샷 · 2026-11-12 조회</span></div>
 <span class="gsub" id="ag-krw"></span>
 </div>
+<div class="mtlabrow"><span class="mtlab">국내 고시 기준 · 하루 1회 갱신</span></div>
 <div class="sum" id="ag-sum"></div>
 <span class="gsub">국내시세 출처: 한국금거래소 고시 · 2026-11-11</span>
 </div>
 <div id="mt-cu" hidden>
-<div class="tvbar"><button type="button" class="mt-tgl" id="cu-tgl" aria-expanded="false" aria-controls="cu-tvwrap">차트보기</button><span class="gread" id="cu-tv"></span></div>
+<div class="tvbar"><button type="button" class="mt-tgl" id="cu-tgl" aria-expanded="false" aria-controls="cu-tvwrap">차트보기</button><span class="gread" id="cu-tv"></span><span class="mtlab">국제 실시간 시세</span></div>
 <div id="cu-tvwrap" hidden><div class="tvw" id="cu-tvw"></div></div>
 <div class="c">
 <div class="ghd"><span class="av" style="background:#b87333">C</span><div><b>구리 (COPPER)</b><span class="gsub">국제 현물 · 파운드(lb) 기준 · gold-api.com</span></div></div>
@@ -2154,7 +2168,7 @@ load();setInterval(load,10000);
 <span class="gsub">국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 9월 (월간 고시)</span>
 </div>
 <div id="mt-oil" hidden>
-<div class="tvbar"><button type="button" class="mt-tgl" id="oil-tgl" aria-expanded="false" aria-controls="oil-tvwrap">차트보기</button><span class="gread" id="oil-tv"></span></div>
+<div class="tvbar"><button type="button" class="mt-tgl" id="oil-tgl" aria-expanded="false" aria-controls="oil-tvwrap">차트보기</button><span class="gread" id="oil-tv"></span><span class="mtlab">국제 실시간 시세</span></div>
 <div id="oil-tvwrap" hidden><div class="tvw" id="oil-tvw"></div></div>
 <div class="c">
 <div class="ghd"><span class="av" style="background:#33393f">O</span><div><b>유가 (WTI 원유)</b><span class="gsub">국제 선물 · 배럴(bbl) 기준 · NYMEX WTI</span></div></div>
@@ -2841,10 +2855,24 @@ if(sk.k===k){if(sk.d===-1)sk.d=1;else sk={k:"mc",d:-1}}else sk={k:k,d:-1};syncF(
 el("q").addEventListener("input",draw);
 el("fx").addEventListener("input",calc);
 var kq="",kqU="";
+/* 갱신 체감 표시: 표를 다시 그린 뒤 심볼별 직전 셀 텍스트와 비교해, 실제로 바뀐 셀에만
+   반짝임(.vfl)을 붙인다. 전체를 try/catch로 감싸 오류가 나도 표 렌더링은 멈추지 않는다 */
+var kbPrev={};
+function kbFlash(){
+try{
+var trs=el("kb").querySelectorAll("tr"),nx={};
+trs.forEach(function(tr){
+var b=tr.querySelector("td .nm b")||tr.querySelector("td b");if(!b)return;
+var key=b.textContent,cells=tr.children,texts=[],pv=kbPrev[key];
+for(var i=0;i<cells.length;i++)texts.push(cells[i].textContent);
+if(pv)for(var j=1;j<cells.length;j++){if(pv[j]!==undefined&&pv[j]!==texts[j])cells[j].classList.add("vfl")}
+nx[key]=texts});
+kbPrev=nx;
+}catch(e){}}
 function rkb(){var rows=(KBR||[]).filter(function(r){return !!r});
 if(kq)rows=rows.filter(function(r){try{return r.n.indexOf(kq)>=0||(r.tg||"").toUpperCase().indexOf(kqU)>=0}catch(e){return false}});
 if(ks.k)try{rows.sort(function(x,y){var a=x[ks.k],b=y[ks.k];if(a==null&&b==null)return 0;if(a==null)return 1;if(b==null)return -1;var c=ks.k==="n"?(a<b?-1:a>b?1:0):a-b;return c*ks.d})}catch(e){}
-el("kb").innerHTML=rows.map(function(r){return (r&&r.html)||""}).join("")||'<tr><td colspan="7">검색 결과가 없습니다.</td></tr>';try{arw(el("kh"),ks)}catch(e){}try{sms()}catch(e){}try{spkScan()}catch(e){}}
+el("kb").innerHTML=rows.map(function(r){return (r&&r.html)||""}).join("")||'<tr><td colspan="7">검색 결과가 없습니다.</td></tr>';try{kbFlash()}catch(e){}try{arw(el("kh"),ks)}catch(e){}try{sms()}catch(e){}try{spkScan()}catch(e){}}
 el("qk").addEventListener("input",function(){kq=this.value.trim();kqU=kq.toUpperCase();rkb()});
 el("kh").addEventListener("click",function(e){var h=e.target.closest("th");if(!h||!h.dataset.k)return;var k=h.dataset.k;
 if(ks.k===k){if(ks.d===-1)ks.d=1;else ks={k:"mc",d:-1}}else ks={k:k,d:-1};rkb()});
@@ -3157,7 +3185,16 @@ setInterval(function(){if(!document.hidden&&!el("pf").hidden)fRefresh()},10000);
    비교 거래소(기본 Binance) 선물이 없는 종목은 전용 칸에 '—'를 표시한다. 하이퍼리퀴드를 기준으로 강제하지 않는다.
    불러온 종목의 나스닥 가격은 1분마다 갱신하고, 비교 거래소 전용 칸은 기존 15초 갱신 때 함께 다시 그려진다. */
 var NQPS=60,NQARR=[];
-var NQ={items:[],total:0,loading:false,done:false,pending:false,key:null,seq:0,timer:null,err:0};
+var NQ={items:[],total:0,loading:false,done:false,pending:false,key:null,seq:0,timer:null,err:0,fails:0,rpend:false};
+/* 조회 실패 폴백: 실패하면 간격을 늘려가며(4초·10초·20초) 최대 3회 자동 재시도한다.
+   재시도가 남아 있는 동안에는 에러 문구 대신 로딩 표시를 유지하고, 재시도를 모두 소진한
+   뒤에야 '다시 시도' 버튼이 있는 안내를 보여준다 (버튼을 누르면 실패 횟수를 초기화하고 다시 조회) */
+var nqRetryT=null;
+function nqRetrySched(){
+if(NQ.done||NQ.items.length||NQ.fails>=3)return;
+NQ.fails++;NQ.rpend=true;clearTimeout(nqRetryT);
+var d=[4000,10000,20000][NQ.fails-1]||20000;
+nqRetryT=setTimeout(function(){NQ.rpend=false;if(NQ.err&&!NQ.done){NQ.err=0;nqLoad();if(v==="nq"&&!etfOn)nqRender()}},d)}
 var NQCOLS=["name","description","close","change","Value.Traded","volume","high","low","market_cap_basic","logoid"];
 function nqEsc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function nqSortSpec(){if(sk.k==="c")return{by:"change",ord:sk.d===-1?"desc":"asc"};if(sk.k==="v")return{by:"Value.Traded",ord:sk.d===-1?"desc":"asc"};return{by:"market_cap_basic",ord:"desc"}}
@@ -3208,7 +3245,7 @@ if(NQ.loading||NQ.done||NQ.key!==nqKey())return;
    '검색 결과가 없습니다 (0)'로 비어 버리므로, 실패는 err(실패 시각)로만 남기고 재시도를 허용한다 */
 if(NQ.err&&Date.now()-NQ.err<4000)return;NQ.loading=true;NQ.pending=false;var seq=NQ.seq;
 var qt=el("q").value.trim(),sp=nqSortSpec();
-function fin(){NQ.loading=false;if(NQ.key===nqKey()&&v==="nq"&&!etfOn)nqRender()}
+function fin(){NQ.loading=false;if(NQ.err&&seq===NQ.seq)nqRetrySched();else if(!NQ.err)NQ.fails=0;if(NQ.key===nqKey()&&v==="nq"&&!etfOn)nqRender()}
 function sortList(list){
 list.sort(function(a,b){return b.mc-a.mc});
 if(sk.k==="c")list.sort(function(a,b){var x=a.c==null?-Infinity:a.c,y=b.c==null?-Infinity:b.c;return sk.d===-1?y-x:x-y});
@@ -3284,16 +3321,16 @@ var html;
 /* 행 단위 방어: 한 종목 행 렌더링이 실패해도 그 행만 건너뛰고 목록 전체는 그대로 그린다 */
 if(NQ.items.length)html=NQ.items.map(function(it){try{return nqRowHtml(it)}catch(e){return ""}}).join("");
 else if(NQ.loading||NQ.pending)html='<div class="pempty">불러오는 중…</div>';
-else if(NQ.err)html='<div class="pempty">종목 목록을 불러오지 못했습니다. <button type="button" class="nqretry">다시 시도</button></div>';
+else if(NQ.err)html=NQ.rpend?'<div class="pempty">불러오는 중…</div>':'<div class="pempty">종목 목록을 불러오지 못했습니다. <button type="button" class="nqretry">다시 시도</button></div>';
 else html='<div class="pempty">검색 결과가 없습니다.</div>';
 el("tb").innerHTML=html;
 var m=el("nqmore");
 if(m){m.hidden=NQ.done;m.textContent=NQ.loading?"불러오는 중…":"스크롤하면 더 불러옵니다";
 if(!NQ.done&&!NQ.loading){var r0=m.getBoundingClientRect();if(r0.height&&r0.top<window.innerHeight+600)setTimeout(function(){if(v==="nq"&&!etfOn)nqLoad()},60)}}}
-el("tb").addEventListener("click",function(e){var b=e.target&&e.target.closest?e.target.closest(".nqretry"):null;if(!b)return;NQ.err=0;NQ.done=false;nqLoad()});
+el("tb").addEventListener("click",function(e){var b=e.target&&e.target.closest?e.target.closest(".nqretry"):null;if(!b)return;NQ.err=0;NQ.done=false;NQ.fails=0;NQ.rpend=false;nqLoad()});
 function nqDraw(){
 var key=nqKey();
-if(NQ.key!==key){NQ.seq++;NQ.key=key;NQ.items=[];NQ.total=0;NQ.done=false;NQ.loading=false;NQ.pending=true;NQ.err=0;nqSyncArr();
+if(NQ.key!==key){NQ.seq++;NQ.key=key;NQ.items=[];NQ.total=0;NQ.done=false;NQ.loading=false;NQ.pending=true;NQ.err=0;NQ.fails=0;NQ.rpend=false;nqSyncArr();
 if(NQ.timer)clearTimeout(NQ.timer);
 if(el("q").value.trim()){NQ.timer=setTimeout(function(){if(v==="nq"&&!etfOn)nqLoad()},350)}
 else nqLoad()}
@@ -4275,6 +4312,16 @@ setTimeout(cmFillCheck,0);
    홈의 다른 요소와 커뮤니티 목록 렌더는 멈추지 않고, 한 행이 이상해도 나머지 행은
    그대로 그려진다. 구독 오류가 나면 박스는 빈 상태 문구만 남긴다(hmCmEmpty) */
 var hmCmListEl=document.getElementById("hm-cm-list"),hmCmMoreBtn=document.getElementById("hm-cm-more");
+/* 게시글 구독의 첫 스냅샷이 오기 전까지는 '아직 글이 없어요'를 보여주지 않고 로딩 문구를 유지한다.
+   첫 스냅샷(또는 구독 오류)이 확인된 뒤에야 실제로 글이 0개일 때 빈 상태 문구를 표시한다 */
+var hmCmReady=false;
+function hmCmLoading(){
+try{
+if(!hmCmListEl)return;
+hmCmListEl.textContent="";
+var ep=document.createElement("p");ep.className="cm-empty";ep.textContent="글 불러오는 중…";hmCmListEl.appendChild(ep);
+}catch(e){}
+}
 function hmCmEmpty(){
 try{
 if(!hmCmListEl)return;
@@ -4290,7 +4337,7 @@ function renderHomePosts(){
 try{
 if(!hmCmListEl)return;
 var top=(posts||[]).slice(0,4);
-if(!top.length){hmCmEmpty();return}
+if(!top.length){if(!hmCmReady){hmCmLoading();return}hmCmEmpty();return}
 hmCmListEl.textContent="";
 top.forEach(function(p){
 try{
@@ -4347,9 +4394,10 @@ var arr=[];snap.forEach(function(ch){var v=ch.val()||{};var pim=postImgsOf(v);ar
 arr.sort(function(a,b){return (b.ts||0)-(a.ts||0)});
 postExhausted=arr.length<postLimit;
 postLoading=false;
+hmCmReady=true;
 posts=arr;renderLists();if(!ov.hidden&&curKey){syncLikeUI();var _cp=postByKey(curKey);if(_cp){pvDel.hidden=!canDel(_cp);pvEdit.hidden=!canEdit(_cp);syncPinBtn(_cp);scheduleEditHide(_cp)}}
 };
-try{q.on("value",postCb,function(){postLoading=false;emptyMsg(listEl,"글을 불러오지 못했어요.");try{hmCmEmpty()}catch(e2){}})}catch(e){postLoading=false;emptyMsg(listEl,"글을 불러오지 못했어요.");try{hmCmEmpty()}catch(e2){}}
+try{q.on("value",postCb,function(){postLoading=false;hmCmReady=true;emptyMsg(listEl,"글을 불러오지 못했어요.");try{hmCmEmpty()}catch(e2){}})}catch(e){postLoading=false;hmCmReady=true;emptyMsg(listEl,"글을 불러오지 못했어요.");try{hmCmEmpty()}catch(e2){}}
 }
 function syncGate(){
 var logged=!!fbUser;
@@ -5918,15 +5966,21 @@ function stamp(){var d=new Date();return pad(d.getHours())+":"+pad(d.getMinutes(
 var KR=["214150","259960","009450","003230","257720","021240","326030","023590","453340","161390","271560","069620","005830","064350","237690","111770"];
 var US=["ADBE","PYPL"];
 function scan(market,tickers){return fetch("https://scanner.tradingview.com/"+market+"/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:tickers},columns:["close","change"]})}).then(function(r){if(!r.ok)throw new Error("tv "+r.status);return r.json()})}
+/* 종목별 직전 성공 값: 조회가 실패하거나 특정 종목 값이 비어 와도 마지막으로 성공한
+   현재가·등락률을 그대로 유지한다. 한 번도 성공한 적이 없는 종목만 처음 표시('—')가 남는다 */
+var lastP={};
 function setP(key,price,chg,usd){
 var p=$("wn-p-"+key);if(!p||!(price>0))return;
 p.textContent=usd?("$"+Number(price).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})):(Math.round(price).toLocaleString("ko-KR")+"원");
 var pill=$("wn-c-"+key);
-if(pill&&chg!=null&&!isNaN(chg)){pill.textContent=(chg>0?"+":"")+Number(chg).toFixed(2)+"%";pill.className="pill "+(chg>0?"up":chg<0?"dn":"")}}
+if(pill&&chg!=null&&!isNaN(chg)){pill.textContent=(chg>0?"+":"")+Number(chg).toFixed(2)+"%";pill.className="pill "+(chg>0?"up":chg<0?"dn":"")}
+try{lastP[key]={p:p.textContent,c:pill?pill.textContent:"",cl:pill?pill.className:""}}catch(e){}}
+function restoreP(){
+try{Object.keys(lastP).forEach(function(k){var L=lastP[k];if(!L)return;var p=$("wn-p-"+k);if(p&&p.textContent!==L.p)p.textContent=L.p;var pill=$("wn-c-"+k);if(pill&&L.c&&(pill.textContent!==L.c||pill.className!==L.cl)){pill.textContent=L.c;pill.className=L.cl}})}catch(e){}}
 var okAny=false;
 function load(){
 var done=0,ok=false;
-function fin(){if(++done!==2)return;var m=$("wn-m");if(!m)return;
+function fin(){if(++done!==2)return;restoreP();var m=$("wn-m");if(!m)return;
 if(ok){okAny=true;m.textContent="디시인사이드 코스피 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인 · 확인 "+stamp()}
 else if(!okAny)m.textContent="현재가를 불러오지 못했어요 · 잠시 후 다시 시도해요"}
 scan("korea",KR.map(function(c){return "KRX:"+c})).then(function(j){var got=false;(j.data||[]).forEach(function(x){if(x.d&&x.d[0]>0){setP(x.s.replace("KRX:",""),x.d[0],parseFloat(x.d[1]),false);got=true}});if(got)ok=true;fin()}).catch(fin);
@@ -6043,6 +6097,10 @@ var ivLang=siteLang();
 var domLang=siteLang();
 function domKeys(){return siteLang()==="en"?["ye"]:["hk","mk"]}
 var cache={},settled={};
+/* 불러오기 실패 폴백: 출처별로 연속 실패 횟수(failN)를 세어 30초 간격으로 최대 2회까지 자동 재시도한다.
+   재시도가 남아 있는 동안(retryPend)에는 에러 문구 대신 '불러오는 중…'을 보여주고, 이미 받아 둔
+   기사(cache)가 있으면 주기 갱신이 실패해도 그 목록을 지우지 않고 그대로 유지한다 */
+var failN={},retryT={},retryPend={};
 /* 국내 전용 제목 보조 필터: 주식 관련 표현이 제목에 하나라도 있으면 무조건 통과시키고(keep 우선),
    없을 때만 주식과 무관한 주제의 강한 표현이 있는 제목을 제외한다. 어느 쪽에도 걸리지 않으면 통과(보수적 적용). */
 var STOCK_KEEP=/주식|증시|코스피|코스닥|종목|주가|상장|공모|IPO|ETF|ETN|실적|영업이익|순이익|매출|공시|배당|증권|목표주가|상한가|하한가|공매도|자사주|유상증자|주주|시가총액|개미|펀드|퇴직연금|리츠|우선주|전환사채|급등|급락|폭등|폭락|강세|약세/;
@@ -6087,8 +6145,11 @@ var dom=(key==="hk"||key==="mk"),lim=(dom||key==="ye")?30:12;
 return fetchT(feed).then(function(t){return parseXml(t,lim)})
 .catch(function(){return fetchT("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(feed)).then(function(t){return parseR2J(t,lim)})})
 .catch(function(){return fetchT("https://api.allorigins.win/raw?url="+encodeURIComponent(feed)).then(function(t){return parseXml(t,lim)})})
-.then(function(rows){if(dom)rows=rows.filter(function(r){return isStockTitle(r.t)});cache[key]=rows;settled[key]=1;render()})
-.catch(function(){settled[key]=1;if(!cache[key])cache[key]="err";render()})}
+.then(function(rows){if(dom)rows=rows.filter(function(r){return isStockTitle(r.t)});cache[key]=rows;settled[key]=1;failN[key]=0;retryPend[key]=0;clearTimeout(retryT[key]);render()})
+.catch(function(){settled[key]=1;if(!cache[key])cache[key]="err";
+failN[key]=(failN[key]||0)+1;
+if(failN[key]<=2&&(key==="iv"||domKeys().indexOf(key)>=0)){retryPend[key]=1;clearTimeout(retryT[key]);retryT[key]=setTimeout(function(){retryPend[key]=0;if(key!=="iv"&&domKeys().indexOf(key)<0)return;settled[key]=0;render();loadSrc(key)},30000)}
+render()})}
 function ago(t){
 if(!t)return "";
 var m=Math.floor((Date.now()-t)/60000);
@@ -6119,7 +6180,10 @@ var anyData=parts.some(function(p){return p.r.list.length});
 var allSettled=parts.every(function(p){return p.r.ready===p.r.total});
 if(!anyData){
 if(!allSettled){box.innerHTML='<div class="hmvempty">불러오는 중…</div>';return}
-box.innerHTML='<div class="hmvempty">뉴스를 불러오지 못했어요</div>';return}
+var anyPend=parts.some(function(p){var ks=(p.g.id==="dom")?domKeys():p.g.keys;return ks.some(function(k){return retryPend[k]})});
+if(anyPend){box.innerHTML='<div class="hmvempty">불러오는 중…</div>';return}
+/* 끝내 실패하면 에러 문구를 남기지 않고 조용한 빈 상태로 둔다 (다음 주기 갱신에서 다시 시도한다) */
+box.innerHTML='';return}
 var html='<div class="hngrid">';
 parts.forEach(function(p){
 html+='<div class="hng"><div class="hnghd">'+p.g.name+'</div>';
@@ -6130,13 +6194,15 @@ var a=ago(show[j].d);
 html+='<a class="hnwr" href="'+esc(show[j].u)+'" target="_blank" rel="noopener"><span class="nt1">'+esc(show[j].t)+'</span>'+(a?'<span class="nt2">'+a+'</span>':"")+'</a>'}
 if(p.r.list.length>5)html+='<button type="button" class="hnmore" data-g="'+p.g.id+'" aria-expanded="'+String(!!exp[p.g.id])+'">'+(exp[p.g.id]?"접기":"더 보기")+'</button>';
 }else{
-html+='<div class="hmvempty">'+(p.r.ready<p.r.total?"불러오는 중…":"뉴스를 불러오지 못했어요")+'</div>'}
+var gks=(p.g.id==="dom")?domKeys():p.g.keys,gpend=gks.some(function(k){return retryPend[k]});
+/* 이 그룹만 실패한 경우: 재시도 중이면 로딩 표시, 끝내 실패하면 문구 없이 비워 둔다 */
+if(p.r.ready<p.r.total||gpend)html+='<div class="hmvempty">불러오는 중…</div>'}
 html+='</div>'});
 html+='</div>';
 box.innerHTML=html}
 function load(){exp.dom=false;exp.intl=false;domKeys().forEach(function(k){loadSrc(k)});loadSrc("iv")}
-function loadIv(){delete cache.iv;delete settled.iv;render();loadSrc("iv")}
-function loadDom(){var ks=domKeys();ks.forEach(function(k){delete cache[k];delete settled[k]});render();ks.forEach(function(k){loadSrc(k)})}
+function loadIv(){delete cache.iv;delete settled.iv;failN.iv=0;retryPend.iv=0;clearTimeout(retryT.iv);render();loadSrc("iv")}
+function loadDom(){var ks=domKeys();ks.forEach(function(k){delete cache[k];delete settled[k];failN[k]=0;retryPend[k]=0;clearTimeout(retryT[k])});render();ks.forEach(function(k){loadSrc(k)})}
 /* 언어 전환 감지: 언어 모듈이 언어를 적용할 때 <html data-lang> 속성을 바꾸므로(버튼 전환·계정 설정 복원 공통),
    그 변화를 보면 현재 언어와 각 그룹 피드를 불러온 언어가 다를 때만 그 그룹을 해당 언어 피드로 다시 불러온다. */
 if(window.MutationObserver){new MutationObserver(function(){if(siteLang()!==ivLang)loadIv();if(siteLang()!==domLang)loadDom()}).observe(document.documentElement,{attributes:true,attributeFilter:["data-lang"]})}
@@ -6202,6 +6268,9 @@ return s}
 function timeLbl(mins){if(mins<570)return "장전";if(mins>=960)return "장후";return ""}
 function epsFmt(v){if(v==null||isNaN(v))return "—";return "$"+Number(v).toFixed(2)}
 var state=null,failed=false;
+/* 조회 실패 폴백: 30초 간격으로 최대 2회 자동 재시도한다. 직전 성공 데이터(state)가 있으면
+   실패해도 그 데이터를 계속 보여주고, 재시도를 모두 소진한 뒤에야(데이터가 없을 때만) 실패 안내를 띄운다 */
+var erRetry=0,erT=null;
 function sessLbl(mins){var t=timeLbl(mins);if(t==="장전")return "장 시작 전";if(t==="장후")return "장 마감 후";return t}
 function dateBoxHtml(x){return '<div class="edate" aria-hidden="true"><b>'+x.o.d+'</b><span>'+x.o.m+'월</span></div>'}
 function ddayHtml(x){var lbl=x.diff===0?"D-Day":"D-"+x.diff;return '<span class="edd'+(x.diff<=5?" near":"")+'">'+lbl+'</span>'}
@@ -6228,7 +6297,7 @@ function render(){
 var box=$("he-list");if(!box)return;
 if(failed){
 box.innerHTML='<div class="heerr"><b>실적 일정을 불러오지 못했어요</b>연결 문제로 실적 데이터를 불러오지 못했어요.<br><button type="button" id="he-retry">다시 시도</button></div>';
-var b=$("he-retry");if(b)b.addEventListener("click",function(){failed=false;state=null;render();load()});
+var b=$("he-retry");if(b)b.addEventListener("click",function(){failed=false;state=null;erRetry=0;render();load()});
 return}
 if(!state){box.innerHTML='<div class="hmvempty">불러오는 중…</div>';return}
 if(!state.done.length&&!state.up.length){box.innerHTML='<div class="heempty">앞으로 30일 안에 예정된 주요 종목 실적발표가 없습니다</div>';return}
@@ -6262,10 +6331,10 @@ done.push({sym:sym,o:o3,k:kstDay(+b.last),ts:+b.last,mins:o3.mins,diff:o3.day-t,
 up.sort(function(a,b){return a.ts-b.ts||b.cap-a.cap});
 done.sort(function(a,b){return b.ts-a.ts||b.cap-a.cap});
 state={up:up.slice(0,20),done:done.slice(0,20)};
-failed=false;
+failed=false;erRetry=0;
 render();
 var n=new Date(),e=$("he-upd");
-if(e)e.textContent=("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)+" 갱신"}).catch(function(){if(!state){failed=true;render()}})}
+if(e)e.textContent=("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)+" 갱신"}).catch(function(){if(erRetry<2){erRetry++;clearTimeout(erT);erT=setTimeout(function(){load()},30000);render()}else if(!state){failed=true;render()}})}
 render();load();
 setInterval(function(){if(!document.hidden)load()},3600000);
 })();
