@@ -468,23 +468,22 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hmcm-t{flex:1 1 auto;min-width:0;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hmcm-m{flex:none;font-size:12px;color:var(--mut);white-space:nowrap}
 @media(max-width:520px){.hmcm-row{padding:9px 10px}}
-/* 홈 탭: 실시간 펀딩비 순위 박스 — '오늘의 시장' 행 A의 왼쪽 칸. 커뮤니티 박스(.hmcm)와
-   같은 카드 톤·여백 규칙을 그대로 따라, 2열 안에서는 윗변을 오른쪽 일정 카드에 맞춘다.
+/* 홈 탭: 행 A의 왼쪽 칸 — 2026-11-12 사용자 지시로 펀딩비 순위는 빼고 빈 칸(카드 틀)만 남긴다.
+   커뮤니티 박스(.hmcm)와 같은 카드 톤을 쓰고, 그리드 stretch로 오른쪽 일정 카드와 높이를 맞춘다.
    행 B(.hmrowb)는 급등락(왼쪽)+커뮤니티(오른쪽) 2열로, 행 A와는 14px 띄운다 */
 #ph .hmfr{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 4px 6px;margin-top:14px}
 .hmcols .hmfr{margin-top:0;min-width:0}
-#ph .hmfr .hmhd{padding:0 10px}
-.hmfrow{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--bd)}
-.hmfrow:last-child{border-bottom:0}
-.hmfrow .hmfrk{flex:none;width:18px;font-size:13px;font-weight:800;color:var(--mut)}
-.hmfrow .hmfsym{flex:1 1 auto;min-width:0;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hmfrow .hmfval{flex:none;font-size:13.5px;font-weight:700;white-space:nowrap}
 .hmrowb{margin-top:14px}
-@media(max-width:520px){.hmfrow{padding:9px 10px}}
 /* 홈 탭: 실시간 차트 + 실적발표 2열 — 데스크톱에서는 오른쪽 열 320px 고정·왼쪽이 나머지를 차지하고(1023px 이하에서는 절반씩), 720px 이하에서는 차트 위·실적발표 아래로 쌓는다.
    오른쪽 실적발표 박스는 고정 높이에 안쪽 스크롤 — 발표한 지 24시간이 안 지난 '발표 완료'(실제 EPS·서프라이즈)만 위에, 앞으로 나올 '발표 예정'을 아래에 보여준다 */
-.hmcols{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start;margin-top:0}
+.hmcols{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:stretch;margin-top:0}
 .hmcols .hmv{margin-top:0;min-width:0}
+/* 홈 탭: 같은 행의 칸 높이를 전부 같게 맞춘다 (2026-11-12) — 그리드가 칸을 행 높이까지 늘리고,
+   일정 열(.hew)과 급등락 열(.hm-left)은 안쪽 카드가 늘어난 높이를 꽉 채우게 flex로 감싼다 */
+.hmcols .hew{display:flex;flex-direction:column}
+.hmcols .hew .upbox{flex:1 1 auto}
+.hmcols .hm-left{display:flex;flex-direction:column}
+.hmcols .hm-left .hmv{flex:1 1 auto}
 .hew{min-width:0}
 @media(max-width:1023px){.hmcols{grid-template-columns:1fr 1fr}}
 .hew .hmhd .heupd{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap}
@@ -551,7 +550,6 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .upname{font-size:14px;font-weight:600;line-height:1.4}
 .upsub{display:block;margin-top:1px;font-size:12.5px;color:var(--mut);line-height:1.5}
 .upsub b{color:var(--tx);font-weight:700}
-.upcd{display:block;margin-top:1px;font-size:12.5px;font-weight:600;color:var(--tx)}
 @media(max-width:520px){.updt{width:74px}}
 @media(max-width:720px){.hecbox{max-height:340px}}
 .heghd{position:sticky;top:0;z-index:2;background:var(--sf2);font-size:12px;font-weight:700;color:var(--mut);padding:7px 12px;border-bottom:1px solid var(--bd)}
@@ -790,22 +788,24 @@ main{padding:2px 12px 40px}
 }
 /* 펀딩비 탭: 종목 + 거래소 4곳 고정 열 */
 #pf .flive{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--mut);margin:0 0 10px}
-/* 펀딩비 탭: 검색(왼쪽, 작게) + 실시간 펀딩비 순위 1~3위(오른쪽)를 한 행에 둔다.
+/* 펀딩비 탭: 검색(왼쪽, 작게) + 실시간 펀딩비 순위(오른쪽)를 한 행에 둔다. 순위는 한 줄 높이
+   창 안에서 양수·음수 순위가 번갈아 한 칸씩 위로 올라가는 자동 스크롤(티커)로 보여준다.
    규칙은 전부 #pf 범위로 한정해 다른 탭의 .srch에는 영향을 주지 않는다 */
 #pf .frow{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;margin-bottom:8px}
 #pf .frow .srch{flex:0 1 220px;margin-bottom:0}
-#pf .frank{display:flex;align-items:center;flex-wrap:wrap;gap:4px 18px;min-width:0;font-size:13px}
-#pf .frank .frk{white-space:nowrap;color:var(--mut)}
+#pf .frank{flex:1 1 auto;min-width:0;height:26px;overflow:hidden;font-size:13px}
+#pf .ftrack{display:flex;flex-direction:column}
+#pf .ftrack.anim{transition:transform .55s ease}
+#pf .frank .frk{display:flex;align-items:center;height:26px;white-space:nowrap;color:var(--mut)}
 #pf .frank .frk b{color:var(--tx);font-weight:800;margin-right:5px}
 #pf .frank .frk .fsym{color:var(--tx);font-weight:600;margin-right:5px}
 @media(max-width:720px){#pf .frow .srch{flex-basis:45%}}
 #pf .fcell{display:inline-block;padding:0 3px;margin:0 -3px;border-radius:4px}
 @keyframes ffl{0%{background:var(--sf2)}100%{background:transparent}}
 @media (prefers-reduced-motion:no-preference){#pf .fcell.fchg{animation:ffl .6s ease-out}}
-/* 갱신 체감 표시: 값이 실제로 바뀐 숫자에만 붙는 은은한 배경 반짝임 (김프 표 셀·홈 펀딩비 순위 값 공용).
+/* 갱신 체감 표시: 값이 실제로 바뀐 숫자에만 붙는 은은한 배경 반짝임 (김프 표 셀 공용).
    배경만 잠깐 빛났다 사라져 상승 빨강·하락 파랑 글자색과는 충돌하지 않는다 */
 @media (prefers-reduced-motion:no-preference){.vfl{animation:ffl .6s ease-out}}
-.hmfrow .hmfval{border-radius:4px;padding:0 3px;margin:0 -3px}
 /* 원자재 탭 기준 라벨: 국내 고시/국제 실시간처럼 시세 기준을 또렷하게 알리는 작은 칩 */
 .mtlab{display:inline-block;font-size:11px;font-weight:600;color:var(--mut);border:1px solid var(--bd);border-radius:999px;padding:2px 8px;line-height:1.5}
 .mtlabrow{margin:0 0 6px}
@@ -1967,10 +1967,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </div>
 <div class="hm-sec"><span class="hm-sec-t">오늘의 시장</span><span class="hm-sec-note">급상승 순위는 TradingView 기준, 1분마다 갱신되는 구조</span></div>
 <div class="hmcols">
-<div class="hmfr">
-<div class="hmhd"><h2>실시간 펀딩비 순위</h2></div>
-<div id="hm-fund-list"><div class="hmvempty">펀딩비 불러오는 중…</div></div>
-</div>
+<div class="hmfr" aria-hidden="true"></div>
 <div class="hew">
 <div class="upbox" id="up-box"><div class="hmhd"><h2>다가오는 일정</h2></div><div id="up-list"><div class="hmvempty">불러오는 중…</div></div></div>
 <div class="hmsrc" aria-hidden="true">
@@ -2012,49 +2009,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <div id="hn-list"><div class="hmvempty">불러오는 중…</div></div>
 </div>
 </section>
-<script>
-/* 홈 탭 '실시간 펀딩비 순위' 박스: 바이낸스 premiumIndex 전체를 조회해 lastFundingRate 절댓값이
-   큰 순으로 TOP 5를 보여주고 10초마다 갱신한다. 심볼은 USDT를 뗀 기준 심볼로 표시한다
-   (USD1으로 끝나는 심볼도 기준 심볼만). 전체를 try/catch로 감싸, 조회가 실패하면 박스 안에
-   '펀딩비 불러오는 중…' 문구만 남기고 홈의 다른 박스에는 영향을 주지 않는다 */
-(function(){
-var box=document.getElementById("hm-fund-list");if(!box)return;
-function fail(){try{box.innerHTML='<div class="hmvempty">펀딩비 불러오는 중…</div>'}catch(e){}}
-/* 갱신 체감 표시: 심볼별 직전 값을 기억해 두고, 값이 실제로 바뀐 숫자에만 반짝임(.vfl)을 붙인다.
-   실패(fail)로 목록이 비워져도 prev는 지우지 않아, 복구 뒤 같은 값이면 반짝이지 않는다 */
-var prev={};
-function render(list){
-try{
-box.textContent="";
-list.forEach(function(x,i){
-var row=document.createElement("div");row.className="hmfrow";
-var rk=document.createElement("span");rk.className="hmfrk";rk.textContent=(i+1);row.appendChild(rk);
-var sy=document.createElement("span");sy.className="hmfsym";sy.textContent=x[0];row.appendChild(sy);
-var vl=document.createElement("span");vl.className="hmfval"+(x[1]>0?" up":x[1]<0?" dn":"");var txt=(x[1]>0?"+":"")+x[1].toFixed(4)+"%";vl.textContent=txt;
-try{if(prev[x[0]]!==undefined&&prev[x[0]]!==txt)vl.classList.add("vfl");prev[x[0]]=txt}catch(e){}
-row.appendChild(vl);
-box.appendChild(row);
-});
-}catch(e){fail()}
-}
-function load(){
-if(document.hidden)return;
-try{
-fetch("https://www.binance.com/fapi/v1/premiumIndex").then(function(r){return r.json()}).then(function(j){
-try{
-if(!j||!j.length){fail();return}
-var arr=[];
-for(var i=0;i<j.length;i++){var x=j[i];if(!x||!x.symbol)continue;var fr=parseFloat(x.lastFundingRate);if(isNaN(fr))continue;var nat=x.symbol.slice(-4)==="USD1"?x.symbol.slice(0,-4):x.symbol.replace(/USDT$/,"");arr.push([nat,fr*100])}
-arr.sort(function(a,b){return Math.abs(b[1])-Math.abs(a[1])});
-if(!arr.length){fail();return}
-render(arr.slice(0,5));
-}catch(e){fail()}
-}).catch(function(){fail()});
-}catch(e){fail()}
-}
-load();setInterval(load,10000);
-})();
-</script>
 <section id="pa" hidden>
 <div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button></div><div class="mhours" role="note" aria-label="장 운영 시간 안내">
 <div class="mhrow" id="mh-rkr"><span class="mhdot" id="mh-krd" aria-hidden="true"></span><b>국장</b><span>프리 08:00–08:50 · 정규 09:00–15:30 · 애프터 15:40–20:00</span><span class="mhst" id="mh-krs"></span></div>
@@ -3140,10 +3094,57 @@ function fApr(e){try{var h=e.h||8;if(!(h>0))return "";var a=e.r*(24/h)*365;if(!i
 function ffCell(ex,can){try{var e=fVal(ex,can);if(!e)return '<span class="na">—</span>';var c=e.r>0?"up":e.r<0?"dn":"";var s=(e.r>0?"+":"")+e.r.toFixed(4)+"%/"+(e.h||8)+"h";var k=ex+":"+can;var ch=FPREV[k]!==undefined&&FPREV[k]!==s;FPREV[k]=s;return '<span class="fcell'+(ch?" fchg":"")+'"><span class="fv2 '+c+'">'+(e.r>0?"+":"")+e.r.toFixed(4)+'%</span><span class="fper">/'+(e.h||8)+'h</span>'+fApr(e)+'</span>'}catch(e){return '<span class="na">—</span>'}}
 var fShow=10,fTotal=0;
 /* 펀딩비 탭 검색 옆 실시간 순위: 새 조회를 추가하지 않고 이미 불러온 FUND.bn(바이낸스 펀딩)을
-   재사용해 절댓값 큰 순 1~3위를 '1 BTC +0.0123%' 형태로 보여준다. drawF가 그려질 때마다 함께
-   갱신돼 기존 10초 갱신 주기를 그대로 따라간다. 계산·렌더 전체를 try/catch로 감싸, 데이터가
-   없거나 오류가 나면 순위 영역만 비우고 검색·표는 정상 동작하게 한다 */
-function fRank(){try{var rk=el("frank");if(!rk)return;var bn=(typeof FUND!=="undefined"&&FUND.bn)||{};var arr=[];for(var k in bn){var e=bn[k];if(e&&!isNaN(e.r))arr.push([k,e.r])}arr.sort(function(a,b){return Math.abs(b[1])-Math.abs(a[1])});rk.innerHTML=arr.slice(0,3).map(function(x,i){var c=x[1]>0?"up":x[1]<0?"dn":"";return '<span class="frk"><b>'+(i+1)+'</b><span class="fsym">'+x[0]+'</span><span class="fv2 '+c+'">'+(x[1]>0?"+":"")+x[1].toFixed(4)+'%</span></span>'}).join("")}catch(e){try{var rk2=el("frank");if(rk2)rk2.innerHTML=""}catch(_){}}}
+   재사용한다. 양수 큰 순·음수 절댓값 큰 순을 각각 6개까지 뽑아 번갈아 늘어놓고, 한 줄 높이
+   창(#frank) 안에서 2.4초마다 한 칸씩 위로 올라가는 자동 스크롤로 보여줘 음수만이 아니라
+   양수도 함께 보인다. drawF가 그려질 때마다 함께 갱신돼 기존 10초 갱신 주기를 그대로 따라가며,
+   종목 구성이 같으면 값만 제자리에서 바꾸고 스크롤은 끊지 않는다. 계산·렌더 전체를 try/catch로
+   감싸, 데이터가 없거나 오류가 나면 순위 영역만 비우고 검색·표는 정상 동작하게 한다 */
+var FRK={sig:"",idx:0};
+function fRankRow(x){var c=x[1]>0?"up":"dn";return '<span class="frk"><b>'+x[2]+'</b><span class="fsym">'+x[0]+'</span><span class="fv2 '+c+'">'+(x[1]>0?"+":"")+x[1].toFixed(4)+'%</span></span>'}
+function fRank(){
+try{
+var rk=el("frank");if(!rk)return;
+var bn=(typeof FUND!=="undefined"&&FUND.bn)||{},pos=[],neg=[];
+for(var k in bn){var e=bn[k];if(e&&!isNaN(e.r)){if(e.r>0)pos.push([k,e.r]);else if(e.r<0)neg.push([k,e.r])}}
+pos.sort(function(a,b){return b[1]-a[1]});
+neg.sort(function(a,b){return a[1]-b[1]});
+var items=[];
+for(var i=0;i<6;i++){if(pos[i])items.push([pos[i][0],pos[i][1],i+1]);if(neg[i])items.push([neg[i][0],neg[i][1],i+1])}
+if(!items.length){rk.innerHTML="";FRK.sig="";FRK.idx=0;return}
+var sig=items.map(function(x){return x[0]}).join(",");
+var tr=rk.firstChild;
+if(sig!==FRK.sig||!tr||!tr.children){
+FRK.sig=sig;FRK.idx=0;
+var html='<div class="ftrack">';
+for(var j=0;j<items.length;j++)html+=fRankRow(items[j]);
+html+=fRankRow(items[0]);
+html+="</div>";
+rk.innerHTML=html;
+}else{
+var rows=tr.children;
+for(var m=0;m<items.length&&m<rows.length;m++){
+var v=rows[m].querySelector(".fv2");
+if(v){v.textContent=(items[m][1]>0?"+":"")+items[m][1].toFixed(4)+"%";v.className="fv2 "+(items[m][1]>0?"up":"dn")}}
+if(rows.length>items.length){var v0=rows[items.length].querySelector(".fv2");if(v0){v0.textContent=(items[0][1]>0?"+":"")+items[0][1].toFixed(4)+"%";v0.className="fv2 "+(items[0][1]>0?"up":"dn")}}
+}
+}catch(e){try{var rk2=el("frank");if(rk2)rk2.innerHTML="";FRK.sig=""}catch(_){}}
+}
+/* 순위 티커 자동 스크롤: 2.4초마다 한 칸(26px)씩 위로 올리고, 마지막(첫 항목 복제본)에 닿으면
+   애니메이션 없이 처음으로 되돌려 끊기지 않게 잇는다. 탭이 안 보이거나 문서가 숨겨져 있으면
+   건너뛰고, 움직임 줄이기(prefers-reduced-motion) 설정에서는 아예 굴리지 않는다 */
+function fRankStep(){
+try{
+if(document.hidden)return;
+var rk=el("frank");if(!rk||!rk.offsetParent)return;
+var tr=rk.firstChild;if(!tr||!tr.children||tr.children.length<2)return;
+FRK.idx++;
+tr.classList.add("anim");
+tr.style.transform="translateY("+(-FRK.idx*26)+"px)";
+if(FRK.idx>=tr.children.length-1){
+setTimeout(function(){try{if(tr.parentNode===rk){tr.classList.remove("anim");tr.style.transform="translateY(0px)";FRK.idx=0}}catch(e){}},620)}
+}catch(e){}
+}
+if(!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches))setInterval(fRankStep,2400);
 function drawF(){var fbEl=el("fb");if(!fbEl)return;var qEl=el("fq"),q=qEl?qEl.value.trim().toUpperCase():"",qt=qEl?qEl.value.trim():"";
 var list=fUniverse().filter(function(can){if(!q)return true;return can.toUpperCase().indexOf(q)>=0||fName(can).indexOf(qt)>=0});
 if(fs.k){list.sort(function(a,b){if(fs.k==="n"){var c0=a<b?-1:a>b?1:0;return c0*fs.d}var ea=fVal(fs.k,a),eb=fVal(fs.k,b);if(!ea&&!eb)return 0;if(!ea)return 1;if(!eb)return -1;return (ea.r-eb.r)*fs.d})}
@@ -6388,8 +6389,7 @@ b.parentNode.insertBefore(s,b.nextSibling);break}}}
    (.hmsrc)으로 홈에 그대로 남아 있고, 이 카드는 그 내용을 읽어 날짜·시각 오름차순으로 합쳐 보여줄 뿐이다.
    두 박스 모두 '발표 예정' 섹션만 쓴다('최근 발표'·'발표 완료'와 갱신 시각 표시는 넣지 않는다).
    같은 날짜의 실적은 한 행으로 묶고(예: '엔비디아 · 홈디포 실적'), 근원 지표는 본 지표와 같은 시각이면
-   한 행으로 합친다(예: 소비자물가 + 근원 소비자물가). 정확한 시각이 정해진 일정 중 가장 가까운 다가오는
-   일정 1건에만 카운트다운을 붙여 매초 갱신한다. 표시는 실적·지표를 구분하지 않고 날짜·시각순
+   한 행으로 합친다(예: 소비자물가 + 근원 소비자물가). 표시는 실적·지표를 구분하지 않고 날짜·시각순
    가장 가까운 4건만 보여준다(스크롤 없음) — 4건이 전부 실적이어도, 전부 지표여도 그대로 표시한다.
    발표 시각이 지난 경제지표는 아래 ECON_ACTUALS 맵에 실제값이 있을 때만 예상과 실제를 나란히
    보여주고 '이전' 값은 빼서 단순하게 유지한다(근원 지표도 예상·실제를 함께). 실제값은 .hmsrc 원본과 분리해 보관하므로 갱신 크론과 충돌하지 않는다.
@@ -6512,13 +6512,6 @@ var sub=parts.join("");
 if(g.firstSess)sub+=(sub?" ":"")+"("+esc(g.firstSess)+")";
 g.subHtml=sub});
 return groups}
-var cdTs=0,cdEl=null;
-function tick(){
-if(!cdEl||!cdTs)return;
-var left=Math.floor(cdTs-Date.now()/1000);
-if(left<0){render();return}
-var h=Math.floor(left/3600),mi=Math.floor((left%3600)/60),s=left%60;
-cdEl.textContent=h>0?(h+"시간 "+mi+"분 "+s+"초 남음"):(mi>0?(mi+"분 "+s+"초 남음"):(s+"초 남음"))}
 function render(){
 var box=$("up-list");if(!box)return;
 var now=kstToday(),items=[];
@@ -6526,17 +6519,13 @@ try{items=items.concat(mergeEcon(econItems(now)))}catch(e){}
 try{items=items.concat(earnItems(now))}catch(e){}
 items.sort(function(a,b){return a.ts-b.ts});
 items=items.slice(0,4);
-cdTs=0;cdEl=null;
 if(!items.length){box.innerHTML='<div class="hmvempty">다가오는 일정이 없습니다</div>';return}
-var nowSec=Date.now()/1000,cdIdx=-1;
-for(var i=0;i<items.length;i++){if(items[i].exact&&items[i].ts>nowSec){cdIdx=i;break}}
 var html="";
 for(var j=0;j<items.length;j++){
 try{
 var it=items[j];
-html+='<div class="uprow"><div class="updt"><b>'+esc(dateLbl(it.info))+'</b><span>'+esc(it.kind==="er"?"실적":it.timeLbl)+'</span></div><div class="upmain"><div class="upname">'+esc(it.title)+'</div>'+(it.subHtml?'<span class="upsub">'+it.subHtml+'</span>':"")+(j===cdIdx?'<span class="upcd" id="up-cd"></span>':"")+'</div></div>'}catch(e){}}
-box.innerHTML=html||'<div class="hmvempty">다가오는 일정이 없습니다</div>';
-if(cdIdx>=0){cdTs=items[cdIdx].ts;cdEl=$("up-cd");tick()}}
+html+='<div class="uprow"><div class="updt"><b>'+esc(dateLbl(it.info))+'</b><span>'+esc(it.kind==="er"?"실적":it.timeLbl)+'</span></div><div class="upmain"><div class="upname">'+esc(it.title)+'</div>'+(it.subHtml?'<span class="upsub">'+it.subHtml+'</span>':"")+'</div></div>'}catch(e){}}
+box.innerHTML=html||'<div class="hmvempty">다가오는 일정이 없습니다</div>'}
 render();
 var src1=$("he-list"),src2=$("hec-list");
 if(window.MutationObserver){
@@ -6544,7 +6533,6 @@ var mo=new MutationObserver(function(){render()});
 if(src1)mo.observe(src1,{childList:true,subtree:true});
 if(src2)mo.observe(src2,{childList:true,subtree:true})}
 setInterval(function(){if(!document.hidden)render()},60000);
-setInterval(tick,1000);
 })();
 </script>
 <script>
