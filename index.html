@@ -454,7 +454,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
    2열 안에 들어갈 때는 위 여백을 없애 오른쪽 일정 카드와 윗변을 맞추고, 그리드 칸 안에서
    줄어들 수 있게 min-width:0을 준다 */
 #ph .hmcm{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 4px 6px;margin-top:14px}
-.hmcols .hmcm{margin-top:0;min-width:0}
+#ph .hmcols .hmcm{margin-top:0;min-width:0}
 /* 홈 탭: 실시간 급등락 카드 전체 폭 배치 — 2열 아래로 내린 래퍼(.hm-full)의 위 간격과
    카드 자체의 위 여백을 정리한다(카드 틀·토글·각주는 기존 .hm-left/.hmv 규칙 그대로) */
 .hm-full{margin-top:14px}
@@ -469,17 +469,19 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .hmcm-m{flex:none;font-size:12px;color:var(--mut);white-space:nowrap}
 @media(max-width:520px){.hmcm-row{padding:9px 10px}}
 /* 홈 탭: 행 A의 왼쪽 칸 — 2026-11-12 사용자 지시로 펀딩비 순위는 빼고 빈 칸(카드 틀)만 남긴다.
-   커뮤니티 박스(.hmcm)와 같은 카드 톤을 쓰고, 그리드 stretch로 오른쪽 일정 카드와 높이를 맞춘다.
-   행 B(.hmrowb)는 급등락(왼쪽)+커뮤니티(오른쪽) 2열로, 행 A와는 14px 띄운다 */
+   네 칸(빈 칸·일정·급등락·커뮤니티)은 하나의 2×2 그리드(.hmcols)에 넣어 행마다 왼쪽 칸 높이가
+   오른쪽 칸과 정확히 같아지게 하고, 칸 사이는 그리드 gap으로 일정하게 띄운다.
+   그리드 안 칸들의 위 여백은 #ph 기본 규칙보다 구체적으로 0으로 못 박는다 — 예전에는
+   margin-top:14px이 남아 칸이 행 안에서 아래로 밀리고 그만큼 짧아져 높이가 어긋났다 */
 #ph .hmfr{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 4px 6px;margin-top:14px}
-.hmcols .hmfr{margin-top:0;min-width:0}
-.hmrowb{margin-top:14px}
+#ph .hmcols .hmfr{margin-top:0;min-width:0}
 /* 홈 탭: 실시간 차트 + 실적발표 2열 — 데스크톱에서는 오른쪽 열 320px 고정·왼쪽이 나머지를 차지하고(1023px 이하에서는 절반씩), 720px 이하에서는 차트 위·실적발표 아래로 쌓는다.
    오른쪽 실적발표 박스는 고정 높이에 안쪽 스크롤 — 발표한 지 24시간이 안 지난 '발표 완료'(실제 EPS·서프라이즈)만 위에, 앞으로 나올 '발표 예정'을 아래에 보여준다 */
-.hmcols{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:stretch;margin-top:0}
+.hmcols{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:stretch;margin-top:0}
 .hmcols .hmv{margin-top:0;min-width:0}
-/* 홈 탭: 같은 행의 칸 높이를 전부 같게 맞춘다 (2026-11-12) — 그리드가 칸을 행 높이까지 늘리고,
-   일정 열(.hew)과 급등락 열(.hm-left)은 안쪽 카드가 늘어난 높이를 꽉 채우게 flex로 감싼다 */
+/* 홈 탭: 같은 행의 칸 높이를 전부 같게 맞춘다 (2026-11-12) — 2×2 그리드가 칸을 행 높이까지 늘리고,
+   일정 열(.hew)과 급등락 열(.hm-left)은 안쪽 카드가 늘어난 높이를 꽉 채우게 flex로 감싼다.
+   급등락 각주(.hm-foot)는 그리드 밖 아래에 전체 폭으로 빼서 카드 높이 계산에 끼지 않게 한다 */
 .hmcols .hew{display:flex;flex-direction:column}
 .hmcols .hew .upbox{flex:1 1 auto}
 .hmcols .hm-left{display:flex;flex-direction:column}
@@ -571,7 +573,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 .heerr{padding:16px 12px;font-size:13px;color:var(--mut);line-height:1.6}
 .heerr b{display:block;color:var(--tx);font-size:13.5px;margin-bottom:4px}
 .heerr button{margin-top:10px;min-height:38px;padding:7px 16px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:9px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
-@media(max-width:720px){.hmcols{grid-template-columns:1fr;gap:0}.hew{margin-top:8px}.hewbox{max-height:520px}.upbox{max-width:none;margin-left:0}}
+@media(max-width:720px){.hmcols{grid-template-columns:1fr;gap:14px}.hewbox{max-height:520px}.upbox{max-width:none;margin-left:0}}
 @media(max-width:520px){.herow{padding:8px 10px}.heghd{padding-left:10px;padding-right:10px}}
 /* 안내 문구 */
 .note{color:var(--mut);font-size:12.5px;line-height:1.65;margin:8px 2px 0}
@@ -1987,8 +1989,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <span class="heupd" id="hec-upd"></span>
 </div>
 </div>
-</div>
-<div class="hmcols hmrowb">
 <div class="hm-left">
 <div class="hmv">
 <div class="hmhd"><h2>실시간 급등락</h2><div class="pair hmmk" id="hm-mk"><button type="button" data-hm="kr" aria-pressed="true">한국</button><button type="button" data-hm="us" aria-pressed="false">미국</button></div></div>
@@ -1997,13 +1997,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </div>
 <div id="hm-list"><div class="hmvempty">불러오는 중…</div></div>
 </div>
-<p class="hm-foot">등락률은 TradingView 기준 전일 종가 대비이며, 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준입니다.</p>
 </div>
 <div class="hmcm">
 <div class="hmhd"><h2>커뮤니티 최신글</h2><button type="button" class="hmcm-more" id="hm-cm-more">더보기</button></div>
 <div id="hm-cm-list"><p class="cm-empty">글 불러오는 중…</p></div>
 </div>
 </div>
+<p class="hm-foot">등락률은 TradingView 기준 전일 종가 대비이며, 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준입니다.</p>
 <div class="hnw">
 <div class="hmhd"><h2>실시간 뉴스</h2></div>
 <div id="hn-list"><div class="hmvempty">불러오는 중…</div></div>
