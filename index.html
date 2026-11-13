@@ -1802,7 +1802,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 }
 </style>
 <style>
-/* ===== 헤더 탭 메뉴 교체 (2026-11-13): 보이는 메뉴 8개(홈·김프·국내지표·해외지표·코스피·코스닥·미국주식·ETF) =====
+/* ===== 헤더 탭 메뉴 교체 (2026-11-13): 보이는 메뉴 9개(홈·김프·국내지표·해외지표·코스피·코스닥·미국주식·ETF·지표) =====
    실제 섹션 전환은 메뉴에서 빠진 탭까지 포함한 숨김 전환 버튼(.tabsec)이 그대로 맡으므로
    화면에는 보이지 않게 display:none으로 접어 둔다. 보이는 메뉴 버튼은 기존 .tabs button
    규칙(데스크톱 밑줄·모바일 초록 pill, 한 줄 가로 스크롤)을 그대로 이어받는다.
@@ -1866,7 +1866,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="gsearch"><input id="gq" type="text" placeholder="검색" aria-label="사이트 검색" autocomplete="off"><div class="gsres" id="gsres" hidden></div></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><button type="button" data-nav="home" aria-pressed="true">홈</button><button type="button" data-nav="kimp" aria-pressed="false">김프</button><button type="button" data-nav="kridx" aria-pressed="false">국내지표</button><button type="button" data-nav="usidx" aria-pressed="false">해외지표</button><button type="button" data-nav="kospi" aria-pressed="false">코스피</button><button type="button" data-nav="kosdaq" aria-pressed="false">코스닥</button><button type="button" data-nav="usstock" aria-pressed="false">미국주식</button><button type="button" data-nav="etf" aria-pressed="false">ETF</button><button data-t="ph" class="tabsec" aria-pressed="true">홈</button><button data-t="pa" class="tabsec" aria-pressed="false">김프</button><button data-t="pb" class="tabsec" aria-pressed="false">해외</button><button data-t="pg" class="tabsec" aria-pressed="false">원자재</button><button data-t="pf" class="tabsec" aria-pressed="false">펀딩비</button><button data-t="pc" class="tabsec" aria-pressed="false">비교</button><button data-t="pi" class="tabsec" aria-pressed="false">지표</button><button data-t="pk" class="tabsec" aria-pressed="false">커뮤니티</button><button data-t="p-kridx" class="tabsec" aria-pressed="false">국내지표</button><button data-t="p-usidx" class="tabsec" aria-pressed="false">해외지표</button><button data-t="p-kospi" class="tabsec" aria-pressed="false">코스피</button><button data-t="p-kosdaq" class="tabsec" aria-pressed="false">코스닥</button><button data-t="p-usstock" class="tabsec" aria-pressed="false">미국주식</button><button data-t="p-etf" class="tabsec" aria-pressed="false">ETF</button></div></div>
+<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="gsearch"><input id="gq" type="text" placeholder="검색" aria-label="사이트 검색" autocomplete="off"><div class="gsres" id="gsres" hidden></div></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><button type="button" data-nav="home" aria-pressed="true">홈</button><button type="button" data-nav="kimp" aria-pressed="false">김프</button><button type="button" data-nav="kridx" aria-pressed="false">국내지표</button><button type="button" data-nav="usidx" aria-pressed="false">해외지표</button><button type="button" data-nav="kospi" aria-pressed="false">코스피</button><button type="button" data-nav="kosdaq" aria-pressed="false">코스닥</button><button type="button" data-nav="usstock" aria-pressed="false">미국주식</button><button type="button" data-nav="etf" aria-pressed="false">ETF</button><button type="button" data-nav="idx" aria-pressed="false">지표</button><button data-t="ph" class="tabsec" aria-pressed="true">홈</button><button data-t="pa" class="tabsec" aria-pressed="false">김프</button><button data-t="pb" class="tabsec" aria-pressed="false">해외</button><button data-t="pg" class="tabsec" aria-pressed="false">원자재</button><button data-t="pf" class="tabsec" aria-pressed="false">펀딩비</button><button data-t="pc" class="tabsec" aria-pressed="false">비교</button><button data-t="pi" class="tabsec" aria-pressed="false">지표</button><button data-t="pk" class="tabsec" aria-pressed="false">커뮤니티</button><button data-t="p-kridx" class="tabsec" aria-pressed="false">국내지표</button><button data-t="p-usidx" class="tabsec" aria-pressed="false">해외지표</button><button data-t="p-kospi" class="tabsec" aria-pressed="false">코스피</button><button data-t="p-kosdaq" class="tabsec" aria-pressed="false">코스닥</button><button data-t="p-usstock" class="tabsec" aria-pressed="false">미국주식</button><button data-t="p-etf" class="tabsec" aria-pressed="false">ETF</button></div></div>
 
 <script>
 /* ===== 헤더 테마(다크/라이트)·언어(한/영) 전환 =====
@@ -7169,7 +7169,8 @@ setTimeout(function(){window.location.href=brand.href},650);
 })();
 </script>
 <script>
-/* ===== 헤더 탭 메뉴 (2026-11-13 교체, 2026-11-13 빈 페이지 분리): 홈·김프·국내지표·해외지표·코스피·코스닥·미국주식·ETF =====
+/* ===== 헤더 탭 메뉴 (2026-11-13 교체, 2026-11-13 빈 페이지 분리): 홈
+·김프·국내지표·해외지표·코스피·코스닥·미국주식·ETF =====
    보이는 메뉴(#tabs [data-nav])는 각 탭의 섹션을 여는 바로가기이고, 실제 섹션 전환은
    메뉴에서 빠진 탭(원자재·펀딩비·비교·지표·커뮤니티)까지 포함한 숨김 전환 버튼
    (#tabs [data-t], .tabsec)이 그대로 맡는다 — 검색 바로가기·홈 최신글 '더보기' 등
@@ -7193,6 +7194,7 @@ else if(vis("p-kospi"))key="kospi";
 else if(vis("p-kosdaq"))key="kosdaq";
 else if(vis("p-usstock"))key="usstock";
 else if(vis("p-etf"))key="etf";
+else if(vis("pi"))key="idx";
 else if(vis("ph"))key="home";
 else if(vis("pa"))key="kimp";
 tabs.querySelectorAll("button[data-nav]").forEach(function(x){x.setAttribute("aria-pressed",String(x.dataset.nav===key))});
@@ -7209,6 +7211,7 @@ else if(k==="kospi"){goSec("p-kospi")}
 else if(k==="kosdaq"){goSec("p-kosdaq")}
 else if(k==="usstock"){goSec("p-usstock")}
 else if(k==="etf"){goSec("p-etf")}
+else if(k==="idx"){goSec("pi")}
 syncNav();
 });
 /* 메뉴 밖에서 일어난 이동(검색 바로가기·지수 칩·주식/ETF 전환·게시물 전체보기 등)에도
