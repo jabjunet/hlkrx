@@ -166,7 +166,7 @@ table.stocks th:nth-child(5),table.stocks td:nth-child(5),table.stocks th:nth-ch
         <h2>지표</h2>
         <h4>금융스트레스</h4>
         <div id="indStress"><p class="note">불러오는 중…</p></div>
-        <h4>신용스프레드 (등급별 OAS)</h4>
+        <h4>신용스프레드 (등급별 OAS, bp)</h4>
         <div id="indSpread"><p class="note">불러오는 중…</p></div>
       </div>
     </aside>
@@ -461,22 +461,10 @@ function fredLast(id){
   Promise.all(S.map(function(x){ return fredLast(x[1]).then(function(r){ return {n:x[0], r:r}; }); })).then(function(rows){
     document.getElementById('indStress').innerHTML=rows.map(function(x){ return '<div class="indrow"><span>'+x.n+'</span><b>'+(x.r? x.r.v.toFixed(2)+' <small>'+x.r.d+'</small>' : '–')+'</b></div>'; }).join('')+'<p class="note">0보다 크면 금융 스트레스가 평균보다 높다는 뜻이에요 (OFR·NFCI).</p>';
   });
-  var G=[['하이일드 전체','BAMLH0A0HYM2'],['AAA','BAMLC0A1CAAA'],['AA','BAMLC0A2CAA'],['A','BAMLC0A3CA'],['BBB','BAMLC0A4CBBB'],['BB','BAMLH0A1HYBB'],['B','BAMLH0A2HYB'],['CCC 이하','BAMLH0A3HYC']];
-  var spdBox=document.getElementById('indSpread');
-  spdBox.innerHTML=G.map(function(x,i){ return '<div class="spd"><div class="spd-h"><span>'+x[0]+(i>0?'등급':'')+'</span><span class="u">단위 %</span></div><div class="spdchart" data-sym="FRED:'+x[1]+'"></div></div>'; }).join('')+'<p class="note">TradingView 제공 (원자료 FRED · ICE BofA 지수 OAS). 차트 오른쪽 끝 파란 숫자가 최신값이에요 — 3.30이면 330bp예요. 등급이 낮을수록, 수치가 오를수록 신용 위험이 커진 거예요.</p>';
-  function mountSpread(el){
-    var wrap=document.createElement('div'); wrap.className='tradingview-widget-container'; wrap.style.height='100%';
-    var w=document.createElement('div'); w.className='tradingview-widget-container__widget'; w.style.height='100%';
-    var s=document.createElement('script'); s.type='text/javascript'; s.async=true;
-    s.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-    s.innerHTML=JSON.stringify({symbol:el.dataset.sym,interval:'D',timezone:'Asia/Seoul',theme:'light',style:'3',locale:'kr',allow_symbol_change:false,hide_top_toolbar:true,hide_side_toolbar:true,hide_legend:true,support_host:'https://www.tradingview.com'});
-    wrap.appendChild(w); wrap.appendChild(s); el.appendChild(wrap);
-  }
-  var spdEls=[].slice.call(spdBox.querySelectorAll('.spdchart'));
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ mountSpread(e.target); io.unobserve(e.target); } }); },{rootMargin:'200px'});
-    spdEls.forEach(function(el){ io.observe(el); });
-  } else { spdEls.forEach(mountSpread); }
+  var G=[['하이일드 전체','BAMLH0A0HYM2',0],['AAA','BAMLC0A1CAAA',1],['AA','BAMLC0A2CAA',1],['A','BAMLC0A3CA',1],['BBB','BAMLC0A4CBBB',1],['BB','BAMLH0A1HYBB',1],['B','BAMLH0A2HYB',1],['CCC 이하','BAMLH0A3HYC',1]];
+  Promise.all(G.map(function(x){ return fredLast(x[1]).then(function(r){ return {n:x[0], g:x[2], r:r}; }); })).then(function(rows){
+    document.getElementById('indSpread').innerHTML=rows.map(function(x){ return '<div class="indrow"><span>'+x.n+(x.g?'등급':'')+'</span><b>'+(x.r? Math.round(x.r.v*100)+'bp <small>'+x.r.d+'</small>' : '–')+'</b></div>'; }).join('')+'<p class="note">ICE BofA 지수 기준 OAS (FRED 제공). 등급이 낮을수록, 수치가 오를수록 신용 위험이 커진 거예요.</p>';
+  });
 })();
 
 /* ---------- 경제지표 비교표 (내장 데이터) ---------- */
