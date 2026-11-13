@@ -23,7 +23,7 @@ header.top{display:flex;align-items:center;gap:14px;padding:10px 16px;background
 .idxcard h3{font-size:12px;color:var(--mut);font-weight:600;margin-bottom:2px}
 .idxcard .p{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums}
 .idxcard .c{font-size:12px;font-weight:700;margin-left:6px}
-.idxcard svg{width:100%;height:34px;display:block;margin-top:6px}
+.idxchart{height:86px;margin-top:6px;border-radius:8px;overflow:hidden}
 .main{display:grid;grid-template-columns:272px minmax(0,1fr) 320px;gap:12px;align-items:start}
 .card{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px}
 .card h2{font-size:15px;font-weight:800;margin-bottom:10px}
@@ -105,10 +105,10 @@ footer{padding:18px 16px;color:var(--mut);font-size:12px;line-height:1.7}
 </header>
 <div class="wrap">
   <section class="idxrow" id="idxRow">
-    <div class="idxcard" data-tv="CME_MINI:NQ1!" data-y="NQ=F"><h3>나스닥100 미니 선물</h3><span class="p">–</span><span class="c"></span><svg preserveAspectRatio="none"></svg></div>
-    <div class="idxcard" data-tv="SP:SPX" data-y="^GSPC"><h3>S&amp;P 500</h3><span class="p">–</span><span class="c"></span><svg preserveAspectRatio="none"></svg></div>
-    <div class="idxcard" data-tv="TVC:GOLD" data-y="GC=F"><h3>금</h3><span class="p">–</span><span class="c"></span><svg preserveAspectRatio="none"></svg></div>
-    <div class="idxcard" data-tv="TVC:UKOIL" data-y="BZ=F"><h3>브렌트유</h3><span class="p">–</span><span class="c"></span><svg preserveAspectRatio="none"></svg></div>
+    <div class="idxcard" data-tv="CME_MINI:NQ1!" data-y="NQ=F"><h3>나스닥100 미니 선물</h3><span class="p">–</span><span class="c"></span><div class="idxchart"></div></div>
+    <div class="idxcard" data-tv="SP:SPX" data-y="^GSPC"><h3>S&amp;P 500</h3><span class="p">–</span><span class="c"></span><div class="idxchart"></div></div>
+    <div class="idxcard" data-tv="TVC:GOLD" data-y="GC=F"><h3>금</h3><span class="p">–</span><span class="c"></span><div class="idxchart"></div></div>
+    <div class="idxcard" data-tv="TVC:UKOIL" data-y="BZ=F"><h3>브렌트유</h3><span class="p">–</span><span class="c"></span><div class="idxchart"></div></div>
   </section>
   <div class="main">
     <aside class="left">
@@ -243,28 +243,16 @@ var idxCards=[].slice.call(document.querySelectorAll('.idxcard'));
     });
   }).catch(function(){});
 })();
-function drawSpark(card, attempt){
-  var sym=card.dataset.y;
-  var url='https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(sym)+'?range=1d&interval=5m';
-  raceText(url).then(function(t){
-    var j=JSON.parse(t), r=j.chart.result[0], meta=r.meta;
-    var closes=(r.indicators.quote[0].close||[]).filter(function(v){ return v!=null; });
-    if(!card.dataset.done){
-      var price=meta.regularMarketPrice, prev=meta.chartPreviousClose||meta.previousClose;
-      if(price!=null) card.querySelector('.p').textContent=price.toLocaleString('en-US',{maximumFractionDigits:2});
-      if(prev&&price!=null){ var chg=(price-prev)/prev*100, cEl=card.querySelector('.c'); cEl.textContent=(chg>0?'+':'')+chg.toFixed(2)+'%'; cEl.className='c '+(chg>0?'up':(chg<0?'dn':'')); }
-    }
-    if(closes.length>1){
-      var min=Math.min.apply(null,closes), max=Math.max.apply(null,closes), rg=(max-min)||1;
-      var W=260,H=34, pts=closes.map(function(v,i){ return (i/(closes.length-1)*W).toFixed(1)+','+(H-3-((v-min)/rg)*(H-6)).toFixed(1); }).join(' ');
-      var last=closes[closes.length-1], first=closes[0], col=last<first? '#1261e8':'#f04438';
-      card.querySelector('svg').innerHTML='<polyline fill="none" stroke="'+col+'" stroke-width="1.6" points="'+pts+'"/>';
-    }
-  }).catch(function(){
-    if(!attempt){ setTimeout(function(){ drawSpark(card, 1); }, 2500); }
-  });
+function mountIdxChart(card){
+  var box=card.querySelector('.idxchart'); if(!box) return;
+  var c=document.createElement('div'); c.className='tradingview-widget-container'; c.style.height='100%';
+  var w=document.createElement('div'); w.className='tradingview-widget-container__widget'; w.style.height='100%'; c.appendChild(w);
+  var s=document.createElement('script'); s.type='text/javascript'; s.async=true;
+  s.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  s.textContent=JSON.stringify({symbol:card.dataset.tv,interval:'5',timezone:'Asia/Seoul',theme:'light',style:'3',locale:'kr',allow_symbol_change:false,hide_top_toolbar:true,hide_side_toolbar:true,hide_legend:true,save_image:false,support_host:'https://www.tradingview.com'});
+  c.appendChild(s); box.appendChild(c);
 }
-idxCards.forEach(function(card){ drawSpark(card, 0); });
+idxCards.forEach(mountIdxChart);
 
 /* ---------- 종목표 (TradingView 스캐너) ---------- */
 var COLS=['name','description','close','change','market_cap_basic','volume','sector','industry','price_earnings_ttm'];
