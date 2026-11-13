@@ -105,10 +105,10 @@ footer{padding:18px 16px;color:var(--mut);font-size:12px;line-height:1.7}
 </header>
 <div class="wrap">
   <section class="idxrow" id="idxRow">
-    <div class="idxcard" data-idx="NQ=F"><h3>나스닥100 미니 선물</h3><span class="p">–</span><span class="c"></span><svg preserveAspectRatio="none"></svg></div>
-    <div class="idxcard" data-idx="^IXIC"><h3>나스닥 종합</h3><span class="p">–</span><span class="c"></span><svg preserveAspectRatio="none"></svg></div>
-    <div class="idxcard" data-idx="^GSPC"><h3>S&amp;P 500</h3><span class="p">–</span><span class="c"></span><svg preserveAspectRatio="none"></svg></div>
-    <div class="idxcard" data-idx="BZ=F"><h3>브렌트유</h3><span class="p">–</span><span class="c"></span><svg preserveAspectRatio="none"></svg></div>
+    <div class="idxcard" data-tv="CME_MINI:NQ1!" data-y="NQ=F"><h3>나스닥100 미니 선물</h3><span class="p">–</span><span class="c"></span><svg preserveAspectRatio="none"></svg></div>
+    <div class="idxcard" data-tv="SP:SPX" data-y="^GSPC"><h3>S&amp;P 500</h3><span class="p">–</span><span class="c"></span><svg preserveAspectRatio="none"></svg></div>
+    <div class="idxcard" data-tv="TVC:GOLD" data-y="GC=F"><h3>금</h3><span class="p">–</span><span class="c"></span><svg preserveAspectRatio="none"></svg></div>
+    <div class="idxcard" data-tv="TVC:UKOIL" data-y="BZ=F"><h3>브렌트유</h3><span class="p">–</span><span class="c"></span><svg preserveAspectRatio="none"></svg></div>
   </section>
   <div class="main">
     <aside class="left">
@@ -227,26 +227,44 @@ function sessionTick(){
 }
 sessionTick(); setInterval(sessionTick,30000);
 
-/* ---------- 상단 지수 라인 차트 (Yahoo 일중 데이터로 직접 그림) ---------- */
-function drawSpark(card, sym){
+/* ---------- 상단 지수: 값은 TradingView 전역 스캔(본 사이트 홈과 동일), 선은 Yahoo 일중 데이터 ---------- */
+var idxCards=[].slice.call(document.querySelectorAll('.idxcard'));
+(function(){
+  var ticks=idxCards.map(function(c){ return c.dataset.tv; });
+  fetch('https://scanner.tradingview.com/global/scan',{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({symbols:{tickers:ticks},columns:['close','change']})})
+  .then(function(r){ return r.json(); }).then(function(j){
+    var m={}; (j.data||[]).forEach(function(x){ if(x&&x.d) m[x.s]=x.d; });
+    idxCards.forEach(function(card){
+      var d=m[card.dataset.tv]; if(!d||!(d[0]>0)) return;
+      card.querySelector('.p').textContent=d[0].toLocaleString('en-US',{maximumFractionDigits:2});
+      var chg=d[1], cEl=card.querySelector('.c');
+      if(chg!=null&&!isNaN(chg)){ cEl.textContent=(chg>0?'+':'')+Number(chg).toFixed(2)+'%'; cEl.className='c '+(chg>0?'up':(chg<0?'dn':'')); }
+      card.dataset.done='1';
+    });
+  }).catch(function(){});
+})();
+function drawSpark(card, attempt){
+  var sym=card.dataset.y;
   var url='https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(sym)+'?range=1d&interval=5m';
   raceText(url).then(function(t){
     var j=JSON.parse(t), r=j.chart.result[0], meta=r.meta;
     var closes=(r.indicators.quote[0].close||[]).filter(function(v){ return v!=null; });
-    var price=meta.regularMarketPrice, prev=meta.chartPreviousClose||meta.previousClose;
-    var chg=prev? (price-prev)/prev*100 : null;
-    card.querySelector('.p').textContent=price!=null? price.toLocaleString('en-US',{maximumFractionDigits:2}) : '–';
-    var cEl=card.querySelector('.c');
-    if(chg!=null){ cEl.textContent=(chg>0?'+':'')+chg.toFixed(2)+'%'; cEl.className='c '+(chg>0?'up':(chg<0?'dn':'')); }
+    if(!card.dataset.done){
+      var price=meta.regularMarketPrice, prev=meta.chartPreviousClose||meta.previousClose;
+      if(price!=null) card.querySelector('.p').textContent=price.toLocaleString('en-US',{maximumFractionDigits:2});
+      if(prev&&price!=null){ var chg=(price-prev)/prev*100, cEl=card.querySelector('.c'); cEl.textContent=(chg>0?'+':'')+chg.toFixed(2)+'%'; cEl.className='c '+(chg>0?'up':(chg<0?'dn':'')); }
+    }
     if(closes.length>1){
       var min=Math.min.apply(null,closes), max=Math.max.apply(null,closes), rg=(max-min)||1;
       var W=260,H=34, pts=closes.map(function(v,i){ return (i/(closes.length-1)*W).toFixed(1)+','+(H-3-((v-min)/rg)*(H-6)).toFixed(1); }).join(' ');
-      var col=chg!=null&&chg<0? '#1261e8':'#f04438';
+      var last=closes[closes.length-1], first=closes[0], col=last<first? '#1261e8':'#f04438';
       card.querySelector('svg').innerHTML='<polyline fill="none" stroke="'+col+'" stroke-width="1.6" points="'+pts+'"/>';
     }
-  }).catch(function(){ card.querySelector('.p').textContent='–'; });
+  }).catch(function(){
+    if(!attempt){ setTimeout(function(){ drawSpark(card, 1); }, 2500); }
+  });
 }
-document.querySelectorAll('.idxcard').forEach(function(card){ drawSpark(card, card.dataset.idx); });
+idxCards.forEach(function(card){ drawSpark(card, 0); });
 
 /* ---------- 종목표 (TradingView 스캐너) ---------- */
 var COLS=['name','description','close','change','market_cap_basic','volume','sector','industry','price_earnings_ttm'];
@@ -386,7 +404,7 @@ fetch('https://jabjunet-default-rtdb.firebaseio.com/posts.json').then(function(r
 /* ---------- 지표 (FRED 최신값) ---------- */
 function fredLast(id){
   var url='https://fred.stlouisfed.org/graph/fredgraph.csv?id='+id+'&cosd=2023-06-01';
-  return raceText(url).then(function(t){
+  return raceText(url).catch(function(){ return new Promise(function(r){ setTimeout(r, 1500); }).then(function(){ return raceText(url); }); }).then(function(t){
     var lines=t.trim().split('\n');
     for(var i=lines.length-1;i>0;i--){ var p=lines[i].split(','); if(p[1]&&p[1]!=='.') return {d:p[0], v:parseFloat(p[1])}; }
     return null;
