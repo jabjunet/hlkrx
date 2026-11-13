@@ -28,6 +28,16 @@ h1{font-size:22px;margin:2px 0 4px}
 .lead{color:var(--muted);margin:0 0 14px;font-size:13.5px}
 .hotwrap{margin:0 0 16px}
 .hotwrap h2{font-size:14px;margin:0 0 8px}
+.chancards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 16px}
+.chancard{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px 14px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.chancard .cn2{font-size:15px;font-weight:800}
+.chancard .cd2{color:var(--muted);font-size:12px;margin-top:2px}
+.chancard .cs2{color:var(--muted);font-size:12px;margin-top:6px}
+.chanhead{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:16px;margin:0 0 14px}
+.chanhead .ct2{font-size:19px;font-weight:800}
+.chanhead .cd3{color:var(--muted);font-size:13px;margin-top:2px}
+.chanhead .cs3{color:var(--muted);font-size:12.5px;margin-top:8px}
+.bestbdg{flex:none;font-size:11px;font-weight:700;color:#fff;background:var(--accent);border-radius:999px;padding:1px 7px}
 .hotrow{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
 .hotrow::-webkit-scrollbar{display:none}
 .hotcard{flex:0 0 250px;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px 14px;cursor:pointer;text-align:left;font:inherit;color:inherit}
@@ -141,9 +151,11 @@ footer a{color:var(--accent);text-decoration:none}
 
 <main id="viewList">
 <h1>커뮤니티</h1>
-<p class="lead">시나리오 · 관점 · 차트 분석을 나누는 곳이에요. 종목 태그($NVDA)를 붙이면 종목 페이지에도 함께 보여요.</p>
+<p class="lead">시장별 채널로 나뉜 커뮤니티예요. 채널을 골라 들어가거나 전체에서 한 번에 볼 수 있어요. 종목 태그($NVDA)를 붙이면 종목 페이지에도 함께 보여요.</p>
+<div class="chancards" id="chanCards"></div>
+<div class="chanhead" id="chanHead" hidden></div>
 <div class="hotwrap" id="hotWrap" hidden>
-<h2>🔥 지금 인기</h2>
+<h2 id="hotTitle">🔥 지금 인기</h2>
 <div class="hotrow" id="hotRow"></div>
 </div>
 <div class="toolbar">
@@ -192,7 +204,7 @@ footer a{color:var(--accent);text-decoration:none}
 <main id="viewWrite" hidden>
 <button type="button" class="backbtn" id="wbackBtn">← 돌아가기</button>
 <form class="wform" id="wform">
-<label for="wcat">카테고리</label>
+<label for="wcat">채널</label>
 <select id="wcat"></select>
 <label for="wtitle">제목</label>
 <input type="text" id="wtitle" maxlength="120" placeholder="제목을 입력하세요">
@@ -232,6 +244,34 @@ footer a{color:var(--accent);text-decoration:none}
 var FIREBASE_CONFIG={apiKey:"AIzaSyCK_8KrdL-JkTn7UmFz_xsDW4rTTX8Hcj8",authDomain:"kimpwon.com",databaseURL:"https://jabjunet-default-rtdb.firebaseio.com",projectId:"jabjunet",storageBucket:"jabjunet.firebasestorage.app",messagingSenderId:"518844585539",appId:"1:518844585539:web:8ab1132490e672dd8366f6"};
 var CAT_CODES={free:"자유",stock:"주식",coin:"코인",qna:"질문"};
 var cmCats=["자유","주식","코인","질문"];
+var CHANS=[
+ {id:"us",name:"미국증시",desc:"나스닥 · S&P 500 · 빅테크 · 연준과 미국 매크로",legacy:"주식"},
+ {id:"kr",name:"국내증시",desc:"코스피 · 코스닥 · 국내 종목과 수급",legacy:"주식"},
+ {id:"crypto",name:"암호화폐",desc:"비트코인 · 알트코인 · 김프 · 펀딩비",legacy:"코인"},
+ {id:"free",name:"자유·질문",desc:"자유 주제와 질문 · 잡담",legacy:"질문"}
+];
+var CHAN_IDS={us:1,kr:1,crypto:1,free:1};
+function rawCat(p){
+  var c=(p&&typeof p.cat==="string")?p.cat.trim():"";
+  if(!c)return "";
+  if(CAT_CODES[c])return CAT_CODES[c];
+  var lc=c.toLowerCase(); if(CAT_CODES[lc])return CAT_CODES[lc];
+  return c;
+}
+function chanOf(p){
+  if(p&&typeof p.chan==="string"&&CHAN_IDS[p.chan])return p.chan;
+  var c=rawCat(p);
+  if(c==="코인")return "crypto";
+  if(c==="질문"||c==="자유")return "free";
+  if(c==="주식"){
+    var t=tagOf(p);
+    if(/^[A-Z]{1,5}$/.test(t))return "us";
+    return "kr";
+  }
+  return "free";
+}
+function chanName(id){for(var i=0;i<CHANS.length;i++){if(CHANS[i].id===id)return CHANS[i].name}return "자유·질문"}
+function chanLegacy(id){for(var i=0;i<CHANS.length;i++){if(CHANS[i].id===id)return CHANS[i].legacy}return "질문"}
 var posts=[],filter="전체",sortMode="latest",shown=30,query="",tagFilter="";
 var PAGE=30;
 var user=null,myName="",curKey=null,editKey=null;
@@ -297,7 +337,7 @@ function matchQuery(p){
 }
 function visiblePosts(){
   var arr=posts.filter(function(p){
-    return !p.pin&&(filter==="전체"||catOf(p)===filter)&&(!tagFilter||tagOf(p)===tagFilter)&&matchQuery(p);
+    return !p.pin&&(filter==="전체"||chanOf(p)===filter)&&(!tagFilter||tagOf(p)===tagFilter)&&matchQuery(p);
   });
   arr.sort(function(a,b){
     if(sortMode==="popular"){var d=likeN(b)-likeN(a); if(d)return d; var dv=(b.views||0)-(a.views||0); if(dv)return dv; return (b.ts||0)-(a.ts||0)}
@@ -308,22 +348,28 @@ function visiblePosts(){
   return arr;
 }
 function pinnedPosts(){
-  var arr=posts.filter(function(p){return p.pin&&(filter==="전체"||catOf(p)===filter)&&!tagFilter&&matchQuery(p)});
+  var arr=posts.filter(function(p){return p.pin&&(filter==="전체"||chanOf(p)===filter||rawCat(p)==="공지")&&!tagFilter&&matchQuery(p)});
   arr.sort(function(a,b){var d=(b.pinTs||0)-(a.pinTs||0); if(d)return d; return (b.ts||0)-(a.ts||0)});
   return arr.slice(0,5);
 }
 function renderChips(){
   chipsEl.textContent="";
-  ["전체"].concat(cmCats).forEach(function(name){
+  var tabs=[{id:"전체",name:"전체"}].concat(CHANS);
+  tabs.forEach(function(t){
     var b=document.createElement("button");
-    b.type="button"; b.textContent=name;
-    b.setAttribute("aria-pressed",String(filter===name));
-    b.addEventListener("click",function(){filter=name;shown=PAGE;renderChips();render()});
+    b.type="button"; b.textContent=t.name;
+    b.setAttribute("aria-pressed",String(filter===t.id));
+    b.addEventListener("click",function(){setFilter(t.id)});
     chipsEl.appendChild(b);
   });
 }
+function setFilter(id){
+  filter=id; shown=PAGE; renderChips(); render();
+  try{history.replaceState(null,"",id==="전체"?"#":"#chan="+id)}catch(e){}
+}
 function renderHot(){
-  var hot=posts.filter(function(p){return !p.pin&&likeN(p)>=3});
+  var hot=posts.filter(function(p){return !p.pin&&likeN(p)>=3&&(filter==="전체"||chanOf(p)===filter)});
+  $("hotTitle").textContent=(filter==="전체")?"🔥 지금 인기":"🔥 채널 베스트";
   hot.sort(function(a,b){var d=likeN(b)-likeN(a); if(d)return d; return (b.ts||0)-(a.ts||0)});
   hot=hot.slice(0,6);
   var wrap=$("hotWrap"),row=$("hotRow");
@@ -365,10 +411,11 @@ function makeRow(p,isPin){
   if(isPin){
     var pb=document.createElement("span"); pb.className="pinbdg"; pb.textContent="공지"; tl.appendChild(pb);
   }else{
-    var cb=document.createElement("span"); cb.className="cat"; cb.textContent=catOf(p); tl.appendChild(cb);
+    var cb=document.createElement("span"); cb.className="cat"; cb.textContent=chanName(chanOf(p)); tl.appendChild(cb);
   }
   var tg=tagOf(p);
   if(tg){var tc=document.createElement("span"); tc.className="tagchip"; tc.textContent="$"+tg; tl.appendChild(tc)}
+  if(!isPin&&likeN(p)>=5){var bb=document.createElement("span"); bb.className="bestbdg"; bb.textContent="개념"; tl.appendChild(bb)}
   if(!isPin&&(cmtN(p)>=3||likeN(p)>=3)){
     var hb=document.createElement("span"); hb.className="hotbdg"; hb.textContent="HOT"; tl.appendChild(hb);
   }
@@ -384,7 +431,42 @@ function makeRow(p,isPin){
   row.addEventListener("click",function(){openPost(p.key)});
   return row;
 }
+function renderChanCards(){
+  var box=$("chanCards"); box.textContent="";
+  var show=(filter==="전체"&&!tagFilter&&!query);
+  box.style.display=show?"grid":"none";
+  if(!show)return;
+  CHANS.forEach(function(ch){
+    var mine=posts.filter(function(p){return !p.pin&&chanOf(p)===ch.id});
+    var card=document.createElement("button"); card.type="button"; card.className="chancard";
+    var n=document.createElement("div"); n.className="cn2"; n.textContent=ch.name;
+    var d=document.createElement("div"); d.className="cd2"; d.textContent=ch.desc;
+    var s=document.createElement("div"); s.className="cs2";
+    var last=mine.slice().sort(function(a,b){return (b.ts||0)-(a.ts||0)})[0];
+    s.textContent="글 "+mine.length+"개"+(last?" · 최근 "+ago(last.ts):"");
+    card.appendChild(n); card.appendChild(d); card.appendChild(s);
+    card.addEventListener("click",function(){setFilter(ch.id)});
+    box.appendChild(card);
+  });
+}
+function renderChanHead(){
+  var box=$("chanHead");
+  if(filter==="전체"){box.hidden=true; return}
+  var ch=null; CHANS.forEach(function(c){if(c.id===filter)ch=c});
+  if(!ch){box.hidden=true; return}
+  var mine=posts.filter(function(p){return !p.pin&&chanOf(p)===filter});
+  var t0=new Date(); t0.setHours(0,0,0,0);
+  var todayN=mine.filter(function(p){return (p.ts||0)>=t0.getTime()}).length;
+  var bestN=mine.filter(function(p){return likeN(p)>=5}).length;
+  box.hidden=false; box.textContent="";
+  var t=document.createElement("div"); t.className="ct2"; t.textContent=ch.name+" 채널";
+  var d=document.createElement("div"); d.className="cd3"; d.textContent=ch.desc;
+  var s=document.createElement("div"); s.className="cs3"; s.textContent="글 "+mine.length+"개 · 오늘 "+todayN+"개 · 개념글 "+bestN+"개";
+  box.appendChild(t); box.appendChild(d); box.appendChild(s);
+}
 function render(){
+  renderChanCards();
+  renderChanHead();
   renderHot();
   var pins=pinnedPosts(),arr=visiblePosts();
   listEl.textContent="";
@@ -427,7 +509,7 @@ function renderPost(p){
   var meta=$("pmeta"); meta.textContent="";
   var parts=[p.name||"익명",fmtFull(p.ts),"조회 "+(p.views||0)];
   var s=document.createElement("span"); s.textContent=parts.join(" · "); meta.appendChild(s);
-  var cb=document.createElement("span"); cb.className="cat"; cb.textContent=catOf(p); meta.appendChild(cb);
+  var cb=document.createElement("span"); cb.className="cat"; cb.textContent=chanName(chanOf(p)); meta.appendChild(cb);
   var tg=tagOf(p);
   if(tg){
     var tc=document.createElement("button"); tc.type="button"; tc.className="tagchip"; tc.textContent="$"+tg;
@@ -538,8 +620,8 @@ function sendComment(text,parent,done){
 /* ---------- 글쓰기 ---------- */
 function fillCats(){
   var sel=$("wcat"); sel.textContent="";
-  cmCats.forEach(function(c){
-    var o=document.createElement("option"); o.value=c; o.textContent=c; sel.appendChild(o);
+  CHANS.forEach(function(ch){
+    var o=document.createElement("option"); o.value=ch.id; o.textContent=ch.name; sel.appendChild(o);
   });
 }
 function openWrite(edit){
@@ -549,7 +631,7 @@ function openWrite(edit){
   $("werr").hidden=true;
   if(edit){
     var p=postByKey(edit); if(!p)return;
-    $("wcat").value=catOf(p);
+    $("wcat").value=chanOf(p);
     $("wtitle").value=p.title||"";
     $("wtag").value=tagOf(p);
     $("wbody").value=p.body||"";
@@ -557,7 +639,7 @@ function openWrite(edit){
     $("wsubmit").textContent="수정하기";
   }else{
     $("wtitle").value=""; $("wtag").value=""; $("wbody").value=""; $("wimgs").value="";
-    $("wsubmit").textContent="등록하기";
+    $("wsubmit").textContent="등록하기"; if(filter!=="전체")$("wcat").value=filter;
   }
   showView("write");
 }
@@ -614,7 +696,7 @@ $("wform").addEventListener("submit",function(e){
   if(!body){err.hidden=false;err.textContent="내용을 입력해 주세요.";return}
   var tag=$("wtag").value.trim().toUpperCase().replace(/^\$/,"").replace(/[^0-9A-Z가-힣.\-]/g,"").slice(0,12);
   var imgs=$("wimgs").value.split("\n").map(function(s){return s.trim()}).filter(function(s){return /^https?:\/\//.test(s)}).slice(0,4);
-  var rec={title:title,body:body,cat:$("wcat").value,name:myName||user.displayName||"익명",photo:user.photoURL||"",uid:user.uid};
+  var rec={title:title,body:body,cat:chanLegacy($("wcat").value),chan:$("wcat").value,name:myName||user.displayName||"익명",photo:user.photoURL||"",uid:user.uid};
   if(tag)rec.tag=tag;
   if(imgs.length)rec.imgs=imgs;
   var db=firebase.database();
@@ -670,6 +752,8 @@ try{
       if(arr.length)cmCats=arr;
     }
   }).catch(function(){}).then(function(){
+    var hm=(location.hash||"").match(/#chan=(us|kr|crypto|free)/);
+    if(hm)filter=hm[1];
     renderChips();
     db.ref("posts").on("value",function(snap){
       var val=snap.val()||{};
