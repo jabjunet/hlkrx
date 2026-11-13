@@ -2094,7 +2094,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <h1 class="m-hero-t">김프부터 펀딩비까지,<br><span>한 화면에서.</span></h1>
 <p class="m-hero-sub">국내가와 해외가, 환율까지 일일이 열어볼 필요 없이 한 번에 확인하세요.</p>
 </div>
-<div style="display:flex;gap:6px;margin:0 0 10px" aria-label="시장 모드"><a href="coin.html" style="padding:7px 14px;border:1px solid var(--bd);border-radius:999px;font-weight:700;font-size:13px;background:var(--sf);color:var(--tx);text-decoration:none">암호화폐</a><a href="us.html" style="padding:7px 14px;border:1px solid var(--bd);border-radius:999px;font-weight:700;font-size:13px;background:var(--sf);color:var(--tx);text-decoration:none">미국주식</a><button type="button" onclick="document.querySelector('button[data-nav=kospi]').click()" style="padding:7px 14px;border:1px solid var(--bd);border-radius:999px;font-weight:700;font-size:13px;background:var(--sf);color:var(--tx);cursor:pointer">국내주식</button></div><div class="ixstrip" id="ixstrip">
+<div class="ixstrip" id="ixstrip">
 <div class="ixcats" id="ixcats" role="group" aria-label="지수 카테고리">
 <button type="button" data-ixcat="main" aria-pressed="true">주요</button>
 <button type="button" data-ixcat="kr" aria-pressed="false">국내</button>
@@ -6533,7 +6533,7 @@ setInterval(function(){if(!document.hidden)load()},3600000);
    행에 heen이 빠져 있어도 아래 HEC_ABBR 표에 있는 지표면 로드 시 자동으로 채워 넣으므로,
    데이터를 교체할 때 약어를 빠뜨려도 표에 있는 지표는 같은 방식으로 표시된다. */
 (function(){
-var HEC_BAKED_AT="2026-11-13 08:15";
+var HEC_BAKED_AT="2026-11-13 17:55";
 var e=document.getElementById("hec-upd");
 if(e){var p=HEC_BAKED_AT.split(/[- :]/);e.textContent=(+p[3])+":"+p[4]+" 갱신"}
 var HEC_ABBR=[
