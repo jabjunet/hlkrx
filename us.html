@@ -18,12 +18,12 @@ header.top{display:flex;align-items:center;gap:14px;padding:10px 16px;background
 .session{margin-left:auto;font-size:12px;color:var(--mut);text-align:right;line-height:1.5}
 .session b{color:var(--tx)}.session .live{color:var(--up);font-weight:800}
 .wrap{max-width:1560px;margin:0 auto;padding:14px}
-.idxrow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
-.idxcard{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 14px;min-height:104px}
+.idxrow{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:12px}
+.idxcard{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 14px}
 .idxcard h3{font-size:12px;color:var(--mut);font-weight:600;margin-bottom:2px}
 .idxcard .p{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums}
 .idxcard .c{font-size:12px;font-weight:700;margin-left:6px}
-.idxcard .spark{width:100%;height:48px;display:block;margin-top:8px}
+.idxcard .amt{font-size:12px;font-weight:600;margin-left:5px}
 .main{display:grid;grid-template-columns:272px minmax(0,1fr) 320px;gap:12px;align-items:start}
 .card{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px}
 .card h2{font-size:15px;font-weight:800;margin-bottom:10px}
@@ -90,6 +90,7 @@ table.cmp th{background:var(--sf2);text-align:center}
 .note{font-size:11.5px;color:var(--mut);line-height:1.6;margin-top:8px}
 footer{padding:18px 16px;color:var(--mut);font-size:12px;line-height:1.7}
 @media(max-width:1180px){.main{grid-template-columns:230px minmax(0,1fr)}.right{grid-column:1/-1}}
+@media(max-width:1180px){.idxrow{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:760px){.main{grid-template-columns:1fr}.idxrow{grid-template-columns:repeat(2,1fr)}.chartbox{height:330px}}
 </style>
 </head>
@@ -105,10 +106,12 @@ footer{padding:18px 16px;color:var(--mut);font-size:12px;line-height:1.7}
 </header>
 <div class="wrap">
   <section class="idxrow" id="idxRow">
-    <div class="idxcard" data-tv="CME_MINI:NQ1!" data-y="NQ=F"><h3>나스닥100 미니 선물</h3><span class="p">–</span><span class="c"></span><svg class="spark" viewBox="0 0 260 48" preserveAspectRatio="none"></svg></div>
-    <div class="idxcard" data-tv="SP:SPX" data-y="^GSPC"><h3>S&amp;P 500</h3><span class="p">–</span><span class="c"></span><svg class="spark" viewBox="0 0 260 48" preserveAspectRatio="none"></svg></div>
-    <div class="idxcard" data-tv="TVC:GOLD" data-y="GC=F"><h3>금</h3><span class="p">–</span><span class="c"></span><svg class="spark" viewBox="0 0 260 48" preserveAspectRatio="none"></svg></div>
-    <div class="idxcard" data-tv="TVC:UKOIL" data-y="BZ=F"><h3>브렌트유 (UKOIL)</h3><span class="p">–</span><span class="c"></span><svg class="spark" viewBox="0 0 260 48" preserveAspectRatio="none"></svg></div>
+    <div class="idxcard" data-tv="CME_MINI:NQ1!"><h3>나스닥100 미니 선물</h3><span class="p">–</span><div><span class="c"></span><span class="amt"></span></div></div>
+    <div class="idxcard" data-tv="SP:SPX"><h3>S&amp;P 500</h3><span class="p">–</span><div><span class="c"></span><span class="amt"></span></div></div>
+    <div class="idxcard" data-tv="NASDAQ:SOX"><h3>필라델피아 반도체</h3><span class="p">–</span><div><span class="c"></span><span class="amt"></span></div></div>
+    <div class="idxcard" data-tv="TVC:VIX"><h3>VIX 지수</h3><span class="p">–</span><div><span class="c"></span><span class="amt"></span></div></div>
+    <div class="idxcard" data-tv="TVC:GOLD" data-pre="$"><h3>금</h3><span class="p">–</span><div><span class="c"></span><span class="amt"></span></div></div>
+    <div class="idxcard" data-tv="TVC:UKOIL" data-pre="$"><h3>브렌트유 (UKOIL)</h3><span class="p">–</span><div><span class="c"></span><span class="amt"></span></div></div>
   </section>
   <div class="main">
     <aside class="left">
@@ -227,42 +230,35 @@ function sessionTick(){
 }
 sessionTick(); setInterval(sessionTick,30000);
 
-/* ---------- 상단 지수: 값은 TradingView 전역 스캔(본 사이트 홈과 동일), 선은 Yahoo 일중 데이터 ---------- */
+/* ---------- 상단 지수 타일 (수치 전용, TradingView 스캔 + 심볼별 보조 조회) ---------- */
 var idxCards=[].slice.call(document.querySelectorAll('.idxcard'));
-(function(){
+function idxFill(card, price, chg){
+  if(!(price>0)) return;
+  card.querySelector('.p').textContent=(card.dataset.pre||'')+price.toLocaleString('en-US',{maximumFractionDigits:2});
+  var cEl=card.querySelector('.c'), aEl=card.querySelector('.amt');
+  if(chg!=null&&!isNaN(chg)){
+    var cls=chg>0?'up':(chg<0?'dn':'');
+    cEl.textContent=(chg>0?'+':'')+Number(chg).toFixed(2)+'%'; cEl.className='c '+cls;
+    var amt=price-(price/(1+chg/100));
+    aEl.textContent='('+(amt>0?'+':'')+amt.toLocaleString('en-US',{maximumFractionDigits:2})+')'; aEl.className='amt '+cls;
+  }
+  card.dataset.done='1';
+}
+function idxBatch(){
   var ticks=idxCards.map(function(c){ return c.dataset.tv; });
   fetch('https://scanner.tradingview.com/global/scan',{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({symbols:{tickers:ticks},columns:['close','change']})})
   .then(function(r){ return r.json(); }).then(function(j){
     var m={}; (j.data||[]).forEach(function(x){ if(x&&x.d) m[x.s]=x.d; });
+    idxCards.forEach(function(card){ var d=m[card.dataset.tv]; if(d) idxFill(card, d[0], d[1]); });
+  }).catch(function(){}).then(function(){
     idxCards.forEach(function(card){
-      var d=m[card.dataset.tv]; if(!d||!(d[0]>0)) return;
-      card.querySelector('.p').textContent=d[0].toLocaleString('en-US',{maximumFractionDigits:2});
-      var chg=d[1], cEl=card.querySelector('.c');
-      if(chg!=null&&!isNaN(chg)){ cEl.textContent=(chg>0?'+':'')+Number(chg).toFixed(2)+'%'; cEl.className='c '+(chg>0?'up':(chg<0?'dn':'')); }
-      card.dataset.done='1';
+      if(card.dataset.done) return;
+      fetch('https://scanner.tradingview.com/symbol?symbol='+encodeURIComponent(card.dataset.tv)+'&fields=close%7Cchange')
+      .then(function(r){ return r.json(); }).then(function(j){ idxFill(card, parseFloat(j.close), parseFloat(j.change)); }).catch(function(){});
     });
-  }).catch(function(){});
-})();
-function raceRetry(url){
-  return raceText(url).catch(function(){
-    return new Promise(function(r){ setTimeout(r, 900); }).then(function(){ return raceText(url); });
   });
 }
-function drawSparkDaily(card){
-  var url='https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(card.dataset.y)+'?range=3mo&interval=1d';
-  raceRetry(url).then(function(t){
-    var j=JSON.parse(t), r=j.chart.result[0];
-    var closes=(r.indicators.quote[0].close||[]).filter(function(v){ return v!=null; });
-    closes=closes.slice(-40);
-    if(closes.length<2) return;
-    var min=Math.min.apply(null,closes), max=Math.max.apply(null,closes), rg=(max-min)||1;
-    var W=260,H=48, pts=closes.map(function(v,i){ return [(i/(closes.length-1)*W), (H-4-((v-min)/rg)*(H-8))]; });
-    var line=pts.map(function(p){ return p[0].toFixed(1)+','+p[1].toFixed(1); }).join(' ');
-    var col=closes[closes.length-1]>=closes[0]? '#f04438':'#1261e8';
-    card.querySelector('.spark').innerHTML='<polygon fill="'+col+'" opacity="0.10" points="0,'+H+' '+line+' '+W+','+H+'"/><polyline fill="none" stroke="'+col+'" stroke-width="1.8" stroke-linejoin="round" points="'+line+'"/>';
-  }).catch(function(){});
-}
-idxCards.forEach(drawSparkDaily);
+idxBatch(); setTimeout(idxBatch, 20000); setInterval(idxBatch, 60000);
 
 /* ---------- 종목표 (TradingView 스캐너) ---------- */
 var COLS=['name','description','close','change','market_cap_basic','volume','sector','industry','price_earnings_ttm'];
