@@ -51,7 +51,7 @@
    미지원 브라우저에서는 hidden이 적용된다. 박스 내부 스크롤 요소에는 영향 없음 */
 html,body{overflow-x:hidden;overflow-x:clip}
 body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 "Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;font-variant-numeric:tabular-nums}
-main{max-width:680px;margin:0 auto;padding:2px 16px 44px;box-shadow:-20px 0 30px -20px var(--adsh),20px 0 30px -20px var(--adsh)}
+main{max-width:none;margin:0 auto;padding:2px 16px 44px;box-shadow:-20px 0 30px -20px var(--adsh),20px 0 30px -20px var(--adsh)}
 @media(max-width:720px){main{box-shadow:none}}
 h1{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.25;margin:0}
 h2{font-size:16px;font-weight:700;margin:8px 0 10px}
@@ -665,7 +665,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 @media(max-width:720px){.tabs{flex-wrap:wrap}}
 /* 데스크톱 */
 @media(min-width:1024px){
-main{max-width:1120px;padding:4px 28px 56px}
+main{max-width:none;padding:4px 16px 56px}
 h1{font-size:24px}
 .tabs button{font-size:16.5px}
 .sum b{font-size:20px}
@@ -686,7 +686,7 @@ th,td{padding:9px 10px}
 }
 /* 모바일: 김프 7열 전부 표시, 종목명 말줄임 없음 */
 @media(max-width:520px){
-main{padding:2px 12px 40px}
+main{padding:2px 16px 40px}
 .tabs button{font-size:14.5px;padding:2px 7px}
 .sum div{padding:10px 12px}
 .sum b{font-size:16px}
@@ -1820,10 +1820,11 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    해외 섹션(#pb)은 김프 섹션(#pa) 안 오른쪽 열로 옮겨졌으므로, 김프 탭이 열려 있을 때
    항상 함께 보이도록 hidden 속성의 기본 숨김을 이 안에서는 덮는다(부모 #pa가 닫히면 함께 숨는다) */
 #pa #pb{display:block}
-.pasplit{display:grid;grid-template-columns:minmax(0,11fr) minmax(0,13fr);gap:22px;align-items:start}
+.pasplit{display:grid;grid-template-columns:minmax(0,11fr) minmax(0,13fr);gap:18px;align-items:start;max-width:920px}
 .paleft,.paright{min-width:0}
 .paright .xpair{flex-wrap:wrap}
-/* 김프 탭이 열려 있을 때만 본문 폭을 넓혀 두 열이 답답하지 않게 한다 */
+/* 본문 폭은 전 탭 공통으로 제한 없이 전체 폭(양옆 여백 16px)을 쓴다(2026-11-13 전역 확장).
+   김프 탭의 두 표는 예외로 .pasplit 폭 상한(920px) 안에서 왼쪽에 작게 붙여 배치한다 */
 @media(min-width:721px){main:has(>#pa:not([hidden])){max-width:none;padding-left:16px;padding-right:16px}}
 /* 왼쪽 열 안의 상단 컨트롤: 열 폭에 맞게 작게 — 토글 두 그룹을 한 줄에, 장 시간 안내는 그 아래 한 줄로 */
 .paleft .segrow{margin-bottom:8px}
@@ -1870,12 +1871,16 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    다른 경로로 그려질 수 있는 로고·거래소 선택 로고의 잔여 숨김만 담당한다 */
 #pa .av,#pa .spk{display:none!important}
 #xv .xlogo,#xv .xmenu img{display:none!important}
-#pa .kp4 th:nth-child(1){width:46%}
-#pa .kp4 th:nth-child(2){width:27%}
-#pa .kp4 th:nth-child(3){width:27%}
-#pa #pb .phd,#pa #pb .prow{grid-template-columns:46% 27% 27%}
-#pa #pb .prow.nqrow,#pa #pb .phd.nqhd{grid-template-columns:46% 27% 27%}
-#pa #pb .prow.x5row,#pa #pb .phd.x5hd{grid-template-columns:46% 27% 27%}
+#pa .kp4 th:nth-child(1){width:40%}
+#pa .kp4 th:nth-child(2){width:30%}
+#pa .kp4 th:nth-child(3){width:30%}
+#pa #pb .phd,#pa #pb .prow{grid-template-columns:42% 29% 29%}
+#pa #pb .prow.nqrow,#pa #pb .phd.nqhd{grid-template-columns:42% 29% 29%}
+#pa #pb .prow.x5row,#pa #pb .phd.x5hd{grid-template-columns:42% 29% 29%}
+/* 김프 탭 표 컴팩트 (2026-11-13 추가 지시): 두 표 모두 작게, 열 사이 여백을 좁혀 붙인다 */
+#pa #pb .phd>div,#pa #pb .prow>div{padding-left:6px;padding-right:6px}
+#pa #pb .phd>div:first-child,#pa #pb .prow>div:first-child{padding-left:8px}
+#pa #pb .phd>div:last-child,#pa #pb .prow>div:last-child{padding-right:8px}
 #pa #pb .prow.nqrow,#pa #pb .prow.x5row{min-height:0}
 #pa #pb .prow .xcol{display:block;text-align:right}
 </style>
