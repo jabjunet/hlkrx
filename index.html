@@ -1871,12 +1871,23 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    다른 경로로 그려질 수 있는 로고·거래소 선택 로고의 잔여 숨김만 담당한다 */
 #pa .av,#pa .spk{display:none!important}
 #xv .xlogo,#xv .xmenu img{display:none!important}
-#pa .kp4 th:nth-child(1){width:40%}
-#pa .kp4 th:nth-child(2){width:30%}
-#pa .kp4 th:nth-child(3){width:30%}
-#pa #pb .phd,#pa #pb .prow{grid-template-columns:42% 29% 29%}
-#pa #pb .prow.nqrow,#pa #pb .phd.nqhd{grid-template-columns:42% 29% 29%}
-#pa #pb .prow.x5row,#pa #pb .phd.x5hd{grid-template-columns:42% 29% 29%}
+/* 열 간격 축소 (2026-11-13 추가 지시): 이름·김프·하루변동 칸 폭을 값에 맞게 좁혀 pill들이 이름에 붙어 보이게 한다.
+   국내 표는 표 자체 폭도 열 합계만큼만 차지하게(width:auto) 왼쪽에 붙이고, 해외 표는 그리드 열을 고정 폭으로 좁힌다 */
+#pa .kp4{width:auto}
+#pa .kp4 th:nth-child(1){width:132px}
+#pa .kp4 th:nth-child(2){width:76px}
+#pa .kp4 th:nth-child(3){width:84px}
+#pa #pb .phd,#pa #pb .prow{grid-template-columns:176px 78px 86px}
+#pa #pb .prow.nqrow,#pa #pb .phd.nqhd{grid-template-columns:176px 78px 86px}
+#pa #pb .prow.x5row,#pa #pb .phd.x5hd{grid-template-columns:176px 78px 86px}
+@media(max-width:400px){
+#pa .kp4 th:nth-child(1){width:104px}
+#pa .kp4 th:nth-child(2){width:70px}
+#pa .kp4 th:nth-child(3){width:78px}
+#pa #pb .phd,#pa #pb .prow,#pa #pb .prow.nqrow,#pa #pb .phd.nqhd,#pa #pb .prow.x5row,#pa #pb .phd.x5hd{grid-template-columns:118px 70px 78px}
+}
+/* 섹터 칩 줄 (2026-11-13 추가 지시): 좁은 오른쪽 열에서 잘리지 않게 줄바꿈해 모든 섹터 칩이 한 번에 보이게 한다 */
+#pa #pb .chips{flex-wrap:wrap;overflow:visible}
 /* 김프 탭 표 컴팩트 (2026-11-13 추가 지시): 두 표 모두 작게, 열 사이 여백을 좁혀 붙인다 */
 #pa #pb .phd>div,#pa #pb .prow>div{padding-left:6px;padding-right:6px}
 #pa #pb .phd>div:first-child,#pa #pb .prow>div:first-child{padding-left:8px}
@@ -2170,11 +2181,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </div>
 </section>
 <section id="pa" hidden>
-<div class="pasplit"><div class="paleft"><div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button></div><div class="mhours" role="note" aria-label="장 운영 시간 안내">
-<div class="mhrow" id="mh-rkr"><span class="mhdot" id="mh-krd" aria-hidden="true"></span><b>국장</b><span>프리 08:00–08:50 · 정규 09:00–15:30 · 애프터 15:40–20:00</span><span class="mhst" id="mh-krs"></span></div>
-<div class="mhrow" id="mh-rus" hidden><span class="mhdot" id="mh-usd" aria-hidden="true"></span><b>미장</b><span id="mh-ust">프리 18:00–23:30 · 정규 23:30–06:00 · 애프터 06:00–10:00</span><span class="mhst" id="mh-uss"></span></div>
-<p class="mhnt"><span id="mh-nkr">한국 시간 기준 · 국내 프리·애프터는 넥스트레이드(NXT) 포함</span><span id="mh-nus" hidden>한국 시간 기준 · 미장은 서머타임 자동 반영</span></p>
-</div><div class="pair" id="xc"><button data-x="hl" aria-pressed="true">Hyperliquid</button><button data-x="bn" aria-pressed="false">Binance</button></div></div>
+<div class="pasplit"><div class="paleft"><div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button></div><div class="pair" id="xc"><button data-x="hl" aria-pressed="true">Hyperliquid</button><button data-x="bn" aria-pressed="false">Binance</button></div></div>
 <input id="fx" type="hidden" value="1,354.84">
 <div class="srch"><input id="qk" placeholder="종목 검색" aria-label="김프 종목 검색"></div>
 <div class="pamkt" id="pamkt" hidden><span id="pamkt-t"></span><button type="button" id="pamkt-x">전체 보기</button></div>
