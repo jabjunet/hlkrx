@@ -102,9 +102,9 @@ footer{padding:18px 16px;color:var(--mut);font-size:12px;line-height:1.7}
 .center{order:1}.right{order:2}.left{order:3}
 header.top{gap:8px;padding:8px 12px}
 .logo{font-size:17px}.logo img{width:26px;height:26px}
-.modes{order:3;width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;scrollbar-width:none}
+.modes{order:3;width:100%;display:flex;gap:6px;margin-top:4px}
 .modes::-webkit-scrollbar{display:none}
-.modes a{white-space:nowrap}
+.modes a{flex:1;text-align:center;padding:9px 0;white-space:nowrap}
 .session{font-size:11px}
 .idxrow{grid-template-columns:repeat(3,1fr);gap:8px}
 .idxcard{padding:10px;border-radius:14px}
@@ -426,13 +426,30 @@ fetch('https://jabjunet-default-rtdb.firebaseio.com/posts.json').then(function(r
 }).catch(function(){ document.getElementById('commList').innerHTML='<p class="note">커뮤니티 글을 불러오지 못했어요.</p>'; });
 
 /* ---------- 지표 (FRED 최신값) ---------- */
+function fredParse(t){
+  var lines=String(t).trim().split('\n');
+  for(var i=lines.length-1;i>0;i--){
+    var m=/^(\d{4}-\d{2}-\d{2}),(-?[0-9]*\.?[0-9]+)\s*$/.exec(lines[i].trim());
+    if(m) return {d:m[1], v:parseFloat(m[2])};
+  }
+  return null;
+}
 function fredLast(id){
   var url='https://fred.stlouisfed.org/graph/fredgraph.csv?id='+id+'&cosd=2023-06-01';
-  return raceText(url).catch(function(){ return new Promise(function(r){ setTimeout(r, 1500); }).then(function(){ return raceText(url); }); }).then(function(t){
-    var lines=t.trim().split('\n');
-    for(var i=lines.length-1;i>0;i--){ var p=lines[i].split(','); if(p[1]&&p[1]!=='.') return {d:p[0], v:parseFloat(p[1])}; }
-    return null;
-  }).catch(function(){ return null; });
+  var routes=[
+    function(u){ return 'https://api.cors.lol/?url='+encodeURIComponent(u); },
+    function(u){ return 'https://api.allorigins.win/raw?url='+encodeURIComponent(u); },
+    function(u){ return 'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u); },
+    function(u){ return 'https://corsproxy.io/?url='+encodeURIComponent(u); },
+    function(u){ return u; }
+  ];
+  var k=0;
+  function next(){
+    if(k>=routes.length) return Promise.resolve(null);
+    var u=routes[k++](url);
+    return fetchTO(u, 7000).then(function(t){ var r=fredParse(t); return r||next(); }).catch(function(){ return next(); });
+  }
+  return next();
 }
 (function(){
   var S=[['OFR 금융스트레스','OFRFSI'],['시카고연은 NFCI','NFCI'],['VIX 공포지수','VIXCLS']];
