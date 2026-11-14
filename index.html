@@ -51,7 +51,7 @@
    미지원 브라우저에서는 hidden이 적용된다. 박스 내부 스크롤 요소에는 영향 없음 */
 html,body{overflow-x:hidden;overflow-x:clip}
 body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 "Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;font-variant-numeric:tabular-nums}
-main{max-width:none;margin:0 auto;padding:2px 16px 44px;box-shadow:-20px 0 30px -20px var(--adsh),20px 0 30px -20px var(--adsh)}
+main{max-width:1400px;margin:0 auto;padding:2px 24px 44px;box-shadow:-20px 0 30px -20px var(--adsh),20px 0 30px -20px var(--adsh)}
 @media(max-width:720px){main{box-shadow:none}}
 h1{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.25;margin:0}
 h2{font-size:16px;font-weight:700;margin:8px 0 10px}
@@ -475,6 +475,8 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
    margin-top:14px이 남아 칸이 행 안에서 아래로 밀리고 그만큼 짧아져 높이가 어긋났다 */
 #ph .hmfr{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 4px 6px;margin-top:14px}
 #ph .hmcols .hmfr{margin-top:0;min-width:0}
+#ph .hmfr .hmhd{padding:0 10px}
+#hmnw-list .hnwr:last-child{border-bottom:0}
 /* 홈 탭: 실시간 차트 + 실적발표 2열 — 데스크톱에서는 오른쪽 열 320px 고정·왼쪽이 나머지를 차지하고(1023px 이하에서는 절반씩), 720px 이하에서는 차트 위·실적발표 아래로 쌓는다.
    오른쪽 실적발표 박스는 고정 높이에 안쪽 스크롤 — 발표한 지 24시간이 안 지난 '발표 완료'(실제 EPS·서프라이즈)만 위에, 앞으로 나올 '발표 예정'을 아래에 보여준다 */
 .hmcols{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:stretch;margin-top:0}
@@ -665,7 +667,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 @media(max-width:720px){.tabs{flex-wrap:wrap}}
 /* 데스크톱 */
 @media(min-width:1024px){
-main{max-width:none;padding:4px 16px 56px}
+main{max-width:1400px;padding:4px 24px 56px}
 h1{font-size:24px}
 .tabs button{font-size:16.5px}
 .sum b{font-size:20px}
@@ -2078,7 +2080,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="gsearch"><input id="gq" type="text" placeholder="검색" aria-label="사이트 검색" autocomplete="off"><div class="gsres" id="gsres" hidden></div></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><button type="button" data-nav="home" aria-pressed="true">홈</button><button type="button" data-nav="kimp" aria-pressed="false">김프</button><button type="button" data-nav="kridx" aria-pressed="false">국내지표</button><button type="button" data-nav="usidx" aria-pressed="false">해외지표</button><button type="button" data-nav="kospi" aria-pressed="false">코스피</button><button type="button" data-nav="kosdaq" aria-pressed="false">코스닥</button><button type="button" data-nav="usstock" aria-pressed="false">미국주식</button><button type="button" data-nav="etf" aria-pressed="false">ETF</button><button data-t="ph" class="tabsec" aria-pressed="true">홈</button><button data-t="pa" class="tabsec" aria-pressed="false">김프</button><button data-t="pb" class="tabsec" aria-pressed="false">해외</button><button data-t="pg" class="tabsec" aria-pressed="false">원자재</button><button data-t="pf" class="tabsec" aria-pressed="false">펀딩비</button><button data-t="pc" class="tabsec" aria-pressed="false">비교</button><button data-t="pi" class="tabsec" aria-pressed="false">지표</button><button data-t="pk" class="tabsec" aria-pressed="false">커뮤니티</button><button data-t="p-kridx" class="tabsec" aria-pressed="false">국내지표</button><button data-t="p-usidx" class="tabsec" aria-pressed="false">해외지표</button><button data-t="p-kospi" class="tabsec" aria-pressed="false">코스피</button><button data-t="p-kosdaq" class="tabsec" aria-pressed="false">코스닥</button><button data-t="p-usstock" class="tabsec" aria-pressed="false">미국주식</button><button data-t="p-etf" class="tabsec" aria-pressed="false">ETF</button></div></div>
+<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="gsearch"><input id="gq" type="text" placeholder="검색" aria-label="사이트 검색" autocomplete="off"><div class="gsres" id="gsres" hidden></div></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><button type="button" data-nav="home" aria-pressed="true">홈</button><button type="button" data-nav="kimp" aria-pressed="false">김프</button><button type="button" data-nav="kridx" aria-pressed="false">국내지표</button><button type="button" data-nav="usidx" aria-pressed="false">해외지표</button><button type="button" data-nav="krstock" aria-pressed="false">국내주식</button><button type="button" data-nav="usstock" aria-pressed="false">미국주식</button><button type="button" data-nav="etf" aria-pressed="false">ETF</button><button data-t="ph" class="tabsec" aria-pressed="true">홈</button><button data-t="pa" class="tabsec" aria-pressed="false">김프</button><button data-t="pb" class="tabsec" aria-pressed="false">해외</button><button data-t="pg" class="tabsec" aria-pressed="false">원자재</button><button data-t="pf" class="tabsec" aria-pressed="false">펀딩비</button><button data-t="pc" class="tabsec" aria-pressed="false">비교</button><button data-t="pi" class="tabsec" aria-pressed="false">지표</button><button data-t="pk" class="tabsec" aria-pressed="false">커뮤니티</button><button data-t="p-kridx" class="tabsec" aria-pressed="false">국내지표</button><button data-t="p-usidx" class="tabsec" aria-pressed="false">해외지표</button><button data-t="p-kospi" class="tabsec" aria-pressed="false">코스피</button><button data-t="p-kosdaq" class="tabsec" aria-pressed="false">코스닥</button><button data-t="p-kr" class="tabsec" aria-pressed="false">국내주식</button><button data-t="p-usstock" class="tabsec" aria-pressed="false">미국주식</button><button data-t="p-etf" class="tabsec" aria-pressed="false">ETF</button></div></div>
 
 <script>
 /* ===== 헤더 테마(다크/라이트)·언어(한/영) 전환 =====
@@ -2128,7 +2130,7 @@ var D={
 "실시간":"Live","연결 중…":"Connecting…","로그인":"Log in","접속자":"Online","명":"","프로필 설정":"Profile settings",
 "코스피":"KOSPI","코스닥":"KOSDAQ","나스닥":"NASDAQ","다우":"Dow","달러/원":"USD/KRW","원유":"Crude Oil",
 "실시간 차트":"Live Chart","한국":"Korea","미국":"US","급상승":"Top Gainers","급하락":"Top Losers","불러오는 중…":"Loading…",
-"주요 종목 실적발표":"Key Earnings","주요 경제지표":"Key Economic Indicators","실시간 뉴스":"Live News","커뮤니티 최신글":"Latest Community Posts","더보기":"More","국내":"Domestic",
+"주요 종목 실적발표":"Key Earnings","주요 경제지표":"Key Economic Indicators","실시간 뉴스":"Live News","국내 뉴스 요약":"Domestic News Brief","커뮤니티 최신글":"Latest Community Posts","더보기":"More","국내":"Domestic",
 "오늘의 시장":"Today's Market","실시간 급등락":"Live Movers","다가오는 일정":"Upcoming Schedule","실적":"Earnings","근원":"Core","· 근원":"· Core","· 실제":"· Actual","· 근원 예상":"· Core Forecast","전월비 예상":"MoM Forecast","전월비 실제":"MoM Actual","· 근원 실제":"· Core Actual","예상 EPS":"EPS Forecast","다가오는 일정이 없습니다":"No upcoming events",
 "급상승 순위는 TradingView 기준, 1분마다 갱신되는 구조":"Top gainers ranked by TradingView · refreshes every minute",
 "등락률은 TradingView 기준 전일 종가 대비이며, 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준입니다.":"Changes are vs. the previous close (TradingView). Low-volume stocks are excluded. When the market is closed, figures are based on the last close.",
@@ -2319,7 +2321,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </div>
 <div class="hm-sec"><span class="hm-sec-t">오늘의 시장</span><span class="hm-sec-note">급상승 순위는 TradingView 기준, 1분마다 갱신되는 구조</span></div>
 <div class="hmcols">
-<div class="hmfr" aria-hidden="true"></div>
+<div class="hmfr"><div class="hmhd"><h2>국내 뉴스 요약</h2></div><div id="hmnw-list"><div class="hmvempty">불러오는 중…</div></div></div>
 <div class="hew">
 <div class="upbox" id="up-box"><div class="hmhd"><h2>다가오는 일정</h2></div><div id="up-list"><div class="hmvempty">불러오는 중…</div></div></div>
 <div class="hmsrc" aria-hidden="true">
@@ -2360,6 +2362,35 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <div id="hn-list"><div class="hmvempty">불러오는 중…</div></div>
 </div>
 </section>
+<script>
+/* ===== 홈 '오늘의 시장' 왼쪽 칸: 국내 뉴스 요약 — 아래쪽 실시간 뉴스와 같은 국내 피드
+   (한국경제 금융·매일경제 증권)를 최신순으로 합쳐 8개까지 보여준다 ===== */
+(function(){
+var box=document.getElementById("hmnw-list");if(!box)return;
+var FEEDS=["https://www.hankyung.com/feed/finance","https://www.mk.co.kr/rss/50200011/"];
+var KEEP=/주식|증시|코스피|코스닥|종목|주가|상장|공모|IPO|ETF|ETN|실적|영업이익|순이익|매출|공시|배당|증권|목표주가|상한가|하한가|공매도|자사주|유상증자|주주|시가총액|개미|펀드|퇴직연금|리츠|우선주|전환사채|급등|급락|폭등|폭락|강세|약세/,OFF=/정치|선거|대선|총선|국회|여당|야당|민주당|국민의힘|대통령|탄핵|부동산|아파트|분양|전세|월세|집주인|세입자|재개발|재건축|연예|아이돌|드라마|예능|스포츠|축구|야구|농구|배구|골프|올림픽|월드컵|결승골|홈런|득점|역전승|날씨|폭염|폭우|태풍|장마|한파|폭설|미세먼지|지진|홍수|산불|화재|교통사고|살인|성범죄|마약|음주운전|뺑소니|운세|로또|맛집|레시피/;
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function fetchT(url,ms){var ctl=("AbortController" in window)?new AbortController():null;var tm=ctl?setTimeout(function(){ctl.abort()},ms||12000):null;return fetch(url,ctl?{signal:ctl.signal}:{}).then(function(r){if(tm)clearTimeout(tm);if(!r.ok)throw new Error("http");return r.text()}).catch(function(e){if(tm)clearTimeout(tm);throw e})}
+function parseDate(s){if(!s)return 0;var t=Date.parse(String(s).trim());return isNaN(t)?0:t}
+function parseXml(txt,lim){var doc=new DOMParser().parseFromString(txt,"text/xml"),out=[];if(doc.querySelector("parsererror"))throw new Error("xml");var items=doc.querySelectorAll("item");for(var i=0;i<items.length&&out.length<lim;i++){var tt=items[i].querySelector("title"),lk=items[i].querySelector("link"),pd=items[i].querySelector("pubDate");var title=tt?tt.textContent.trim():"",link=lk?lk.textContent.trim():"";if(title&&/^https?:\/\//.test(link))out.push({t:title,u:link,d:parseDate(pd?pd.textContent:"")})}if(!out.length)throw new Error("empty");return out}
+function parseR2J(txt,lim){var j=JSON.parse(txt),out=[];if(!j||j.status!=="ok"||!j.items)throw new Error("r2j");for(var i=0;i<j.items.length&&out.length<lim;i++){var it=j.items[i],title=String(it.title||"").trim(),link=String(it.link||"").trim();if(title&&/^https?:\/\//.test(link))out.push({t:title,u:link,d:parseDate(it.pubDate)})}if(!out.length)throw new Error("empty");return out}
+function loadFeed(feed){return fetchT(feed).then(function(t){return parseXml(t,30)}).catch(function(){return fetchT("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(feed)).then(function(t){return parseR2J(t,30)})}).catch(function(){return fetchT("https://api.allorigins.win/raw?url="+encodeURIComponent(feed)).then(function(t){return parseXml(t,30)})})}
+function keep(t){if(KEEP.test(t))return true;if(OFF.test(t))return false;return true}
+function ago(t){if(!t)return "";var m=Math.floor((Date.now()-t)/60000);if(m<1)return "방금 전";if(m<60)return m+"분 전";if(m<1440)return Math.floor(m/60)+"시간 전";return Math.floor(m/1440)+"일 전"}
+var lastHtml="";
+function load(){Promise.all(FEEDS.map(function(f){return loadFeed(f).catch(function(){return[]})})).then(function(rs){
+var merged=[];rs.forEach(function(r){merged=merged.concat(r)});
+merged=merged.filter(function(r){return keep(r.t)});
+merged.sort(function(a,b){return (b.d||0)-(a.d||0)});
+var seen={},list=[];
+for(var i=0;i<merged.length&&list.length<8;i++){if(seen[merged[i].u])continue;seen[merged[i].u]=1;list.push(merged[i])}
+if(!list.length){if(!lastHtml)box.innerHTML="";return}
+var html="";
+list.forEach(function(r){var a=ago(r.d);html+='<a class="hnwr" href="'+esc(r.u)+'" target="_blank" rel="noopener"><span class="nt1">'+esc(r.t)+'</span>'+(a?'<span class="nt2">'+a+'</span>':"")+'</a>'});
+if(html!==lastHtml){box.innerHTML=html;lastHtml=html}})}
+load();setInterval(function(){if(!document.hidden)load()},7*60000);
+})();
+</script>
 <section id="pa" hidden>
 <div class="pasplit"><div class="paleft"><div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button></div><div class="pair" id="xc"><button data-x="hl" aria-pressed="true">Hyperliquid</button><button data-x="bn" aria-pressed="false">Binance</button></div></div>
 <input id="fx" type="hidden" value="1,354.84">
@@ -2507,6 +2538,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <section id="p-usidx" hidden></section>
 <section id="p-kospi" hidden></section>
 <section id="p-kosdaq" hidden></section>
+<section id="p-kr" hidden><div id="krLoading" style="padding:36px 16px;text-align:center;color:var(--mut);font-size:14px">국내주식 불러오는 중…</div><iframe id="krFrame" title="국내주식" data-src="kr.html" style="width:100%;border:0;display:block" scrolling="no"></iframe></section>
+<script>(function(){var sec=document.getElementById("p-kr"),fr=document.getElementById("krFrame"),ld=document.getElementById("krLoading"),done=false,preHidden=false,revealed=false;function curTheme(){var t=document.documentElement.getAttribute("data-theme");return t==="light"?"light":"dark";}function fit(){try{var d=fr.contentDocument;if(!d||!d.body)return;var h=Math.max(d.body.scrollHeight,d.documentElement?d.documentElement.scrollHeight:0);if(h&&Math.abs(h-(parseInt(fr.style.height)||0))>2)fr.style.height=h+"px";}catch(e){}}function tidy(){try{var d=fr.contentDocument;if(!d)return;var m=d.querySelector("header.top .modes"),l=d.querySelector("header.top .logo");if(m)m.style.display="none";if(l)l.style.display="none";}catch(e){}}function reChart(){try{var d=fr.contentDocument,w=fr.contentWindow;if(!d||!w||typeof w.showChart!=="function")return;var cs=d.getElementById("chartSym");w.showChart(cs&&cs.textContent?cs.textContent:"KRX:005930");}catch(e){}}function onLoad(){if(ld)ld.style.display="none";tidy();fit();var n=0;var iv=setInterval(function(){tidy();fit();if(++n>40)clearInterval(iv);},500);}function load(){if(done)return;done=true;if(sec&&sec.hidden)preHidden=true;fr.addEventListener("load",onLoad);fr.src=fr.getAttribute("data-src")+"?theme="+curTheme();}function applyTheme(){if(!done)return;var t=curTheme();try{var d=fr.contentDocument;if(d&&d.documentElement){d.documentElement.setAttribute("data-theme",t);reChart();tidy();fit();return;}}catch(e){}fr.src=fr.getAttribute("data-src")+"?theme="+t;}window.addEventListener("resize",fit);document.querySelectorAll('[data-nav="krstock"],[data-t="p-kr"]').forEach(function(b){b.addEventListener("pointerenter",load);b.addEventListener("touchstart",load,{passive:true});});if(window.MutationObserver&&sec){new MutationObserver(function(){if(!sec.hidden){if(!done)load();else if(preHidden&&!revealed){revealed=true;setTimeout(function(){reChart();fit();},300);}}}).observe(sec,{attributes:true,attributeFilter:["hidden"]});}if(window.MutationObserver){new MutationObserver(function(){applyTheme();}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});}if(sec&&!sec.hidden)load();})();</script>
 <section id="p-usstock" hidden><div id="usLoading" style="padding:36px 16px;text-align:center;color:var(--mut);font-size:14px">미국주식 불러오는 중…</div><iframe id="usFrame" title="미국주식" data-src="us.html" style="width:100%;border:0;display:block" scrolling="no"></iframe></section>
 <script>(function(){var sec=document.getElementById("p-usstock"),fr=document.getElementById("usFrame"),ld=document.getElementById("usLoading"),done=false,preHidden=false,revealed=false;function curTheme(){var t=document.documentElement.getAttribute("data-theme");return t==="light"?"light":"dark";}function fit(){try{var d=fr.contentDocument;if(!d||!d.body)return;var h=Math.max(d.body.scrollHeight,d.documentElement?d.documentElement.scrollHeight:0);if(h&&Math.abs(h-(parseInt(fr.style.height)||0))>2)fr.style.height=h+"px";}catch(e){}}function tidy(){try{var d=fr.contentDocument;if(!d)return;var m=d.querySelector("header.top .modes"),l=d.querySelector("header.top .logo");if(m)m.style.display="none";if(l)l.style.display="none";}catch(e){}}function reChart(){try{var d=fr.contentDocument,w=fr.contentWindow;if(!d||!w||typeof w.showChart!=="function")return;var cs=d.getElementById("chartSym");w.showChart(cs&&cs.textContent?cs.textContent:"NVDA");}catch(e){}}function onLoad(){if(ld)ld.style.display="none";tidy();fit();var n=0;var iv=setInterval(function(){tidy();fit();if(++n>40)clearInterval(iv);},500);}function load(){if(done)return;done=true;if(sec&&sec.hidden)preHidden=true;fr.addEventListener("load",onLoad);fr.src=fr.getAttribute("data-src")+"?theme="+curTheme();}function applyTheme(){if(!done)return;var t=curTheme();try{var d=fr.contentDocument;if(d&&d.documentElement){d.documentElement.setAttribute("data-theme",t);reChart();tidy();fit();return;}}catch(e){}fr.src=fr.getAttribute("data-src")+"?theme="+t;}window.addEventListener("resize",fit);document.querySelectorAll('[data-nav="usstock"],[data-t="p-usstock"]').forEach(function(b){b.addEventListener("pointerenter",load);b.addEventListener("touchstart",load,{passive:true});});if(window.MutationObserver&&sec){new MutationObserver(function(){if(!sec.hidden){if(!done)load();else if(preHidden&&!revealed){revealed=true;setTimeout(function(){reChart();fit();},300);}}}).observe(sec,{attributes:true,attributeFilter:["hidden"]});}if(window.MutationObserver){new MutationObserver(function(){applyTheme();}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});}window.addEventListener("load",function(){setTimeout(load,2500);});if(sec&&!sec.hidden)load();})();</script>
 <section id="p-etf" hidden></section>
@@ -3899,6 +3932,7 @@ var PAGES=[
 ["해외 지표","탭","해외지표 미국지수 나스닥 다우",tabAct("p-usidx")],
 ["코스피","탭","코스피 KOSPI 국내주식 한국주식",tabAct("p-kospi")],
 ["코스닥","탭","코스닥 KOSDAQ 국내주식 한국주식",tabAct("p-kosdaq")],
+["국내주식","탭","국내주식 한국주식 코스피 코스닥 토스",tabAct("p-kr")],
 ["미국주식","탭","미국 주식 미국주식 나스닥 해외주식",tabAct("p-usstock")],
 ["ETF","탭","ETF 상장지수펀드 이티에프",tabAct("p-etf")]
 ];
@@ -7408,6 +7442,7 @@ if(vis("p-kridx"))key="kridx";
 else if(vis("p-usidx"))key="usidx";
 else if(vis("p-kospi"))key="kospi";
 else if(vis("p-kosdaq"))key="kosdaq";
+else if(vis("p-kr"))key="krstock";
 else if(vis("p-usstock"))key="usstock";
 else if(vis("p-etf"))key="etf";
 else if(vis("ph"))key="home";
@@ -7424,13 +7459,14 @@ else if(k==="kridx"){goSec("p-kridx")}
 else if(k==="usidx"){goSec("p-usidx")}
 else if(k==="kospi"){goSec("p-kospi")}
 else if(k==="kosdaq"){goSec("p-kosdaq")}
+else if(k==="krstock"){goSec("p-kr")}
 else if(k==="usstock"){goSec("p-usstock")}
 else if(k==="etf"){goSec("p-etf")}
 syncNav();
 });
 /* 메뉴 밖에서 일어난 이동(검색 바로가기·지수 칩·주식/ETF 전환·게시물 전체보기 등)에도
    강조를 실제 화면에 맞춘다: 섹션 hidden 변화를 감시하고, 칩·모드 클릭은 뒤따라 동기화한다 */
-if(window.MutationObserver){var mo=new MutationObserver(function(){syncNav()});["ph","pa","pb","pg","pf","pc","pi","pk","p-kridx","p-usidx","p-kospi","p-kosdaq","p-usstock","p-etf"].forEach(function(id){var s=el2(id);if(s)mo.observe(s,{attributes:true,attributeFilter:["hidden"]})})}
+if(window.MutationObserver){var mo=new MutationObserver(function(){syncNav()});["ph","pa","pb","pg","pf","pc","pi","pk","p-kridx","p-usidx","p-kospi","p-kosdaq","p-kr","p-usstock","p-etf"].forEach(function(id){var s=el2(id);if(s)mo.observe(s,{attributes:true,attributeFilter:["hidden"]})})}
 var ixc=el2("ixcats");if(ixc)ixc.addEventListener("click",function(){setTimeout(syncNav,0)});
 var pm=el2("pmode");if(pm)pm.addEventListener("click",function(){setTimeout(syncNav,0)});
 syncNav();
