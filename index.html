@@ -2075,6 +2075,17 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 }
 </style>
 
+<style>
+/* 김프 탭 폭 맞춤 (2026-11-14): 가운데 좁게 몰린 두 칸을 다른 탭처럼 본문 폭에 맞춰 채운다 (데스크톱만) */
+@media (min-width:721px){
+#pa .pasplit{grid-template-columns:minmax(0,1fr) minmax(0,1fr);justify-content:stretch;justify-items:stretch;margin-left:0;margin-right:0;max-width:none}
+#pa .paleft,#pa .paright{width:auto;max-width:none}
+#pa .area-box{width:100%}
+#pa .kp4{width:100%}
+#pa .kp4 th:nth-child(1){width:auto}
+#pa #pb .phd,#pa #pb .prow,#pa #pb .prow.nqrow,#pa #pb .phd.nqhd,#pa #pb .prow.x5row,#pa #pb .phd.x5hd{grid-template-columns:minmax(0,1fr) 80px 88px}
+}
+</style>
 </head>
 <body>
 <main>
