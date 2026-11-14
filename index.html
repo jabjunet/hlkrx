@@ -2508,27 +2508,45 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 #p-kridx .ixt .ixc{margin-top:9px;padding:4px 10px;font-size:13px;font-weight:800}
 }
 /* 그룹 칸 9개는 위쪽 타일 줄(.kxstrip)과 같은 왼쪽·오른쪽 경계 안에 전부 들어가게
-   유동 그리드로 맞췄다 (2026-11-14): 고정 폭을 쓰지 않고 컨테이너 폭을 2열로 나눠
+   유동 그리드로 맞췄다 (2026-11-14): 고정 폭을 쓰지 않고 컨테이너 폭을 나눠
    모든 칸의 폭·위치가 동일하고, 같은 줄 칸끼리 높이가 같으며, 줄이 바뀌어도
-   왼쪽 열·오른쪽 열 위치가 어긋나지 않는다. 칸 안 열(지표·현재값·전일·전년)도
-   모든 칸에서 같은 위치에 오고, 긴 이름은 잘리지 않고 줄바꿈된다 */
-#p-kridx .kxstrip,#p-kridx .kxgrid{max-width:1200px;margin-left:auto;margin-right:auto}
-#p-kridx .kxgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%}
-#p-kridx .kxcard{min-width:0;background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px 16px 8px}
+   열 위치가 어긋나지 않는다. 칸 안 열(지표·현재값·전일·전년)도
+   모든 칸에서 같은 위치에 오고, 긴 이름은 잘리지 않고 줄바꿈된다.
+   2026-11-14 추가 지시로 한 줄에 3칸씩 보이게 3열로 나눴다 — 칸이 좁아진 만큼
+   칸 안 값 열(현재값·전일·전년) 폭도 함께 줄였다.
+   2026-11-14 후속 지시: 화면 폭이 조금 좁아지면 2열로 돌아가던 1180px 조건은
+   없앴다 — 데스크톱·미리보기 폭에서는 항상 3열, 폰(720px 이하)에서만 1열로 쌓인다.
+   2026-11-15 재교정: 3열 자체는 넓은 화면에서만 성립하고 있었다 — 칸 안 열이
+   현재값 116px·전일 76px·전년 76px 고정이라 칸이 1/3로 좁아지면 이름 칸이
+   거의 사라져 3칸이 온전히 안 들어갔다. 전년 칸은 값이 전부 '—'라 40px이면
+   충분하므로 그만큼과 카드 여백·간격을 덜어 이름 칸을 확보하고, 1180px 이하
+   구간에서는 안쪽 열·글자를 한 단계 더 줄여 미리보기 폭에서도 3칸이
+   같은 크기로 나란히 들어가게 했다 (2열로 되돌리는 조건은 두지 않는다) */
+#p-kridx .kxgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%}
+#p-kridx .kxcard{min-width:0;background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px 12px 8px}
 #p-kridx .kxhd{display:flex;align-items:baseline;gap:8px;margin:0 0 4px}
 #p-kridx .kxhd h2{font-size:15px;font-weight:700;letter-spacing:-.01em;margin:0}
 #p-kridx .kxsrc{font-size:11.5px;color:var(--mut);white-space:nowrap}
-#p-kridx .kxcol,#p-kridx .kxrow{display:grid;grid-template-columns:minmax(0,1fr) 150px 96px 96px;gap:8px;align-items:center}
+#p-kridx .kxcol,#p-kridx .kxrow{display:grid;grid-template-columns:minmax(0,1fr) 88px 62px 40px;gap:5px;align-items:center}
 #p-kridx .kxcol{font-size:11px;color:var(--mut);padding:4px 0 6px;text-align:right}
 #p-kridx .kxcol span:first-child{text-align:left}
 #p-kridx .kxrow{padding:9px 0;border-top:1px solid var(--bd)}
 #p-kridx .kxl{min-width:0}
-#p-kridx .kxn{display:block;font-size:13.5px;font-weight:600;letter-spacing:-.01em;overflow-wrap:break-word}
+#p-kridx .kxn{display:block;font-size:13px;font-weight:600;letter-spacing:-.01em;overflow-wrap:break-word}
 #p-kridx .kxd{display:block;font-size:11px;color:var(--mut);margin-top:1px}
-#p-kridx .kxv{text-align:right;font-size:14px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}
-#p-kridx .kxm{text-align:right;font-size:12.5px;color:var(--mut);white-space:nowrap}
+#p-kridx .kxv{text-align:right;font-size:13.5px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+#p-kridx .kxm{text-align:right;font-size:12px;color:var(--mut);white-space:nowrap}
 #p-kridx .kxm.up{color:var(--up);font-weight:600}
 #p-kridx .kxm.dn{color:var(--dn);font-weight:600}
+@media(min-width:721px) and (max-width:1180px){
+#p-kridx .kxgrid{gap:10px}
+#p-kridx .kxcard{padding:12px 10px 6px}
+#p-kridx .kxcol,#p-kridx .kxrow{grid-template-columns:minmax(0,1fr) 78px 54px 30px;gap:4px}
+#p-kridx .kxn{font-size:12px}
+#p-kridx .kxv{font-size:12.5px}
+#p-kridx .kxm{font-size:11px}
+#p-kridx .kxsrc{font-size:10.5px}
+}
 @media(max-width:720px){
 #p-kridx .kxgrid{grid-template-columns:minmax(0,1fr)}
 #p-kridx .kxcard{padding:12px 12px 6px}
@@ -2542,7 +2560,49 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 <div class="kxstrip"><div class="kxtiles" id="kxtiles" aria-label="국내 핵심 지표"></div></div>
 <div class="kxgrid" id="kxgrid"></div>
 </section>
-<section id="p-usidx" hidden></section>
+<style>
+/* ===== 해외지표 탭 (2026-11-15): 상단 핵심 지표 타일 =====
+   국내지표 탭 맨 위 칸(.kxstrip)과 같은 모양의 한 줄 타일 줄을 해외지표에도 둔다.
+   타일 8개: S&P 500·나스닥 100·미국 10년물 국채금리·달러인덱스(DXY)·VIX 공포지수·
+   미국 CPI·근원 PCE·미국 기준금리. 타일에는 지표 이름만 보이고 분류 글자는 붙이지
+   않는다 (2026-11-15 사용자 지시). 지수·금리·환율 5개는 TradingView 스캐너 실시간값이고, 물가·기준금리
+   3개는 월/회의 단위 발표 지표라 최신 발표값을 정적으로 채우고 아래 각주로 기준을 밝힌다 */
+#p-usidx .uxstrip{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 16px 14px;margin:2px 0 10px}
+#p-usidx .uxtiles{display:flex;gap:8px}
+#p-usidx .uxtiles .ixt{flex:1 1 0;min-width:0;background:none;border:0;border-radius:0;padding:0}
+#p-usidx .ixt small{font-size:11.5px;letter-spacing:-.04em;margin-bottom:2px}
+#p-usidx .ixt small .uxnm{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#p-usidx .ixt b{font-size:16px;letter-spacing:-.04em}
+#p-usidx .ixt b.uxlong{font-size:14.5px}
+#p-usidx .ixt .ixc{display:inline-flex;align-items:center;margin-top:5px;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:700;background:var(--sf2);color:var(--mut)}
+#p-usidx .ixt .ixc.up{background:var(--upbg);color:var(--up)}
+#p-usidx .ixt .ixc.dn{background:var(--dnbg);color:var(--dn)}
+#p-usidx .ixt .ixc.up::before{content:"▲";font-size:8px;margin-right:4px}
+#p-usidx .ixt .ixc.dn::before{content:"▼";font-size:8px;margin-right:4px}
+#p-usidx .uxnote{font-size:11.5px;color:var(--mut);line-height:1.65;margin:0 2px 14px}
+@media(min-width:721px) and (max-width:1023px){
+#p-usidx .uxstrip{padding:10px 12px 12px}
+#p-usidx .uxtiles{gap:5px}
+#p-usidx .ixt small{font-size:9.5px}
+#p-usidx .ixt b{font-size:11.5px}
+#p-usidx .ixt b.uxlong{font-size:10px}
+#p-usidx .ixt .ixc{font-size:9.5px;padding:1px 5px;margin-top:4px}
+#p-usidx .ixt .ixc.up::before,#p-usidx .ixt .ixc.dn::before{font-size:7px;margin-right:3px}
+}
+@media(max-width:720px){
+#p-usidx .uxstrip{background:none;border:0;border-radius:0;padding:0;margin:2px 0 10px}
+#p-usidx .uxtiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#p-usidx .uxtiles .ixt{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px}
+#p-usidx .ixt small{font-size:13px;font-weight:700;color:var(--tx);gap:6px;margin-bottom:6px}
+#p-usidx .ixt b{font-size:24px;font-weight:800}
+#p-usidx .ixt b.uxlong{font-size:19px}
+#p-usidx .ixt .ixc{margin-top:9px;padding:4px 10px;font-size:13px;font-weight:800}
+}
+</style>
+<section id="p-usidx" hidden>
+<div class="uxstrip"><div class="uxtiles" id="uxtiles" aria-label="해외 핵심 지표"></div></div>
+<p class="uxnote">지수·금리·환율은 실시간 값이에요. 미국 CPI는 2026년 10월 지수 기준 (전월 +0.4%, 미 노동통계국 11월 10일 발표 · 전년비는 미발표), 근원 PCE는 2026년 9월 전년비 기준 (전월 +0.3%, 미 경제분석국 10월 29일 발표), 미국 기준금리는 10월 28일 FOMC 동결 값 (실효금리 3.88%)이에요.</p>
+</section>
 <section id="p-market" hidden></section>
 <section id="p-kospi" hidden></section>
 <section id="p-kosdaq" hidden></section>
@@ -7597,6 +7657,59 @@ setInterval(function(){if(!document.hidden)kxTileDraw()},5000);
 setInterval(function(){if(!document.hidden)kxFxFetch()},60000);
 setInterval(function(){if(!document.hidden)kxKrxFetch()},60000);
 document.addEventListener("visibilitychange",function(){if(!document.hidden){kxTileDraw();kxFxFetch();kxKrxFetch()}});
+})();
+</script>
+<script>
+/* ===== 해외지표 탭 내용 (2026-11-15) =====
+   상단 타일 8개를 국내지표 맨 위 칸과 같은 모양으로 그린다.
+   S&P 500·나스닥 100·VIX는 홈 지수 스트립 조회 결과(IXS)를 그대로 읽어 5초마다 다시
+   그리고, 미국 10년물 국채금리·달러인덱스는 TradingView 스캐너(global/scan)로
+   따로 조회해 1분마다 갱신한다. 미국 CPI·근원 PCE·미국 기준금리는 발표 주기가 긴
+   지표라 최신 발표값을 정적으로 채운다: CPI는 2026년 10월 지수 337.51·전월 +0.4%
+   (미 노동통계국 2026-11-10 발표, 전년비는 2025년 10월 미집계로 미발표),
+   근원 PCE는 2026년 9월 전년비 3.1%·전월 +0.3% (미 경제분석국 2026-10-29 발표),
+   기준금리는 2026-10-28 FOMC 동결 3.75–4.00% (실효금리 3.88%) */
+(function(){
+function gel(id){return document.getElementById(id)}
+/* [id, 이름, (미사용), 값 종류] — 종류 ix: IXS 실시간 · tv: 아래 UXTV 실시간 · st: 정적 발표값 */
+var UXT=[["spx","S&P 500","주식","ix"],["ndx","나스닥 100","주식","ix"],["us10y","미국 10년물 국채금리","금리","tv"],["dxy","달러인덱스 (DXY)","환율","tv"],["vix","VIX 공포지수","주식","ix"],["cpi","미국 CPI","물가","st"],["pce","근원 PCE","물가","st"],["fed","미국 기준금리","금리","st"]];
+var UXST={cpi:{txt:"337.51",pill:"0.40%",cls:"ixc up"},pce:{txt:"3.1%",pill:"0.30%",cls:"ixc up"},fed:{txt:"3.75–4.00%",pill:"동결",cls:"ixc"}};
+var UXTV={us10y:{v:null,c:null},dxy:{v:null,c:null}};
+var tbox=gel("uxtiles");
+if(tbox){UXT.forEach(function(t){
+var d=document.createElement("div");d.className="ixt";
+var sm=document.createElement("small");
+var nm=document.createElement("span");nm.className="uxnm";nm.textContent=t[1];sm.appendChild(nm);
+d.appendChild(sm);
+var b=document.createElement("b");b.id="ux-"+t[0]+"-v";b.textContent="—";if(t[0]==="fed")b.className="uxlong";d.appendChild(b);
+var s=document.createElement("span");s.className="ixc na";s.id="ux-"+t[0]+"-c";s.textContent="—";d.appendChild(s);
+tbox.appendChild(d);
+})}
+function uxPill(ce,c){
+if(c==null||isNaN(c)){ce.textContent="—";ce.className="ixc na"}
+else if(c>0){ce.textContent=Math.abs(c).toFixed(2)+"%";ce.className="ixc up"}
+else if(c<0){ce.textContent=Math.abs(c).toFixed(2)+"%";ce.className="ixc dn"}
+else{ce.textContent="0.00%";ce.className="ixc"}
+}
+function uxDraw(){
+UXT.forEach(function(t){
+var ve=gel("ux-"+t[0]+"-v"),ce=gel("ux-"+t[0]+"-c");if(!ve||!ce)return;
+if(t[3]==="st"){var st=UXST[t[0]];ve.textContent=st.txt;ce.textContent=st.pill;ce.className=st.cls;return}
+var d=t[3]==="tv"?UXTV[t[0]]:((typeof IXS!=="undefined"&&IXS[t[0]])||{v:null,c:null});
+ve.textContent=(d.v==null||!(d.v>0))?"—":f(d.v,2)+(t[0]==="us10y"?"%":"");
+uxPill(ce,d.c);
+});
+}
+function uxFetch(){
+fetch("https://scanner.tradingview.com/global/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:["TVC:US10Y","TVC:DXY"]},columns:["close","change"]})}).then(function(r){if(!r.ok)throw new Error("tv "+r.status);return r.json()}).then(function(j){
+(j.data||[]).forEach(function(x){if(!x||!x.d)return;var id=x.s==="TVC:US10Y"?"us10y":x.s==="TVC:DXY"?"dxy":null;if(!id)return;var v=parseFloat(x.d[0]),c=parseFloat(x.d[1]);if(v>0)UXTV[id].v=v;if(!isNaN(c))UXTV[id].c=c});
+uxDraw();
+}).catch(function(){});
+}
+uxDraw();uxFetch();
+setInterval(function(){if(!document.hidden)uxDraw()},5000);
+setInterval(function(){if(!document.hidden)uxFetch()},60000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden){uxDraw();uxFetch()}});
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c6e8ab4e4ea4777bf54ca7e737337b9"}'></script><!-- End Cloudflare Web Analytics -->
