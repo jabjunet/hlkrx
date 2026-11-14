@@ -133,6 +133,9 @@ table.stocks th:nth-child(5),table.stocks td:nth-child(5),table.stocks th:nth-ch
 @media(max-width:400px){.idxrow{grid-template-columns:repeat(2,1fr)}}
 #idxRow{grid-template-columns:repeat(4,1fr)}
 @media(max-width:1180px){#idxRow{grid-template-columns:repeat(2,1fr)}}
+#idxRow .idxcard.big{grid-column:span 2}
+#idxRow .idxcard.big .p{font-size:26px}
+#idxRow .idxcard.big h3{font-size:13px}
 .mktseg{display:flex;gap:4px;background:var(--sf2);padding:4px;border-radius:12px;margin-bottom:10px}
 .mktseg button{flex:1;border:0;background:transparent;color:var(--mut);font:inherit;font-weight:800;font-size:14px;padding:9px 0;border-radius:9px;cursor:pointer}
 .mktseg button.on{background:var(--sf);color:var(--tx);box-shadow:0 1px 3px rgba(25,31,40,.14)}
@@ -150,7 +153,7 @@ table.stocks th:nth-child(5),table.stocks td:nth-child(5),table.stocks th:nth-ch
 </header>
 <div class="wrap">
   <section class="idxrow" id="idxRow">
-    <div class="idxcard" data-tv="KRX:KOSPI" data-mkt="korea"><h3>코스피</h3><span class="p">–</span><div><span class="c"></span><span class="amt"></span></div></div>
+    <div class="idxcard big" data-tv="KRX:KOSPI" data-mkt="korea"><h3>코스피</h3><span class="p">–</span><div><span class="c"></span><span class="amt"></span></div></div>
     <div class="idxcard" data-tv="KRX:KOSDAQ" data-mkt="korea"><h3>코스닥</h3><span class="p">–</span><div><span class="c"></span><span class="amt"></span></div></div>
     <div class="idxcard" data-tv="KRX:KOSPI200" data-mkt="korea"><h3>코스피 200</h3><span class="p">–</span><div><span class="c"></span><span class="amt"></span></div></div>
     <div class="idxcard" data-tv="FX_IDC:USDKRW" data-mkt="forex"><h3>원/달러 환율</h3><span class="p">–</span><div><span class="c"></span><span class="amt"></span></div></div>
@@ -180,9 +183,9 @@ table.stocks th:nth-child(5),table.stocks td:nth-child(5),table.stocks th:nth-ch
         <div class="chartbox" id="chartBox"></div>
       </div>
       <div class="card">
-        <div class="mktseg" id="mktSeg"><button type="button" data-m="K" class="on">코스피</button><button type="button" data-m="Q">코스닥</button></div>
-        <div class="filters" id="filters">
+                <div class="filters" id="filters">
           <button class="fbtn on" data-f="cap" type="button">시가총액순</button>
+          <button class="fbtn" data-f="vt" type="button">거래대금순</button>
           <button class="fbtn" data-f="up" type="button">급상승</button>
           <button class="fbtn" data-f="dn" type="button">급하락</button>
           <button class="fbtn" data-f="value" type="button">김프원픽 저평가주</button>
@@ -309,7 +312,7 @@ Object.keys(SECTORS).forEach(function(k){
 function setActive(name){
   document.querySelectorAll('#filters .fbtn[data-f]').forEach(function(b){ b.classList.toggle('on', b.dataset.f===name); });
 }
-var ALL=[], curMkt='K', curFilter='cap', curSector=null;
+var ALL=[], curFilter='cap', curSector=null;
 function rowOf(x){
   var d=x.d, meta=KRMAP[d[0]];
   return {code:d[0], en:d[1], price:d[2], chg:d[3], cap:d[4], vol:d[5], vt:d[6], sector:d[7], ind:d[8], per:d[9], logo:d[10],
@@ -324,10 +327,11 @@ function loadUniverse(){
   });
 }
 function viewRows(){
-  var rows=ALL.filter(function(r){ return r.mkt===curMkt; });
+  var rows=ALL.slice();
   var note='';
   function byCap(a,b){ return (b.cap||0)-(a.cap||0); }
   if(curFilter==='cap'){ rows.sort(byCap); note='시가총액 순서예요.'; }
+  else if(curFilter==='vt'){ rows.sort(function(a,b){ var x=a.vt!=null?a.vt:(a.price||0)*(a.vol||0), y=b.vt!=null?b.vt:(b.price||0)*(b.vol||0); return y-x; }); note='거래대금 순서예요.'; }
   else if(curFilter==='up'){ rows.sort(function(a,b){ return (b.chg==null?-999:b.chg)-(a.chg==null?-999:a.chg); }); note='오늘 가장 많이 오르는 종목 순서예요.'; }
   else if(curFilter==='dn'){ rows.sort(function(a,b){ return (a.chg==null?999:a.chg)-(b.chg==null?999:b.chg); }); note='오늘 가장 많이 내리는 종목 순서예요.'; }
   else if(curFilter==='value'){ rows=rows.filter(function(r){ return r.per>0.1&&r.per<=15&&(r.cap||0)>=3e11; }); rows.sort(byCap); note='김프원픽 저평가주: 시총 3,000억 이상이면서 PER 15배 이하인 종목이에요.'; }
@@ -338,13 +342,13 @@ function viewRows(){
 function applyView(){
   if(!ALL.length) return;
   var v=viewRows();
-  $note.textContent=(curMkt==='K'?'코스피':'코스닥')+' '+v.total+'개 종목 · '+v.note;
+  $note.textContent='국내주식 '+v.total+'개 종목 · '+v.note;
   if(!v.rows.length){ $b.innerHTML='<tr><td colspan="8" style="text-align:left;color:var(--mut)">표시할 종목이 없어요.</td></tr>'; return; }
   $b.innerHTML=v.rows.map(function(r, idx){
     var cls=r.chg>0?'up':(r.chg<0?'dn':'');
     var vt=(r.vt!=null)? r.vt : (r.price!=null&&r.vol!=null? r.price*r.vol : null);
     return '<tr data-tk="'+r.code+'"><td class="rank">'+(idx+1)+'</td>'+
-    '<td><span class="sym"><span class="ava">'+r.name.slice(0,1)+(r.logo?'<img src="https://s3-symbol-logo.tradingview.com/'+encodeURIComponent(r.logo)+'--big.svg" alt="" loading="lazy" onerror="this.remove()">':'')+'</span><span><span class="tk">'+r.name+'</span><span class="nm">'+r.code+' · '+(SECLABEL[r.sector]||r.sector||r.ind||'')+'</span></span></span></td>'+
+    '<td><span class="sym"><span class="ava">'+r.name.slice(0,1)+(r.logo?'<img src="https://s3-symbol-logo.tradingview.com/'+encodeURIComponent(r.logo)+'--big.svg" alt="" loading="lazy" onerror="this.remove()">':'')+'</span><span><span class="tk">'+r.name+'</span><span class="nm">'+r.code+' · '+(r.mkt==='K'?'코스피':'코스닥')+' · '+(SECLABEL[r.sector]||r.sector||r.ind||'')+'</span></span></span></td>'+
     '<td class="price">'+fmtP(r.price)+'</td><td><span class="pill '+cls+'">'+(r.chg==null?'–':(r.chg>0?'+':'')+r.chg.toFixed(2)+'%')+'</span></td>'+
     '<td>'+fmtWon(vt)+'</td><td>'+fmtWon(r.cap)+'</td>'+
     '<td><span class="indchip">'+(SECLABEL[r.sector]||r.ind||r.sector||'')+'</span></td>'+
@@ -361,13 +365,6 @@ function applyView(){
 }
 document.querySelectorAll('#filters .fbtn[data-f]').forEach(function(b){
   b.addEventListener('click', function(){ curFilter=b.dataset.f; curSector=null; setActive(b.dataset.f); applyView(); });
-});
-document.querySelectorAll('#mktSeg button').forEach(function(b){
-  b.addEventListener('click', function(){
-    curMkt=b.dataset.m;
-    document.querySelectorAll('#mktSeg button').forEach(function(x){ x.classList.toggle('on', x===b); });
-    applyView();
-  });
 });
 function renderStats(){
   var el=document.getElementById('mktStats'); if(!el||!ALL.length) return;
