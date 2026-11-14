@@ -2078,6 +2078,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 <style>
 /* 김프 탭 폭 맞춤 (2026-11-14): 양옆 여백을 홈·다른 탭과 같은 크기로 — 두 칸이 본문 폭 전체를 채운다 (데스크톱만) */
 @media (min-width:721px){
+html body main:has(>#pa:not([hidden])){max-width:1400px;padding-left:24px;padding-right:24px}
 #pa .pasplit{grid-template-columns:minmax(0,1fr) minmax(0,1fr);justify-content:stretch;justify-items:stretch;margin-left:0;margin-right:0;max-width:none}
 #pa .paleft,#pa .paright{width:auto;max-width:none}
 #pa .area-box{width:100%}
