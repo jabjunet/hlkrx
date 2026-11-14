@@ -2411,6 +2411,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
    모든 칸의 폭·위치가 동일하고, 같은 줄 칸끼리 높이가 같으며, 줄이 바뀌어도
    왼쪽 열·오른쪽 열 위치가 어긋나지 않는다. 칸 안 열(지표·현재값·전일·전년)도
    모든 칸에서 같은 위치에 오고, 긴 이름은 잘리지 않고 줄바꿈된다 */
+#p-kridx .kxstrip,#p-kridx .kxgrid{max-width:1200px;margin-left:auto;margin-right:auto}
 #p-kridx .kxgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%}
 #p-kridx .kxcard{min-width:0;background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px 16px 8px}
 #p-kridx .kxhd{display:flex;align-items:baseline;gap:8px;margin:0 0 4px}
