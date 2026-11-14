@@ -2406,26 +2406,31 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 #p-kridx .ixt b{font-size:24px;font-weight:800}
 #p-kridx .ixt .ixc{margin-top:9px;padding:4px 10px;font-size:13px;font-weight:800}
 }
-#p-kridx .kxgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
-@media(max-width:899px){#p-kridx .kxgrid{grid-template-columns:1fr}}
-#p-kridx .kxcard{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px 16px 8px}
+/* 그룹 칸 9개는 위쪽 타일 줄(.kxstrip)과 같은 왼쪽·오른쪽 경계 안에 전부 들어가게
+   유동 그리드로 맞췄다 (2026-11-14): 고정 폭을 쓰지 않고 컨테이너 폭을 2열로 나눠
+   모든 칸의 폭·위치가 동일하고, 같은 줄 칸끼리 높이가 같으며, 줄이 바뀌어도
+   왼쪽 열·오른쪽 열 위치가 어긋나지 않는다. 칸 안 열(지표·현재값·전일·전년)도
+   모든 칸에서 같은 위치에 오고, 긴 이름은 잘리지 않고 줄바꿈된다 */
+#p-kridx .kxgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%}
+#p-kridx .kxcard{min-width:0;background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px 16px 8px}
 #p-kridx .kxhd{display:flex;align-items:baseline;gap:8px;margin:0 0 4px}
 #p-kridx .kxhd h2{font-size:15px;font-weight:700;letter-spacing:-.01em;margin:0}
 #p-kridx .kxsrc{font-size:11.5px;color:var(--mut);white-space:nowrap}
-#p-kridx .kxcol,#p-kridx .kxrow{display:grid;grid-template-columns:minmax(0,1fr) 110px 62px 62px;gap:8px;align-items:center}
+#p-kridx .kxcol,#p-kridx .kxrow{display:grid;grid-template-columns:minmax(0,1fr) 150px 96px 96px;gap:8px;align-items:center}
 #p-kridx .kxcol{font-size:11px;color:var(--mut);padding:4px 0 6px;text-align:right}
 #p-kridx .kxcol span:first-child{text-align:left}
 #p-kridx .kxrow{padding:9px 0;border-top:1px solid var(--bd)}
 #p-kridx .kxl{min-width:0}
-#p-kridx .kxn{display:block;font-size:13.5px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#p-kridx .kxn{display:block;font-size:13.5px;font-weight:600;letter-spacing:-.01em;overflow-wrap:break-word}
 #p-kridx .kxd{display:block;font-size:11px;color:var(--mut);margin-top:1px}
 #p-kridx .kxv{text-align:right;font-size:14px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}
 #p-kridx .kxm{text-align:right;font-size:12.5px;color:var(--mut);white-space:nowrap}
 #p-kridx .kxm.up{color:var(--up);font-weight:600}
 #p-kridx .kxm.dn{color:var(--dn);font-weight:600}
 @media(max-width:720px){
+#p-kridx .kxgrid{grid-template-columns:minmax(0,1fr)}
 #p-kridx .kxcard{padding:12px 12px 6px}
-#p-kridx .kxcol,#p-kridx .kxrow{grid-template-columns:minmax(0,1fr) 92px 52px 52px;gap:6px}
+#p-kridx .kxcol,#p-kridx .kxrow{grid-template-columns:minmax(0,1fr) 104px 60px 60px;gap:6px}
 #p-kridx .kxn{font-size:12.5px}
 #p-kridx .kxv{font-size:13px}
 #p-kridx .kxm{font-size:11.5px}
