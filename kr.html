@@ -139,6 +139,11 @@ table.stocks th:nth-child(5),table.stocks td:nth-child(5),table.stocks th:nth-ch
 .mktseg{display:flex;gap:4px;background:var(--sf2);padding:4px;border-radius:12px;margin-bottom:10px}
 .mktseg button{flex:1;border:0;background:transparent;color:var(--mut);font:inherit;font-weight:800;font-size:14px;padding:9px 0;border-radius:9px;cursor:pointer}
 .mktseg button.on{background:var(--sf);color:var(--tx);box-shadow:0 1px 3px rgba(25,31,40,.14)}
+.chartbox{height:auto}
+.chper{display:flex;gap:6px;margin-bottom:8px}
+.chper button{border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:8px;padding:4px 12px;font-size:12.5px;cursor:pointer}
+.chper button.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.chimg{display:block;width:100%;height:auto;background:#fff;border-radius:8px}
 </style>
 </head>
 <body>
@@ -179,7 +184,7 @@ table.stocks th:nth-child(5),table.stocks td:nth-child(5),table.stocks th:nth-ch
     </aside>
     <section class="center">
       <div class="card chartcard">
-        <div class="chead"><b id="chartSym">삼성전자</b><span>종목표에서 종목을 누르면 이 차트가 바뀌어요 · 도구에서 피보나치·추세선, 지표에서 RSI를 쓸 수 있어요</span></div>
+        <div class="chead"><b id="chartSym">삼성전자</b><span>종목표에서 종목을 누르면 이 차트가 바뀌어요 · 네이버 금융 차트</span></div>
         <div class="chartbox" id="chartBox"></div>
       </div>
       <div class="card">
@@ -220,7 +225,7 @@ table.stocks th:nth-child(5),table.stocks td:nth-child(5),table.stocks th:nth-ch
   </div>
 </div>
 <footer>
-  데이터 출처: TradingView, 한국거래소 KIND 상장법인목록, Firebase 커뮤니티. 본 페이지는 정보 제공용이며 투자 권유가 아니에요.
+  데이터 출처: TradingView, 네이버 금융(차트), 한국거래소 KIND 상장법인목록, Firebase 커뮤니티. 본 페이지는 정보 제공용이며 투자 권유가 아니에요.
 </footer>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
@@ -386,15 +391,15 @@ function renderStats(){
 }
 
 /* ---------- 차트 (가운데 패널) ---------- */
+var CHPERIOD='day', CHCODE='005930';
 function showChart(sym, label){
-  document.getElementById('chartSym').textContent=label||sym.replace('KRX:','');
-  var box=document.getElementById('chartBox'); box.innerHTML='';
-  var c=document.createElement('div'); c.className='tradingview-widget-container'; c.style.height='100%';
-  var w=document.createElement('div'); w.className='tradingview-widget-container__widget'; w.style.height='100%'; c.appendChild(w);
-  var s=document.createElement('script'); s.type='text/javascript'; s.async=true;
-  s.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-  s.textContent=JSON.stringify({symbol:sym,interval:'D',timezone:'Asia/Seoul',theme:(document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light'),style:'1',locale:'kr',allow_symbol_change:true,hide_side_toolbar:window.innerWidth<=760,studies:['STD;RSI'],support_host:'https://www.tradingview.com'});
-  c.appendChild(s); box.appendChild(c);
+  var m=String(sym||'').match(/\d{6}/); if(m) CHCODE=m[0];
+  if(label) document.getElementById('chartSym').textContent=label;
+  var box=document.getElementById('chartBox');
+  var pn={day:'일봉',week:'주봉',month:'월봉'};
+  var btns=Object.keys(pn).map(function(p){ return '<button type="button" data-p="'+p+'"'+(p===CHPERIOD?' class="on"':'')+'>'+pn[p]+'</button>'; }).join('');
+  box.innerHTML='<div class="chper">'+btns+'</div><img class="chimg" alt="주가 차트" src="https://ssl.pstatic.net/imgfinance/chart/item/candle/'+CHPERIOD+'/'+CHCODE+'.png">';
+  box.querySelectorAll('[data-p]').forEach(function(b){ b.addEventListener('click', function(){ CHPERIOD=b.getAttribute('data-p'); showChart(CHCODE); }); });
   box.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 showChart('KRX:005930','삼성전자 005930');
