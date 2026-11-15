@@ -2653,6 +2653,14 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 #p-usidx .fxsum b{display:block;font-size:17px;font-weight:800;letter-spacing:-.02em;line-height:1.3;white-space:nowrap}
 #p-usidx .fxsum span{display:block;font-size:11.5px;color:var(--mut);margin-top:1px;line-height:1.45}
 #p-usidx .fxcard{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px 14px 10px;margin-bottom:10px}
+#p-usidx .fxside{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px 14px 10px;margin-bottom:10px}
+#p-usidx .fxside .fxst{font-size:14.5px;font-weight:700;margin:0 2px 10px}
+#p-usidx .fxsrow{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px;padding:7px 2px;border-top:1px solid var(--bd)}
+#p-usidx .fxsrow .fxsnm{font-weight:700;font-size:13.5px;white-space:nowrap}
+#p-usidx .fxsrow .fxsbp{font-size:12px;color:var(--mut);white-space:nowrap}
+#p-usidx .fxsrow .fxscnt{margin-left:auto;font-weight:800;font-size:14.5px;white-space:nowrap}
+#p-usidx .fxsrow .fxsdt{flex-basis:100%;font-size:11.5px;color:var(--mut);line-height:1.5}
+#p-usidx .fxsnote{font-size:11.5px;color:var(--mut);line-height:1.6;margin:10px 2px 4px}
 #p-usidx .fxchead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
 #p-usidx .fxchead b{font-size:14.5px;font-weight:700}
 #p-usidx .fxseg{margin-left:auto}
@@ -2663,7 +2671,7 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 #p-usidx .fxleg .lg-band{width:16px;height:9px;background:var(--tx);opacity:.16;border-radius:2px}
 #p-usidx .fxchart{position:relative}
 #p-usidx .fxchart svg{display:block;width:100%;height:auto}
-@media(min-width:721px){#p-usidx .fxchart{max-width:880px;margin-right:auto}#p-usidx .fxcard{max-width:910px}}
+@media(min-width:721px){#p-usidx .fxrow{display:flex;gap:10px;align-items:stretch;margin-bottom:10px}#p-usidx .fxrow .fxcard{flex:none;width:910px;max-width:910px;margin-bottom:0}#p-usidx .fxchart{max-width:880px;margin-right:auto}#p-usidx .fxside{flex:1 1 auto;min-width:0;margin-bottom:0}}
 #p-usidx .fxtip{position:absolute;pointer-events:none;background:var(--tx);color:var(--bg);font-size:12px;font-weight:600;line-height:1.5;padding:6px 9px;border-radius:8px;white-space:nowrap;z-index:5;transform:translate(-50%,-115%)}
 #p-usidx .fxtip[hidden]{display:none}
 #p-usidx .fxcap{font-size:11.5px;color:var(--mut);line-height:1.6;margin:4px 2px 2px}
@@ -2711,12 +2719,24 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 <div><small>직전 변경</small><b>+25bp 인상</b><span>2026년 9월 16일 · 2023년 7월 이후 첫 인상</span></div>
 <div><small>1990년 이후 변경</small><b>110회</b><span>인상 52회 · 인하 58회 · 피벗 13회</span></div>
 </div>
+<div class="fxrow">
 <div class="fxcard">
 <div class="fxchead"><button type="button" class="fxtgl" data-fxtgl aria-expanded="true">연방기금금리 목표 추이<span class="fxarr" aria-hidden="true">▾</span></button><span class="pair fxseg" role="group" aria-label="차트 기간"><button type="button" data-fxfrom="1990" aria-pressed="true">1990~</button><button type="button" data-fxfrom="2008" aria-pressed="false">2008~</button><button type="button" data-fxfrom="2020" aria-pressed="false">2020~</button></span></div>
 <div class="fxbody">
 <div class="fxleg"><span><i class="lg-line"></i>목표 상단</span><span><i class="lg-band"></i>목표 범위 (2008년 12월부터 범위 방식)</span><span>2008년 12월 이전은 단일 목표금리</span></div>
 <div class="fxchart" id="fxchart"><div class="fxtip" id="fxtip" hidden></div></div>
 <p class="fxcap">기간 안 최고 상단은 1990년 8.25%, 최저는 0.25% (2008년 12월~2015년 12월, 2020년 3월~2022년 3월). 최근 고점은 2023년 7월 5.25–5.50%예요. 차트 위를 움직이면 결정일과 금리가 보여요.</p>
+</div>
+</div>
+<div class="fxside">
+<div class="fxst">역대 큰 폭 변동</div>
+<div class="fxsrow"><span class="fxsnm">울트라 스텝</span><span class="fxsbp">+100bp 인상</span><b class="fxscnt up">0회</b><span class="fxsdt">아직 한 번도 없어요</span></div>
+<div class="fxsrow"><span class="fxsnm">자이언트 스텝</span><span class="fxsbp">+75bp 인상</span><b class="fxscnt up">5회</b><span class="fxsdt">1994년 11월 15일 · 2022년 6월 15일 · 7월 27일 · 9월 21일 · 11월 2일</span></div>
+<div class="fxsrow"><span class="fxsnm">빅 스텝</span><span class="fxsbp">+50bp 인상</span><b class="fxscnt up">6회</b><span class="fxsdt">1994년 5월 17일 · 8월 16일 · 1995년 2월 1일 · 2000년 5월 16일 · 2022년 5월 4일 · 12월 14일</span></div>
+<div class="fxsrow"><span class="fxsnm">빅 컷</span><span class="fxsbp">−50bp 인하</span><b class="fxscnt dn">18회</b><span class="fxsdt">2001년에만 8회 · 2007–08년 4회 · 최근은 2024년 9월 18일</span></div>
+<div class="fxsrow"><span class="fxsnm">자이언트 컷</span><span class="fxsbp">−75bp 인하</span><b class="fxscnt dn">3회</b><span class="fxsdt">전부 2008년 — 1월 22일 · 3월 18일 · 12월 16일</span></div>
+<div class="fxsrow"><span class="fxsnm">울트라 컷</span><span class="fxsbp">−100bp 인하</span><b class="fxscnt dn">1회</b><span class="fxsdt">2020년 3월 15일 코로나 긴급 인하</span></div>
+<p class="fxsnote">보통의 25bp 움직임은 베이비 스텝(인상)·베이비 컷(인하)이라고 해요. 1990년 이후 베이비 스텝 41회·베이비 컷 36회예요.</p>
 </div>
 </div>
 <div class="fx2col">
