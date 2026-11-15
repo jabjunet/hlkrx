@@ -1777,9 +1777,9 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #ph .ixt .ixc.up::before,#ph .ixt .ixc.dn::before{font-size:7px;margin-right:3px}
 }
 @media(max-width:720px){
-#ph .ixtiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;overflow:visible;padding-bottom:0}
+#ph .ixtiles{display:flex;flex-wrap:nowrap;gap:10px;overflow-x:auto;overflow-y:hidden;padding-bottom:2px;scroll-snap-type:x proximity}
 #ph .ixtiles::before{content:none}
-#ph .ixtiles .ixt{min-width:0}
+#ph .ixtiles .ixt{flex:0 0 148px;min-width:0;scroll-snap-align:start}
 .ixcats button{min-height:34px;padding:6px 13px;font-size:12.5px}
 }
 /* 헤더 검색: 로고 옆 실시간 표시가 있던 자리. 결과 드롭다운은 검색칸 아래에 붙고,
@@ -2314,10 +2314,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 })();
 </script>
 <section id="ph">
-<div class="m-hero" hidden>
-<h1 class="m-hero-t">김프부터 펀딩비까지,<br><span>한 화면에서.</span></h1>
-<p class="m-hero-sub">국내가와 해외가, 환율까지 일일이 열어볼 필요 없이 한 번에 확인하세요.</p>
-</div>
 <div class="ixstrip" id="ixstrip">
 <div class="ixcats" id="ixcats" role="group" aria-label="지수 카테고리">
 <button type="button" data-ixcat="main" aria-pressed="true">주요</button>
