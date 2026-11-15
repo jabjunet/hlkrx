@@ -2575,6 +2575,43 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 #p-usidx .ixt .ixc.dn{background:var(--dnbg);color:var(--dn)}
 #p-usidx .ixt .ixc.up::before{content:"▲";font-size:8px;margin-right:4px}
 #p-usidx .ixt .ixc.dn::before{content:"▼";font-size:8px;margin-right:4px}
+/* 해외지표 그룹 칸 (2026-11-16): 국내지표 그룹 칸(.kxgrid)과 같은 모양·열 배분으로 맞춘다 —
+   데스크톱·미리보기에서는 항상 3열, 폰(720px 이하)에서만 1열로 쌓이고, 칸 안 열
+   (지표·현재값·전월/전일·전년) 위치도 국내지표와 같은 값을 쓴다 */
+#p-usidx .uxgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%}
+#p-usidx .uxcard{min-width:0;background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px 12px 8px}
+#p-usidx .uxhd{display:flex;align-items:baseline;gap:8px;margin:0 0 4px}
+#p-usidx .uxhd h2{font-size:15px;font-weight:700;letter-spacing:-.01em;margin:0}
+#p-usidx .uxsrc{font-size:11.5px;color:var(--mut);white-space:nowrap}
+#p-usidx .uxcol,#p-usidx .uxrow{display:grid;grid-template-columns:minmax(0,1fr) 88px 62px 40px;gap:5px;align-items:center}
+#p-usidx .uxcol{font-size:11px;color:var(--mut);padding:4px 0 6px;text-align:right}
+#p-usidx .uxcol span:first-child{text-align:left}
+#p-usidx .uxrow{padding:9px 0;border-top:1px solid var(--bd)}
+#p-usidx .uxl{min-width:0}
+#p-usidx .uxn{display:block;font-size:13px;font-weight:600;letter-spacing:-.01em;overflow-wrap:break-word}
+#p-usidx .uxd{display:block;font-size:11px;color:var(--mut);margin-top:1px}
+#p-usidx .uxv{text-align:right;font-size:13.5px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+#p-usidx .uxm{text-align:right;font-size:12px;color:var(--mut);white-space:nowrap}
+#p-usidx .uxm.up{color:var(--up);font-weight:600}
+#p-usidx .uxm.dn{color:var(--dn);font-weight:600}
+#p-usidx .uxgnote{font-size:11.5px;color:var(--mut);line-height:1.65;margin:10px 2px 14px}
+@media(min-width:721px) and (max-width:1180px){
+#p-usidx .uxgrid{gap:10px}
+#p-usidx .uxcard{padding:12px 10px 6px}
+#p-usidx .uxcol,#p-usidx .uxrow{grid-template-columns:minmax(0,1fr) 78px 54px 30px;gap:4px}
+#p-usidx .uxn{font-size:12px}
+#p-usidx .uxv{font-size:12.5px}
+#p-usidx .uxm{font-size:11px}
+#p-usidx .uxsrc{font-size:10.5px}
+}
+@media(max-width:720px){
+#p-usidx .uxgrid{grid-template-columns:minmax(0,1fr)}
+#p-usidx .uxcard{padding:12px 12px 6px}
+#p-usidx .uxcol,#p-usidx .uxrow{grid-template-columns:minmax(0,1fr) 104px 60px 60px;gap:6px}
+#p-usidx .uxn{font-size:12.5px}
+#p-usidx .uxv{font-size:13px}
+#p-usidx .uxm{font-size:11.5px}
+}
 #p-usidx .uxnote{font-size:11.5px;color:var(--mut);line-height:1.65;margin:0 2px 14px}
 @media(min-width:721px) and (max-width:1023px){
 #p-usidx .uxstrip{padding:10px 12px 12px}
@@ -2598,6 +2635,8 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 <section id="p-usidx" hidden>
 <div class="uxstrip"><div class="uxtiles" id="uxtiles" aria-label="해외 핵심 지표"></div></div>
 <p class="uxnote">지수·금리·환율은 실시간 값이에요. 미국 CPI는 2026년 10월 지수 기준 (전월 +0.4%, 미 노동통계국 11월 10일 발표 · 전년비는 미발표), 근원 PCE는 2026년 9월 전년비 기준 (전월 +0.3%, 미 경제분석국 10월 29일 발표), 미국 기준금리는 10월 28일 FOMC 동결 값 (실효금리 3.88%)이에요.</p>
+<div class="uxgrid" id="uxgrid"></div>
+<p class="uxgnote">아래 그룹 지표는 각국 공식 발표의 최신값이에요 (2026년 11월 15일까지 발표분). 금리·국채와 환율·시장 칸은 실시간 값으로 갱신되고, 미국 CPI 전년비는 2025년 10월 미집계로 발표되지 않아 비워 뒀어요.</p>
 </section>
 <section id="p-market" hidden></section>
 <section id="p-kospi" hidden></section>
@@ -7706,6 +7745,72 @@ uxDraw();uxFetch();
 setInterval(function(){if(!document.hidden)uxDraw()},5000);
 setInterval(function(){if(!document.hidden)uxFetch()},60000);
 document.addEventListener("visibilitychange",function(){if(!document.hidden){uxDraw();uxFetch()}});
+})();
+</script>
+<script>
+/* ===== 해외지표 그룹 칸 내용 (2026-11-16) =====
+   국내지표 그룹 칸과 같은 모양으로 9개 그룹·44개 지표를 그린다.
+   금리·국채와 환율·시장 칸은 TradingView 스캐너 실시간값으로 1분마다 갱신하고
+   (조회가 안 되면 아래 정적 조회값을 그대로 보여 준다), 나머지는 각국 공식 발표
+   최신값을 정적으로 채웠다 — 물가·경기·생산·고용·부동산·GDP는 2026년 9~11월 발표분,
+   해외 주요국은 중국 국가통계국·유로스타트·각국 중앙은행 발표분이다.
+   행 형식은 국내지표와 같다: [지표 이름, 실시간 칸 id(없으면 null),
+   정적값 [표시값, 기준시점, 전월(전일) 변화, 부호(1·-1·0), 전년 변화(없으면 없음)] 또는 없음] */
+(function(){
+function gel(id){return document.getElementById(id)}
+var UXG=[
+["금리·국채","연방준비제도·미 재무부","전일",[["미국 기준금리",null,["3.75–4.00%","2026년 10월 28일 동결","동결",0]],["실효 연방기금금리",null,["3.88%","2026년 10월","—",0]],["미국 국채 2년","us02y",["4.85%","실시간","—",0]],["미국 국채 10년","us10yg",["5.14%","실시간","—",0]],["미국 국채 30년","us30y",["5.47%","실시간","—",0]]]],
+["환율·시장","실시간","전일",[["달러인덱스","uxdxy",["103.41","실시간","—",0]],["유로/달러","eurusd",["1.1022","실시간","—",0]],["달러/엔","usdjpy",["159.71","실시간","—",0]],["금 (온스)","gold",["3,883.4달러","실시간","—",0]],["VIX 공포지수","vixg",["19.29","실시간","—",0]]]],
+["물가","미 노동통계국·경제분석국","전월",[["소비자물가지수",null,["337.51","2026년 10월","+0.40%",1,"—"]],["소비자물가 전년비",null,["3.7%","2026년 9월","+0.60%",1,"—"]],["근원 CPI 전년비",null,["2.6%","2026년 9월","+0.30%",1,"—"]],["PCE 물가지수",null,["3.6%","2026년 9월 · 전년비","+0.50%",1,"—"]],["근원 PCE",null,["3.1%","2026년 9월 · 전년비","+0.30%",1,"—"]],["생산자물가지수 (PPI)",null,["6.5%","2026년 10월 · 전년비","+0.30%",1,"—"]]]],
+["경기·심리","ISM·미시간대·컨퍼런스보드","전월",[["ISM 제조업 PMI",null,["55.5","2026년 10월","+1.0p",1]],["ISM 서비스업 PMI",null,["54.5","2026년 10월","-0.4p",-1]],["미시간 소비자심리",null,["48.0","2026년 10월","-0.1p",-1]],["컨퍼런스보드 소비자신뢰",null,["91.7","2026년 10월","+7.5p",1]]]],
+["생산·소비","연방준비제도·상무부","전월",[["산업생산지수",null,["104.0","2026년 9월","+0.70%",1]],["설비가동률",null,["76.9%","2026년 9월","—",0]],["소매판매",null,["7,450억달러","2026년 9월","+0.80%",1]],["내구재 주문",null,["3,454억달러","2026년 9월","+1.80%",1]]]],
+["고용","미 노동통계국·노동부","전월",[["실업률",null,["4.1%","2026년 10월","-0.10%p",-1]],["비농업 고용 증가",null,["+16.5만명","2026년 10월","—",0]],["시간당 임금",null,["38.00달러","2026년 10월","+0.40%",1,"+3.10%"]],["주간 실업수당 청구",null,["20.0만명","11월 7일 주","+0.9만명",1]]]],
+["부동산","상무부·전미부동산협회·S&P","전월",[["주택착공",null,["122.1만호","2026년 9월","-5.20%",-1]],["기존주택판매",null,["375만호","2026년 10월","-5.50%",-1]],["신규주택판매",null,["67.6만호","2026년 9월","—",0,"-5.30%"]],["기존주택 중간가격",null,["41.67만달러","2026년 10월","—",0,"+0.40%"]],["케이스-실러 지수",null,["+2.1%","2026년 8월 · 전년비","+0.30%",1]]]],
+["GDP·무역","미 경제분석국·상무부","전기",[["실질 GDP 성장률",null,["3.4%","2026년 3분기","+1.20%p",1]],["명목 GDP",null,["33.01조달러","2026년 3분기","+5.60%",1]],["무역수지",null,["-1,050억달러","2026년 9월","+7억달러",1]],["수출",null,["3,215억달러","2026년 9월","+1.90%",1]],["수입",null,["4,266억달러","2026년 9월","+1.20%",1]]]],
+["해외 주요국","각국 통계국·중앙은행","전월",[["중국 제조업 PMI (공식)",null,["49.3","2026년 10월","-0.8p",-1]],["중국 차이신 제조업 PMI",null,["52.0","2026년 10월","-0.1p",-1]],["유로존 물가 (전년비)",null,["4.0%","2026년 10월","+0.20%p",1]],["유로존 예금금리",null,["2.50%","2026년 10월 29일 동결","동결",0]],["일본 정책금리",null,["1.25%","2026년 10월 30일 동결","동결",0]],["영국 정책금리",null,["4.00%","2026년 11월 5일","+0.25%p",1]]]]
+];
+var grid=gel("uxgrid");
+if(grid){UXG.forEach(function(g){
+var card=document.createElement("div");card.className="uxcard";
+var hd=document.createElement("div");hd.className="uxhd";
+var h=document.createElement("h2");h.textContent=g[0];hd.appendChild(h);
+var src=document.createElement("span");src.className="uxsrc";src.textContent=g[1];hd.appendChild(src);
+card.appendChild(hd);
+var col=document.createElement("div");col.className="uxcol";
+["지표","현재값",g[2],"전년"].forEach(function(x){var sp=document.createElement("span");sp.textContent=x;col.appendChild(sp)});
+card.appendChild(col);
+g[3].forEach(function(r){
+var st=r[2]||null;
+var row=document.createElement("div");row.className="uxrow";
+var left=document.createElement("div");left.className="uxl";
+var nm=document.createElement("span");nm.className="uxn";nm.textContent=r[0];left.appendChild(nm);
+var dt=document.createElement("span");dt.className="uxd";dt.textContent=st?st[1]:"—";left.appendChild(dt);
+row.appendChild(left);
+var v=document.createElement("span");v.className="uxv";v.textContent=st?st[0]:"—";if(r[1])v.id="uxg-"+r[1]+"-v";row.appendChild(v);
+var c1=document.createElement("span");c1.textContent=st?st[2]:"—";c1.className="uxm"+(st?(st[3]>0?" up":st[3]<0?" dn":""):"");if(r[1])c1.id="uxg-"+r[1]+"-c";row.appendChild(c1);
+var c2=document.createElement("span");c2.className="uxm";c2.textContent=st&&st[4]?st[4]:"—";if(st&&st[4]&&st[4].charAt(0)==="+")c2.className="uxm up";if(st&&st[4]&&st[4].charAt(0)==="-")c2.className="uxm dn";row.appendChild(c2);
+card.appendChild(row);
+});
+grid.appendChild(card);
+})}
+/* 실시간 칸: 금리·국채 3개와 환율·시장 5개를 TradingView 스캐너로 조회한다.
+   표기 자릿수는 지표마다 다르다 — 국채 금리는 소수 2자리+%, 유로/달러는 소수 4자리,
+   금은 천 단위 쉼표+달러로 맞춘다. 변화 칸은 타일과 같은 전일 등락률(%)이다 */
+var UXFMT={us02y:function(v){return v.toFixed(2)+"%"},us10yg:function(v){return v.toFixed(2)+"%"},us30y:function(v){return v.toFixed(2)+"%"},uxdxy:function(v){return v.toFixed(2)},eurusd:function(v){return v.toFixed(4)},usdjpy:function(v){return v.toFixed(2)},gold:function(v){return v.toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1})+"달러"},vixg:function(v){return v.toFixed(2)}};
+var UXTVMAP={"TVC:US02Y":"us02y","TVC:US10Y":"us10yg","TVC:US30Y":"us30y","TVC:DXY":"uxdxy","FX:EURUSD":"eurusd","FX:USDJPY":"usdjpy","TVC:GOLD":"gold","TVC:VIX":"vixg"};
+function uxgSet(id,v,c){
+var ve=gel("uxg-"+id+"-v"),ce=gel("uxg-"+id+"-c");
+if(ve&&v>0&&isFinite(v)&&UXFMT[id])ve.textContent=UXFMT[id](v);
+if(ce&&c!=null&&!isNaN(c)){ce.textContent=(c>0?"+":c<0?"-":"")+Math.abs(c).toFixed(2)+"%";ce.className="uxm"+(c>0?" up":c<0?" dn":"")}
+}
+function uxgFetch(){
+fetch("https://scanner.tradingview.com/global/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:Object.keys(UXTVMAP)},columns:["close","change"]})}).then(function(r){if(!r.ok)throw new Error("tv "+r.status);return r.json()}).then(function(j){
+(j.data||[]).forEach(function(x){if(!x||!x.d)return;var id=UXTVMAP[x.s];if(!id)return;uxgSet(id,parseFloat(x.d[0]),parseFloat(x.d[1]))});
+}).catch(function(){});
+}
+uxgFetch();
+setInterval(function(){if(!document.hidden)uxgFetch()},60000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)uxgFetch()});
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c6e8ab4e4ea4777bf54ca7e737337b9"}'></script><!-- End Cloudflare Web Analytics -->
