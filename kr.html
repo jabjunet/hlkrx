@@ -120,8 +120,7 @@ header.top{gap:8px;padding:8px 12px}
 .idxcard h3{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .idxcard .p{font-size:16px}
 .idxcard .amt{display:block;margin:2px 0 0}
-.filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
-.filters::-webkit-scrollbar{display:none}
+.filters{flex-wrap:wrap;overflow:visible;padding-bottom:0}
 .fbtn{white-space:nowrap;min-height:36px}
 table.stocks{font-size:13px}
 table.stocks th,table.stocks td{padding:8px 6px}
@@ -187,6 +186,9 @@ table.stocks tbody tr.open{background:var(--sf2)}
 #idxRow .idxcard{flex:0 0 148px;scroll-snap-align:start}
 #idxRow .idxcard.big{flex-basis:216px}
 }
+/* [분류 고정·표 접기 2026-11-15] */
+#stocksCard.folded #listNote,#stocksCard.folded #tblWrap,#stocksCard.folded .tblfoot{display:none}
+#tblToggle{margin-left:auto}
 </style>
 </head>
 <body>
@@ -230,7 +232,7 @@ table.stocks tbody tr.open{background:var(--sf2)}
         <div class="chead"><b id="chartSym">삼성전자</b><span>종목표에서 종목을 누르면 이 차트가 바뀌어요 · 네이버 금융 차트</span></div>
         <div class="chartbox" id="chartBox"></div>
       </div>
-      <div class="card">
+      <div class="card" id="stocksCard">
                 <div class="filters" id="filters">
           <button class="fbtn on" data-f="cap" type="button">시가총액순</button>
           <button class="fbtn" data-f="vt" type="button">거래대금순</button>
@@ -242,15 +244,16 @@ table.stocks tbody tr.open{background:var(--sf2)}
             <button class="fbtn" type="button">섹터 ▾</button>
             <span class="secmenu" id="secMenu"></span>
           </span>
+          <button class="fbtn" id="tblToggle" type="button">표 접기 ▴</button>
         </div>
         <p class="note" id="listNote" style="margin:0 0 6px"></p>
-        <div style="overflow-x:auto">
+        <div style="overflow-x:auto" id="tblWrap">
         <table class="stocks">
           <thead><tr><th style="text-align:center">순위</th><th>종목</th><th>현재가</th><th>등락률</th><th>거래대금</th><th>시가총액</th><th>산업</th><th></th></tr></thead>
           <tbody id="stockBody"><tr><td colspan="8" style="text-align:left;color:var(--mut)">불러오는 중…</td></tr></tbody>
         </table>
         </div>
-        <p class="note">가격·시총·거래대금은 TradingView 스캐너 기준이고, 종목명·시장 구분은 KRX KIND 상장목록 기준이에요.</p>
+        <p class="note tblfoot">가격·시총·거래대금은 TradingView 스캐너 기준이고, 종목명·시장 구분은 KRX KIND 상장목록 기준이에요.</p>
       </div>
     </section>
     <aside class="right">
@@ -410,6 +413,7 @@ function viewRows(){
   return {rows:rows.slice(0,80), total:rows.length, note:note};
 }
 function applyView(){
+  if(window.__unfoldStocks)window.__unfoldStocks();
   if(!ALL.length) return;
   var v=viewRows();
   $note.textContent='국내주식 '+v.total+'개 종목 · '+v.note;
@@ -552,5 +556,15 @@ fetch('https://jabjunet-default-rtdb.firebaseio.com/posts.json').then(function(r
 
 </script>
 
+<script>
+(function(){
+  var card=document.getElementById('stocksCard'), btn=document.getElementById('tblToggle');
+  if(!card||!btn) return;
+  function sync(){ btn.textContent=card.classList.contains('folded')?'표 펼치기 \u25BE':'표 접기 \u25B4'; }
+  btn.addEventListener('click', function(){ card.classList.toggle('folded'); sync(); });
+  window.__unfoldStocks=function(){ if(card.classList.contains('folded')){ card.classList.remove('folded'); sync(); } };
+  sync();
+})();
+</script>
 </body>
 </html>
