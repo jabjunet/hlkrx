@@ -2698,6 +2698,8 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 #p-usidx .fxtgl{display:inline-flex;align-items:center;gap:7px;background:none;border:0;padding:2px 0;min-height:0;font:inherit;font-size:14.5px;font-weight:700;color:var(--tx);cursor:pointer;text-align:left}
 #p-usidx .fxtgl .fxarr{font-size:10px;color:var(--mut);transition:transform .18s ease}
 #p-usidx .fxtgl[aria-expanded="false"] .fxarr{transform:rotate(-90deg)}
+#p-usidx .fxmbtn{padding:6px 9px}
+#p-usidx .fxchead .fxtt{font-size:14.5px;font-weight:700}
 #p-usidx .fxbody[hidden]{display:none}
 #p-usidx .fxcol .fxbox table th,#p-usidx .fxcol .fxbox table td{padding:7px 9px;font-size:12.5px}
 #p-usidx .fxcol .fxvote{white-space:normal;line-height:1.45}
@@ -2712,7 +2714,8 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 }
 </style>
 <div class="fxsec" id="fxsec">
-<div class="fxhd"><h2>미국 기준금리 · FOMC 결정 이력</h2><span class="fxnext">다음 회의 2026년 12월 8–9일 · 결정 발표 12월 9일 (경제전망 SEP 포함)</span></div>
+<div class="fxhd"><h2>미국 기준금리 · FOMC 결정 이력</h2><button type="button" class="fxtgl fxmbtn" data-fxmaster aria-expanded="true" aria-label="FOMC 섹션 접기/펼치기"><span class="fxarr" aria-hidden="true">▾</span></button><span class="fxnext">다음 회의 2026년 12월 8–9일 · 결정 발표 12월 9일 (경제전망 SEP 포함)</span></div>
+<div id="fxall">
 <div class="fxsum">
 <div><small>현재 목표범위</small><b>3.75–4.00%</b><span>실효 연방기금금리 3.88% (11월 중순)</span></div>
 <div><small>최근 결정</small><b>동결</b><span>2026년 10월 28일 · 표결 10–2</span></div>
@@ -2721,7 +2724,7 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 </div>
 <div class="fxrow">
 <div class="fxcard">
-<div class="fxchead"><button type="button" class="fxtgl" data-fxtgl aria-expanded="true">연방기금금리 목표 추이<span class="fxarr" aria-hidden="true">▾</span></button><span class="pair fxseg" role="group" aria-label="차트 기간"><button type="button" data-fxfrom="1990" aria-pressed="true">1990~</button><button type="button" data-fxfrom="2008" aria-pressed="false">2008~</button><button type="button" data-fxfrom="2020" aria-pressed="false">2020~</button></span></div>
+<div class="fxchead"><b class="fxtt">연방기금금리 목표 추이</b><span class="pair fxseg" role="group" aria-label="차트 기간"><button type="button" data-fxfrom="1990" aria-pressed="true">1990~</button><button type="button" data-fxfrom="2008" aria-pressed="false">2008~</button><button type="button" data-fxfrom="2020" aria-pressed="false">2020~</button></span></div>
 <div class="fxbody">
 <div class="fxleg"><span><i class="lg-line"></i>목표 상단</span><span><i class="lg-band"></i>목표 범위 (2008년 12월부터 범위 방식)</span><span>2008년 12월 이전은 단일 목표금리</span></div>
 <div class="fxchart" id="fxchart"><div class="fxtip" id="fxtip" hidden></div></div>
@@ -2784,6 +2787,7 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 </div>
 </div>
 <p class="fxnote">출처: 연방준비제도 이사회 Open Market Operations (목표금리 변경표) · 세인트루이스 연준 FRED DFEDTAR·DFEDTARU·DFEDTARL, 2026년 11월 15일 조회. 날짜는 FOMC 성명 발표일(결정일) 기준이고, 새 범위는 다음 날부터 시행돼요. 2008년 12월 16일 이전은 범위가 아닌 단일 목표금리예요. 긴급회의 결정(2001년 9월 17일, 2008년 1월 22일, 2020년 3월 3일·15일 등)도 포함했어요.</p>
+</div>
 </div>
 </section>
 <section id="p-market" hidden></section>
@@ -8024,6 +8028,14 @@ b.setAttribute("aria-expanded",open?"false":"true");
 if(body)body.hidden=open;
 });
 });
+/* --- 섹션 전체 접기/펼치기 (제목 옆 버튼) --- */
+var fmb=document.querySelector("[data-fxmaster]");
+if(fmb){fmb.addEventListener("click",function(){
+var a=document.getElementById("fxall");if(!a)return;
+var open=fmb.getAttribute("aria-expanded")==="true";
+fmb.setAttribute("aria-expanded",open?"false":"true");
+a.hidden=open;
+});}
 /* --- 차트 (계단형 SVG, 기간 전환) --- */
 var box=gel("fxchart"),tip=gel("fxtip");
 var curPts=[],curX=null,curY=null;
