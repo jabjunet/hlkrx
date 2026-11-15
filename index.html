@@ -70,8 +70,9 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .stat.live::before{background:var(--ok)}
 /* 탭 바 */
 .tabs{display:flex;position:relative;background:none;margin:0;padding:0;flex:none;align-items:stretch}
-.tabs button{flex:none;min-height:33px;border:0;background:none;color:var(--mut);padding:2px 10px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
-.tabs button[aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
+.tabs button,.tabs a[data-nav]{flex:none;min-height:33px;border:0;background:none;color:var(--mut);padding:2px 10px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs button[aria-pressed="true"],.tabs a[data-nav][aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
+#tabs a[data-nav]{text-decoration:none;-webkit-tap-highlight-color:transparent}
 /* 헤더 두 줄 구조: 윗줄 왼쪽은 배경 없는 얇은 소문자 영문 로고 글자만, 오른쪽 끝은 실시간 상태·로그인(아래 접속자 표시). 아랫줄은 탭 한 줄 — 넘치면 탭 영역만 가로 스크롤 */
 .hd-t{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-width:0}
 .brand{position:relative;flex:none;display:inline-flex;align-items:center;background:none;color:var(--tx);font-size:23px;font-weight:300;letter-spacing:-.015em;line-height:1;white-space:nowrap;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;text-decoration:none;cursor:pointer}
@@ -668,7 +669,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 @media(min-width:1024px){
 main{max-width:1400px;padding:4px 24px 56px}
 h1{font-size:24px}
-.tabs button{font-size:16.5px}
+.tabs button,.tabs a[data-nav]{font-size:16.5px}
 .sum b{font-size:20px}
 .pm{font-size:36px}
 th,td{padding:9px 10px}
@@ -688,7 +689,7 @@ th,td{padding:9px 10px}
 /* 모바일: 김프 7열 전부 표시, 종목명 말줄임 없음 */
 @media(max-width:520px){
 main{padding:2px 16px 40px}
-.tabs button{font-size:14.5px;padding:2px 7px}
+.tabs button,.tabs a[data-nav]{font-size:14.5px;padding:2px 7px}
 .sum div{padding:10px 12px}
 .sum b{font-size:16px}
 .xsum div{padding:10px 12px}
@@ -1406,7 +1407,7 @@ body{font-size:13px}
 h1{font-size:20px}
 h2{font-size:15px}
 .sub{font-size:12px}
-.tabs button{font-size:14.5px}
+.tabs button,.tabs a[data-nav]{font-size:14.5px}
 .note{font-size:11.5px}
 .pair button{font-size:12.5px}
 .sum b,.xsum b{font-size:16px}
@@ -1441,7 +1442,7 @@ td small{font-size:11px}
 .tvmsg b{font-size:14px}
 }
 @media(max-width:520px){
-.tabs button{font-size:13.5px}
+.tabs button,.tabs a[data-nav]{font-size:13.5px}
 /* 김프 표: 두 줄 행의 글자 크기와 자간을 한 단계로 */
 .kp7 th{font-size:10.5px}
 .kp7 td{font-size:11.5px}
@@ -1487,8 +1488,8 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .brand{font-size:24px}
 /* 1) 탭 바: 선택 탭은 초록 채워진 pill, 비선택은 회색 글자 */
 .hd .tabs{gap:4px;padding:6px 0 9px;align-items:center}
-.hd .tabs button{min-height:40px;padding:7px 16px;border:0;border-bottom:0;border-radius:999px;font-size:15.5px;font-weight:700;color:var(--mut);background:transparent;transition:background-color .18s ease,color .18s ease}
-.hd .tabs button[aria-pressed="true"]{background:#16c784;color:#04160d;font-weight:800;border-bottom-color:transparent;box-shadow:0 4px 14px rgba(22,199,132,.25)}
+.hd .tabs button,.hd .tabs a[data-nav]{min-height:40px;padding:7px 16px;border:0;border-bottom:0;border-radius:999px;font-size:15.5px;font-weight:700;color:var(--mut);background:transparent;transition:background-color .18s ease,color .18s ease}
+.hd .tabs button[aria-pressed="true"],.hd .tabs a[data-nav][aria-pressed="true"]{background:#16c784;color:#04160d;font-weight:800;border-bottom-color:transparent;box-shadow:0 4px 14px rgba(22,199,132,.25)}
 /* 2) 홈 상단 히어로 (모바일에서만 표시) */
 .m-hero{display:block;padding:24px 4px 22px}
 .m-hero-t{font-size:34px;line-height:1.16;font-weight:800;letter-spacing:-.035em;margin:0;color:var(--tx)}
@@ -1546,7 +1547,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 /* 모바일 글자 크기 한 단계 축소·통일(2026-11-11 추가): 위 리디자인 규칙과 같은 선택자로 뒤에서 덮어
    탭·히어로·지수 타일·김프 표의 큰 글자들을 조금씩 작게 내리고, 표 행 세로 여백을 9px로 맞춘다 */
 @media(max-width:720px){
-.hd .tabs button{font-size:14px}
+.hd .tabs button,.hd .tabs a[data-nav]{font-size:14px}
 .m-hero-t{font-size:30px}
 .m-hero-sub{font-size:13.5px}
 #ph .ixt small{font-size:12px}
@@ -1563,7 +1564,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pf .prow>div{padding-top:9px;padding-bottom:9px}
 }
 @media(max-width:720px) and (prefers-reduced-motion:reduce){
-.hd .tabs button{transition:none}
+.hd .tabs button,.hd .tabs a[data-nav]{transition:none}
 }
 </style>
 <style>
@@ -2090,7 +2091,7 @@ html body main:has(>#pa:not([hidden])){max-width:1400px;padding-left:24px;paddin
 </head>
 <body>
 <main>
-<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="gsearch"><input id="gq" type="text" placeholder="검색" aria-label="사이트 검색" autocomplete="off"><div class="gsres" id="gsres" hidden></div></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><button type="button" data-nav="home" aria-pressed="true">홈</button><button type="button" data-nav="kimp" aria-pressed="false">김프</button><button type="button" data-nav="krstock" aria-pressed="false">국내주식</button><button type="button" data-nav="usstock" aria-pressed="false">미국주식</button><button type="button" data-nav="kridx" aria-pressed="false">국내지표</button><button type="button" data-nav="usidx" aria-pressed="false">해외지표</button><button data-t="ph" class="tabsec" aria-pressed="true">홈</button><button data-t="pa" class="tabsec" aria-pressed="false">김프</button><button data-t="pb" class="tabsec" aria-pressed="false">해외</button><button data-t="pg" class="tabsec" aria-pressed="false">원자재</button><button data-t="pf" class="tabsec" aria-pressed="false">펀딩비</button><button data-t="pc" class="tabsec" aria-pressed="false">비교</button><button data-t="pi" class="tabsec" aria-pressed="false">지표</button><button data-t="pk" class="tabsec" aria-pressed="false">커뮤니티</button><button data-t="p-kridx" class="tabsec" aria-pressed="false">국내지표</button><button data-t="p-usidx" class="tabsec" aria-pressed="false">해외지표</button><button data-t="p-market" class="tabsec" aria-pressed="false">시장</button><button data-t="p-kospi" class="tabsec" aria-pressed="false">코스피</button><button data-t="p-kosdaq" class="tabsec" aria-pressed="false">코스닥</button><button data-t="p-kr" class="tabsec" aria-pressed="false">국내주식</button><button data-t="p-usstock" class="tabsec" aria-pressed="false">미국주식</button><button data-t="p-nasdaq" class="tabsec" aria-pressed="false">나스닥</button><button data-t="p-spx" class="tabsec" aria-pressed="false">S&P</button><button data-t="p-etf" class="tabsec" aria-pressed="false">ETF</button><button data-t="p-calc" class="tabsec" aria-pressed="false">계산기</button></div></div>
+<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="gsearch"><input id="gq" type="text" placeholder="검색" aria-label="사이트 검색" autocomplete="off"><div class="gsres" id="gsres" hidden></div></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><a href="/" data-nav="home" aria-pressed="true">홈</a><a href="/kimp" data-nav="kimp" aria-pressed="false">김프</a><a href="/kr" data-nav="krstock" aria-pressed="false">국내주식</a><a href="/us" data-nav="usstock" aria-pressed="false">미국주식</a><a href="/korea" data-nav="kridx" aria-pressed="false">국내지표</a><a href="/usa" data-nav="usidx" aria-pressed="false">해외지표</a><button data-t="ph" class="tabsec" aria-pressed="true">홈</button><button data-t="pa" class="tabsec" aria-pressed="false">김프</button><button data-t="pb" class="tabsec" aria-pressed="false">해외</button><button data-t="pg" class="tabsec" aria-pressed="false">원자재</button><button data-t="pf" class="tabsec" aria-pressed="false">펀딩비</button><button data-t="pc" class="tabsec" aria-pressed="false">비교</button><button data-t="pi" class="tabsec" aria-pressed="false">지표</button><button data-t="pk" class="tabsec" aria-pressed="false">커뮤니티</button><button data-t="p-kridx" class="tabsec" aria-pressed="false">국내지표</button><button data-t="p-usidx" class="tabsec" aria-pressed="false">해외지표</button><button data-t="p-market" class="tabsec" aria-pressed="false">시장</button><button data-t="p-kospi" class="tabsec" aria-pressed="false">코스피</button><button data-t="p-kosdaq" class="tabsec" aria-pressed="false">코스닥</button><button data-t="p-kr" class="tabsec" aria-pressed="false">국내주식</button><button data-t="p-usstock" class="tabsec" aria-pressed="false">미국주식</button><button data-t="p-nasdaq" class="tabsec" aria-pressed="false">나스닥</button><button data-t="p-spx" class="tabsec" aria-pressed="false">S&P</button><button data-t="p-etf" class="tabsec" aria-pressed="false">ETF</button><button data-t="p-calc" class="tabsec" aria-pressed="false">계산기</button></div></div>
 
 <script>
 /* ===== 헤더 테마(다크/라이트)·언어(한/영) 전환 =====
@@ -7566,11 +7567,12 @@ else if(vis("p-etf"))key="etf";
 else if(vis("p-calc"))key="calc";
 else if(vis("ph"))key="home";
 else if(vis("pa"))key="kimp";
-tabs.querySelectorAll("button[data-nav]").forEach(function(x){x.setAttribute("aria-pressed",String(x.dataset.nav===key))});
+tabs.querySelectorAll("[data-nav]").forEach(function(x){x.setAttribute("aria-pressed",String(x.dataset.nav===key))});
 }
 window.__navSync=syncNav;
 tabs.addEventListener("click",function(e){
-var b=e.target.closest("button[data-nav]");if(!b)return;
+var b=e.target.closest("[data-nav]");if(!b)return;
+e.preventDefault();
 var k=b.dataset.nav;
 if(k==="home"){goSec("ph");if(window.__ixShowCat)window.__ixShowCat("main")}
 else if(k==="kimp"){window.__paRight=null;goSec("pa");if(window.__paShowMkt)window.__paShowMkt("all")}
@@ -7586,12 +7588,28 @@ else if(k==="spx"){goSec("p-spx")}
 else if(k==="etf"){goSec("p-etf")}
 else if(k==="calc"){goSec("p-calc")}
 syncNav();
+routePush(k);
 });
 /* 메뉴 밖에서 일어난 이동(검색 바로가기·지수 칩·주식/ETF 전환·게시물 전체보기 등)에도
    강조를 실제 화면에 맞춘다: 섹션 hidden 변화를 감시하고, 칩·모드 클릭은 뒤따라 동기화한다 */
-if(window.MutationObserver){var mo=new MutationObserver(function(){syncNav()});["ph","pa","pb","pg","pf","pc","pi","pk","p-kridx","p-usidx","p-market","p-kospi","p-kosdaq","p-kr","p-usstock","p-nasdaq","p-spx","p-etf","p-calc"].forEach(function(id){var s=el2(id);if(s)mo.observe(s,{attributes:true,attributeFilter:["hidden"]})})}
+if(window.MutationObserver){var mo=new MutationObserver(function(){syncNav();routeSync()});["ph","pa","pb","pg","pf","pc","pi","pk","p-kridx","p-usidx","p-market","p-kospi","p-kosdaq","p-kr","p-usstock","p-nasdaq","p-spx","p-etf","p-calc"].forEach(function(id){var s=el2(id);if(s)mo.observe(s,{attributes:true,attributeFilter:["hidden"]})})}
 var ixc=el2("ixcats");if(ixc)ixc.addEventListener("click",function(){setTimeout(syncNav,0)});
 var pm=el2("pmode");if(pm)pm.addEventListener("click",function(){setTimeout(syncNav,0)});
+syncNav();
+/* 페이지 분리 (2026-11-16): 메뉴 6개에 실제 주소 — 홈 / · 김프 /kimp · 국내주식 /kr · 미국주식 /us · 국내지표 /korea · 해외지표 /usa.
+   클릭은 새로고침 없이 섹션만 바꾸고 주소는 pushState로 남긴다. /kimp·/korea·/usa 직접 접속은
+   서버 _redirects가 이 파일을 그대로 보여 주고, 아래 초기 라우팅이 해당 섹션을 연다 */
+var NAV2PATH={home:"/",kimp:"/kimp",krstock:"/kr",usstock:"/us",kridx:"/korea",usidx:"/usa"};
+var PATH2NAV={"/":"home","/kimp":"kimp","/kr":"krstock","/us":"usstock","/korea":"kridx","/usa":"usidx"};
+var NAVTITLE={kimp:"김프 | 김프원",krstock:"국내주식 | 김프원",usstock:"미국주식 | 김프원",kridx:"국내지표 | 김프원",usidx:"해외지표 | 김프원"};
+var baseTitle=document.title;
+function pathKey(){var p=location.pathname.replace(/\/+$/,"");return PATH2NAV[p||"/"]||null}
+function applyTitle(k){document.title=(k&&NAVTITLE[k])?NAVTITLE[k]:baseTitle}
+function routePush(k){var p=NAV2PATH[k];if(!p)return;applyTitle(k);if(location.pathname!==p){try{history.pushState(null,"",p)}catch(e){}}}
+function routeSync(){var x=tabs.querySelector("[data-nav][aria-pressed=\"true\"]");if(!x)return;var k=x.dataset.nav,p=NAV2PATH[k];if(!p)return;applyTitle(k);if(location.pathname!==p){try{history.replaceState(null,"",p)}catch(e){}}}
+function openKey(k){var b=tabs.querySelector('[data-nav="'+k+'"]');if(b)b.click()}
+window.addEventListener("popstate",function(){var k=pathKey();if(k)openKey(k)});
+var __ik=pathKey();if(__ik&&__ik!=="home")openKey(__ik);applyTitle(__ik||"home");
 syncNav();
 })();
 </script>
