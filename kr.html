@@ -144,6 +144,32 @@ table.stocks th:nth-child(5),table.stocks td:nth-child(5),table.stocks th:nth-ch
 .chper button{border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:8px;padding:4px 12px;font-size:12.5px;cursor:pointer}
 .chper button.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
 .chimg{display:block;width:100%;height:auto;background:#fff;border-radius:8px}
+
+/* [모바일 표 잘림 수정 2026-11-15] 종목표 전체가 화면 폭 안에 들어가도록 고정 레이아웃+열 너비 조정 (720px 이하 전용, 데스크톱 무변경) */
+@media(max-width:720px){
+body{overflow-x:clip}
+.main{align-items:stretch}
+.center,.left,.right{width:100%;min-width:0}
+.card{min-width:0}
+.wrap{padding:10px 6px}
+.center .card{padding:12px 8px}
+table.stocks{table-layout:fixed;width:100%;font-size:12.5px}
+table.stocks th,table.stocks td{padding:8px 4px}
+table.stocks th{font-size:11.5px}
+table.stocks th:nth-child(1),table.stocks td:nth-child(1){width:36px}
+table.stocks th:nth-child(3),table.stocks td:nth-child(3){width:72px}
+table.stocks th:nth-child(4),table.stocks td:nth-child(4){width:64px}
+table.stocks th:nth-child(6),table.stocks td:nth-child(6){width:78px}
+table.stocks td:nth-child(6){font-size:11px}
+table.stocks th:nth-child(8),table.stocks td:nth-child(8){width:26px}
+.sym{gap:4px;min-width:0}
+.sym>span:last-child{flex:1;min-width:0}
+.ava{width:22px;height:22px;font-size:9.5px}
+.sym .tk{font-size:12.5px;overflow:hidden;text-overflow:ellipsis}
+.sym .nm{max-width:100%;font-size:11px}
+.pill{padding:2px 4px;font-size:11px}
+.star{font-size:15px;padding:0 1px}
+}
 </style>
 </head>
 <body>
