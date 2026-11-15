@@ -156,6 +156,23 @@ table.stocks th:nth-child(8),table.stocks td:nth-child(8){width:26px}
 .pill{padding:2px 4px;font-size:11px}
 .star{font-size:15px;padding:0 1px}
 }
+
+/* [후속 수정 2026-11-15] 상단 타일 가로 슬라이드 + 종목 행 펼치기 + 차트 초기 로딩 깨짐 수정 */
+.chartbox{width:100%}
+.chartbox .tradingview-widget-container{width:100%!important;max-width:100%}
+.chartbox iframe{max-width:100%}
+table.stocks tr.dtl{display:none;cursor:default}
+table.stocks tr.dtl.show{display:table-row}
+table.stocks tr.dtl td{text-align:left;white-space:normal;background:var(--sf2);padding:10px 12px}
+table.stocks tbody tr.open{background:var(--sf2)}
+.dtlin{display:flex;flex-wrap:wrap;gap:6px 20px}
+.dtlin .di{font-size:12px;color:var(--mut)}
+.dtlin .di b{color:var(--tx);font-weight:700;margin-left:6px;font-variant-numeric:tabular-nums}
+@media(max-width:720px){
+.idxrow{display:flex;flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity;gap:8px;padding-bottom:4px;scrollbar-width:none}
+.idxrow::-webkit-scrollbar{display:none}
+.idxrow .idxcard{flex:0 0 148px;scroll-snap-align:start}
+}
 </style>
 </head>
 <body>
@@ -327,7 +344,29 @@ idxBatch(); setTimeout(idxBatch, 20000); setInterval(idxBatch, 60000);
 /* ---------- 종목표 (TradingView 스캐너) ---------- */
 var COLS=['name','description','close','change','market_cap_basic','volume','sector','industry','price_earnings_ttm','logoid'];
 var $b=document.getElementById('stockBody'), $note=document.getElementById('listNote');
+/* 고정 레이아웃 표에서 상세 행을 펼칠 때 종목 열 너비가 재배분되는 현상 방지:
+   펼치는 동안 머리글 셀 너비를 지금 값으로 고정하고, 접으면 되돌린다 */
+function col2Th(){ return document.querySelector('table.stocks thead th:nth-child(2)'); }
+function toggleDtl(tr){
+  var nx=tr.nextElementSibling;
+  if(!nx||!nx.classList.contains('dtl')) return;
+  var th=col2Th(), willOpen=!nx.classList.contains('show');
+  if(willOpen&&th&&!th.style.width) th.style.width=tr.children[1].getBoundingClientRect().width+'px';
+  var open=nx.classList.toggle('show');
+  tr.classList.toggle('open', open);
+  if(!open&&th&&!document.querySelector('#stockBody tr.dtl.show')) th.style.width='';
+}
+window.addEventListener('resize', function(){
+  var th=col2Th(); if(!th||!th.style.width) return;
+  var t=document.querySelector('table.stocks'), tr=document.querySelector('#stockBody tr[data-tk]');
+  if(!t||!tr) return;
+  var sum=0; for(var i=0;i<tr.children.length;i++){ if(i!==1) sum+=tr.children[i].getBoundingClientRect().width; }
+  th.style.width=Math.max(40, Math.round(t.getBoundingClientRect().width-sum))+'px';
+});
+
 function fmt$(v){ return v==null?'–':'$'+v.toLocaleString('en-US',{maximumFractionDigits:2}); }
+function fmtVol(v){ if(v==null) return '–'; if(v>=1e9) return (v/1e9).toFixed(2)+'B'; if(v>=1e6) return (v/1e6).toFixed(2)+'M'; if(v>=1e3) return (v/1e3).toFixed(1)+'K'; return Math.round(v).toLocaleString('en-US'); }
+function di(l,v){ return '<span class="di">'+l+'<b>'+(v==null||v===''?'–':v)+'</b></span>'; }
 function fmtBig(v){ if(v==null) return '–'; if(v>=1e12) return '$'+(v/1e12).toFixed(2)+'T'; if(v>=1e9) return '$'+(v/1e9).toFixed(1)+'B'; if(v>=1e6) return '$'+(v/1e6).toFixed(1)+'M'; return '$'+Math.round(v).toLocaleString(); }
 function scanTV(payload){
   return fetch('https://scanner.tradingview.com/america/scan',{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(payload)}).then(function(r){ return r.json(); });
@@ -366,13 +405,22 @@ function loadStocks(spec, note){
       '<td class="price">'+fmt$(d[2])+'</td><td><span class="pill '+cls+'">'+(chg==null?'–':(chg>0?'+':'')+chg.toFixed(2)+'%')+'</span></td>'+
       '<td>'+fmtBig(d[2]!=null&&d[5]!=null? d[2]*d[5] : null)+'</td><td>'+fmtBig(d[4])+'</td>'+
       '<td><span class="indchip">'+(d[7]||d[6]||'')+'</span></td>'+
-      '<td><button class="star'+(watch.has(tk)?' on':'')+'" data-star="'+tk+'" type="button" title="관심종목">'+(watch.has(tk)?'★':'☆')+'</button></td></tr>';
+      '<td><button class="star'+(watch.has(tk)?' on':'')+'" data-star="'+tk+'" type="button" title="관심종목">'+(watch.has(tk)?'★':'☆')+'</button></td></tr>'+
+      '<tr class="dtl"><td colspan="8"><div class="dtlin">'+
+      di('거래대금', fmtBig(d[2]!=null&&d[5]!=null? d[2]*d[5] : null))+
+      di('거래량', fmtVol(d[5]))+
+      di('섹터', d[6]||'')+
+      di('산업', d[7]||'')+
+      di('PER', d[8]==null?'':Number(d[8]).toFixed(2)+'배')+
+      di('시가총액', fmtBig(d[4]))+
+      '</div></td></tr>';
     }).join('');
     $b.querySelectorAll('tr[data-tk]').forEach(function(tr){
       tr.addEventListener('click', function(e){
         var st=e.target.closest('[data-star]');
         if(st){ e.stopPropagation(); toggleWatch(st.dataset.star); return; }
-        showChart(tr.dataset.tk);
+        toggleDtl(tr);
+        showChart(tr.dataset.tk, true);
       });
     });
   }).catch(function(){ $b.innerHTML='<tr><td colspan="8" style="text-align:left;color:var(--mut)">종목을 불러오지 못했어요. 잠시 후 새로고침해 주세요.</td></tr>'; });
@@ -389,7 +437,9 @@ document.querySelectorAll('#filters .fbtn[data-f]').forEach(function(b){
 });
 
 /* ---------- 차트 (가운데 패널) ---------- */
-function showChart(sym){
+var curSym='NVDA', chartW=0, chartInit=false, chartTimer=null;
+function showChart(sym, noScroll){
+  curSym=sym;
   document.getElementById('chartSym').textContent=sym;
   var box=document.getElementById('chartBox'); box.innerHTML='';
   var c=document.createElement('div'); c.className='tradingview-widget-container'; c.style.height='100%';
@@ -398,9 +448,21 @@ function showChart(sym){
   s.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
   s.textContent=JSON.stringify({symbol:sym,interval:'D',timezone:'Asia/Seoul',theme:(document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light'),style:'1',locale:'kr',allow_symbol_change:true,hide_side_toolbar:window.innerWidth<=760,studies:['STD;RSI'],support_host:'https://www.tradingview.com'});
   c.appendChild(s); box.appendChild(c);
-  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+  chartW=box.clientWidth; chartInit=true;
+  if(!noScroll) box.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
-showChart('NVDA');
+/* 처음 들어갈 때: 감싸는 iframe 폭이 확정된 뒤에 차트를 만들어 첫 화면 깨짐을 막고,
+   이후 컨테이너 폭이 바뀌면(탭 전환·회전 등) 위젯을 다시 그려 폭을 맞춘다 */
+function initChart(){ if(chartInit) return; showChart(curSym, true); }
+document.addEventListener('DOMContentLoaded', function(){ requestAnimationFrame(function(){ requestAnimationFrame(initChart); }); });
+window.addEventListener('load', function(){ setTimeout(initChart, 60); });
+if('ResizeObserver' in window){
+  new ResizeObserver(function(es){
+    var w=es[0].contentRect.width;
+    if(!chartInit||!chartW||!w) return;
+    if(Math.abs(w-chartW)>4){ clearTimeout(chartTimer); chartTimer=setTimeout(function(){ showChart(curSym, true); }, 250); }
+  }).observe(document.getElementById('chartBox'));
+}
 
 /* ---------- 관심종목 (단순 목록, 로컬 + 로그인 시 Firebase) ---------- */
 var watch=new Set(JSON.parse(localStorage.getItem('kp_us_watch')||'[]'));
