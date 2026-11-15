@@ -2638,6 +2638,130 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 <p class="uxnote">지수·금리·환율은 실시간 값이에요. 미국 CPI는 2026년 10월 지수 기준 (전월 +0.4%, 미 노동통계국 11월 10일 발표 · 전년비는 미발표), 근원 PCE는 2026년 9월 전년비 기준 (전월 +0.3%, 미 경제분석국 10월 29일 발표), 미국 기준금리는 10월 28일 FOMC 동결 값 (실효금리 3.88%)이에요.</p>
 <div class="uxgrid" id="uxgrid"></div>
 <p class="uxgnote">아래 그룹 지표는 각국 공식 발표의 최신값이에요 (2026년 11월 15일까지 발표분). 금리·국채와 환율·시장 칸은 실시간 값으로 갱신되고, 미국 CPI 전년비는 2025년 10월 미집계로 발표되지 않아 비워 뒀어요.</p>
+<style>
+/* ===== 해외지표 탭: 연준 기준금리 · FOMC 결정 이력 (2026-11-16) =====
+   해외지표 그룹 칸 아래 전체 폭으로 붙인다. 요약 4칸 + 금리 차트(SVG 계단형) +
+   최근 회의 표(동결 포함) + 1990년 이후 변경 전체 표(스크롤 박스) 구성.
+   차트와 변경 표는 아래 스크립트의 FOMC_CH 배열 하나를 같이 쓴다 */
+#p-usidx .fxsec{margin-top:4px}
+#p-usidx .fxhd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 2px 10px}
+#p-usidx .fxhd h2{font-size:17px;font-weight:800;letter-spacing:-.02em;margin:0}
+#p-usidx .fxhd .fxnext{margin-left:auto;font-size:12px;font-weight:700;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:999px;padding:5px 11px;white-space:nowrap}
+#p-usidx .fxsum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:10px}
+#p-usidx .fxsum>div{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 14px;min-width:0}
+#p-usidx .fxsum small{display:block;color:var(--mut);font-size:11.5px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#p-usidx .fxsum b{display:block;font-size:17px;font-weight:800;letter-spacing:-.02em;line-height:1.3;white-space:nowrap}
+#p-usidx .fxsum span{display:block;font-size:11.5px;color:var(--mut);margin-top:1px;line-height:1.45}
+#p-usidx .fxcard{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px 14px 10px;margin-bottom:10px}
+#p-usidx .fxchead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+#p-usidx .fxchead b{font-size:14.5px;font-weight:700}
+#p-usidx .fxseg{margin-left:auto}
+#p-usidx .fxseg button{min-height:28px;padding:3px 10px;font-size:12px}
+#p-usidx .fxleg{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--mut);margin:2px 0 4px}
+#p-usidx .fxleg i{display:inline-block;vertical-align:-2px;margin-right:5px}
+#p-usidx .fxleg .lg-line{width:16px;height:0;border-top:2.5px solid var(--tx)}
+#p-usidx .fxleg .lg-band{width:16px;height:9px;background:var(--tx);opacity:.16;border-radius:2px}
+#p-usidx .fxchart{position:relative}
+#p-usidx .fxchart svg{display:block;width:100%;height:auto}
+#p-usidx .fxtip{position:absolute;pointer-events:none;background:var(--tx);color:var(--bg);font-size:12px;font-weight:600;line-height:1.5;padding:6px 9px;border-radius:8px;white-space:nowrap;z-index:5;transform:translate(-50%,-115%)}
+#p-usidx .fxtip[hidden]{display:none}
+#p-usidx .fxcap{font-size:11.5px;color:var(--mut);line-height:1.6;margin:4px 2px 2px}
+#p-usidx .fxbox{max-height:430px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;border:1px solid var(--bd);border-radius:16px;background:var(--sf)}
+#p-usidx .fxbox table th,#p-usidx .fxbox table td{padding:8px 12px}
+#p-usidx .fxbox thead th{top:0}
+#p-usidx .fxbox td.fxd,#p-usidx .fxbox th.fxd{text-align:left}
+#p-usidx .fxdec{font-weight:700;white-space:nowrap}
+#p-usidx .fxdec.up{color:var(--up)}
+#p-usidx .fxdec.dn{color:var(--dn)}
+#p-usidx .fxchg{font-weight:700;white-space:nowrap}
+#p-usidx .fxchg.up{color:var(--up)}
+#p-usidx .fxchg.dn{color:var(--dn)}
+#p-usidx .fxvote{color:var(--mut);font-size:12px;white-space:nowrap}
+#p-usidx .fxnext-row td{background:var(--sf2);font-weight:600}
+#p-usidx .fxcol .fxchead .pair{margin-left:auto}
+#p-usidx .fxcol .fxchead .pair button{min-height:24px;padding:2px 8px;font-size:11.5px}
+#p-usidx .fxnote{font-size:11.5px;color:var(--mut);line-height:1.65;margin:8px 2px 14px}
+/* 두 표 나란히(좌·우 한 칸씩) + 제목 버튼 접기/펼치기 토글 */
+#p-usidx .fx2col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:start;margin-top:14px}
+#p-usidx .fxcol{min-width:0}
+#p-usidx .fxcol .fxchead{margin:0 2px 8px;min-height:32px}
+#p-usidx .fxcol .fxbox{height:430px}
+#p-usidx .fxtgl{display:inline-flex;align-items:center;gap:7px;background:none;border:0;padding:2px 0;min-height:0;font:inherit;font-size:14.5px;font-weight:700;color:var(--tx);cursor:pointer;text-align:left}
+#p-usidx .fxtgl .fxarr{font-size:10px;color:var(--mut);transition:transform .18s ease}
+#p-usidx .fxtgl[aria-expanded="false"] .fxarr{transform:rotate(-90deg)}
+#p-usidx .fxbody[hidden]{display:none}
+#p-usidx .fxcol .fxbox table th,#p-usidx .fxcol .fxbox table td{padding:7px 9px;font-size:12.5px}
+#p-usidx .fxcol .fxvote{white-space:normal;line-height:1.45}
+@media(max-width:720px){
+#p-usidx .fxsum{grid-template-columns:repeat(2,minmax(0,1fr))}
+#p-usidx .fxsum b{font-size:15.5px}
+#p-usidx .fxbox{max-height:380px}
+#p-usidx .fxbox table th,#p-usidx .fxbox table td{padding:7px 9px;font-size:12px}
+#p-usidx .fxvote{font-size:11px}
+#p-usidx .fxhd .fxnext{margin-left:0}
+#p-usidx .fx2col{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+<div class="fxsec" id="fxsec">
+<div class="fxhd"><h2>미국 기준금리 · FOMC 결정 이력</h2><span class="fxnext">다음 회의 2026년 12월 8–9일 · 결정 발표 12월 9일 (경제전망 SEP 포함)</span></div>
+<div class="fxsum">
+<div><small>현재 목표범위</small><b>3.75–4.00%</b><span>실효 연방기금금리 3.88% (11월 중순)</span></div>
+<div><small>최근 결정</small><b>동결</b><span>2026년 10월 28일 · 표결 10–2</span></div>
+<div><small>직전 변경</small><b>+25bp 인상</b><span>2026년 9월 16일 · 2023년 7월 이후 첫 인상</span></div>
+<div><small>1990년 이후 변경</small><b>110회</b><span>인상 52회 · 인하 58회</span></div>
+</div>
+<div class="fxcard">
+<div class="fxchead"><b>연방기금금리 목표 추이</b><span class="pair fxseg" role="group" aria-label="차트 기간"><button type="button" data-fxfrom="1990" aria-pressed="true">1990~</button><button type="button" data-fxfrom="2008" aria-pressed="false">2008~</button><button type="button" data-fxfrom="2020" aria-pressed="false">2020~</button></span></div>
+<div class="fxleg"><span><i class="lg-line"></i>목표 상단</span><span><i class="lg-band"></i>목표 범위 (2008년 12월부터 범위 방식)</span><span>2008년 12월 이전은 단일 목표금리</span></div>
+<div class="fxchart" id="fxchart"><div class="fxtip" id="fxtip" hidden></div></div>
+<p class="fxcap">기간 안 최고 상단은 1990년 8.25%, 최저는 0.25% (2008년 12월~2015년 12월, 2020년 3월~2022년 3월). 최근 고점은 2023년 7월 5.25–5.50%예요. 차트 위를 움직이면 결정일과 금리가 보여요.</p>
+</div>
+<div class="fx2col">
+<div class="fxcol">
+<div class="fxchead"><button type="button" class="fxtgl" data-fxtgl aria-expanded="true">최근 FOMC 회의 (동결 포함)<span class="fxarr" aria-hidden="true">▾</span></button></div>
+<div class="fxbody">
+<div class="fxbox"><table>
+<thead><tr><th class="fxd">회의</th><th class="fxd">결정</th><th>변동</th><th>결정 후 범위</th><th class="fxd">표결</th></tr></thead>
+<tbody>
+<tr class="fxnext-row"><td class="fxd">2026년 12월 8–9일</td><td class="fxd">예정</td><td>—</td><td>—</td><td class="fxd fxvote">경제전망(SEP) 발표 회의</td></tr>
+<tr><td class="fxd">2026년 10월 27–28일</td><td class="fxd fxdec">동결</td><td>—</td><td>3.75–4.00%</td><td class="fxd fxvote">10–2 · 반대 2명은 인상 주장</td></tr>
+<tr><td class="fxd">2026년 9월 15–16일</td><td class="fxd fxdec up">인상</td><td class="fxchg up">+25bp</td><td>3.75–4.00%</td><td class="fxd fxvote">12–0 만장일치</td></tr>
+<tr><td class="fxd">2026년 7월 28–29일</td><td class="fxd fxdec">동결</td><td>—</td><td>3.50–3.75%</td><td class="fxd fxvote">9–3 · 반대 3명은 인상 주장</td></tr>
+<tr><td class="fxd">2026년 6월 16–17일</td><td class="fxd fxdec">동결</td><td>—</td><td>3.50–3.75%</td><td class="fxd fxvote">12–0 만장일치</td></tr>
+<tr><td class="fxd">2026년 4월 28–29일</td><td class="fxd fxdec">동결</td><td>—</td><td>3.50–3.75%</td><td class="fxd fxvote">8–4</td></tr>
+<tr><td class="fxd">2026년 3월 17–18일</td><td class="fxd fxdec">동결</td><td>—</td><td>3.50–3.75%</td><td class="fxd fxvote">11–1</td></tr>
+<tr><td class="fxd">2026년 1월 27–28일</td><td class="fxd fxdec">동결</td><td>—</td><td>3.50–3.75%</td><td class="fxd fxvote">10–2 · 반대 2명은 인하 주장</td></tr>
+<tr><td class="fxd">2025년 12월 9–10일</td><td class="fxd fxdec dn">인하</td><td class="fxchg dn">−25bp</td><td>3.50–3.75%</td><td class="fxd fxvote">9–3</td></tr>
+<tr><td class="fxd">2025년 10월 28–29일</td><td class="fxd fxdec dn">인하</td><td class="fxchg dn">−25bp</td><td>3.75–4.00%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2025년 9월 16–17일</td><td class="fxd fxdec dn">인하</td><td class="fxchg dn">−25bp</td><td>4.00–4.25%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2025년 7월 29–30일</td><td class="fxd fxdec">동결</td><td>—</td><td>4.25–4.50%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2025년 6월 17–18일</td><td class="fxd fxdec">동결</td><td>—</td><td>4.25–4.50%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2025년 5월 6–7일</td><td class="fxd fxdec">동결</td><td>—</td><td>4.25–4.50%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2025년 3월 18–19일</td><td class="fxd fxdec">동결</td><td>—</td><td>4.25–4.50%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2025년 1월 28–29일</td><td class="fxd fxdec">동결</td><td>—</td><td>4.25–4.50%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2024년 12월 17–18일</td><td class="fxd fxdec dn">인하</td><td class="fxchg dn">−25bp</td><td>4.25–4.50%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2024년 11월 6–7일</td><td class="fxd fxdec dn">인하</td><td class="fxchg dn">−25bp</td><td>4.50–4.75%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2024년 9월 17–18일</td><td class="fxd fxdec dn">인하</td><td class="fxchg dn">−50bp</td><td>4.75–5.00%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2024년 7월 30–31일</td><td class="fxd fxdec">동결</td><td>—</td><td>5.25–5.50%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2024년 6월 11–12일</td><td class="fxd fxdec">동결</td><td>—</td><td>5.25–5.50%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2024년 4월 30일–5월 1일</td><td class="fxd fxdec">동결</td><td>—</td><td>5.25–5.50%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2024년 3월 19–20일</td><td class="fxd fxdec">동결</td><td>—</td><td>5.25–5.50%</td><td class="fxd fxvote">—</td></tr>
+<tr><td class="fxd">2024년 1월 30–31일</td><td class="fxd fxdec">동결</td><td>—</td><td>5.25–5.50%</td><td class="fxd fxvote">—</td></tr>
+</tbody></table></div>
+</div>
+</div>
+<div class="fxcol">
+<div class="fxchead"><button type="button" class="fxtgl" data-fxtgl aria-expanded="true">역대 금리 변경 전체 (1990년~)<span class="fxarr" aria-hidden="true">▾</span></button><span class="pair" role="group" aria-label="변경 종류 필터"><button type="button" data-fxflt="all" aria-pressed="true">전체</button><button type="button" data-fxflt="up" aria-pressed="false">인상만</button><button type="button" data-fxflt="dn" aria-pressed="false">인하만</button></span></div>
+<div class="fxbody">
+<div class="fxbox"><table>
+<thead><tr><th class="fxd">결정일</th><th class="fxd">결정</th><th>변동</th><th>결정 후 금리</th></tr></thead>
+<tbody id="fxhist"></tbody>
+</table></div>
+</div>
+</div>
+</div>
+<p class="fxnote">출처: 연방준비제도 이사회 Open Market Operations (목표금리 변경표) · 세인트루이스 연준 FRED DFEDTAR·DFEDTARU·DFEDTARL, 2026년 11월 15일 조회. 날짜는 FOMC 성명 발표일(결정일) 기준이고, 새 범위는 다음 날부터 시행돼요. 2008년 12월 16일 이전은 범위가 아닌 단일 목표금리예요. 긴급회의 결정(2001년 9월 17일, 2008년 1월 22일, 2020년 3월 3일·15일 등)도 포함했어요.</p>
+</div>
 </section>
 <section id="p-market" hidden></section>
 <section id="p-kospi" hidden></section>
@@ -7829,6 +7953,141 @@ fetch("https://scanner.tradingview.com/global/scan",{method:"POST",headers:{"Con
 uxgFetch();
 setInterval(function(){if(!document.hidden)uxgFetch()},60000);
 document.addEventListener("visibilitychange",function(){if(!document.hidden)uxgFetch()});
+})();
+</script>
+<script>
+/* ===== 해외지표: FOMC 금리 차트 + 변경 이력 표 (2026-11-16) =====
+   FOMC_CH는 1990년 이후 목표금리 변경 지점 전체다: [결정일, 하단, 상단].
+   첫 행은 변경이 아니라 1990년 시작 시점에 이미 적용 중이던 금리(8.25%)이고,
+   2008-12-16부터 하단·상단이 갈리는 범위 방식이다. 출처는 연준 이사회 변경표와
+   FRED DFEDTAR(단일 목표)·DFEDTARU/DFEDTARL(범위 상·하단)를 결정일 기준으로 맞춘 것.
+   차트(계단형 SVG)와 아래 변경 표가 이 배열 하나를 같이 쓴다 */
+(function(){
+function gel(id){return document.getElementById(id)}
+var FOMC_CH=[["1990-01-01",8.25,8.25],["1990-07-13",8,8],["1990-10-29",7.75,7.75],["1990-11-14",7.5,7.5],["1990-12-07",7.25,7.25],["1990-12-19",7,7],["1991-01-09",6.75,6.75],["1991-02-01",6.25,6.25],["1991-03-08",6,6],["1991-04-30",5.75,5.75],["1991-08-06",5.5,5.5],["1991-09-13",5.25,5.25],["1991-10-31",5,5],["1991-11-06",4.75,4.75],["1991-12-06",4.5,4.5],["1991-12-20",4,4],["1992-04-09",3.75,3.75],["1992-07-02",3.25,3.25],["1992-09-04",3,3],["1994-02-04",3.25,3.25],["1994-03-22",3.5,3.5],["1994-04-18",3.75,3.75],["1994-05-17",4.25,4.25],["1994-08-16",4.75,4.75],["1994-11-15",5.5,5.5],["1995-02-01",6,6],["1995-07-06",5.75,5.75],["1995-12-19",5.5,5.5],["1996-01-31",5.25,5.25],["1997-03-25",5.5,5.5],["1998-09-29",5.25,5.25],["1998-10-15",5,5],["1998-11-17",4.75,4.75],["1999-06-30",5,5],["1999-08-24",5.25,5.25],["1999-11-16",5.5,5.5],["2000-02-02",5.75,5.75],["2000-03-21",6,6],["2000-05-16",6.5,6.5],["2001-01-03",6,6],["2001-01-31",5.5,5.5],["2001-03-20",5,5],["2001-04-18",4.5,4.5],["2001-05-15",4,4],["2001-06-27",3.75,3.75],["2001-08-21",3.5,3.5],["2001-09-17",3,3],["2001-10-02",2.5,2.5],["2001-11-06",2,2],["2001-12-11",1.75,1.75],["2002-11-06",1.25,1.25],["2003-06-25",1,1],["2004-06-30",1.25,1.25],["2004-08-10",1.5,1.5],["2004-09-21",1.75,1.75],["2004-11-10",2,2],["2004-12-14",2.25,2.25],["2005-02-02",2.5,2.5],["2005-03-22",2.75,2.75],["2005-05-03",3,3],["2005-06-30",3.25,3.25],["2005-08-09",3.5,3.5],["2005-09-20",3.75,3.75],["2005-11-01",4,4],["2005-12-13",4.25,4.25],["2006-01-31",4.5,4.5],["2006-03-28",4.75,4.75],["2006-05-10",5,5],["2006-06-29",5.25,5.25],["2007-09-18",4.75,4.75],["2007-10-31",4.5,4.5],["2007-12-11",4.25,4.25],["2008-01-22",3.5,3.5],["2008-01-30",3,3],["2008-03-18",2.25,2.25],["2008-04-30",2,2],["2008-10-08",1.5,1.5],["2008-10-29",1,1],["2008-12-16",0,0.25],["2015-12-16",0.25,0.5],["2016-12-14",0.5,0.75],["2017-03-15",0.75,1],["2017-06-14",1,1.25],["2017-12-13",1.25,1.5],["2018-03-21",1.5,1.75],["2018-06-13",1.75,2],["2018-09-26",2,2.25],["2018-12-19",2.25,2.5],["2019-07-31",2,2.25],["2019-09-18",1.75,2],["2019-10-30",1.5,1.75],["2020-03-03",1,1.25],["2020-03-15",0,0.25],["2022-03-16",0.25,0.5],["2022-05-04",0.75,1],["2022-06-15",1.5,1.75],["2022-07-27",2.25,2.5],["2022-09-21",3,3.25],["2022-11-02",3.75,4],["2022-12-14",4.25,4.5],["2023-02-01",4.5,4.75],["2023-03-22",4.75,5],["2023-05-03",5,5.25],["2023-07-26",5.25,5.5],["2024-09-18",4.75,5],["2024-11-07",4.5,4.75],["2024-12-18",4.25,4.5],["2025-09-17",4,4.25],["2025-10-29",3.75,4],["2025-12-10",3.5,3.75],["2026-09-16",3.75,4]];
+var END="2026-11-15";
+function tms(s){return Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10))}
+function fmtR(p){return p[1]===p[2]?p[2].toFixed(2)+"%":p[1].toFixed(2)+"–"+p[2].toFixed(2)+"%"}
+function fmtD(s){return s.slice(0,4)+"년 "+(+s.slice(5,7))+"월 "+(+s.slice(8,10))+"일"}
+/* --- 변경 이력 표 (최신순, 인상/인하 필터) --- */
+var tb=gel("fxhist"),cnt=gel("fxcnt");
+function drawHist(flt){
+if(!tb)return;
+var html="",n=0;
+for(var i=FOMC_CH.length-1;i>=1;i--){
+var p=FOMC_CH[i],d=Math.round((p[2]-FOMC_CH[i-1][2])*100);
+var dir=d>0?"up":"dn";
+if(flt!=="all"&&flt!==dir)continue;
+n++;
+html+="<tr><td class=\"fxd\">"+fmtD(p[0])+"</td><td class=\"fxd fxdec "+dir+"\">"+(d>0?"인상":"인하")+"</td><td class=\"fxchg "+dir+"\">"+(d>0?"+":"−")+Math.abs(d)+"bp</td><td>"+fmtR(p)+"</td></tr>";
+}
+tb.innerHTML=html;
+if(cnt)cnt.textContent="변경 "+n+"건"+(flt==="all"?" (1990년 이후 전체)":flt==="up"?" (인상만)":" (인하만)");
+}
+drawHist("all");
+document.querySelectorAll("[data-fxflt]").forEach(function(b){
+b.addEventListener("click",function(){
+document.querySelectorAll("[data-fxflt]").forEach(function(x){x.setAttribute("aria-pressed","false")});
+b.setAttribute("aria-pressed","true");
+drawHist(b.getAttribute("data-fxflt"));
+});
+});
+/* --- 두 표 접기/펼치기 토글 (제목 버튼) --- */
+document.querySelectorAll("[data-fxtgl]").forEach(function(b){
+b.addEventListener("click",function(){
+var col=b.closest(".fxcol"),body=col?col.querySelector(".fxbody"):null;
+var open=b.getAttribute("aria-expanded")==="true";
+b.setAttribute("aria-expanded",open?"false":"true");
+if(body)body.hidden=open;
+});
+});
+/* --- 차트 (계단형 SVG, 기간 전환) --- */
+var box=gel("fxchart"),tip=gel("fxtip");
+var curPts=[],curX=null,curY=null;
+function drawChart(from){
+if(!box)return;
+var start=from+"-01-01",t0=tms(start),t1=tms(END);
+/* 구간 시작 시점에 적용 중이던 금리를 시작점으로 넣어 계단이 끊기지 않게 한다 */
+var pts=[],carry=null;
+FOMC_CH.forEach(function(p){if(p[0]<start)carry=p;else pts.push(p)});
+if(carry)pts.unshift([start,carry[1],carry[2]]);
+var maxU=0;pts.forEach(function(p){if(p[2]>maxU)maxU=p[2]});
+var yMax=Math.ceil(maxU+0.5),yStep=yMax>7?2:1;
+var W=720,H=300,L=38,R=10,T=12,B=26,PW=W-L-R,PH=H-T-B;
+function X(t){return L+(t-t0)/(t1-t0)*PW}
+function Y(v){return T+PH-(v/yMax)*PH}
+curPts=pts;curX=X;curY=Y;
+var s="<svg viewBox=\"0 0 "+W+" "+H+"\" role=\"img\" aria-label=\"연방기금금리 목표 상단 추이 차트\">";
+for(var v=0;v<=yMax;v+=yStep){
+s+="<line x1=\""+L+"\" y1=\""+Y(v)+"\" x2=\""+(W-R)+"\" y2=\""+Y(v)+"\" stroke=\"var(--bd)\" stroke-width=\"1\"/>";
+s+="<text x=\""+(L-6)+"\" y=\""+(Y(v)+4)+"\" text-anchor=\"end\" font-size=\"11\" fill=\"var(--mut)\">"+v+"%</text>";
+}
+var y0=+from,y1=2026,nTick=6;
+for(var k=0;k<=nTick;k++){
+var yr=Math.round(y0+(y1-y0)*k/nTick),tx=X(tms(yr+"-01-01"));
+if(tx<L||tx>W-R)continue;
+s+="<text x=\""+tx+"\" y=\""+(H-6)+"\" text-anchor=\"middle\" font-size=\"11\" fill=\"var(--mut)\">"+yr+"</text>";
+}
+/* 계단형: 금리는 변경일에만 바뀌므로, 다음 변경 지점까지 수평으로 유지하다가
+   변경 지점에서 수직으로 꺾이는 계단선으로 그린다 */
+function stepPath(P){
+var d="M"+P[0][0].toFixed(1)+","+P[0][1].toFixed(1);
+for(var i=1;i<P.length;i++){
+d+=" L"+P[i][0].toFixed(1)+","+P[i-1][1].toFixed(1);
+d+=" L"+P[i][0].toFixed(1)+","+P[i][1].toFixed(1);
+}
+return d;
+}
+var up=pts.map(function(p){return [X(tms(p[0])),Y(p[2])]});up.push([X(t1),Y(pts[pts.length-1][2])]);
+var lo=pts.map(function(p){return [X(tms(p[0])),Y(p[1])]});lo.push([X(t1),Y(pts[pts.length-1][1])]);
+/* 범위 밴드: 상단 계단선 → 하단 계단선 역순으로 닫은 영역 */
+var band=stepPath(up)+stepPath(lo.slice().reverse()).replace("M","L")+" Z";
+s+="<path d=\""+band+"\" fill=\"var(--tx)\" opacity=\"0.14\" stroke=\"none\"/>";
+var line=stepPath(up);
+s+="<path d=\""+line+"\" fill=\"none\" stroke=\"var(--tx)\" stroke-width=\"2\"/>";
+if(pts.length<=45){pts.forEach(function(p){s+="<circle cx=\""+X(tms(p[0])).toFixed(1)+"\" cy=\""+Y(p[2]).toFixed(1)+"\" r=\"2.6\" fill=\"var(--sf)\" stroke=\"var(--tx)\" stroke-width=\"1.6\"/>"})}
+if(from==="1990"){
+s+="<text x=\""+(X(tms("1990-01-01"))+4)+"\" y=\""+(Y(8.25)-7)+"\" font-size=\"11.5\" font-weight=\"700\" fill=\"var(--tx)\">최고 8.25% (1990)</text>";
+s+="<text x=\""+X(tms("2011-06-01"))+"\" y=\""+(Y(0.25)-8)+"\" text-anchor=\"middle\" font-size=\"11.5\" font-weight=\"700\" fill=\"var(--tx)\">0–0.25%</text>";
+s+="<text x=\""+X(tms("2023-07-26"))+"\" y=\""+(Y(5.5)-8)+"\" text-anchor=\"end\" font-size=\"11.5\" font-weight=\"700\" fill=\"var(--tx)\">5.25–5.50% (2023)</text>";
+}
+if(from==="2020"){
+s+="<text x=\""+X(tms("2023-07-26"))+"\" y=\""+(Y(5.5)-8)+"\" text-anchor=\"end\" font-size=\"11.5\" font-weight=\"700\" fill=\"var(--tx)\">고점 5.25–5.50%</text>";
+s+="<text x=\""+X(tms("2026-09-16"))+"\" y=\""+(Y(4)-10)+"\" text-anchor=\"end\" font-size=\"11.5\" font-weight=\"700\" fill=\"var(--tx)\">현재 3.75–4.00%</text>";
+}
+s+="</svg>";
+var old=box.querySelector("svg");if(old)old.remove();
+box.insertAdjacentHTML("afterbegin",s);
+}
+drawChart("1990");
+document.querySelectorAll("[data-fxfrom]").forEach(function(b){
+b.addEventListener("click",function(){
+document.querySelectorAll("[data-fxfrom]").forEach(function(x){x.setAttribute("aria-pressed","false")});
+b.setAttribute("aria-pressed","true");
+if(tip)tip.hidden=true;
+drawChart(b.getAttribute("data-fxfrom"));
+});
+});
+/* 툴팁: 가장 가까운 변경 지점을 찾아 결정일·금리를 보여 준다 */
+if(box&&tip){
+function onMove(e){
+var svg=box.querySelector("svg");if(!svg||!curPts.length)return;
+var r=svg.getBoundingClientRect();
+var px=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+var vx=px/r.width*720;
+var best=null,bd=1e9;
+curPts.forEach(function(p){var d=Math.abs(curX(tms(p[0]))-vx);if(d<bd){bd=d;best=p}});
+if(!best||bd>60){tip.hidden=true;return}
+var idx=FOMC_CH.indexOf(best);
+var chg=idx>0?Math.round((best[2]-FOMC_CH[idx-1][2])*100):0;
+tip.textContent=fmtD(best[0])+" · "+fmtR(best)+(idx>0?" ("+(chg>0?"+":"−")+Math.abs(chg)+"bp)":"");
+tip.style.left=(curX(tms(best[0]))/720*100)+"%";
+tip.style.top=(curY(best[2])/300*100)+"%";
+tip.hidden=false;
+}
+box.addEventListener("pointermove",onMove);
+box.addEventListener("pointerleave",function(){tip.hidden=true});
+}
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c6e8ab4e4ea4777bf54ca7e737337b9"}'></script><!-- End Cloudflare Web Analytics -->
