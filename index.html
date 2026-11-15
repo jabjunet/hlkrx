@@ -2663,6 +2663,7 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 #p-usidx .fxleg .lg-band{width:16px;height:9px;background:var(--tx);opacity:.16;border-radius:2px}
 #p-usidx .fxchart{position:relative}
 #p-usidx .fxchart svg{display:block;width:100%;height:auto}
+@media(min-width:721px){#p-usidx .fxchart{max-width:880px;margin-left:auto;margin-right:auto}}
 #p-usidx .fxtip{position:absolute;pointer-events:none;background:var(--tx);color:var(--bg);font-size:12px;font-weight:600;line-height:1.5;padding:6px 9px;border-radius:8px;white-space:nowrap;z-index:5;transform:translate(-50%,-115%)}
 #p-usidx .fxtip[hidden]{display:none}
 #p-usidx .fxcap{font-size:11.5px;color:var(--mut);line-height:1.6;margin:4px 2px 2px}
@@ -2711,10 +2712,12 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 <div><small>1990년 이후 변경</small><b>110회</b><span>인상 52회 · 인하 58회</span></div>
 </div>
 <div class="fxcard">
-<div class="fxchead"><b>연방기금금리 목표 추이</b><span class="pair fxseg" role="group" aria-label="차트 기간"><button type="button" data-fxfrom="1990" aria-pressed="true">1990~</button><button type="button" data-fxfrom="2008" aria-pressed="false">2008~</button><button type="button" data-fxfrom="2020" aria-pressed="false">2020~</button></span></div>
+<div class="fxchead"><button type="button" class="fxtgl" data-fxtgl aria-expanded="true">연방기금금리 목표 추이<span class="fxarr" aria-hidden="true">▾</span></button><span class="pair fxseg" role="group" aria-label="차트 기간"><button type="button" data-fxfrom="1990" aria-pressed="true">1990~</button><button type="button" data-fxfrom="2008" aria-pressed="false">2008~</button><button type="button" data-fxfrom="2020" aria-pressed="false">2020~</button></span></div>
+<div class="fxbody">
 <div class="fxleg"><span><i class="lg-line"></i>목표 상단</span><span><i class="lg-band"></i>목표 범위 (2008년 12월부터 범위 방식)</span><span>2008년 12월 이전은 단일 목표금리</span></div>
 <div class="fxchart" id="fxchart"><div class="fxtip" id="fxtip" hidden></div></div>
 <p class="fxcap">기간 안 최고 상단은 1990년 8.25%, 최저는 0.25% (2008년 12월~2015년 12월, 2020년 3월~2022년 3월). 최근 고점은 2023년 7월 5.25–5.50%예요. 차트 위를 움직이면 결정일과 금리가 보여요.</p>
+</div>
 </div>
 <div class="fx2col">
 <div class="fxcol">
@@ -7995,7 +7998,7 @@ drawHist(b.getAttribute("data-fxflt"));
 /* --- 두 표 접기/펼치기 토글 (제목 버튼) --- */
 document.querySelectorAll("[data-fxtgl]").forEach(function(b){
 b.addEventListener("click",function(){
-var col=b.closest(".fxcol"),body=col?col.querySelector(".fxbody"):null;
+var col=b.closest(".fxcol,.fxcard"),body=col?col.querySelector(".fxbody"):null;
 var open=b.getAttribute("aria-expanded")==="true";
 b.setAttribute("aria-expanded",open?"false":"true");
 if(body)body.hidden=open;
@@ -8013,7 +8016,7 @@ FOMC_CH.forEach(function(p){if(p[0]<start)carry=p;else pts.push(p)});
 if(carry)pts.unshift([start,carry[1],carry[2]]);
 var maxU=0;pts.forEach(function(p){if(p[2]>maxU)maxU=p[2]});
 var yMax=Math.ceil(maxU+0.5),yStep=yMax>7?2:1;
-var W=720,H=300,L=38,R=10,T=12,B=26,PW=W-L-R,PH=H-T-B;
+var W=720,H=260,L=38,R=10,T=12,B=26,PW=W-L-R,PH=H-T-B;
 function X(t){return L+(t-t0)/(t1-t0)*PW}
 function Y(v){return T+PH-(v/yMax)*PH}
 curPts=pts;curX=X;curY=Y;
@@ -8082,7 +8085,7 @@ var idx=FOMC_CH.indexOf(best);
 var chg=idx>0?Math.round((best[2]-FOMC_CH[idx-1][2])*100):0;
 tip.textContent=fmtD(best[0])+" · "+fmtR(best)+(idx>0?" ("+(chg>0?"+":"−")+Math.abs(chg)+"bp)":"");
 tip.style.left=(curX(tms(best[0]))/720*100)+"%";
-tip.style.top=(curY(best[2])/300*100)+"%";
+tip.style.top=(curY(best[2])/260*100)+"%";
 tip.hidden=false;
 }
 box.addEventListener("pointermove",onMove);
