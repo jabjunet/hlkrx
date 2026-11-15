@@ -170,6 +170,23 @@ table.stocks th:nth-child(8),table.stocks td:nth-child(8){width:26px}
 .pill{padding:2px 4px;font-size:11px}
 .star{font-size:15px;padding:0 1px}
 }
+
+/* [후속 수정 2026-11-15] 상단 타일 가로 슬라이드 + 종목 행 펼치기 + 차트 영역 초기 표시 안정화 */
+.chartbox{width:100%}
+.chimg{aspect-ratio:700/289}
+table.stocks tr.dtl{display:none;cursor:default}
+table.stocks tr.dtl.show{display:table-row}
+table.stocks tr.dtl td{text-align:left;white-space:normal;background:var(--sf2);padding:10px 12px}
+table.stocks tbody tr.open{background:var(--sf2)}
+.dtlin{display:flex;flex-wrap:wrap;gap:6px 20px}
+.dtlin .di{font-size:12px;color:var(--mut)}
+.dtlin .di b{color:var(--tx);font-weight:700;margin-left:6px;font-variant-numeric:tabular-nums}
+@media(max-width:720px){
+#idxRow{display:flex;flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity;gap:8px;padding-bottom:4px;scrollbar-width:none}
+#idxRow::-webkit-scrollbar{display:none}
+#idxRow .idxcard{flex:0 0 148px;scroll-snap-align:start}
+#idxRow .idxcard.big{flex-basis:216px}
+}
 </style>
 </head>
 <body>
@@ -310,6 +327,26 @@ KRK.split('|').forEach(function(s){ if(s.length>6) KRMAP[s.slice(0,6)]={n:s.slic
 KRQ.split('|').forEach(function(s){ if(s.length>6) KRMAP[s.slice(0,6)]={n:s.slice(6), m:'Q'}; });
 var COLS=['name','description','close','change','market_cap_basic','volume','Value.Traded','sector','industry','price_earnings_ttm','logoid'];
 var $b=document.getElementById('stockBody'), $note=document.getElementById('listNote');
+/* 고정 레이아웃 표에서 상세 행을 펼칠 때 종목 열 너비가 재배분되는 현상 방지:
+   펼치는 동안 머리글 셀 너비를 지금 값으로 고정하고, 접으면 되돌린다 */
+function col2Th(){ return document.querySelector('table.stocks thead th:nth-child(2)'); }
+function toggleDtl(tr){
+  var nx=tr.nextElementSibling;
+  if(!nx||!nx.classList.contains('dtl')) return;
+  var th=col2Th(), willOpen=!nx.classList.contains('show');
+  if(willOpen&&th&&!th.style.width) th.style.width=tr.children[1].getBoundingClientRect().width+'px';
+  var open=nx.classList.toggle('show');
+  tr.classList.toggle('open', open);
+  if(!open&&th&&!document.querySelector('#stockBody tr.dtl.show')) th.style.width='';
+}
+window.addEventListener('resize', function(){
+  var th=col2Th(); if(!th||!th.style.width) return;
+  var t=document.querySelector('table.stocks'), tr=document.querySelector('#stockBody tr[data-tk]');
+  if(!t||!tr) return;
+  var sum=0; for(var i=0;i<tr.children.length;i++){ if(i!==1) sum+=tr.children[i].getBoundingClientRect().width; }
+  th.style.width=Math.max(40, Math.round(t.getBoundingClientRect().width-sum))+'px';
+});
+
 function fmtP(v){ return v==null?'–':Math.round(v).toLocaleString('ko-KR'); }
 function fmtWon(v){
   if(v==null||isNaN(v)) return '–';
@@ -319,6 +356,8 @@ function fmtWon(v){
   if(e>=1) return e.toFixed(1)+'억';
   return Math.round(v).toLocaleString('ko-KR')+'원';
 }
+function fmtVolKR(v){ if(v==null||isNaN(v)) return '–'; if(v>=1e8) return (v/1e8).toFixed(2)+'억주'; if(v>=1e4) return Math.round(v/1e4).toLocaleString('ko-KR')+'만주'; return Math.round(v).toLocaleString('ko-KR')+'주'; }
+function di(l,v){ return '<span class="di">'+l+'<b>'+(v==null||v===''?'–':v)+'</b></span>'; }
 function scanKR(payload){
   return fetch('https://scanner.tradingview.com/korea/scan',{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(payload)}).then(function(r){ return r.json(); });
 }
@@ -383,14 +422,23 @@ function applyView(){
     '<td class="price">'+fmtP(r.price)+'</td><td><span class="pill '+cls+'">'+(r.chg==null?'–':(r.chg>0?'+':'')+r.chg.toFixed(2)+'%')+'</span></td>'+
     '<td>'+fmtWon(vt)+'</td><td>'+fmtWon(r.cap)+'</td>'+
     '<td><span class="indchip">'+(SECLABEL[r.sector]||r.ind||r.sector||'')+'</span></td>'+
-    '<td><button class="star'+(watch.has(r.code)?' on':'')+'" data-star="'+r.code+'" type="button" title="관심종목">'+(watch.has(r.code)?'★':'☆')+'</button></td></tr>';
+    '<td><button class="star'+(watch.has(r.code)?' on':'')+'" data-star="'+r.code+'" type="button" title="관심종목">'+(watch.has(r.code)?'★':'☆')+'</button></td></tr>'+
+    '<tr class="dtl"><td colspan="8"><div class="dtlin">'+
+    di('거래대금', fmtWon(vt))+
+    di('거래량', fmtVolKR(r.vol))+
+    di('섹터', SECLABEL[r.sector]||r.sector||'')+
+    di('산업', r.ind||'')+
+    di('PER', r.per==null?'':Number(r.per).toFixed(2)+'배')+
+    di('시가총액', fmtWon(r.cap))+
+    '</div></td></tr>';
   }).join('');
   $b.querySelectorAll('tr[data-tk]').forEach(function(tr){
     tr.addEventListener('click', function(e){
       var st=e.target.closest('[data-star]');
       if(st){ e.stopPropagation(); toggleWatch(st.dataset.star); return; }
+      toggleDtl(tr);
       var meta=KRMAP[tr.dataset.tk];
-      showChart('KRX:'+tr.dataset.tk, (meta?meta.n:tr.dataset.tk)+' '+tr.dataset.tk);
+      showChart('KRX:'+tr.dataset.tk, (meta?meta.n:tr.dataset.tk)+' '+tr.dataset.tk, true);
     });
   });
 }
@@ -418,7 +466,7 @@ function renderStats(){
 
 /* ---------- 차트 (가운데 패널) ---------- */
 var CHPERIOD='day', CHCODE='005930';
-function showChart(sym, label){
+function showChart(sym, label, noScroll){
   var m=String(sym||'').match(/\d{6}/); if(m) CHCODE=m[0];
   if(label) document.getElementById('chartSym').textContent=label;
   var box=document.getElementById('chartBox');
@@ -426,7 +474,7 @@ function showChart(sym, label){
   var btns=Object.keys(pn).map(function(p){ return '<button type="button" data-p="'+p+'"'+(p===CHPERIOD?' class="on"':'')+'>'+pn[p]+'</button>'; }).join('');
   box.innerHTML='<div class="chper">'+btns+'</div><img class="chimg" alt="주가 차트" src="https://ssl.pstatic.net/imgfinance/chart/item/candle/'+CHPERIOD+'/'+CHCODE+'.png">';
   box.querySelectorAll('[data-p]').forEach(function(b){ b.addEventListener('click', function(){ CHPERIOD=b.getAttribute('data-p'); showChart(CHCODE); }); });
-  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+  if(!noScroll) box.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 showChart('KRX:005930','삼성전자 005930');
 
