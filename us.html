@@ -174,7 +174,7 @@ table.stocks tbody tr.open{background:var(--sf2)}
 }
 /* [분류 고정·표 접기 2026-11-15] */
 #stocksCard.folded #listNote,#stocksCard.folded #tblWrap,#stocksCard.folded .tblfoot{display:none}
-#tblToggle{margin-left:auto}
+#tblToggle{margin-left:auto;padding:6px 11px;font-size:13px;line-height:1}
 </style>
 </head>
 <body>
@@ -234,7 +234,7 @@ table.stocks tbody tr.open{background:var(--sf2)}
             <button class="fbtn" type="button">섹터 ▾</button>
             <span class="secmenu" id="secMenu"></span>
           </span>
-          <button class="fbtn" id="tblToggle" type="button">표 접기 ▴</button>
+          <button class="fbtn" id="tblToggle" type="button" aria-label="종목표 접기/펼치기">▴</button>
         </div>
         <p class="note" id="listNote" style="margin:0 0 6px"></p>
         <div style="overflow-x:auto" id="tblWrap">
@@ -587,7 +587,7 @@ document.getElementById('cmpBtn').addEventListener('click', function(){
 (function(){
   var card=document.getElementById('stocksCard'), btn=document.getElementById('tblToggle');
   if(!card||!btn) return;
-  function sync(){ btn.textContent=card.classList.contains('folded')?'표 펼치기 \u25BE':'표 접기 \u25B4'; }
+  function sync(){ btn.textContent=card.classList.contains('folded')?'\u25BE':'\u25B4'; }
   btn.addEventListener('click', function(){ card.classList.toggle('folded'); sync(); });
   window.__unfoldStocks=function(){ if(card.classList.contains('folded')){ card.classList.remove('folded'); sync(); } };
   sync();
