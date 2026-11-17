@@ -2232,19 +2232,26 @@ html body main:has(>#pa:not([hidden])){max-width:1400px;padding-left:24px;paddin
 #pb .nqsp{display:block}
 </style>
 <style>
-/* ===== 헤더 탭 줄 전체 폭 펼침 (2026-11-17 사용자 정정) =====
-   탭 버튼(누르는 칸) 크기는 기존 그대로 두고, 탭 줄(.tabs) 자체가 헤더 한 줄
-   전체 폭을 쓰게 한 뒤 탭들을 space-between으로 벌린다 — 첫 탭은 왼쪽 끝에,
-   마지막 탭은 오른쪽 끝에 붙고 사이 간격이 균등하게 분포한다. 데스크톱·모바일
-   공통. 선택 표시(데스크톱 밑줄·모바일 초록 pill)와 헤더 윗줄(로고·로그인·
-   테마·언어), 본문 폭은 건드리지 않는다. 숨은 .tabsec 버튼은 display:none이라
-   분배에 참여하지 않는다 */
-.hd .tabs{width:100%;justify-content:space-between}
+/* ===== 헤더 전체 폭 띠 + 탭 왼쪽 정렬 (2026-11-17 사용자 지시, INDEXerGO 헤더 참고) =====
+   직전의 탭 space-between 펼침은 취소한다 — 탭 6개는 원래 크기·원래 간격으로
+   왼쪽에 붙는다(justify-content:flex-start). 대신 헤더(.hd)를 본문(main) 밖으로
+   빼 body 바로 아래에 두어, 헤더 띠 자체가 화면 왼쪽 끝에서 오른쪽 끝까지 닿는다.
+   100vw를 쓰지 않고 블록 기본 폭(100%)으로 펼쳐 스크롤바 폭 때문에 가로
+   스크롤이 생기지 않게 한다. 헤더 안쪽 여백은 작은 값만 둔다: 윗줄은 로고가
+   왼쪽 끝에, 테마·언어·접속자·로그인이 오른쪽 끝에 붙고(.hd-t의 space-between),
+   탭 줄은 왼쪽 끝에서 시작한다. 헤더 아래 구분선(.hd의 border-bottom)도 띠와
+   함께 양 끝까지 끊기지 않고 이어진다. 본문(main)의 폭·위치는 건드리지 않는다.
+   모바일은 기존 여백(16px)을 유지하고 구분선이 양 끝까지 이어지게만 맞춘다 */
+.hd{margin:0 0 6px;padding:6px 20px 2px;width:auto}
+.hd .tabs{width:auto;justify-content:flex-start}
+@media(max-width:720px){
+.hd{padding-left:16px;padding-right:16px}
+}
 </style>
 </head>
 <body>
-<main>
 <div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="gsearch"><input id="gq" type="text" placeholder="검색" aria-label="사이트 검색" autocomplete="off"><div class="gsres" id="gsres" hidden></div></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><a href="/" data-nav="home" aria-pressed="true">홈</a><a href="/crypto" data-nav="crypto" aria-pressed="false">암호화폐</a><a href="/kr" data-nav="krstock" aria-pressed="false">국내주식</a><a href="/us" data-nav="usstock" aria-pressed="false">미국주식</a><a href="/korea" data-nav="kridx" aria-pressed="false">국내지표</a><a href="/usa" data-nav="usidx" aria-pressed="false">해외지표</a><button data-t="ph" class="tabsec" aria-pressed="true">홈</button><button data-t="pa" class="tabsec" aria-pressed="false">김프</button><button data-t="pb" class="tabsec" aria-pressed="false">해외</button><button data-t="pg" class="tabsec" aria-pressed="false">원자재</button><button data-t="pf" class="tabsec" aria-pressed="false">펀딩비</button><button data-t="pc" class="tabsec" aria-pressed="false">비교</button><button data-t="pi" class="tabsec" aria-pressed="false">지표</button><button data-t="pk" class="tabsec" aria-pressed="false">커뮤니티</button><button data-t="p-kridx" class="tabsec" aria-pressed="false">국내지표</button><button data-t="p-usidx" class="tabsec" aria-pressed="false">해외지표</button><button data-t="p-market" class="tabsec" aria-pressed="false">시장</button><button data-t="p-kospi" class="tabsec" aria-pressed="false">코스피</button><button data-t="p-kosdaq" class="tabsec" aria-pressed="false">코스닥</button><button data-t="p-kr" class="tabsec" aria-pressed="false">국내주식</button><button data-t="p-usstock" class="tabsec" aria-pressed="false">미국주식</button><button data-t="p-nasdaq" class="tabsec" aria-pressed="false">나스닥</button><button data-t="p-spx" class="tabsec" aria-pressed="false">S&P</button><button data-t="p-etf" class="tabsec" aria-pressed="false">ETF</button><button data-t="p-calc" class="tabsec" aria-pressed="false">계산기</button></div></div>
+<main>
 
 <script>
 /* ===== 헤더 테마(다크/라이트)·언어(한/영) 전환 =====
