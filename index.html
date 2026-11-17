@@ -2670,12 +2670,8 @@ chunks.forEach(function(ch){
 fetch("https://scanner.tradingview.com/america/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:ch},columns:["close","change"]})}).then(function(r){return r.json()}).then(function(j){(j.data||[]).forEach(function(x){var c=rev[x.s];if(c&&x.d&&x.d[0]>0){ABNQ[c]=[x.d[0],(x.d[1]==null||isNaN(x.d[1]))?null:x.d[1]];if(typeof NQCMP!=="undefined")NQCMP[c]=x.d[0]}})}).catch(function(){}).then(function(){if(++done===chunks.length){abNqBusy=false;abRender()}})})}
 /* 대상 종목 집합: 네 거래소 목록을 표준 티커로 합치고 한국 주식 8종목과
    나스닥 목록 종목을 더한다. ETF·지수 선물로만 실린 종목은 뺀다.
-   마지막에는 표시 이름(abName)이 같은 표준 티커를 하나로 합친다 — 같은
-   종목이 거래소마다 다른 심볼로 실려 표준 티커가 둘로 갈린 경우다
-   (예: SK하이닉스는 SKHX와 SKHY가 둘 다 'SK하이닉스'로 풀려 두 줄로 떴다).
-   합칠 때는 한국 주식 표준 티커(R)를 우선 남기고, 없으면 먼저 나온
-   티커를 남긴다. 남긴 티커의 심볼로만 가격을 찾으므로, 버린 심볼의
-   다른 가격(예: SKHY)이 섞여 김프가 왜곡되는 일은 없다 */
+   표시 이름이 겹쳐도 합치지 않고 표준 티커마다 따로 한 줄씩 넣는다
+   (예: SK하이닉스로 풀리는 SKHX와 SKHY도 각각 별도 행으로 표시) */
 function abUniverse(){
 var seen={},stock={},out=[];
 function add(can,ok){if(!can)return;if(!seen[can]){seen[can]=1;out.push(can)}if(ok)stock[can]=1}
@@ -2687,16 +2683,7 @@ if(typeof R!=="undefined"&&R&&typeof BR!=="undefined"&&typeof toCan==="function"
 R.forEach(function(r){var can=r[1]||(BR[r[0]]?toCan("bn",BR[r[0]]):null);add(can,true)})}
 if(typeof NQ!=="undefined"&&NQ&&NQ.items){
 NQ.items.forEach(function(it){if(it.t)add(String(it.t).replace(/\./g,""),true)})}
-var list=out.filter(function(can){return stock[can]});
-var rCan={};
-if(typeof R!=="undefined"&&R&&typeof BR!=="undefined"&&typeof toCan==="function"){
-R.forEach(function(r){var c=r[1]||(BR[r[0]]?toCan("bn",BR[r[0]]):null);if(c)rCan[c]=1})}
-var byName={},keep=[];
-list.forEach(function(can){
-var nm=can;try{nm=abName(can)||can}catch(e){}
-if(!(nm in byName)){byName[nm]=can;keep.push(can)}
-else if(rCan[can]&&!rCan[byName[nm]]){var old=byName[nm];byName[nm]=can;keep[keep.indexOf(old)]=can}});
-return keep}
+return out.filter(function(can){return stock[can]})}
 /* 표시 이름: 한국 주식 이름 → 거래소별 이름 사전 → 비교 탭 이름 사전 →
    나스닥 짧은 이름 순으로 찾고, 없으면 티커를 그대로 쓴다 */
 function abName(can){
@@ -2709,12 +2696,9 @@ try{var CD=window.CMPNM;if(CD&&CD[can]&&(CD[can][1]||CD[can][0]))return CD[can][
 if(typeof NQ!=="undefined"&&NQ&&NQ.items&&typeof nqShortName==="function"){
 for(var k=0;k<NQ.items.length;k++){var it=NQ.items[k];if(it.t&&String(it.t).replace(/\./g,"")===can){var sn=nqShortName(it);if(sn)return sn}}}
 return can}
-/* 이름 아래 작은 글자는 비교 거래소(없으면 기준 거래소)의 심볼 표기 */
+/* 이름 아래 작은 글자는 거래소 상품명이 아니라 표준 심볼만 표시한다
+   (예: OKX의 AAPL-USDT-SWAP, 하이퍼리퀴드의 xyz:AAPL이 아니라 AAPL) */
 function abTagFor(can){
-var exs=[abC,abB];
-for(var i=0;i<exs.length;i++){var ex=exs[i];if(ex==="us")continue;
-if(abExRow(ex,can)){var raw=(typeof fromCan==="function")?fromCan(ex,can):can;
-return ex==="hl"?"xyz:"+raw:ex==="okx"?raw+"-USDT-SWAP":raw+"USDT"}}
 return can}
 function abRow(can){
 try{
