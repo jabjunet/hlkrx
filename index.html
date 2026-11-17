@@ -51,7 +51,7 @@
    미지원 브라우저에서는 hidden이 적용된다. 박스 내부 스크롤 요소에는 영향 없음 */
 html,body{overflow-x:hidden;overflow-x:clip}
 body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 "Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;font-variant-numeric:tabular-nums}
-main{max-width:1400px;margin:0 auto;padding:2px 24px 44px;box-shadow:-20px 0 30px -20px var(--adsh),20px 0 30px -20px var(--adsh)}
+main{max-width:1400px;margin:0 auto;padding:2px 24px 44px}
 @media(max-width:720px){main{box-shadow:none}}
 h1{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.25;margin:0}
 h2{font-size:16px;font-weight:700;margin:8px 0 10px}
@@ -2224,6 +2224,13 @@ html body main:has(>#pa:not([hidden])){max-width:1400px;padding-left:24px;paddin
 #pa #pb .wrap::-webkit-scrollbar,#pa .pathird .wrap::-webkit-scrollbar{display:none;width:0;height:0}
 }
 </style>
+<style>
+/* ===== 스크롤 렉 대책 (2026-11-17) =====
+   칸 안 스크롤이 페이지 스크롤로 번지지 않게 막는다(overscroll). 나스닥
+   목록의 빈 구간(.nqsp)은 그리지 않는 행들의 높이를 대신하는 스페이서다 */
+#pa #pb .wrap,#pa .pathird .wrap{overscroll-behavior:contain}
+#pb .nqsp{display:block}
+</style>
 </head>
 <body>
 <main>
@@ -2641,16 +2648,30 @@ box.classList.toggle("pabox-closed",open);
    창 크기 변경) ResizeObserver와 resize로 다시 맞춘다. 접힌 칸은 제목 줄만
    보이게 인라인 높이를 풀고, 한국 주식 칸이 접혀 있으면 나머지 칸은 직전
    높이를 유지한다. 폰(720px 이하)에서는 높이를 맞추지 않는다 */
+/* 스크롤 시각 기록: 페이지·칸 안 스크롤을 모두(capture) 기록해 두고, 높이 맞춤과
+   전체 종목 다시 그리기가 스크롤 도중에는 실행되지 않고 잠시 미뤄지게 한다 */
+var paScrT=0;
+document.addEventListener("scroll",function(){paScrT=Date.now()},{capture:true,passive:true});
 (function(){
 var split=document.querySelector("#pa .pasplit");if(!split)return;
 var L=split.querySelector(".paleft"),M=split.querySelector(".paright"),R=split.querySelector(".pathird");
 if(!L||!M||!R)return;
-function sync(){
-if(window.innerWidth<=720||!L.offsetHeight){M.style.height="";R.style.height="";return}
+var raf=0,lastH=-1;
+function apply(){
+raf=0;
+if(window.innerWidth<=720||!L.offsetHeight){if(lastH!==0){lastH=0;M.style.height="";R.style.height=""}return}
 if(L.classList.contains("pabox-closed"))return;
-var h=L.offsetHeight+"px";
-[M,R].forEach(function(b){b.style.height=b.classList.contains("pabox-closed")?"":h});
+/* 스크롤 중에는 높이 쓰기를 미뤄 레이아웃이 흔들리지 않게 한다 */
+if(Date.now()-paScrT<180){raf=setTimeout(apply,190);return}
+var h=L.offsetHeight;
+if(h===lastH)return;
+lastH=h;
+var hs=h+"px";
+[M,R].forEach(function(b){var want=b.classList.contains("pabox-closed")?"":hs;if(b.style.height!==want)b.style.height=want});
 }
+/* ResizeObserver·resize가 연속으로 와도 프레임당 한 번만, 높이가 실제로
+   바뀐 경우에만 쓴다 */
+function sync(){if(raf)return;raf=requestAnimationFrame(apply)}
 if(window.ResizeObserver)new ResizeObserver(sync).observe(L);
 window.addEventListener("resize",sync);
 split.querySelectorAll(".pabox-tg").forEach(function(b){b.addEventListener("click",function(){setTimeout(sync,30)})});
@@ -2756,6 +2777,8 @@ return '<tr><td><div class="nm"><div><b>'+abEsc(abName(can))+'</b><span class="l
 }catch(e){return ""}}
 function abCapOf(can){try{if(typeof capOf==="function"){var c=capOf(can);return (c!=null&&c>0)?c:null}}catch(e){}return null}
 function abRender(){
+/* 스크롤하는 동안에는 표를 갈아끼우지 않고 스크롤이 멎은 뒤에 그린다 */
+if(Date.now()-paScrT<220){if(!abRender._d)abRender._d=setTimeout(function(){abRender._d=null;abRender()},280);return}
 try{
 var uni=abUniverse();
 if(abB==="us"||abC==="us")abNqFetch(uni);
@@ -3757,7 +3780,7 @@ var us=r.filter(function(x){return x[2]==="US"}),kr=r.filter(function(x){return 
 if(us.length)html+=grp("미국 상장 ETF · 나스닥/NYSE",us);
 if(kr.length)html+=grp("국내 상장 ETF · 한국거래소(KRX)",kr);
 if(!r.length)html='<div class="pempty">검색 결과가 없습니다.</div>';
-el("tb").innerHTML=html}
+if(el("tb")._h!==html){el("tb").innerHTML=html;el("tb")._h=html}if(typeof NQ!=="undefined")NQ._sig=""}
 function draw(){el("hh").classList.toggle("nqhd",!etfOn&&v==="nq");el("hh").classList.toggle("x5hd",!etfOn&&v!=="nq");var hcx=el("hh-cmp");if(hcx)hcx.hidden=etfOn;renderSelChips();if(!etfOn){el("fsec").hidden=!(v!=="nq"&&xSecOpen);el("xsecbtn").hidden=(v==="nq");el("fnq").hidden=!(v==="nq"&&nqSecOpen);el("nqsecbtn").hidden=(v!=="nq");el("nqmore").hidden=(v!=="nq"||typeof NQ==="undefined"||NQ.done);el("q").placeholder=(v==="nq")?"나스닥 종목 검색 (티커·회사명)":"종목 검색";if(v==="nq"){if(typeof NQ!=="undefined")nqDraw();return}}
 if(etfOn){el("fetf").hidden=!etfThOpen;drawEtf();return}
 var ex=EXN[v];if(!ex)return;
@@ -3772,7 +3795,7 @@ var html;
 if(!r.length)html='<div class="pempty">검색 결과가 없습니다.</div>';
 else if(flt.indexOf("sec:")===0)html=grpHtml(flt.slice(4),r);
 else html=r.map(rowHtml).join("");
-el("tb").innerHTML=html;if(typeof drawF==="function")drawF();spkScan()}
+if(el("tb")._h!==html){el("tb").innerHTML=html;el("tb")._h=html}if(typeof NQ!=="undefined")NQ._sig="";if(typeof drawF==="function")drawF();spkScan()}
 function arw(t,st){if(!t)return;t.querySelectorAll("th,[data-k]").forEach(function(h){h.classList.toggle("on",!!h.dataset.k&&st.k===h.dataset.k);var s=h.querySelector(".ar");if(s)s.textContent=st.k===h.dataset.k?(st.d===-1?" ▼":" ▲"):""})}
 /* 섹터 패널(#fsec) 펼침 상태: 평소엔 닫혀 있고, 주식|ETF 전환 줄의 섹터 버튼(#xsecbtn)을 눌러야 전환 줄 아래에 열린다 (나스닥 섹터 버튼과 같은 방식).
    패널에서 섹터를 하나 누르면 그 섹터만 걸러 보여주고(기존 칩 동작 그대로), 버튼에는 지금 고른 항목이 보인다 */
@@ -3840,7 +3863,7 @@ function rkb(){var rows=(KBR||[]).filter(function(r){return !!r});
 if(kq)rows=rows.filter(function(r){try{return r.n.indexOf(kq)>=0||(r.tg||"").toUpperCase().indexOf(kqU)>=0}catch(e){return false}});
 if(paMkt!=="all")rows=rows.filter(function(r){try{return paMktOf(r.n)===paMkt}catch(e){return false}});
 if(ks.k)try{rows.sort(function(x,y){var a=x[ks.k],b=y[ks.k];if(a==null&&b==null)return 0;if(a==null)return 1;if(b==null)return -1;var c=ks.k==="n"?(a<b?-1:a>b?1:0):a-b;return c*ks.d})}catch(e){}
-el("kb").innerHTML=rows.map(function(r){return (r&&r.html)||""}).join("")||'<tr><td colspan="3">'+(paMkt==="kosdaq"&&!kq?"코스닥 종목은 현재 암호화폐 탭에 없어요":"검색 결과가 없습니다.")+'</td></tr>';try{kbFlash()}catch(e){}try{arw(el("kh"),ks)}catch(e){}try{sms()}catch(e){}try{spkScan()}catch(e){}}
+var _kbh=rows.map(function(r){return (r&&r.html)||""}).join("")||'<tr><td colspan="3">'+(paMkt==="kosdaq"&&!kq?"코스닥 종목은 현재 암호화폐 탭에 없어요":"검색 결과가 없습니다.")+'</td></tr>';if(el("kb")._h!==_kbh){el("kb").innerHTML=_kbh;el("kb")._h=_kbh}try{kbFlash()}catch(e){}try{arw(el("kh"),ks)}catch(e){}try{sms()}catch(e){}try{spkScan()}catch(e){}}
 el("qk").addEventListener("input",function(){kq=this.value.trim();kqU=kq.toUpperCase();rkb()});
 el("kh").addEventListener("click",function(e){var h=e.target.closest("th");if(!h||!h.dataset.k)return;var k=h.dataset.k;
 if(ks.k===k){if(ks.d===-1)ks.d=1;else ks={k:"mc",d:-1}}else ks={k:k,d:-1};rkb()});
@@ -4208,7 +4231,7 @@ setInterval(function(){if(!document.hidden&&!el("pf").hidden)fRefresh()},10000);
    비교 거래소(기본 Binance) 선물이 없는 종목은 전용 칸에 '—'를 표시한다. 하이퍼리퀴드를 기준으로 강제하지 않는다.
    불러온 종목의 나스닥 가격은 1분마다 갱신하고, 비교 거래소 전용 칸은 기존 15초 갱신 때 함께 다시 그려진다. */
 var NQPS=60,NQARR=[];
-var NQ={items:[],total:0,loading:false,done:false,pending:false,key:null,seq:0,timer:null,err:0,fails:0,rpend:false};
+var NQ={items:[],total:0,loading:false,done:false,pending:false,key:null,seq:0,timer:null,err:0,fails:0,rpend:false,win:0,rowH:64,_sig:""};
 /* 조회 실패 폴백: 실패하면 간격을 늘려가며(4초·10초·20초) 최대 3회 자동 재시도한다.
    재시도가 남아 있는 동안에는 에러 문구 대신 로딩 표시를 유지하고, 재시도를 모두 소진한
    뒤에야 '다시 시도' 버튼이 있는 안내를 보여준다 (버튼을 누르면 실패 횟수를 초기화하고 다시 조회) */
@@ -4337,37 +4360,104 @@ var hs="";/* 고/저 줄 제거(2026-11-06) */
 var pr=it.p>0?f(it.p,it.p<10?3:2):"—";
 var pcellN=(it.p>0&&!usOpen())?clnHtml(pr)+'<span class="pcv">'+pr+"</span>":'<b class=pv>'+pr+"</b>";
 var vol=it.vt>=1000?"$"+(it.vt/1000).toFixed(1)+"B":it.vt>=1?"$"+it.vt.toFixed(1)+"M":it.vt>0?"$"+Math.round(it.vt*1000)+"K":"—";
-return"<div class=\"prow nqrow\" role=row><div role=cell><div class=nm><div><b>"+nqEsc(it.t)+"</b>"+(sn?" <small>"+nqEsc(sn)+"</small>":"")+"</div></div></div><div role=cell><span class=xcol>"+nqDiff(it.t,it.p)+"</span></div><div role=cell>"+(it.c==null?"—":pc(it.c))+"</div></div>"}
+return"<div class=\"prow nqrow\" role=row data-t=\""+nqEsc(it.t)+"\"><div role=cell><div class=nm><div><b>"+nqEsc(it.t)+"</b>"+(sn?" <small>"+nqEsc(sn)+"</small>":"")+"</div></div></div><div role=cell><span class=\"xcol nqc-d\">"+nqDiff(it.t,it.p)+"</span></div><div role=cell class=nqc-c>"+(it.c==null?"—":pc(it.c))+"</div></div>"}
+/* ===== 나스닥 목록 가볍게 그리기 (2026-11-17 스크롤 렉 대책) =====
+   불러온 종목 데이터(NQ.items)는 메모리에 계속 쌓아 두되, DOM에는 보이는
+   구간 주변 최대 NQWIN개 행만 그린다. 그리지 않은 위·아래 행은 빈 공간
+   (.nqsp)으로 높이를 대신해 전체 스크롤 높이와 위치는 예전과 같다.
+   가격만 바뀐 갱신에서는 표를 다시 그리지 않고 보이는 행의 값 칸
+   (김프·변동)만 바꿔 스크롤 중 끊김을 없앤다 */
+var NQWIN=180,NQBUF=30;
+function nqWrap(){return document.querySelector("#pb .wrap")}
+function nqUpdateCells(){
+var tb=el("tb");if(!tb)return false;
+var idx={};for(var i=0;i<NQ.items.length;i++)idx[NQ.items[i].t]=NQ.items[i];
+var rows=tb.querySelectorAll(".nqrow");if(!rows.length)return false;
+for(var j=0;j<rows.length;j++){var it=idx[rows[j].getAttribute("data-t")];if(!it)return false;
+var d=rows[j].querySelector(".nqc-d"),nh=nqDiff(it.t,it.p);
+if(d&&d.innerHTML!==nh)d.innerHTML=nh;
+var c=rows[j].querySelector(".nqc-c"),ch=it.c==null?"—":pc(it.c);
+if(c&&c.innerHTML!==ch)c.innerHTML=ch}
+return true}
+function nqMore(){
+if(v!=="nq"||etfOn)return;
+if(!NQ.done&&!NQ.loading&&NQ.items.length<NQ.win+NQWIN+NQPS)nqLoad()}
+var nqScrRaf=0;
+function nqOnScroll(){
+if(nqScrRaf)return;
+nqScrRaf=requestAnimationFrame(function(){nqScrRaf=0;
+if(v!=="nq"||etfOn||!NQ.items.length)return;
+var tb=el("tb");if(!tb)return;
+var wr=nqWrap(),rowH=NQ.rowH||64;
+var viewTop=wr?wr.getBoundingClientRect().top:0;
+var start=Math.floor((viewTop-tb.getBoundingClientRect().top)/rowH)-NQBUF;
+if(start<0)start=0;
+var maxWin=Math.max(0,NQ.items.length-NQWIN);
+if(start>maxWin)start=maxWin;
+if(Math.abs(start-NQ.win)>=20){NQ.win=start;NQ._sig="";nqRender()}
+if(NQ.win+NQWIN>=NQ.items.length-NQPS)nqMore()})}
 function nqRender(){
 var _tt3=el("tt");if(_tt3)_tt3.textContent=!NQSELS.length?"나스닥 주식 전체 ("+f(NQ.total||NQ.items.length)+")":"나스닥 · "+nqSecLabel()+" ("+f(NQ.total||NQ.items.length)+")";
-var html;
-/* 행 단위 방어: 한 종목 행 렌더링이 실패해도 그 행만 건너뛰고 목록 전체는 그대로 그린다 */
-if(NQ.items.length)html=NQ.items.map(function(it){try{return nqRowHtml(it)}catch(e){return ""}}).join("");
-else if(NQ.loading||NQ.pending)html='<div class="pempty">불러오는 중…</div>';
-else if(NQ.err)html=NQ.rpend?'<div class="pempty">불러오는 중…</div>':'<div class="pempty">종목 목록을 불러오지 못했습니다. <button type="button" class="nqretry">다시 시도</button></div>';
-else html='<div class="pempty">검색 결과가 없습니다.</div>';
-el("tb").innerHTML=html;
+var tb=el("tb");if(!tb)return;
 var m=el("nqmore");
-if(m){m.hidden=NQ.done;m.textContent=NQ.loading?"불러오는 중…":"스크롤하면 더 불러옵니다";
-if(!NQ.done&&!NQ.loading){var r0=m.getBoundingClientRect();if(r0.height&&r0.top<window.innerHeight+600)setTimeout(function(){if(v==="nq"&&!etfOn)nqLoad()},60)}}}
+if(m){m.hidden=NQ.done;m.textContent=NQ.loading?"불러오는 중…":"스크롤하면 더 불러옵니다"}
+if(!NQ.items.length){
+NQ._sig="";
+if(NQ.loading||NQ.pending)tb.innerHTML='<div class="pempty">불러오는 중…</div>';
+else if(NQ.err)tb.innerHTML=NQ.rpend?'<div class="pempty">불러오는 중…</div>':'<div class="pempty">종목 목록을 불러오지 못했습니다. <button type="button" class="nqretry">다시 시도</button></div>';
+else tb.innerHTML='<div class="pempty">검색 결과가 없습니다.</div>';
+tb._h="nq";return}
+/* 보이는 구간만 그린다: win~end 행 + 위·아래 스페이서 */
+if(NQ.win<0)NQ.win=0;
+var maxWin=Math.max(0,NQ.items.length-1);
+if(NQ.win>maxWin)NQ.win=maxWin;
+var end=Math.min(NQ.items.length,NQ.win+NQWIN);
+var sig=NQ.key+"|"+NQ.win+"|"+end+"|"+NQ.items.length+"|"+NQ.items[NQ.win].t+"|"+NQ.items[end-1].t+"|"+cv;
+if(sig===NQ._sig&&tb.querySelector(".nqrow")){nqUpdateCells();return}
+NQ._sig=sig;
+var rowH=NQ.rowH||64,html="";
+if(NQ.win>0)html+='<div class="nqsp" aria-hidden="true" style="height:'+(NQ.win*rowH)+'px"></div>';
+/* 행 단위 방어: 한 종목 행 렌더링이 실패해도 그 행만 건너뛰고 목록 전체는 그대로 그린다 */
+for(var i=NQ.win;i<end;i++){try{html+=nqRowHtml(NQ.items[i])}catch(e){}}
+var rest=NQ.items.length-end;
+if(rest>0)html+='<div class="nqsp" aria-hidden="true" style="height:'+(rest*rowH)+'px"></div>';
+tb.innerHTML=html;tb._h="nq";
+var fr=tb.querySelector(".nqrow");
+if(fr&&fr.offsetHeight>20&&Math.abs(fr.offsetHeight-rowH)>2){NQ.rowH=fr.offsetHeight;
+var sps=tb.querySelectorAll(".nqsp");
+if(sps.length&&NQ.win>0)sps[0].style.height=(NQ.win*NQ.rowH)+"px";
+if(sps.length>1)sps[1].style.height=(rest*NQ.rowH)+"px";
+else if(sps.length===1&&NQ.win===0)sps[0].style.height=(rest*NQ.rowH)+"px"}
+/* 칸이 아직 다 안 찼거나 보이는 구간 끝이 불러온 끝에 가까우면 다음 묶음을 미리 받는다 */
+var wr=nqWrap();
+if(!NQ.done&&!NQ.loading&&((wr&&wr.clientHeight&&tb.scrollHeight<=wr.clientHeight+rowH*2)||end>=NQ.items.length-NQPS))
+setTimeout(function(){if(v==="nq"&&!etfOn)nqMore()},60)}
 el("tb").addEventListener("click",function(e){var b=e.target&&e.target.closest?e.target.closest(".nqretry"):null;if(!b)return;NQ.err=0;NQ.done=false;NQ.fails=0;NQ.rpend=false;nqLoad()});
 function nqDraw(){
 var key=nqKey();
-if(NQ.key!==key){NQ.seq++;NQ.key=key;NQ.items=[];NQ.total=0;NQ.done=false;NQ.loading=false;NQ.pending=true;NQ.err=0;NQ.fails=0;NQ.rpend=false;nqSyncArr();
+if(NQ.key!==key){NQ.seq++;NQ.key=key;NQ.items=[];NQ.total=0;NQ.done=false;NQ.loading=false;NQ.pending=true;NQ.err=0;NQ.fails=0;NQ.rpend=false;NQ.win=0;NQ._sig="";var _nwr=nqWrap();if(_nwr)try{_nwr.scrollTop=0}catch(e){} nqSyncArr();
 if(NQ.timer)clearTimeout(NQ.timer);
 if(el("q").value.trim()){NQ.timer=setTimeout(function(){if(v==="nq"&&!etfOn)nqLoad()},350)}
 else nqLoad()}
 else if(NQ.err&&!NQ.loading&&!NQ.done)nqLoad();
 nqRender();
 if(typeof drawF==="function")drawF();spkScan()}
-if(window.IntersectionObserver){var nqio=new IntersectionObserver(function(es){for(var i=0;i<es.length;i++)if(es[i].isIntersecting&&v==="nq"&&!etfOn)nqLoad()},{rootMargin:"600px 0px"});var nqm0=el("nqmore");if(nqm0)nqio.observe(nqm0)}
+/* 이어 불러오기 감지: 표 바깥(.plist 끝)에 둔 감지 칸이 보이면 다음 묶음을
+   받는다. 감지 칸을 #tb 밖에 두어 표를 다시 그려도 사라지지 않고, 칸 안
+   스크롤 위치에 맞춰 보이는 구간을 옮기는 스크롤 감지도 함께 건다 */
+(function(){
+var pl=document.querySelector("#pb .plist");
+if(pl){var sent=document.createElement("div");sent.id="nqsent";sent.style.height="1px";pl.appendChild(sent);
+if(window.IntersectionObserver){var nqio=new IntersectionObserver(function(es){for(var i=0;i<es.length;i++)if(es[i].isIntersecting)nqMore()},{rootMargin:"0px 0px 600px 0px"});nqio.observe(sent)}}
+var wr=nqWrap();if(wr)wr.addEventListener("scroll",nqOnScroll,{passive:true});
+window.addEventListener("scroll",nqOnScroll,{passive:true})})();
 function nqRefreshPrices(){
 if(v!=="nq"||etfOn||document.hidden||!NQ.items.length||NQ.loading)return;
 var idx={};NQ.items.forEach(function(it){idx[it.t]=it});
 var syms=NQ.items.map(function(it){return "NASDAQ:"+it.t}),chunks=[],i;
 for(i=0;i<syms.length;i+=100)chunks.push(syms.slice(i,i+100));
 var changed=false;
-Promise.all(chunks.map(function(ch){return fetch("https://scanner.tradingview.com/america/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:ch},columns:["close","change","Value.Traded","volume","high","low"]})}).then(function(r){return r.json()}).then(function(j){(j.data||[]).forEach(function(x){var it=idx[(x.s||"").replace("NASDAQ:","")];if(!it||!x.d)return;if(x.d[0]>0)it.p=x.d[0];if(x.d[1]!=null&&!isNaN(x.d[1]))it.c=x.d[1];if(x.d[2]>0)it.vt=x.d[2]/1e6;else if(x.d[3]>0&&x.d[0]>0)it.vt=x.d[3]*x.d[0]/1e6;if(x.d[4]>0)it.hi=x.d[4];if(x.d[5]>0)it.lo=x.d[5];changed=true})}).catch(function(){})})).then(function(){if(changed){nqSyncArr();if(v==="nq"&&!etfOn)nqRender()}})}
+Promise.all(chunks.map(function(ch){return fetch("https://scanner.tradingview.com/america/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:ch},columns:["close","change","Value.Traded","volume","high","low"]})}).then(function(r){return r.json()}).then(function(j){(j.data||[]).forEach(function(x){var it=idx[(x.s||"").replace("NASDAQ:","")];if(!it||!x.d)return;if(x.d[0]>0)it.p=x.d[0];if(x.d[1]!=null&&!isNaN(x.d[1]))it.c=x.d[1];if(x.d[2]>0)it.vt=x.d[2]/1e6;else if(x.d[3]>0&&x.d[0]>0)it.vt=x.d[3]*x.d[0]/1e6;if(x.d[4]>0)it.hi=x.d[4];if(x.d[5]>0)it.lo=x.d[5];changed=true})}).catch(function(){})})).then(function(){if(changed){nqSyncArr();if(v==="nq"&&!etfOn){if(!nqUpdateCells())nqRender()}}})}
 setInterval(nqRefreshPrices,60000);
 /* ===== 해외 탭 비교 거래소 '나스닥' =====
    비교 거래소로 나스닥을 고르면(기준은 크립토 거래소) 고정 목록 종목들의 나스닥 가격을
