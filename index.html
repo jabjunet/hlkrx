@@ -2196,6 +2196,33 @@ html body main:has(>#pa:not([hidden])){max-width:1400px;padding-left:24px;paddin
 #pa .pasplit{justify-items:stretch}
 #pa .paleft,#pa .paright{width:auto;max-width:none}
 }
+/* 세 칸 높이 맞춤 + 칸 안 스크롤 (2026-11-17 사용자 지시): 세 칸 높이는 첫 번째
+   칸(한국 주식)의 자연 높이로 통일한다 — 나스닥·전체 종목 칸의 높이는 스크립트가
+   한국 주식 칸 높이를 재서 그대로 넣어 준다(데스크톱 3열일 때만). 넘치는 목록은
+   페이지를 내리는 게 아니라 칸 안에서 마우스 휠로 스크롤해 보되, 눈에 보이는
+   스크롤바(막대·버튼)는 숨긴다. 스크롤 영역은 두 번째 칸은 나스닥 표 감싸개
+   (#pb .wrap), 세 번째 칸은 전체 종목 표 감싸개(.pathird .wrap)이고, 제목·
+   거래소 선택 줄은 칸 안에 고정된다. 두 번째 칸 나스닥 목록의 이어 불러오기는
+   센티넬(#nqmore)이 칸 아래쪽에 항상 보여, 그려질 때마다 다음 묶음을 부르므로
+   칸 안 스크롤에서도 끝까지 불러와진다. 폰에서는 칸이 한 열로 쌓이며
+   목록 길이만큼 늘어나 페이지 스크롤로 본다 */
+#pa .pabox{display:flex;flex-direction:column}
+#pa .pabox .wrap{flex:none;overflow:visible}
+#pa #pb{display:flex;flex-direction:column;flex:none;overflow:visible}
+#pa #pb .wrap{flex:none;overflow:visible}
+#pa .pabox-bd{display:flex;flex-direction:column;flex:none}
+#pa .absec{display:flex;flex-direction:column;flex:none}
+#pa .pasplit{align-items:start}
+#pa .pasplit>.pabox-closed{height:auto;align-self:start}
+@media(min-width:721px){
+#pa #pb{flex:1 1 auto;min-height:0}
+#pa #pb .area-box-r{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+#pa #pb .wrap{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch}
+#pa .pabox-bd{flex:1 1 auto;min-height:0}
+#pa .absec{flex:1 1 auto;min-height:0}
+#pa .pathird .wrap{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch}
+#pa #pb .wrap::-webkit-scrollbar,#pa .pathird .wrap::-webkit-scrollbar{display:none;width:0;height:0}
+}
 </style>
 </head>
 <body>
@@ -2608,6 +2635,27 @@ b.setAttribute("aria-expanded",open?"false":"true");
 box.classList.toggle("pabox-closed",open);
 });
 });
+/* ===== 세 칸 높이 맞춤 (2026-11-17 사용자 지시) =====
+   데스크톱 3열에서 나스닥·전체 종목 칸 높이를 첫 번째 칸(한국 주식)의 자연
+   높이와 같게 맞춘다. 한국 주식 칸 크기가 바뀔 때마다(목록 로딩·접기/펼치기·
+   창 크기 변경) ResizeObserver와 resize로 다시 맞춘다. 접힌 칸은 제목 줄만
+   보이게 인라인 높이를 풀고, 한국 주식 칸이 접혀 있으면 나머지 칸은 직전
+   높이를 유지한다. 폰(720px 이하)에서는 높이를 맞추지 않는다 */
+(function(){
+var split=document.querySelector("#pa .pasplit");if(!split)return;
+var L=split.querySelector(".paleft"),M=split.querySelector(".paright"),R=split.querySelector(".pathird");
+if(!L||!M||!R)return;
+function sync(){
+if(window.innerWidth<=720||!L.offsetHeight){M.style.height="";R.style.height="";return}
+if(L.classList.contains("pabox-closed"))return;
+var h=L.offsetHeight+"px";
+[M,R].forEach(function(b){b.style.height=b.classList.contains("pabox-closed")?"":h});
+}
+if(window.ResizeObserver)new ResizeObserver(sync).observe(L);
+window.addEventListener("resize",sync);
+split.querySelectorAll(".pabox-tg").forEach(function(b){b.addEventListener("click",function(){setTimeout(sync,30)})});
+sync();
+})();
 var ab3kr=document.getElementById("ab3kr");
 if(!ab3kr)return;
 function abEsc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
@@ -4621,7 +4669,7 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden){fxF
 (function(){
 function gel(id){return document.getElementById(id)}
 /* [id, 이름, 스캐너 티커, 소수 자리] */
-var CXT=[["btc","비트코인","BINANCE:BTCUSDT",0],["eth","이더리움","BINANCE:ETHUSDT",2],["usdt","테더","BINANCE:USDTUSD",4],["usdc","유에스디코인","BINANCE:USDCUSDT",4],["bnb","비앤비","BINANCE:BNBUSDT",2],["xrp","엑스알피(리플)","BINANCE:XRPUSDT",4],["sol","솔라나","BINANCE:SOLUSDT",2],["trx","트론","BINANCE:TRXUSDT",4]];
+var CXT=[["btc","BTC","BINANCE:BTCUSDT",0],["eth","ETH","BINANCE:ETHUSDT",2],["usdt","USDT","BINANCE:USDTUSD",4],["usdc","USDC","BINANCE:USDCUSDT",4],["bnb","BNB","BINANCE:BNBUSDT",2],["xrp","XRP","BINANCE:XRPUSDT",4],["sol","SOL","BINANCE:SOLUSDT",2],["trx","TRX","BINANCE:TRXUSDT",4]];
 var CXS={};
 var tbox=gel("cxtiles");
 if(tbox){CXT.forEach(function(t){
