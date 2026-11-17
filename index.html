@@ -2231,6 +2231,16 @@ html body main:has(>#pa:not([hidden])){max-width:1400px;padding-left:24px;paddin
 #pa #pb .wrap,#pa .pathird .wrap{overscroll-behavior:contain}
 #pb .nqsp{display:block}
 </style>
+<style>
+/* ===== 헤더 탭 줄 전체 폭 펼침 (2026-11-17 사용자 정정) =====
+   탭 버튼(누르는 칸) 크기는 기존 그대로 두고, 탭 줄(.tabs) 자체가 헤더 한 줄
+   전체 폭을 쓰게 한 뒤 탭들을 space-between으로 벌린다 — 첫 탭은 왼쪽 끝에,
+   마지막 탭은 오른쪽 끝에 붙고 사이 간격이 균등하게 분포한다. 데스크톱·모바일
+   공통. 선택 표시(데스크톱 밑줄·모바일 초록 pill)와 헤더 윗줄(로고·로그인·
+   테마·언어), 본문 폭은 건드리지 않는다. 숨은 .tabsec 버튼은 display:none이라
+   분배에 참여하지 않는다 */
+.hd .tabs{width:100%;justify-content:space-between}
+</style>
 </head>
 <body>
 <main>
