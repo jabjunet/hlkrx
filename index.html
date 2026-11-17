@@ -1825,9 +1825,9 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .pasplit{display:grid;grid-template-columns:minmax(0,11fr) minmax(0,13fr);gap:18px;align-items:start;max-width:920px}
 .paleft,.paright{min-width:0}
 .paright .xpair{flex-wrap:wrap}
-/* 본문 폭은 전 탭 공통으로 제한 없이 전체 폭(양옆 여백 16px)을 쓴다(2026-11-13 전역 확장).
-   김프 탭의 두 표는 예외로 .pasplit 폭 상한(920px) 안에서 왼쪽에 작게 붙여 배치한다 */
-@media(min-width:721px){main:has(>#pa:not([hidden])){max-width:none;padding-left:16px;padding-right:16px}}
+/* 본문 폭은 전 탭 공통 1400px(main 기본 규칙)를 유지한다. 암호화폐 탭만 좁히는
+   1100px는 main이 아니라 #pa 자체에 거는 방식으로 마지막 스타일 블록에서 처리한다
+   (main:has()로 본문 폭을 바꾸는 예전 전역 확장 규칙은 범위 정정으로 제거) */
 /* 왼쪽 열 안의 상단 컨트롤: 열 폭에 맞게 작게 — 토글 두 그룹을 한 줄에, 장 시간 안내는 그 아래 한 줄로 */
 .paleft .segrow{margin-bottom:8px}
 .paleft .pair button{min-height:30px;padding:5px 10px;font-size:12.5px}
@@ -2079,7 +2079,6 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 <style>
 /* 김프 탭 폭 맞춤 (2026-11-14): 양옆 여백을 홈·다른 탭과 같은 크기로 — 두 칸이 본문 폭 전체를 채운다 (데스크톱만) */
 @media (min-width:721px){
-html body main:has(>#pa:not([hidden])){max-width:1400px;padding-left:24px;padding-right:24px}
 #pa .pasplit{grid-template-columns:minmax(0,1fr) minmax(0,1fr);justify-content:stretch;justify-items:stretch;margin-left:0;margin-right:0;max-width:none}
 #pa .paleft,#pa .paright{width:auto;max-width:none}
 #pa .area-box{width:100%}
@@ -2247,6 +2246,15 @@ html body main:has(>#pa:not([hidden])){max-width:1400px;padding-left:24px;paddin
 @media(max-width:720px){
 .hd{padding-left:16px;padding-right:16px}
 }
+</style>
+<style>
+/* ===== 암호화폐 탭만 1100px 가운데 정렬 (2026-11-17 범위 정정) =====
+   본문(main)은 전 탭 공통 1400px 그대로 두고, 암호화폐 섹션(#pa) 안쪽만
+   1100px로 좁혀 가운데에 둔다 — #pa의 자식인 코인 타일 띠(.cxstrip)와
+   세 칸 묶음(.pasplit: 한국 주식·나스닥·전체 종목)이 이 폭 안에 들어간다.
+   홈·국내주식·미국주식·국내지표·해외지표 탭의 본문 폭에는 영향이 없고,
+   main:has() 방식은 쓰지 않아 다른 탭이 열려 있어도 걸리지 않는다 */
+#pa{max-width:1100px;margin-left:auto;margin-right:auto}
 </style>
 </head>
 <body>
