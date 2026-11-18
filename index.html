@@ -70,9 +70,8 @@ h2{font-size:16px;font-weight:700;margin:8px 0 10px}
 .stat.live::before{background:var(--ok)}
 /* 탭 바 */
 .tabs{display:flex;position:relative;background:none;margin:0;padding:0;flex:none;align-items:stretch}
-.tabs button,.tabs a[data-nav]{flex:none;min-height:33px;border:0;background:none;color:var(--mut);padding:2px 10px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
-.tabs button[aria-pressed="true"],.tabs a[data-nav][aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
-#tabs a[data-nav]{text-decoration:none;-webkit-tap-highlight-color:transparent}
+.tabs button{flex:none;min-height:33px;border:0;background:none;color:var(--mut);padding:2px 10px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs button[aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
 /* 헤더 두 줄 구조: 윗줄 왼쪽은 배경 없는 얇은 소문자 영문 로고 글자만, 오른쪽 끝은 실시간 상태·로그인(아래 접속자 표시). 아랫줄은 탭 한 줄 — 넘치면 탭 영역만 가로 스크롤 */
 .hd-t{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-width:0}
 .brand{position:relative;flex:none;display:inline-flex;align-items:center;background:none;color:var(--tx);font-size:23px;font-weight:300;letter-spacing:-.015em;line-height:1;white-space:nowrap;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;text-decoration:none;cursor:pointer}
@@ -669,7 +668,7 @@ tr.grp td{background:var(--sf2);color:var(--mut);font-weight:700;font-size:12px;
 @media(min-width:1024px){
 main{max-width:1400px;padding:4px 24px 56px}
 h1{font-size:24px}
-.tabs button,.tabs a[data-nav]{font-size:16.5px}
+.tabs button{font-size:16.5px}
 .sum b{font-size:20px}
 .pm{font-size:36px}
 th,td{padding:9px 10px}
@@ -689,7 +688,7 @@ th,td{padding:9px 10px}
 /* 모바일: 김프 7열 전부 표시, 종목명 말줄임 없음 */
 @media(max-width:520px){
 main{padding:2px 16px 40px}
-.tabs button,.tabs a[data-nav]{font-size:14.5px;padding:2px 7px}
+.tabs button{font-size:14.5px;padding:2px 7px}
 .sum div{padding:10px 12px}
 .sum b{font-size:16px}
 .xsum div{padding:10px 12px}
@@ -1407,7 +1406,7 @@ body{font-size:13px}
 h1{font-size:20px}
 h2{font-size:15px}
 .sub{font-size:12px}
-.tabs button,.tabs a[data-nav]{font-size:14.5px}
+.tabs button{font-size:14.5px}
 .note{font-size:11.5px}
 .pair button{font-size:12.5px}
 .sum b,.xsum b{font-size:16px}
@@ -1442,7 +1441,7 @@ td small{font-size:11px}
 .tvmsg b{font-size:14px}
 }
 @media(max-width:520px){
-.tabs button,.tabs a[data-nav]{font-size:13.5px}
+.tabs button{font-size:13.5px}
 /* 김프 표: 두 줄 행의 글자 크기와 자간을 한 단계로 */
 .kp7 th{font-size:10.5px}
 .kp7 td{font-size:11.5px}
@@ -1488,8 +1487,8 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 .brand{font-size:24px}
 /* 1) 탭 바: 선택 탭은 초록 채워진 pill, 비선택은 회색 글자 */
 .hd .tabs{gap:4px;padding:6px 0 9px;align-items:center}
-.hd .tabs button,.hd .tabs a[data-nav]{min-height:40px;padding:7px 16px;border:0;border-bottom:0;border-radius:999px;font-size:15.5px;font-weight:700;color:var(--mut);background:transparent;transition:background-color .18s ease,color .18s ease}
-.hd .tabs button[aria-pressed="true"],.hd .tabs a[data-nav][aria-pressed="true"]{background:#16c784;color:#04160d;font-weight:800;border-bottom-color:transparent;box-shadow:0 4px 14px rgba(22,199,132,.25)}
+.hd .tabs button{min-height:40px;padding:7px 16px;border:0;border-bottom:0;border-radius:999px;font-size:15.5px;font-weight:700;color:var(--mut);background:transparent;transition:background-color .18s ease,color .18s ease}
+.hd .tabs button[aria-pressed="true"]{background:#16c784;color:#04160d;font-weight:800;border-bottom-color:transparent;box-shadow:0 4px 14px rgba(22,199,132,.25)}
 /* 2) 홈 상단 히어로 (모바일에서만 표시) */
 .m-hero{display:block;padding:24px 4px 22px}
 .m-hero-t{font-size:34px;line-height:1.16;font-weight:800;letter-spacing:-.035em;margin:0;color:var(--tx)}
@@ -1547,7 +1546,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 /* 모바일 글자 크기 한 단계 축소·통일(2026-11-11 추가): 위 리디자인 규칙과 같은 선택자로 뒤에서 덮어
    탭·히어로·지수 타일·김프 표의 큰 글자들을 조금씩 작게 내리고, 표 행 세로 여백을 9px로 맞춘다 */
 @media(max-width:720px){
-.hd .tabs button,.hd .tabs a[data-nav]{font-size:14px}
+.hd .tabs button{font-size:14px}
 .m-hero-t{font-size:30px}
 .m-hero-sub{font-size:13.5px}
 #ph .ixt small{font-size:12px}
@@ -1564,7 +1563,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pf .prow>div{padding-top:9px;padding-bottom:9px}
 }
 @media(max-width:720px) and (prefers-reduced-motion:reduce){
-.hd .tabs button,.hd .tabs a[data-nav]{transition:none}
+.hd .tabs button{transition:none}
 }
 </style>
 <style>
@@ -2075,7 +2074,6 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pa .pasplit{gap:18px}
 }
 </style>
-
 <style>
 /* 김프 탭 폭 맞춤 (2026-11-14): 양옆 여백을 홈·다른 탭과 같은 크기로 — 두 칸이 본문 폭 전체를 채운다 (데스크톱만) */
 @media (min-width:721px){
@@ -2128,6 +2126,21 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 @media(min-width:721px){
 #pa .pasplit{grid-template-columns:minmax(0,350px) minmax(0,350px);justify-content:start;justify-items:stretch;margin-left:0;margin-right:0}
 }
+</style>
+<style>
+/* ===== 페이지 분리 (2026-11-16 사용자 지시): 홈은 그대로, 나머지 메뉴는 각자 페이지 주소를 가진 링크 =====
+   홈 #/ · 암호화폐 #/crypto · 국내주식 #/kr · 미국주식 #/us · 국내지표 #/korea · 해외지표 #/usa.
+   보이는 메뉴가 <button>에서 <a>로 바뀌었으므로, 기존 .tabs button 규칙과 똑같은 모양을
+   링크에도 적용한다 — 데스크톱은 밑줄 탭, 폰(720px 이하)은 선택된 메뉴가 초록 pill.
+   특이성을 기존 규칙보다 높게 잡아 이 블록 하나로 전 구간을 덮는다 */
+.hd .tabs a[data-nav]{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:33px;border:0;border-bottom:2px solid transparent;background:none;color:var(--mut);padding:2px 10px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:-1px;white-space:nowrap;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.hd .tabs a[data-nav][aria-pressed="true"]{color:var(--tx);font-weight:800;border-bottom-color:var(--ac)}
+@media(min-width:1024px){.hd .tabs a[data-nav]{font-size:16.5px}}
+@media(max-width:720px){
+.hd .tabs a[data-nav]{min-height:40px;padding:7px 16px;border:0;border-bottom:0;border-radius:999px;font-size:14px;font-weight:700;color:var(--mut);background:transparent;margin-bottom:0;transition:background-color .18s ease,color .18s ease}
+.hd .tabs a[data-nav][aria-pressed="true"]{background:#16c784;color:#04160d;font-weight:800;box-shadow:0 4px 14px rgba(22,199,132,.25)}
+}
+@media(max-width:720px) and (prefers-reduced-motion:reduce){.hd .tabs a[data-nav]{transition:none}}
 </style>
 <style>
 /* ===== 암호화폐 탭 세 칸 나누기 (2026-11-17 사용자 지시) =====
@@ -2256,9 +2269,34 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    main:has() 방식은 쓰지 않아 다른 탭이 열려 있어도 걸리지 않는다 */
 #pa{max-width:1100px;margin-left:auto;margin-right:auto}
 </style>
+<style>
+/* ===== 암호화폐 탭 상단 작은 카테고리 칸 (사용자 지시): 코인 타일 띠 바로 위 오른쪽에
+   국내거래소·에어드랍·밈·DEX·LP 다섯 칸을 작게 붙인다. 기존 칩과 같은 색 체계를 쓰고
+   폰에서는 오른쪽 정렬 그대로 줄바꿈만 허용해 가로 스크롤이 생기지 않게 한다 */
+#pa .cxcats{display:flex;justify-content:flex-end;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 6px}
+#pa .cxcat{display:inline-flex;align-items:center;min-height:24px;padding:2px 9px;border:1px solid var(--bd);border-radius:7px;background:var(--sf);color:var(--mut);font-family:inherit;font-size:11.5px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer}
+#pa .cxcat:hover{color:var(--tx);border-color:var(--mut)}
+#pa .cxcat[aria-pressed="true"]{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+/* 카테고리 전용 화면: 칩을 누르면 코인 타일 띠·세 칸이 사라지고 위쪽 칩 줄만
+   남는다. 화면 안은 비워 둔다 — 내용은 각 화면의 .cxview-body 안에 따로 넣는다 */
+#pa .cxstrip[hidden],#pa .pasplit[hidden]{display:none}
+#pa .cxview[hidden]{display:none}
+/* 국내거래소 화면: 업비트·빗썸 두 칸을 나란히 두고(폰에서는 위아래로 쌓음),
+   각 칸 안 목록은 칸 안에서만 스크롤한다 — 세 칸 목록과 같은 방식 */
+#pa .cxexgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+@media(max-width:720px){#pa .cxexgrid{grid-template-columns:1fr}}
+#pa .cxexbox{border:1px solid var(--bd);border-radius:12px;background:var(--sf);padding:10px;min-width:0}
+#pa .cxexhd{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+#pa .cxexti{font-size:14.5px;font-weight:800;color:var(--tx)}
+#pa .cxexn{font-size:12.5px;font-weight:700;color:var(--mut)}
+#pa .cxexwrap{max-height:520px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+#pa .cxexwrap::-webkit-scrollbar{display:none;width:0;height:0}
+#pa .cxtab td b{display:block;font-size:13.5px}
+#pa .cxtab td small{display:block;color:var(--mut);font-size:11px}
+</style>
 </head>
 <body>
-<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="gsearch"><input id="gq" type="text" placeholder="검색" aria-label="사이트 검색" autocomplete="off"><div class="gsres" id="gsres" hidden></div></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><a href="/" data-nav="home" aria-pressed="true">홈</a><a href="/crypto" data-nav="crypto" aria-pressed="false">암호화폐</a><a href="/kr" data-nav="krstock" aria-pressed="false">국내주식</a><a href="/us" data-nav="usstock" aria-pressed="false">미국주식</a><a href="/korea" data-nav="kridx" aria-pressed="false">국내지표</a><a href="/usa" data-nav="usidx" aria-pressed="false">해외지표</a><button data-t="ph" class="tabsec" aria-pressed="true">홈</button><button data-t="pa" class="tabsec" aria-pressed="false">김프</button><button data-t="pb" class="tabsec" aria-pressed="false">해외</button><button data-t="pg" class="tabsec" aria-pressed="false">원자재</button><button data-t="pf" class="tabsec" aria-pressed="false">펀딩비</button><button data-t="pc" class="tabsec" aria-pressed="false">비교</button><button data-t="pi" class="tabsec" aria-pressed="false">지표</button><button data-t="pk" class="tabsec" aria-pressed="false">커뮤니티</button><button data-t="p-kridx" class="tabsec" aria-pressed="false">국내지표</button><button data-t="p-usidx" class="tabsec" aria-pressed="false">해외지표</button><button data-t="p-market" class="tabsec" aria-pressed="false">시장</button><button data-t="p-kospi" class="tabsec" aria-pressed="false">코스피</button><button data-t="p-kosdaq" class="tabsec" aria-pressed="false">코스닥</button><button data-t="p-kr" class="tabsec" aria-pressed="false">국내주식</button><button data-t="p-usstock" class="tabsec" aria-pressed="false">미국주식</button><button data-t="p-nasdaq" class="tabsec" aria-pressed="false">나스닥</button><button data-t="p-spx" class="tabsec" aria-pressed="false">S&P</button><button data-t="p-etf" class="tabsec" aria-pressed="false">ETF</button><button data-t="p-calc" class="tabsec" aria-pressed="false">계산기</button></div></div>
+<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="gsearch"><input id="gq" type="text" placeholder="검색" aria-label="사이트 검색" autocomplete="off"><div class="gsres" id="gsres" hidden></div></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><a href="#/" data-nav="home" data-page="" aria-pressed="true">홈</a><a href="#/crypto" data-nav="crypto" data-page="crypto" aria-pressed="false">암호화폐</a><a href="#/kr" data-nav="krstock" data-page="kr" aria-pressed="false">국내주식</a><a href="#/us" data-nav="usstock" data-page="us" aria-pressed="false">미국주식</a><a href="#/korea" data-nav="kridx" data-page="korea" aria-pressed="false">국내지표</a><a href="#/usa" data-nav="usidx" data-page="usa" aria-pressed="false">해외지표</a><button data-t="ph" class="tabsec" aria-pressed="true">홈</button><button data-t="pa" class="tabsec" aria-pressed="false">암호화폐</button><button data-t="pb" class="tabsec" aria-pressed="false">해외</button><button data-t="pg" class="tabsec" aria-pressed="false">원자재</button><button data-t="pf" class="tabsec" aria-pressed="false">펀딩비</button><button data-t="pc" class="tabsec" aria-pressed="false">비교</button><button data-t="pi" class="tabsec" aria-pressed="false">지표</button><button data-t="pk" class="tabsec" aria-pressed="false">커뮤니티</button><button data-t="p-kridx" class="tabsec" aria-pressed="false">국내지표</button><button data-t="p-usidx" class="tabsec" aria-pressed="false">해외지표</button><button data-t="p-market" class="tabsec" aria-pressed="false">시장</button><button data-t="p-kospi" class="tabsec" aria-pressed="false">코스피</button><button data-t="p-kosdaq" class="tabsec" aria-pressed="false">코스닥</button><button data-t="p-kr" class="tabsec" aria-pressed="false">국내주식</button><button data-t="p-usstock" class="tabsec" aria-pressed="false">미국주식</button><button data-t="p-nasdaq" class="tabsec" aria-pressed="false">나스닥</button><button data-t="p-spx" class="tabsec" aria-pressed="false">S&P</button><button data-t="p-etf" class="tabsec" aria-pressed="false">ETF</button><button data-t="p-calc" class="tabsec" aria-pressed="false">계산기</button></div></div>
 <main>
 
 <script>
@@ -2304,7 +2342,7 @@ var nl=p.lang==="en"?"en":"ko";if(nl!==LANG){LANG=nl;try{localStorage.setItem("h
 applyLang()};
 if(window.matchMedia){var mm=window.matchMedia("(prefers-color-scheme: dark)");if(mm.addEventListener)mm.addEventListener("change",syncThBtn)}
 var D={
-"홈":"Home","김프":"Kimchi Prem.","암호화폐":"Crypto","이더리움":"Ethereum","테더":"Tether","유에스디코인":"USD Coin","엑스알피(리플)":"XRP (Ripple)","솔라나":"Solana","트론":"TRON","비앤비":"BNB","주요 코인":"Major Coins","해외":"Global","원자재":"Commodities","펀딩비":"Funding","비교":"Compare","지표":"Indicators","커뮤니티":"Community","게시물":"Posts","국내지표":"Domestic Indices","해외지표":"Global Indices","미국주식":"US Stocks","시장":"Market","코스피 종목만 보는 중":"Showing KOSPI stocks only","코스닥 종목만 보는 중":"Showing KOSDAQ stocks only","전체 보기":"Show all","코스닥 종목은 현재 암호화폐 탭에 없어요":"No KOSDAQ stocks in the Crypto tab yet",
+"홈":"Home","김프":"Kimchi Prem.","암호화폐":"Crypto","이더리움":"Ethereum","테더":"Tether","유에스디코인":"USD Coin","엑스알피(리플)":"XRP (Ripple)","솔라나":"Solana","트론":"TRON","비앤비":"BNB","주요 코인":"Major Coins","해외":"Global","원자재":"Commodities","펀딩비":"Funding","비교":"Compare","지표":"Indicators","커뮤니티":"Community","게시물":"Posts","국내지표":"Domestic Indices","해외지표":"Global Indices","미국주식":"US Stocks","국내거래소":"Korean Exchanges","에어드랍":"Airdrop","밈":"Meme Coins","아직 등록된 내용이 없어요.":"No content has been added yet.","시장":"Market","코스피 종목만 보는 중":"Showing KOSPI stocks only","코스닥 종목만 보는 중":"Showing KOSDAQ stocks only","전체 보기":"Show all","코스닥 종목은 현재 암호화폐 탭에 없어요":"No KOSDAQ stocks in the Crypto tab yet",
 "주요":"Major","아시아":"Asia","유럽":"Europe","검색":"Search","사이트 검색":"Search the site","지수 카테고리":"Index Categories",
 "실시간":"Live","연결 중…":"Connecting…","로그인":"Log in","접속자":"Online","명":"","프로필 설정":"Profile settings",
 "코스피":"KOSPI","코스닥":"KOSDAQ","나스닥":"NASDAQ","다우":"Dow","달러/원":"USD/KRW","원유":"Crude Oil",
@@ -2332,7 +2370,7 @@ var D={
 "금":"Gold","은":"Silver","구리":"Copper","유가":"Oil","차트보기":"Show Chart","차트접기":"Hide Chart",
 "금 (GOLD)":"Gold (GOLD)","은 (SILVER)":"Silver (SILVER)","구리 (COPPER)":"Copper (COPPER)","유가 (WTI 원유)":"Oil (WTI Crude)",
 "국제 현물 · 트로이온스(oz) 기준 · gold-api.com":"Intl spot · per troy ounce (oz) · gold-api.com","국제 현물 · 파운드(lb) 기준 · gold-api.com":"Intl spot · per pound (lb) · gold-api.com","국제 선물 · 배럴(bbl) 기준 · NYMEX WTI":"Intl futures · per barrel (bbl) · NYMEX WTI",
-"국내시세 출처: 한국금거래소 고시 · 2026-11-13":"Domestic prices: Korea Gold Exchange notice · 2026-11-13","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 9월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Sep 2026 (monthly notice)",
+"국내시세 출처: 한국금거래소 고시 · 2026-11-17":"Domestic prices: Korea Gold Exchange notice · 2026-11-17","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 9월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Sep 2026 (monthly notice)",
 "유가는 국내 고시 가격이 없어 김프를 표시하지 않습니다. 국제 시세(WTI) 기준입니다.":"Oil has no domestic posted price, so no Kimchi Premium is shown. Based on international (WTI) prices.","국내 고시 기준 · 하루 1회 갱신":"Domestic official price · updated daily","국제 실시간 시세":"Global live price",
 "김프 (국내 vs 국제 환산)":"Kimchi Prem. (Domestic vs Intl)","국내 유통가 (1kg)":"Domestic price (1kg)","국제 환산가 (1kg)":"Intl converted price (1kg)","국내 살 때 (1돈)":"Domestic buy (1 don)","국내 팔 때 (1돈)":"Domestic sell (1 don)","국제 원화 환산 (1배럴)":"Intl conversion (1 barrel)","당일 고가 (1배럴)":"Day high (1 barrel)","당일 저가 (1배럴)":"Day low (1 barrel)","국내 · 1kg":"Domestic · 1kg","국제 환산 · 1kg":"Intl conv. · 1kg","국내 · 팔 때 1돈":"Domestic · Sell 1 don","국제 환산 · 1돈":"Intl conv. · 1 don",
 "김프 = (국내 가격 ÷ 국제 환산가 − 1) × 100":"Kimchi Prem. = (Domestic price ÷ Intl converted price − 1) × 100","+면 국내가 더 비싸고, −면 국내가 더 쌉니다.":"Positive means the domestic price is higher; negative means it is cheaper.",
@@ -2567,6 +2605,7 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 })();
 </script>
 <section id="pa" hidden>
+<div class="cxcats" role="group" aria-label="암호화폐 카테고리"><button type="button" class="cxcat" data-cx="krex" aria-pressed="false">국내거래소</button><button type="button" class="cxcat" data-cx="airdrop" aria-pressed="false">에어드랍</button><button type="button" class="cxcat" data-cx="meme" aria-pressed="false">밈</button><button type="button" class="cxcat" data-cx="dex" aria-pressed="false">DEX</button><button type="button" class="cxcat" data-cx="lp" aria-pressed="false">LP</button></div>
 <div class="cxstrip"><div class="cxtiles" id="cxtiles" aria-label="주요 코인"></div></div>
 <div class="pasplit"><div class="paleft pabox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">한국 주식</span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="한국 주식 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button></div><span class="xselw xcsw"><button type="button" class="xsel" id="xcsel" aria-haspopup="listbox" aria-expanded="false" aria-label="비교 거래소"><span class="xnm" id="xcnm">Hyperliquid</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="xcmenu" role="listbox" aria-label="비교 거래소" hidden><button type="button" role="option" data-x="hl" aria-selected="true">Hyperliquid</button><button type="button" role="option" data-x="bn" aria-selected="false">Binance</button><button type="button" role="option" data-x="okx" aria-selected="false">OKX</button><button type="button" role="option" data-x="by" aria-selected="false">Bybit</button></div></span></div>
 <input id="fx" type="hidden" value="1,354.84">
@@ -2642,7 +2681,103 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 </div>
 <div class="pathird pabox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">전체 종목</span><span class="pabox-n" id="aball-n"></span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="전체 종목 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="pabox-bd"><div class="absec" id="absec-kr"><div class="abpair"><div class="abcell"><span class="abbox-t">기준 거래소</span><span class="xselw absw"><button type="button" class="xsel" id="absel-b-kr" aria-haspopup="listbox" aria-expanded="false" aria-label="전체 종목 기준 거래소"><span class="xnm" id="abnm-b-kr">Hyperliquid</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="ab-base-kr" role="listbox" aria-label="전체 종목 기준 거래소" hidden><button type="button" role="option" data-abx="us" aria-selected="false">나스닥</button><button type="button" role="option" data-abx="hl" aria-selected="true">Hyperliquid</button><button type="button" role="option" data-abx="bn" aria-selected="false">Binance</button><button type="button" role="option" data-abx="okx" aria-selected="false">OKX</button><button type="button" role="option" data-abx="by" aria-selected="false">Bybit</button></div></span></div><div class="abcell"><span class="abbox-t">비교 거래소</span><span class="xselw absw"><button type="button" class="xsel" id="absel-c-kr" aria-haspopup="listbox" aria-expanded="false" aria-label="전체 종목 비교 거래소"><span class="xnm" id="abnm-c-kr">Binance</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="ab-cmp-kr" role="listbox" aria-label="전체 종목 비교 거래소" hidden><button type="button" role="option" data-abx="bn" aria-selected="true">Binance</button><button type="button" role="option" data-abx="hl" aria-selected="false">Hyperliquid</button><button type="button" role="option" data-abx="okx" aria-selected="false">OKX</button><button type="button" role="option" data-abx="by" aria-selected="false">Bybit</button><button type="button" role="option" data-abx="us" aria-selected="false">나스닥</button></div></span></div></div><div class="wrap"><table class="kp kp4"><thead><tr><th>이름</th><th>김프</th><th>변동</th></tr></thead><tbody id="ab3kr"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div>
 </div>
+<div class="cxview" id="cxv-krex" data-cxview="krex" hidden><div class="cxview-body" id="cxbody-krex"><div class="cxexgrid"><div class="cxexbox"><div class="cxexhd"><span class="cxexti">업비트</span><span class="cxexn" id="cxup-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxup-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div><div class="cxexbox"><div class="cxexhd"><span class="cxexti">빗썸</span><span class="cxexn" id="cxbt-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxbt-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div></div>
+<div class="cxview" id="cxv-airdrop" data-cxview="airdrop" hidden><div class="cxview-body" id="cxbody-airdrop"></div></div>
+<div class="cxview" id="cxv-meme" data-cxview="meme" hidden><div class="cxview-body" id="cxbody-meme"></div></div>
+<div class="cxview" id="cxv-dex" data-cxview="dex" hidden><div class="cxview-body" id="cxbody-dex"></div></div>
+<div class="cxview" id="cxv-lp" data-cxview="lp" hidden><div class="cxview-body" id="cxbody-lp"></div></div>
 </section>
+<script>
+/* ===== 암호화폐 카테고리 화면 전환 (사용자 지시) =====
+   상단 작은 칸(국내거래소·에어드랍·밈·DEX·LP)을 누르면 코인 타일 띠와 세 칸이
+   사라지고 위쪽 칩 줄만 남는다 — 카테고리 화면(.cxview) 안은 국내거래소만
+   업비트·빗썸 전체 종목이 들어가고, 나머지 화면은 비워 둔다.
+   칩 줄은 그대로 남아 다른 카테고리로 바로 옮길 수 있고, 눌려 있는 칩을
+   다시 누르면 원래 암호화폐 화면으로 돌아온다. 주소에는
+   #/crypto?cx=키 형태로 남겨 뒤로가기·새로고침에도 같은 화면이 유지되고,
+   암호화폐 탭으로 새로 들어오면(주소 파라미터 없음) 원래 화면이 열린다.
+   각 화면의 내용은 .cxview-body(#cxbody-키) 안에 따로 넣는다 */
+(function(){
+var pa=document.getElementById("pa");if(!pa)return;
+var strip=pa.querySelector(".cxstrip"),split=pa.querySelector(".pasplit");
+var cats=Array.prototype.slice.call(pa.querySelectorAll(".cxcat"));
+var views={};
+pa.querySelectorAll("[data-cxview]").forEach(function(v){views[v.getAttribute("data-cxview")]=v});
+var cur=null;
+function apply(key){
+cur=(key&&views[key])?key:null;
+if(strip)strip.hidden=!!cur;
+if(split)split.hidden=!!cur;
+Object.keys(views).forEach(function(k){views[k].hidden=(k!==cur)});
+cats.forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-cx")===cur))});
+}
+function go(key,push){
+apply(key);
+if(push){try{history.pushState(null,"",cur?"#/crypto?cx="+cur:"#/crypto")}catch(e){}}
+window.scrollTo(0,0);
+}
+cats.forEach(function(b){b.addEventListener("click",function(){var k=b.getAttribute("data-cx");go(cur===k?null:k,true)})});
+function fromHash(){var m=(location.hash||"").match(/[?&]cx=([a-z]+)/);return (m&&views[m[1]])?m[1]:null}
+function syncFromHash(){if(pa.hidden)return;apply(fromHash())}
+window.addEventListener("hashchange",function(){setTimeout(syncFromHash,0)});
+window.addEventListener("popstate",function(){setTimeout(syncFromHash,0)});
+if(window.MutationObserver)new MutationObserver(function(){syncFromHash()}).observe(pa,{attributes:true,attributeFilter:["hidden"]});
+/* 상단 '암호화폐' 탭을 누르면 카테고리 화면에서 원래 암호화폐 화면으로 돌아온다.
+   탭 클릭은 pushState로만 주소를 바꿔 hashchange가 울리지 않고, 이미 암호화폐
+   화면이 열려 있으면 #pa의 hidden도 바뀌지 않아 syncFromHash만으로는 못 돌아오므로
+   탭 클릭을 직접 받아 apply(null)로 되돌린다 */
+window.__cxReset=function(){apply(null)};
+var navCx=document.querySelector('#tabs [data-nav="crypto"]');
+if(navCx)navCx.addEventListener("click",function(){apply(null)});
+syncFromHash();
+})();
+</script>
+<script>
+/* ===== 국내거래소 화면: 업비트·빗썸 전체 종목 (사용자 지시) =====
+   국내거래소 카테고리 화면이 처음 열릴 때 두 거래소의 공개 시세를 불러와
+   KRW 마켓 전체 종목을 거래대금 순으로 보여준다. 업비트는 마켓 목록
+   (한글 이름 포함)과 현재가를, 빗썸은 전체 티커를 읽는다. 화면이 열려
+   있는 동안 60초마다 다시 읽고, 실패하면 다시 시도 버튼을 보여준다 */
+(function(){
+var view=document.getElementById("cxv-krex");if(!view)return;
+var pa=document.getElementById("pa");
+var upB=document.getElementById("cxup-b"),btB=document.getElementById("cxbt-b");
+var upN=document.getElementById("cxup-n"),btN=document.getElementById("cxbt-n");
+if(!upB||!btB)return;
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function fp(v){v=Number(v);if(!isFinite(v))return "—";return v.toLocaleString("en-US",{maximumFractionDigits:v>=1?2:4})}
+function fc(r){r=Number(r);if(!isFinite(r))return '<span class="na">—</span>';var cls=r>0?"up":r<0?"dn":"";return '<span class="'+cls+'">'+(r>0?"+":"")+r.toFixed(2)+"%</span>"}
+function rowHtml(nm,sym,price,chg){return '<tr><td><b>'+esc(nm)+'</b>'+(sym?'<small>'+esc(sym)+"</small>":"")+"</td><td>"+fp(price)+"</td><td>"+fc(chg)+"</td></tr>"}
+function failHtml(which){return '<tr><td colspan="3">불러오지 못했어요 <button type="button" class="abretry" data-cxretry="'+which+'">다시 시도</button></td></tr>'}
+function koName(t){try{var c=window.CMPNM&&window.CMPNM[t];if(c)return c[1]||""}catch(e){}try{if(typeof NM!=="undefined"&&NM[t])return NM[t]}catch(e){}return ""}
+function loadUp(){
+fetch("https://api.upbit.com/v1/market/all?isDetails=false").then(function(r){if(!r.ok)throw new Error("upbit market "+r.status);return r.json()}).then(function(list){
+var names={};var mkts=[];
+(list||[]).forEach(function(m){if(m&&m.market&&m.market.indexOf("KRW-")===0){names[m.market]=m.korean_name||m.market.slice(4);mkts.push(m.market)}});
+if(!mkts.length)throw new Error("upbit empty");
+return fetch("https://api.upbit.com/v1/ticker?markets="+mkts.join(",")).then(function(r){if(!r.ok)throw new Error("upbit ticker "+r.status);return r.json()}).then(function(rows){
+rows=(rows||[]).slice().sort(function(a,b){return (b.acc_trade_price_24h||0)-(a.acc_trade_price_24h||0)});
+if(upN)upN.textContent=rows.length+"개";
+upB.innerHTML=rows.map(function(x){return rowHtml(names[x.market]||x.market.slice(4),x.market.slice(4),x.trade_price,Number(x.signed_change_rate)*100)}).join("")||'<tr><td colspan="3">표시할 종목이 없어요</td></tr>';
+});
+}).catch(function(){upB.innerHTML=failHtml("up")});
+}
+function loadBt(){
+fetch("https://api.bithumb.com/public/ticker/ALL_KRW").then(function(r){if(!r.ok)throw new Error("bithumb "+r.status);return r.json()}).then(function(j){
+var d=(j&&j.data)||{};var rows=[];
+Object.keys(d).forEach(function(k){if(k==="date")return;var x=d[k];if(!x)return;rows.push({sym:k,price:x.closing_price,chg:x.fluctate_rate_24H,tv:Number(x.acc_trade_value_24H)||0})});
+rows.sort(function(a,b){return b.tv-a.tv});
+if(btN)btN.textContent=rows.length+"개";
+btB.innerHTML=rows.map(function(x){var ko=koName(x.sym);return rowHtml(ko||x.sym,ko?x.sym:"",x.price,x.chg)}).join("")||'<tr><td colspan="3">표시할 종목이 없어요</td></tr>';
+}).catch(function(){btB.innerHTML=failHtml("bt")});
+}
+[upB,btB].forEach(function(tb){tb.addEventListener("click",function(e){var b=e.target.closest("[data-cxretry]");if(!b)return;if(b.getAttribute("data-cxretry")==="up")loadUp();else loadBt()})});
+var started=false;
+function start(){if(started)return;started=true;loadUp();loadBt();setInterval(function(){if(!view.hidden&&!(pa&&pa.hidden)&&!document.hidden){loadUp();loadBt()}},60000)}
+if(window.MutationObserver)new MutationObserver(function(){if(!view.hidden)start()}).observe(view,{attributes:true,attributeFilter:["hidden"]});
+if(!view.hidden)start();
+})();
+</script>
 <script>
 /* ===== 암호화폐 탭 세 칸 접기/펼치기 + 세 번째 칸 통합 목록 (2026-11-17) =====
    접기: 각 칸 맨 위 제목 줄의 작은 화살표 버튼을 누르면 그 칸 자체가 제목 줄
@@ -2781,14 +2916,19 @@ R.forEach(function(r){var can=r[1]||(BR[r[0]]?toCan("bn",BR[r[0]]):null);add(can
 if(typeof NQ!=="undefined"&&NQ&&NQ.items){
 NQ.items.forEach(function(it){if(it.t)add(String(it.t).replace(/\./g,""),true)})}
 return out.filter(function(can){return stock[can]})}
-/* 표시 이름: 한국 주식 이름 → 거래소별 이름 사전 → 비교 탭 이름 사전 →
-   나스닥 짧은 이름 순으로 찾고, 없으면 티커를 그대로 쓴다 */
+/* 표시 이름은 한글로: 한국 주식 한글 이름표(ABEN) → 한국 주식 이름(R) →
+   거래소별 이름 사전 → 비교 탭 이름 사전(한글 우선) →
+   나스닥 짧은 이름 순으로 찾고, 없으면 티커를 그대로 쓴다.
+   ABENN은 비워 둔다 — R·거래소 사전의 한글 이름을 그대로 쓰기 위해서다 */
+var ABEN={SKHX:"SK하이닉스",SKHY:"SK하이닉스",SKHYNIX:"SK하이닉스",SMSN:"삼성전자",SAMSUNG:"삼성전자",HYUNDAI:"현대차",SAMSUNGEM:"삼성전기",HANMI:"한미반도체",LGELECTRONICS:"LG전자",NAVER:"NAVER",KODEX200:"KODEX 200",EWY:"한국 ETF",KORU:"한국 3배 ETF"};
+var ABENN={};
 function abName(can){
+if(ABEN[can])return ABEN[can];
 if(typeof R!=="undefined"&&R&&typeof BR!=="undefined"&&typeof toCan==="function"){
-for(var i=0;i<R.length;i++){var c2=R[i][1]||(BR[R[i][0]]?toCan("bn",BR[R[i][0]]):null);if(c2===can)return R[i][0]}}
+for(var i=0;i<R.length;i++){var c2=R[i][1]||(BR[R[i][0]]?toCan("bn",BR[R[i][0]]):null);if(c2===can)return ABENN[R[i][0]]||R[i][0]}}
 if(typeof EXN!=="undefined"&&typeof fromCan==="function"){
 var xs=["hl","bn","okx","by"];
-for(var j=0;j<xs.length;j++){var ex=EXN[xs[j]];if(ex&&ex.nm){var nm=ex.nm[fromCan(xs[j],can)];if(nm)return nm}}}
+for(var j=0;j<xs.length;j++){var ex=EXN[xs[j]];if(ex&&ex.nm){var nm=ex.nm[fromCan(xs[j],can)];if(nm)return ABENN[nm]||nm}}}
 try{var CD=window.CMPNM;if(CD&&CD[can]&&(CD[can][1]||CD[can][0]))return CD[can][1]||CD[can][0]}catch(e){}
 if(typeof NQ!=="undefined"&&NQ&&NQ.items&&typeof nqShortName==="function"){
 for(var k=0;k<NQ.items.length;k++){var it=NQ.items[k];if(it.t&&String(it.t).replace(/\./g,"")===can){var sn=nqShortName(it);if(sn)return sn}}}
@@ -2817,7 +2957,6 @@ var h="";
 for(var j=0;j<rows.length;j++)h+=abRow(rows[j]);
 if(!h)h=uni.length?'<tr><td colspan="3">기준 거래소에 있는 종목이 없어요</td></tr>':'<tr><td colspan="3">불러오는 중…</td></tr>';
 if(ab3kr._h!==h){ab3kr.innerHTML=h;ab3kr._h=h}
-
 abSetN("aball-n",rows.length,uni.length>0);
 }catch(e){}}
 /* 드롭다운 칸 동기화: 지금 고른 거래소를 버튼 칸 글자와 메뉴 선택 상태에 반영한다.
@@ -3125,6 +3264,25 @@ abRender();
 #p-usidx .ixt .ixc.dn{background:var(--dnbg);color:var(--dn)}
 #p-usidx .ixt .ixc.up::before{content:"▲";font-size:8px;margin-right:4px}
 #p-usidx .ixt .ixc.dn::before{content:"▼";font-size:8px;margin-right:4px}
+#p-usidx .uxnote{font-size:11.5px;color:var(--mut);line-height:1.65;margin:0 2px 14px}
+@media(min-width:721px) and (max-width:1023px){
+#p-usidx .uxstrip{padding:10px 12px 12px}
+#p-usidx .uxtiles{gap:5px}
+#p-usidx .ixt small{font-size:9.5px}
+#p-usidx .ixt b{font-size:11.5px}
+#p-usidx .ixt b.uxlong{font-size:10px}
+#p-usidx .ixt .ixc{font-size:9.5px;padding:1px 5px;margin-top:4px}
+#p-usidx .ixt .ixc.up::before,#p-usidx .ixt .ixc.dn::before{font-size:7px;margin-right:3px}
+}
+@media(max-width:720px){
+#p-usidx .uxstrip{background:none;border:0;border-radius:0;padding:0;margin:2px 0 10px}
+#p-usidx .uxtiles{display:flex;flex-wrap:nowrap;gap:10px;overflow-x:auto;overflow-y:hidden;padding-bottom:2px;scroll-snap-type:x proximity}
+#p-usidx .uxtiles .ixt{flex:0 0 148px;scroll-snap-align:start;background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px}
+#p-usidx .ixt small{font-size:13px;font-weight:700;color:var(--tx);gap:6px;margin-bottom:6px}
+#p-usidx .ixt b{font-size:24px;font-weight:800}
+#p-usidx .ixt b.uxlong{font-size:19px}
+#p-usidx .ixt .ixc{margin-top:9px;padding:4px 10px;font-size:13px;font-weight:800}
+}
 /* 해외지표 그룹 칸 (2026-11-16): 국내지표 그룹 칸(.kxgrid)과 같은 모양·열 배분으로 맞춘다 —
    데스크톱·미리보기에서는 항상 3열, 폰(720px 이하)에서만 1열로 쌓이고, 칸 안 열
    (지표·현재값·전월/전일·전년) 위치도 국내지표와 같은 값을 쓴다 */
@@ -3162,25 +3320,6 @@ abRender();
 #p-usidx .uxv{font-size:13px}
 #p-usidx .uxm{font-size:11.5px}
 }
-#p-usidx .uxnote{font-size:11.5px;color:var(--mut);line-height:1.65;margin:0 2px 14px}
-@media(min-width:721px) and (max-width:1023px){
-#p-usidx .uxstrip{padding:10px 12px 12px}
-#p-usidx .uxtiles{gap:5px}
-#p-usidx .ixt small{font-size:9.5px}
-#p-usidx .ixt b{font-size:11.5px}
-#p-usidx .ixt b.uxlong{font-size:10px}
-#p-usidx .ixt .ixc{font-size:9.5px;padding:1px 5px;margin-top:4px}
-#p-usidx .ixt .ixc.up::before,#p-usidx .ixt .ixc.dn::before{font-size:7px;margin-right:3px}
-}
-@media(max-width:720px){
-#p-usidx .uxstrip{background:none;border:0;border-radius:0;padding:0;margin:2px 0 10px}
-#p-usidx .uxtiles{display:flex;flex-wrap:nowrap;gap:10px;overflow-x:auto;overflow-y:hidden;padding-bottom:2px;scroll-snap-type:x proximity}
-#p-usidx .uxtiles .ixt{flex:0 0 148px;scroll-snap-align:start;background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px}
-#p-usidx .ixt small{font-size:13px;font-weight:700;color:var(--tx);gap:6px;margin-bottom:6px}
-#p-usidx .ixt b{font-size:24px;font-weight:800}
-#p-usidx .ixt b.uxlong{font-size:19px}
-#p-usidx .ixt .ixc{margin-top:9px;padding:4px 10px;font-size:13px;font-weight:800}
-}
 </style>
 <section id="p-usidx" hidden>
 <div class="uxstrip"><div class="uxtiles" id="uxtiles" aria-label="해외 핵심 지표"></div></div>
@@ -3201,15 +3340,7 @@ abRender();
 #p-usidx .fxsum small{display:block;color:var(--mut);font-size:11.5px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #p-usidx .fxsum b{display:block;font-size:17px;font-weight:800;letter-spacing:-.02em;line-height:1.3;white-space:nowrap}
 #p-usidx .fxsum span{display:block;font-size:11.5px;color:var(--mut);margin-top:1px;line-height:1.45}
-#p-usidx .fxcard{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px 14px 10px;margin-bottom:10px}
-#p-usidx .fxside{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px 14px 10px;margin-bottom:10px}
-#p-usidx .fxside .fxst{font-size:14.5px;font-weight:700;margin:0 2px 10px}
-#p-usidx .fxsrow{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px;padding:7px 2px;border-top:1px solid var(--bd)}
-#p-usidx .fxsrow .fxsnm{font-weight:700;font-size:13.5px;white-space:nowrap}
-#p-usidx .fxsrow .fxsbp{font-size:12px;color:var(--mut);white-space:nowrap}
-#p-usidx .fxsrow .fxscnt{margin-left:auto;font-weight:800;font-size:14.5px;white-space:nowrap}
-#p-usidx .fxsrow .fxsdt{flex-basis:100%;font-size:11.5px;color:var(--mut);line-height:1.5}
-#p-usidx .fxsnote{font-size:11.5px;color:var(--mut);line-height:1.6;margin:10px 2px 4px}
+#p-usidx .fxcard{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 14px 8px;margin-bottom:10px}
 #p-usidx .fxchead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
 #p-usidx .fxchead b{font-size:14.5px;font-weight:700}
 #p-usidx .fxseg{margin-left:auto}
@@ -3219,8 +3350,27 @@ abRender();
 #p-usidx .fxleg .lg-line{width:16px;height:0;border-top:2.5px solid var(--tx)}
 #p-usidx .fxleg .lg-band{width:16px;height:9px;background:var(--tx);opacity:.16;border-radius:2px}
 #p-usidx .fxchart{position:relative}
+/* 차트 칸을 차트 너비에 맞춰 왼쪽에 붙이고, 오른쪽 빈칸에는 큰 폭 변동 용어 칸(.fxside)을 붙인다 —
+   두 칸을 한 줄(.fxrow)로 묶어 빈 공간이 남지 않게 한다 */
+#p-usidx .fxrow{display:flex;gap:10px;align-items:stretch;margin-bottom:10px}
+#p-usidx .fxrow .fxcard{flex:0 1 910px;min-width:0;margin-bottom:0}
+@media(min-width:721px){#p-usidx .fxchart{max-width:880px}}
+#p-usidx .fxside{flex:1 1 0;background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 14px 8px;min-width:0}
+#p-usidx .fxside h3{font-size:14.5px;font-weight:700;margin:2px 0 2px;line-height:1.35}
+#p-usidx .fxside .fxs-sub{font-size:11.5px;color:var(--mut);line-height:1.5;margin:0 0 6px}
+#p-usidx .fxs-row{display:flex;gap:10px;align-items:baseline;padding:7px 0;border-top:1px solid var(--bd)}
+#p-usidx .fxs-row:first-of-type{border-top:0}
+#p-usidx .fxs-main{flex:1 1 auto;min-width:0}
+#p-usidx .fxs-term{font-size:13.5px;font-weight:700;line-height:1.35;white-space:nowrap}
+#p-usidx .fxs-term .fxs-bp{font-weight:800;margin-left:5px;white-space:nowrap}
+#p-usidx .fxs-term .fxs-bp.up{color:var(--up)}
+#p-usidx .fxs-term .fxs-bp.dn{color:var(--dn)}
+#p-usidx .fxs-desc{display:block;font-size:11.5px;color:var(--mut);line-height:1.5;margin-top:1px}
+#p-usidx .fxs-cnt{flex:none;font-size:15px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+#p-usidx .fxs-cnt.zero{color:var(--mut)}
+#p-usidx .fxs-foot{font-size:11.5px;color:var(--mut);line-height:1.6;margin:6px 0 2px;border-top:1px solid var(--bd);padding-top:7px}
+@media(max-width:720px){#p-usidx .fxrow{flex-direction:column}#p-usidx .fxrow .fxcard{flex:none}#p-usidx .fxside{flex:none}}
 #p-usidx .fxchart svg{display:block;width:100%;height:auto}
-@media(min-width:721px){#p-usidx .fxrow{display:flex;gap:10px;align-items:stretch;margin-bottom:10px}#p-usidx .fxrow .fxcard{flex:none;width:910px;max-width:910px;margin-bottom:0}#p-usidx .fxchart{max-width:880px;margin-right:auto}#p-usidx .fxside{flex:1 1 auto;min-width:0;margin-bottom:0}}
 #p-usidx .fxtip{position:absolute;pointer-events:none;background:var(--tx);color:var(--bg);font-size:12px;font-weight:600;line-height:1.5;padding:6px 9px;border-radius:8px;white-space:nowrap;z-index:5;transform:translate(-50%,-115%)}
 #p-usidx .fxtip[hidden]{display:none}
 #p-usidx .fxcap{font-size:11.5px;color:var(--mut);line-height:1.6;margin:4px 2px 2px}
@@ -3247,8 +3397,11 @@ abRender();
 #p-usidx .fxtgl{display:inline-flex;align-items:center;gap:7px;background:none;border:0;padding:2px 0;min-height:0;font:inherit;font-size:14.5px;font-weight:700;color:var(--tx);cursor:pointer;text-align:left}
 #p-usidx .fxtgl .fxarr{font-size:10px;color:var(--mut);transition:transform .18s ease}
 #p-usidx .fxtgl[aria-expanded="false"] .fxarr{transform:rotate(-90deg)}
-#p-usidx .fxmbtn{padding:6px 9px}
-#p-usidx .fxchead .fxtt{font-size:14.5px;font-weight:700}
+/* 섹션 제목 옆 전체 접기 버튼 (화살표만, 조금 크게) */
+#p-usidx .fxmtgl{padding:4px 8px}
+#p-usidx .fxmtgl .fxarr{font-size:13px}
+/* 전체 접기 시 display:grid/flex 지정이 있어도 확실히 숨긴다 */
+#fxsec>[hidden]{display:none!important}
 #p-usidx .fxbody[hidden]{display:none}
 #p-usidx .fxcol .fxbox table th,#p-usidx .fxcol .fxbox table td{padding:7px 9px;font-size:12.5px}
 #p-usidx .fxcol .fxvote{white-space:normal;line-height:1.45}
@@ -3263,8 +3416,7 @@ abRender();
 }
 </style>
 <div class="fxsec" id="fxsec">
-<div class="fxhd"><h2>미국 기준금리 · FOMC 결정 이력</h2><button type="button" class="fxtgl fxmbtn" data-fxmaster aria-expanded="true" aria-label="FOMC 섹션 접기/펼치기"><span class="fxarr" aria-hidden="true">▾</span></button><span class="fxnext">다음 회의 2026년 12월 8–9일 · 결정 발표 12월 9일 (경제전망 SEP 포함)</span></div>
-<div id="fxall">
+<div class="fxhd"><h2>미국 기준금리 · FOMC 결정 이력</h2><button type="button" class="fxtgl fxmtgl" id="fxmtgl" aria-expanded="true" aria-label="FOMC 결정 이력 아래 내용 접기/펼치기"><span class="fxarr" aria-hidden="true">▾</span></button><span class="fxnext">다음 회의 2026년 12월 8–9일 · 결정 발표 12월 9일 (경제전망 SEP 포함)</span></div>
 <div class="fxsum">
 <div><small>현재 목표범위</small><b>3.75–4.00%</b><span>실효 연방기금금리 3.88% (11월 중순)</span></div>
 <div><small>최근 결정</small><b>동결</b><span>2026년 10월 28일 · 표결 10–2</span></div>
@@ -3273,23 +3425,24 @@ abRender();
 </div>
 <div class="fxrow">
 <div class="fxcard">
-<div class="fxchead"><b class="fxtt">연방기금금리 목표 추이</b><span class="pair fxseg" role="group" aria-label="차트 기간"><button type="button" data-fxfrom="1990" aria-pressed="true">1990~</button><button type="button" data-fxfrom="2008" aria-pressed="false">2008~</button><button type="button" data-fxfrom="2020" aria-pressed="false">2020~</button></span></div>
+<div class="fxchead"><b>연방기금금리 목표 추이</b><span class="pair fxseg" role="group" aria-label="차트 기간"><button type="button" data-fxfrom="1990" aria-pressed="true">1990~</button><button type="button" data-fxfrom="2008" aria-pressed="false">2008~</button><button type="button" data-fxfrom="2020" aria-pressed="false">2020~</button></span></div>
 <div class="fxbody">
 <div class="fxleg"><span><i class="lg-line"></i>목표 상단</span><span><i class="lg-band"></i>목표 범위 (2008년 12월부터 범위 방식)</span><span>2008년 12월 이전은 단일 목표금리</span></div>
 <div class="fxchart" id="fxchart"><div class="fxtip" id="fxtip" hidden></div></div>
 <p class="fxcap">기간 안 최고 상단은 1990년 8.25%, 최저는 0.25% (2008년 12월~2015년 12월, 2020년 3월~2022년 3월). 최근 고점은 2023년 7월 5.25–5.50%예요. 차트 위를 움직이면 결정일과 금리가 보여요.</p>
 </div>
 </div>
-<div class="fxside">
-<div class="fxst">역대 큰 폭 변동</div>
-<div class="fxsrow"><span class="fxsnm">울트라 스텝</span><span class="fxsbp">+100bp 인상</span><b class="fxscnt up">0회</b><span class="fxsdt">아직 한 번도 없어요</span></div>
-<div class="fxsrow"><span class="fxsnm">자이언트 스텝</span><span class="fxsbp">+75bp 인상</span><b class="fxscnt up">5회</b><span class="fxsdt">1994년 11월 15일 · 2022년 6월 15일 · 7월 27일 · 9월 21일 · 11월 2일</span></div>
-<div class="fxsrow"><span class="fxsnm">빅 스텝</span><span class="fxsbp">+50bp 인상</span><b class="fxscnt up">6회</b><span class="fxsdt">1994년 5월 17일 · 8월 16일 · 1995년 2월 1일 · 2000년 5월 16일 · 2022년 5월 4일 · 12월 14일</span></div>
-<div class="fxsrow"><span class="fxsnm">빅 컷</span><span class="fxsbp">−50bp 인하</span><b class="fxscnt dn">18회</b><span class="fxsdt">2001년에만 8회 · 2007–08년 4회 · 최근은 2024년 9월 18일</span></div>
-<div class="fxsrow"><span class="fxsnm">자이언트 컷</span><span class="fxsbp">−75bp 인하</span><b class="fxscnt dn">3회</b><span class="fxsdt">전부 2008년 — 1월 22일 · 3월 18일 · 12월 16일</span></div>
-<div class="fxsrow"><span class="fxsnm">울트라 컷</span><span class="fxsbp">−100bp 인하</span><b class="fxscnt dn">1회</b><span class="fxsdt">2020년 3월 15일 코로나 긴급 인하</span></div>
-<p class="fxsnote">보통의 25bp 움직임은 베이비 스텝(인상)·베이비 컷(인하)이라고 해요. 1990년 이후 베이비 스텝 41회·베이비 컷 36회예요.</p>
-</div>
+<aside class="fxside" aria-label="역대 큰 폭 금리 변동">
+<h3>역대 큰 폭 변동</h3>
+<p class="fxs-sub">1990년 이후 · 한 번에 50bp 이상 움직인 경우</p>
+<div class="fxs-row"><div class="fxs-main"><span class="fxs-term">울트라 스텝<span class="fxs-bp up">+100bp 인상</span></span><span class="fxs-desc">1990년 이후 한 번도 없었어요</span></div><span class="fxs-cnt zero">0회</span></div>
+<div class="fxs-row"><div class="fxs-main"><span class="fxs-term">자이언트 스텝<span class="fxs-bp up">+75bp 인상</span></span><span class="fxs-desc">1994년 11월 1회 · 2022년 6·7·9·11월 4회 연속</span></div><span class="fxs-cnt">5회</span></div>
+<div class="fxs-row"><div class="fxs-main"><span class="fxs-term">빅 스텝<span class="fxs-bp up">+50bp 인상</span></span><span class="fxs-desc">1994년 5·8월, 1995년 2월, 2000년 5월, 2022년 5·12월</span></div><span class="fxs-cnt">6회</span></div>
+<div class="fxs-row"><div class="fxs-main"><span class="fxs-term">빅 컷<span class="fxs-bp dn">−50bp 인하</span></span><span class="fxs-desc">2001~2002년에 9회 집중 · 최근은 2024년 9월 18일</span></div><span class="fxs-cnt">18회</span></div>
+<div class="fxs-row"><div class="fxs-main"><span class="fxs-term">자이언트 컷<span class="fxs-bp dn">−75bp 인하</span></span><span class="fxs-desc">전부 2008년 금융위기 — 1월 22일 · 3월 18일 · 12월 16일</span></div><span class="fxs-cnt">3회</span></div>
+<div class="fxs-row"><div class="fxs-main"><span class="fxs-term">울트라 컷<span class="fxs-bp dn">−100bp 인하</span></span><span class="fxs-desc">2020년 3월 15일 코로나 긴급 인하 (0–0.25%로)</span></div><span class="fxs-cnt">1회</span></div>
+<p class="fxs-foot">참고로 평소 한 번에 25bp 움직이는 건 베이비 스텝(인상 41회)·베이비 컷(인하 36회)이라고 불러요. 큰 폭 변동은 합쳐서 33회예요.</p>
+</aside>
 </div>
 <div class="fx2col">
 <div class="fxcol">
@@ -3337,15 +3490,17 @@ abRender();
 </div>
 <p class="fxnote">출처: 연방준비제도 이사회 Open Market Operations (목표금리 변경표) · 세인트루이스 연준 FRED DFEDTAR·DFEDTARU·DFEDTARL, 2026년 11월 15일 조회. 날짜는 FOMC 성명 발표일(결정일) 기준이고, 새 범위는 다음 날부터 시행돼요. 2008년 12월 16일 이전은 범위가 아닌 단일 목표금리예요. 긴급회의 결정(2001년 9월 17일, 2008년 1월 22일, 2020년 3월 3일·15일 등)도 포함했어요.</p>
 </div>
-</div>
 </section>
 <section id="p-market" hidden></section>
 <section id="p-kospi" hidden></section>
 <section id="p-kosdaq" hidden></section>
-<section id="p-kr" hidden><div id="krLoading" style="padding:36px 16px;text-align:center;color:var(--mut);font-size:14px">국내주식 불러오는 중…</div><iframe id="krFrame" title="국내주식" data-src="kr.html" style="width:100%;border:0;display:block" scrolling="no"></iframe></section>
-<script>(function(){var sec=document.getElementById("p-kr"),fr=document.getElementById("krFrame"),ld=document.getElementById("krLoading"),done=false,preHidden=false,revealed=false;function curTheme(){var t=document.documentElement.getAttribute("data-theme");return t==="light"?"light":"dark";}function fit(){try{var d=fr.contentDocument;if(!d||!d.body)return;var h=Math.max(d.body.scrollHeight,d.documentElement?d.documentElement.scrollHeight:0);if(h&&Math.abs(h-(parseInt(fr.style.height)||0))>2)fr.style.height=h+"px";}catch(e){}}function tidy(){try{var d=fr.contentDocument;if(!d)return;var m=d.querySelector("header.top .modes"),l=d.querySelector("header.top .logo");if(m)m.style.display="none";if(l)l.style.display="none";}catch(e){}}function reChart(){try{var d=fr.contentDocument,w=fr.contentWindow;if(!d||!w||typeof w.showChart!=="function")return;var cs=d.getElementById("chartSym");w.showChart(cs&&cs.textContent?cs.textContent:"KRX:005930",null,true);}catch(e){}}function onLoad(){if(ld)ld.style.display="none";tidy();fit();var n=0;var iv=setInterval(function(){tidy();fit();if(++n>40)clearInterval(iv);},500);}function load(){if(done)return;done=true;if(sec&&sec.hidden)preHidden=true;fr.addEventListener("load",onLoad);fr.src=fr.getAttribute("data-src")+"?theme="+curTheme();}function applyTheme(){if(!done)return;var t=curTheme();try{var d=fr.contentDocument;if(d&&d.documentElement){d.documentElement.setAttribute("data-theme",t);reChart();tidy();fit();return;}}catch(e){}fr.src=fr.getAttribute("data-src")+"?theme="+t;}window.addEventListener("resize",fit);document.querySelectorAll('[data-nav="krstock"],[data-t="p-kr"]').forEach(function(b){b.addEventListener("pointerenter",load);b.addEventListener("touchstart",load,{passive:true});});if(window.MutationObserver&&sec){new MutationObserver(function(){if(!sec.hidden){if(!done)load();else if(preHidden&&!revealed){revealed=true;setTimeout(function(){reChart();fit();try{fr.contentWindow.scrollTo(0,0);}catch(e){}},300);}}}).observe(sec,{attributes:true,attributeFilter:["hidden"]});}if(window.MutationObserver){new MutationObserver(function(){applyTheme();}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});}if(sec&&!sec.hidden)load();})();</script>
-<section id="p-usstock" hidden><div id="usLoading" style="padding:36px 16px;text-align:center;color:var(--mut);font-size:14px">미국주식 불러오는 중…</div><iframe id="usFrame" title="미국주식" data-src="us.html" style="width:100%;border:0;display:block" scrolling="no"></iframe></section>
-<script>(function(){var sec=document.getElementById("p-usstock"),fr=document.getElementById("usFrame"),ld=document.getElementById("usLoading"),done=false,preHidden=false,revealed=false;function curTheme(){var t=document.documentElement.getAttribute("data-theme");return t==="light"?"light":"dark";}function fit(){try{var d=fr.contentDocument;if(!d||!d.body)return;var h=Math.max(d.body.scrollHeight,d.documentElement?d.documentElement.scrollHeight:0);if(h&&Math.abs(h-(parseInt(fr.style.height)||0))>2)fr.style.height=h+"px";}catch(e){}}function tidy(){try{var d=fr.contentDocument;if(!d)return;var m=d.querySelector("header.top .modes"),l=d.querySelector("header.top .logo");if(m)m.style.display="none";if(l)l.style.display="none";}catch(e){}}function reChart(){try{var d=fr.contentDocument,w=fr.contentWindow;if(!d||!w||typeof w.showChart!=="function")return;var cs=d.getElementById("chartSym");w.showChart(cs&&cs.textContent?cs.textContent:"NVDA",true);}catch(e){}}function onLoad(){if(ld)ld.style.display="none";tidy();fit();var n=0;var iv=setInterval(function(){tidy();fit();if(++n>40)clearInterval(iv);},500);}function load(){if(done)return;done=true;if(sec&&sec.hidden)preHidden=true;fr.addEventListener("load",onLoad);fr.src=fr.getAttribute("data-src")+"?theme="+curTheme();}function applyTheme(){if(!done)return;var t=curTheme();try{var d=fr.contentDocument;if(d&&d.documentElement){d.documentElement.setAttribute("data-theme",t);reChart();tidy();fit();return;}}catch(e){}fr.src=fr.getAttribute("data-src")+"?theme="+t;}window.addEventListener("resize",fit);document.querySelectorAll('[data-nav="usstock"],[data-t="p-usstock"]').forEach(function(b){b.addEventListener("pointerenter",load);b.addEventListener("touchstart",load,{passive:true});});if(window.MutationObserver&&sec){new MutationObserver(function(){if(!sec.hidden){if(!done)load();else if(preHidden&&!revealed){revealed=true;setTimeout(function(){reChart();fit();try{fr.contentWindow.scrollTo(0,0);}catch(e){}},300);}}}).observe(sec,{attributes:true,attributeFilter:["hidden"]});}if(window.MutationObserver){new MutationObserver(function(){applyTheme();}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});}window.addEventListener("load",function(){setTimeout(load,2500);});if(sec&&!sec.hidden)load();})();</script>
+<!-- 국내주식·미국주식 탭 (2026-11-15 라이브와 동일 구성): 별도 페이지(kr.html·us.html)를 iframe으로 넣고
+     처음 열 때 불러온다. 카드에서는 라이브 사이트의 실제 페이지를 그대로 보여주도록 주소를 절대 주소로 두고,
+     다른 출처라 안쪽 높이를 잴 수 없어 iframe 높이를 화면 높이 기준으로 고정한다(안쪽에서 스크롤) -->
+<section id="p-kr" hidden><div id="krLoading" style="padding:36px 16px;text-align:center;color:var(--mut);font-size:14px">국내주식 불러오는 중…</div><iframe id="krFrame" title="국내주식" data-src="https://kimpwon.com/kr.html" style="width:100%;border:0;display:block;height:82vh"></iframe></section>
+<script>(function(){var sec=document.getElementById("p-kr"),fr=document.getElementById("krFrame"),ld=document.getElementById("krLoading"),done=false,preHidden=false,revealed=false;function curTheme(){var t=document.documentElement.getAttribute("data-theme");return t==="light"?"light":"dark";}function fit(){try{var d=fr.contentDocument;if(!d||!d.body)return;var h=Math.max(d.body.scrollHeight,d.documentElement?d.documentElement.scrollHeight:0);if(h&&Math.abs(h-(parseInt(fr.style.height)||0))>2)fr.style.height=h+"px";}catch(e){}}function tidy(){try{var d=fr.contentDocument;if(!d)return;var m=d.querySelector("header.top .modes"),l=d.querySelector("header.top .logo");if(m)m.style.display="none";if(l)l.style.display="none";}catch(e){}}function reChart(){try{var d=fr.contentDocument,w=fr.contentWindow;if(!d||!w||typeof w.showChart!=="function")return;var cs=d.getElementById("chartSym");w.showChart(cs&&cs.textContent?cs.textContent:"KRX:005930");}catch(e){}}function onLoad(){if(ld)ld.style.display="none";tidy();fit();var n=0;var iv=setInterval(function(){tidy();fit();if(++n>40)clearInterval(iv);},500);}function load(){if(done)return;done=true;if(sec&&sec.hidden)preHidden=true;fr.addEventListener("load",onLoad);fr.src=fr.getAttribute("data-src")+"?theme="+curTheme();}function applyTheme(){if(!done)return;var t=curTheme();try{var d=fr.contentDocument;if(d&&d.documentElement){d.documentElement.setAttribute("data-theme",t);reChart();tidy();fit();return;}}catch(e){}fr.src=fr.getAttribute("data-src")+"?theme="+t;}window.addEventListener("resize",fit);document.querySelectorAll('[data-nav="krstock"],[data-t="p-kr"]').forEach(function(b){b.addEventListener("pointerenter",load);b.addEventListener("touchstart",load,{passive:true});});if(window.MutationObserver&&sec){new MutationObserver(function(){if(!sec.hidden){if(!done)load();else if(preHidden&&!revealed){revealed=true;setTimeout(function(){reChart();fit();},300);}}}).observe(sec,{attributes:true,attributeFilter:["hidden"]});}if(window.MutationObserver){new MutationObserver(function(){applyTheme();}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});}if(sec&&!sec.hidden)load();})();</script>
+<section id="p-usstock" hidden><div id="usLoading" style="padding:36px 16px;text-align:center;color:var(--mut);font-size:14px">미국주식 불러오는 중…</div><iframe id="usFrame" title="미국주식" data-src="https://kimpwon.com/us.html" style="width:100%;border:0;display:block;height:82vh"></iframe></section>
+<script>(function(){var sec=document.getElementById("p-usstock"),fr=document.getElementById("usFrame"),ld=document.getElementById("usLoading"),done=false,preHidden=false,revealed=false;function curTheme(){var t=document.documentElement.getAttribute("data-theme");return t==="light"?"light":"dark";}function fit(){try{var d=fr.contentDocument;if(!d||!d.body)return;var h=Math.max(d.body.scrollHeight,d.documentElement?d.documentElement.scrollHeight:0);if(h&&Math.abs(h-(parseInt(fr.style.height)||0))>2)fr.style.height=h+"px";}catch(e){}}function tidy(){try{var d=fr.contentDocument;if(!d)return;var m=d.querySelector("header.top .modes"),l=d.querySelector("header.top .logo");if(m)m.style.display="none";if(l)l.style.display="none";}catch(e){}}function reChart(){try{var d=fr.contentDocument,w=fr.contentWindow;if(!d||!w||typeof w.showChart!=="function")return;var cs=d.getElementById("chartSym");w.showChart(cs&&cs.textContent?cs.textContent:"NVDA");}catch(e){}}function onLoad(){if(ld)ld.style.display="none";tidy();fit();var n=0;var iv=setInterval(function(){tidy();fit();if(++n>40)clearInterval(iv);},500);}function load(){if(done)return;done=true;if(sec&&sec.hidden)preHidden=true;fr.addEventListener("load",onLoad);fr.src=fr.getAttribute("data-src")+"?theme="+curTheme();}function applyTheme(){if(!done)return;var t=curTheme();try{var d=fr.contentDocument;if(d&&d.documentElement){d.documentElement.setAttribute("data-theme",t);reChart();tidy();fit();return;}}catch(e){}fr.src=fr.getAttribute("data-src")+"?theme="+t;}window.addEventListener("resize",fit);document.querySelectorAll('[data-nav="usstock"],[data-t="p-usstock"]').forEach(function(b){b.addEventListener("pointerenter",load);b.addEventListener("touchstart",load,{passive:true});});if(window.MutationObserver&&sec){new MutationObserver(function(){if(!sec.hidden){if(!done)load();else if(preHidden&&!revealed){revealed=true;setTimeout(function(){reChart();fit();},300);}}}).observe(sec,{attributes:true,attributeFilter:["hidden"]});}if(window.MutationObserver){new MutationObserver(function(){applyTheme();}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});}window.addEventListener("load",function(){setTimeout(load,2500);});if(sec&&!sec.hidden)load();})();</script>
 <section id="p-nasdaq" hidden></section>
 <section id="p-spx" hidden></section>
 <section id="p-etf" hidden></section>
@@ -3376,7 +3531,7 @@ abRender();
 <p class="cat-err" id="cat-err" role="alert" hidden></p>
 <div class="cat-row2"><button type="button" class="cm-cancel" id="cat-close">닫기</button></div>
 </div></div>
-<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-13), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-18 조회, KRX는 11/18 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
+<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-17), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-18 조회, KRX는 11/18 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
 <footer class="sitefoot">
 <nav aria-label="약관 및 방침"><a href="/privacy.html">개인정보처리방침</a><i aria-hidden="true">·</i><a href="/terms.html">이용약관</a><i aria-hidden="true">·</i><button type="button" id="legal-contact-open">문의</button><i aria-hidden="true">·</i><a href="guide.html">가이드</a></nav>
 <p>© 2026 kimpwon</p>
@@ -3585,9 +3740,13 @@ var FIREBASE_CONFIG={apiKey:"AIzaSyCK_8KrdL-JkTn7UmFz_xsDW4rTTX8Hcj8",authDomain
 var D=[["SKHX",866.25,4.67,422.22],["SOXL",53.218,4.27,326.76],["SNDK",829.54,1.54,203.02],["MU",740.2,1.85,143.02],["SPCX",142.86,3.48,129.35],["GOOGL",282.2,-0.67,64.13],["NVDA",160.42,1.6,1027.69],["DRAM",40.465,2.73,187.86],["AAPL",349.68,-0.85,55.23],["SKHY",127.7,3.31,120.35],["AMD",518.27,0.86,52.66],["CRCL",56.312,-2,34.79],["SMSN",147.09,2.77,80.34],["INTC",56.457,2.92,31.84],["TSLA",384.24,1.44,31.55],["KORU",7.03,7.75,62.52],["META",621.94,-0.38,34.26],["MRNA",207.47,-3.45,16.21],["EWY",139.3,2.62,31.5],["MSFT",508.51,-1.53,33.48],["NBIS",115.16,5.4,58.04],["AMZN",259.64,0.64,23.06],["MRVL",155.45,5.18,23.12],["UNITREE",91.656,-1.11,13.94],["CRWV",53.428,6.18,16.36],["ARM",190.22,6.77,5.91],["CXMT",5.5497,1.55,36.14],["LITE",587.14,5.56,10.28],["ORCL",117.88,-1.25,6.11],["MSTR",99.481,-3.4,13.24],["KIOXIA",51.015,1.2,18.93],["SNXX",3.1045,2.73,22.62],["COIN",117.64,-1.52,6.91],["CBRS",107.37,5.8,11.85],["BE",182.88,1.39,5.84],["QCOM",169.05,-0.04,1.11],["DELL",337.75,4.22,3.63],["BABA",87.22,-0.51,4.72],["PLTR",158.9,-0.45,14.39],["ZHIPU",46.924,8.91,11.69],["HOOD",70.896,-1.71,9.05],["AAOI",40.401,-11.51,6.98],["RKLB",56.58,-1.32,5.19],["NET",288.37,-1.79,0.81],["IREN",17.121,2.74,5.53],["AVGO",349.27,3.29,4.61],["PURRDAT",8.0917,-2.75,5.85],["MINIMAX",15.446,4.15,2.47],["TSM",375.09,-0.08,11.97],["CRWD",223.24,0,1.94],["HYUNDAI",200.39,3.54,0.72],["LLY",1407.1,-1.26,3.49],["BB",8.2285,-6.87,3.1],["SMH",473.35,1.68,1.73],["EWZ",31.007,0.72,1.85],["WDC",292.77,3.87,2.68],["NFLX",59.738,-1.58,1.12],["AMAT",359.39,0.46,1.27],["TLT",79.809,0.43,0.79],["ASML",1411.4,-0.77,1.16],["HIMS",17.8,-3.92,1.71],["STRC",98.898,-0.4,2.94],["GME",25.222,-1.4,1.07],["GIGADEV",32.582,1.87,1.06],["BOT",18.981,9.87,1],["USAR",6.783,-4.93,3.03],["NOW",93.474,-5.33,0.36],["RDDT",95.315,2.6,0.32],["SHEIN",5.4238,1.77,0.44],["XLE",62.825,-0.83,0.2],["SHAZ",23.56,20.38,1.95],["GEV",794.68,4.13,0.35],["EWJ",89.201,0.02,1.14],["SOFTBANK",21.396,2.8,1.19],["QNT",33.932,6.58,0.62],["RIVN",11.947,-1.02,0.16],["BMNR",16.306,-0.47,0.28],["BX",116.7,0.05,0.35],["IBM",231.59,-4.07,1.85],["KSTR",17.887,2.38,0.33],["NOK",7.75,2.01,0.35],["DKNG",18.076,-1.48,0.43],["COST",1104.6,-0.47,2.23],["EWT",90.509,1.35,0.59],["CAMBRICON",142.95,6.14,0.04],["EBAY",118.6,-1.56,0.04],["URNM",38.257,0.49,0.41],["ZM",92.484,-3.45,0.3],["NCLD",13.481,5.45,0.22],["LYTE",14.265,3.9,0.08],["MAGS",66.784,-0.1,0.02],["GLW",111.7,5.24,0.12],["JIO",14.841,-0.43,0.08],["LRCX",217.21,1.6,0.2],["TWST",113.95,8.68,0.06],["CVX",213.48,-1.09,0.83],["BIRD",1.1454,-9.78,0.08],["UMC",14.272,0.54,0.11],["XBI",145.48,0,0.04],["OURA",48.522,-0.03,0]];
 var R=[["SK하이닉스","SKHX",1144000,"3조 9,193억"],["삼성전자","SMSN",194700,"3조 3,452억"],["KODEX 200","",79400,"1조 5,797억"],["삼성전기","",810000,"8,286억"],["현대차","HYUNDAI",267000,"1,151억"],["한미반도체","",167700,"872억"],["LG전자","",137000,"775억"],["NAVER","",170300,"856억"]];
 var NM={SKHX:"SK하이닉스",SMSN:"삼성전자",HYUNDAI:"현대차",EWY:"한국 ETF",KORU:"한국 3배 ETF"};
+/* 종목 이름은 한글로 표시한다: 데이터의 한글 이름을 그대로 화면에 그린다.
+   아래 영문 대응표(KREN)는 영문 검색어를 한글 이름에 맞추는 검색 필터에서만 쓴다 */
+var KREN={"SK하이닉스":"SK Hynix","삼성전자":"Samsung Electronics","KODEX 200":"KODEX 200","삼성전기":"Samsung Electro-Mechanics","현대차":"Hyundai Motor","한미반도체":"Hanmi Semiconductor","LG전자":"LG Electronics","NAVER":"NAVER","한국 ETF":"Korea ETF","한국 3배 ETF":"Korea 3x ETF"};
+function krEn(nm){return nm}
 var KR={SKHX:1,SMSN:1,HYUNDAI:1,EWY:1,KORU:1};
 var ET={EWY:1,EWJ:1,EWZ:1,EWT:1,XLE:1,XBI:1,TLT:1,SMH:1,MAGS:1,SOXL:1,KORU:1,URNM:1};
-var BD=[["SOXL",53.27,5.07,7241.54,56.08,43.6],["SNDK",830.68,1.75,2994.86,852.25,750.84],["SKHYNIX",867.77,4.89,1477.12,883,786.9],["KORU",7.045,7.89,1185.67,7.2,5.93],["MU",741.19,2.21,1173.83,754.85,667.83],["SPCX",142.91,3.58,1970.75,143.8,136.04],["SOXS",53.81,-5.53,1840.55,65.43,50.45],["GOOGL",282.59,-0.6,212.98,285.74,278.83],["SKHY",127.86,3.48,745.02,130,117.47],["INTC",56.52,3.1,238.72,57.05,52.49],["SNXX",3.106,3.22,727.46,3.257,2.53],["CRCL",56.4,-2,170.42,57.95,53.33],["QQQ",665.15,0.15,580.46,670.45,647.5],["NVDA",160.64,1.71,3672.48,164,150.48],["MSTR",99.6,-3.41,237.23,104.11,96.56],["AMD",519.06,1.22,234.95,532.66,481.26],["TSLA",384.85,1.48,107.41,386.12,374.75],["SAMSUNG",147.35,3.04,193.03,150.43,137.9],["TQQQ",53.57,0.26,323.94,54.93,49.47],["NBIS",115.28,5.81,292.56,119.67,102.45],["EWY",139.52,2.77,192.07,140.53,131.68],["DRAM",40.53,3.02,224.23,41.27,37.1],["MUU",15.39,4.2,247.66,15.94,12.45],["SPY",737.48,-0.32,186.18,742.79,728.24],["MRVL",155.68,5.57,180.25,159.16,141.15],["LITE",588.01,6.12,137.23,604.31,535.35],["AAPL",350.28,-0.83,96.32,355.81,349.09],["INTW",5.307,6.2,70.18,5.406,4.574],["BE",183.06,1.84,56.21,188.75,163.23],["META",622.88,-0.26,53.46,628.41,614.67],["AAOI",40.47,-10.92,100.1,50.04,39.34],["ORCL",118.05,-1.14,31.4,121.13,113.23],["CRWV",53.51,6.45,117.19,55.61,46.92],["MVLL",10.22,11.09,87.31,10.65,8.43],["COIN",117.79,-1.69,53.6,121.76,114.29],["MSFT",509.12,-1.59,50.52,518.62,497.23],["PLTR",159.12,-0.43,30.56,162.82,154.16],["QCOM",169.63,-0.08,17.15,171.83,162.62],["APP",401.65,-3.31,6.01,415.58,388.99],["AXTI",38.3,-1.11,55.37,40.33,35.07],["AMZN",260.02,0.76,40.77,262.46,254.36],["ZHONGJI",65.47,0.41,57.25,68.26,61.24],["SQQQ",45.46,-0.44,112.04,49.09,44.22],["ARM",190.41,6.9,29.49,197.14,172.88],["CSOPSKHYNIX2L",1.789,7.71,38.23,1.859,1.499],["COHR",222.65,8.44,52.38,228.65,198.58],["BMNR",16.33,-0.37,27.68,16.54,15.62],["HOOD",70.96,-1.68,38.59,72.7,67.37],["CBRS",107.53,6.17,54.12,111.07,98.52],["ZHIPU",46.9,9.1,34.67,46.95,42.82],["IREN",17.14,3,40.29,17.83,15.19],["MRNA",207.8,-3.37,12.78,222.26,204.11],["WDC",292.99,3.67,20.13,299.05,272.17],["DELL",338.16,4.59,19.4,345.02,306.2],["BABA",87.32,-0.47,23.1,88.57,86.26],["MINIMAX",15.45,4.25,31.27,15.52,14.26],["TSM",375.6,0.04,63.51,388.2,354.13],["RKLB",56.63,-1.27,40.63,58.66,53.42],["FLNC",4.189,-2.63,7.16,4.49,4.04],["AVGO",349.52,3.32,38.24,354.85,329.48],["KSTR",17.94,2.4,7.18,18.18,17.18],["GLW",111.86,4.34,16.41,114.05,104.14],["SKUU",11.96,6.98,23.41,12.33,10.11],["SKDD",10.721,-7.16,25.06,12.699,10.325],["HK1810",29.73,-0.3,4.04,30.16,29.42],["SMCI",25.28,0.44,7.77,25.82,23.34],["STXX",520.77,3.39,6.07,534.31,484.24],["CRDO",130.99,6.45,12.8,135,115.9],["HK0700",374.3,-0.73,5.05,378.88,368.22],["GIGADEV",32.71,1.27,9.73,33.78,31.55],["ALAB",223.39,7.79,9.54,229.94,191.28],["AMAT",359.59,0.63,10.42,366.79,338.44],["TENCENT",47.69,-0.77,2.2,48.29,47.07],["DJT",4.106,-0.1,4.47,4.389,4.025],["USAR",6.786,-4.83,6.25,7.29,6.52],["ASTS",28.79,0.45,7.61,29.63,27.05],["UVXY",21.26,4.99,46.84,23.64,19.5],["RAM",5.33,5.86,15.2,5.517,4.462],["BNC",3.429,-4.16,5.57,3.583,3.322],["MSTU",15.01,-7.23,7.84,16.5,14.13],["TTWO",209.87,-2.78,11.42,220.22,202.3],["LLY",1407.97,-1.3,5.6,1437.51,1400.03],["NFLX",59.77,-1.6,3.21,61.03,59.46],["SHAZ",23.61,19.61,13.33,24.44,18.51],["ASML",1414.9,-1.05,6.13,1449.54,1354.08],["SPCX_",142.96,3.59,1.09,143.82,136.07],["HYUNDAI",200.52,3.38,2.04,203.47,190.51],["IBM",231.98,-4.08,2.79,241.99,231.02],["DDOG",167.72,-3.38,0.36,174.86,162.39],["CRWD",223.66,0.05,5.69,226.74,213.93],["GEV",796.13,3.93,3.53,807.28,753.91],["STRC",99.06,-0.45,9.69,99.8,98.91],["NOW",93.66,-5.26,4.73,99.22,92.22],["ONDS",4.501,-3.5,2.13,4.73,4.321],["CYPH",1.98,2.59,8.01,2.227,1.865],["COST",1106.11,-0.42,3.43,1124.45,1103.69],["CSOPSAMSUNG2L",4.7,4.47,7.52,4.903,4.19],["NOK",7.76,1.44,2.75,7.88,7.48],["LRCX",217.55,0.9,5.16,222.18,202.26],["HUT",57.02,6.78,0.49,59.41,51.31],["NVO",40.29,-3.03,0.79,41.71,39.94],["TEM",64.33,-3.22,2.1,68.67,61.8],["UBER",69.02,-1.02,0.39,70.14,67.17],["BWET",662.04,4.42,0.67,671.13,618.51],["VST",129.02,-0.46,0.49,133.6,126.72],["HIMS",17.83,-3.73,1.78,18.7,17.16],["PENG",45.75,2.49,2.57,48.51,42],["RDDT",95.42,2.88,0.93,97.75,92.66],["MELI",1444.42,-1.09,0.18,1464.51,1427.75],["MCD",274.68,0.45,1.35,279.03,270.81],["EWJ",89.37,0.07,3.35,91.03,88.07],["PDD",77.95,0.04,1.83,79.3,76.88],["EWT",90.41,0.92,3.28,93.77,86.91],["BRKB",586.23,-1,1.45,593.13,583.84],["NET",288.33,-2.03,0.92,297.26,277.93],["AMC",3.2,-1.29,1.07,3.308,3.145],["QNTX",33.92,6.37,3.26,34.66,31.09],["TER",242.63,2.61,1.7,249.8,223.37],["TSLL",10.05,2.76,1.45,10.11,9.55],["SAMSUNGEM",608.5,8.4,1.57,608.66,541.77],["VRT",198.27,4.8,1.44,203.69,184],["KLAC",149.27,1.69,1.6,152.7,139.01],["BBX",8.229,-6.97,1.97,8.902,8.081],["WMT",126.76,-1.08,1.95,129.12,126.33],["MEITUAN",8.98,-0.99,1,9.32,8.91],["CAT",581.42,1.52,0.86,586.24,564.49],["TMF",27.77,1.05,0.37,27.96,27.26],["HK0992",17.13,4.07,0.66,17.28,16.02],["CIEN",273.85,5.22,1.6,280.05,252],["GME",25.24,-1.45,0.99,25.95,25.13],["V",416.75,-1.83,0.83,425.96,415.07],["XOM",165.76,-0.16,2.23,173.22,165.17],["BSP",43.12,4.79,1.57,44.17,40.26],["IONQ",26.05,-2.94,2.03,27.28,24.11],["BX",116.93,0.2,0.71,118.09,115.12],["SMH",474.62,1.42,4.49,483.73,446.14],["EWZ",31.06,0.68,1.11,31.49,30.76],["KO",98.22,-1.09,1.54,99.76,97.73],["AGPU",7.2,-8.74,1.61,8.11,6.66],["PFE",28.42,-1.46,0.19,28.92,28.31],["POPMART",18.33,-0.54,0.65,18.51,18.05],["NKE",35.41,-7.04,5.01,41.11,35.21],["SNOW",277.65,-1.35,0.85,282.88,264.28],["IWM",269.91,-0.75,1.78,273.32,268.09],["TXN",300.72,0.83,2.1,304.56,288.4],["DIS",117.07,0.43,2.45,122.81,114.59],["CRM",195.11,-8.69,1.53,213.9,193.6],["BOT",19.02,9.88,1.77,19.27,16.56],["FLEX",75.01,-0.85,1.14,77.52,70.33],["ANET",191.58,2,0.63,195.4,183.61],["NVDL",17.25,3.23,40.7,17.96,15.16],["RIVN",11.98,-0.75,0.49,12.24,11.79],["FWDI",4.337,0.44,1.23,4.499,4.115],["HPE",47.53,1.71,2.14,49.27,44.87],["OKLO",22.9,-0.56,0.77,23.43,21.86],["BYD",8.18,-0.49,0.54,8.27,8.08],["SOFI",14.49,-2.23,0.75,14.95,14.08],["RDW",7.004,-0.51,0.4,7.21,6.63],["ADBE",235.46,-4,1.54,246.32,233.5],["AMGN",457.75,-0.93,0.15,463.68,453.75],["JPM",331.13,-1.64,0.79,338.04,329.17],["SECZ",7.09,-3.8,0.54,7.61,6.67],["GDX",77.64,-2.51,0.58,81.4,77.16],["SONY",26.69,-0.82,0.61,27.06,26],["GPRO",0.624,1.96,0.68,0.656,0.592],["ZCSH",25.31,2.93,0.74,25.86,24.12],["WEN",8.637,2.81,1.02,8.821,8.336],["CSCO",95.76,0.33,0.61,97.06,93.72],["SHOP",142.24,-3.74,0.32,149.58,141.06],["CVNA",71.35,0.64,0.71,72.05,69.2],["MARA",6.74,1.97,1.8,6.91,6.28],["KUAISHOU",3.069,-0.94,0.78,3.108,3.033],["XLE",62.96,-0.83,0.29,64.67,62.86],["PAYP",13.32,1.45,0.9,13.48,12.78],["GTLB",44.94,-5.01,0.77,47.4,44.12],["DKNG",18.12,-1.36,1.25,18.57,18.01],["XBI",145.64,-0.34,0.43,148,143.36],["SMR",4.133,-3.37,0.8,4.364,4.049],["USDEX",4.702,4.72,2.07,5.03,4.05],["PANW",314.33,-0.98,1.47,320.43,301.88],["GS",881.63,-0.88,0.58,893.91,865.57],["APLD",15.23,3.82,1.13,15.98,13.85],["HD",339.81,-1.32,1.62,352.24,333.74],["UNH",389.29,-4.77,0.32,410.25,387.7],["URNM",38.25,0.45,1.23,38.76,37.3],["MDB",303.4,-4.3,0.72,320.9,292.39],["CEG",269.09,-2.95,0.22,280.92,267.14],["ZM",92.59,-3.41,0.79,96.35,90.75],["TWST",113.42,8.04,0.69,115.21,102.75],["MP",35.49,-2.02,0.42,37.25,34.68],["NAVER",127.89,0.29,0.5,129.44,126.45],["HK0625",42.51,1.53,0.21,43.3,41.44],["CRML",3.907,-7.26,1.29,4.36,3.773],["ACN",238.94,-3.19,0.39,248.43,237.3],["TBT",40.21,-0.69,0.17,40.61,40.06],["LYTE",14.25,3.86,0.85,14.55,13.16],["BAC",49.7,-0.66,0.5,50.3,49.16],["EIDO",10.62,0.09,0.49,10.63,10.46],["OXY",56.14,-1.75,0.12,58.26,56.07],["LGELECTRONICS",102.37,5.75,0.8,103.22,94.61],["HANMI",125.25,1.27,0.59,128.39,121.22],["ZS",187.66,-1.69,0.17,193.67,180.47],["RUM",4.962,-2.38,0.51,5.106,4.689],["MDT",101.94,-1.2,0.18,103.98,101.79],["TEAM",142.43,-4.63,0.73,149.95,139.47],["MRK",143.4,-0.49,0.28,145.05,142.6],["EBAY",118.6,-1.63,0.24,120.71,117.37],["AKAM",85.08,1.06,0.13,85.62,82.04],["KODEX200",59.98,2.76,0.22,61.8,56.66],["STM",44.95,0.31,0.15,45.75,43.09],["SNPS",439.9,-0.48,0.15,444.14,429.71],["VKTX",27.03,1.16,0.38,28.45,26.29],["TZA",51.08,2.47,0.5,52.02,49.27],["ABBV",292.42,-0.64,0.15,296.18,291.31],["BITO",8.62,0.12,0.4,8.69,8.41],["PYPL",57.94,-1.26,0.21,59.25,57.29],["PATH",12.5,-4.8,0.12,13.14,12.41],["EWZS",10.46,0.58,0.57,10.85,10.19],["IBKR",77.08,-1.73,0.93,79.14,75.73],["EQT",50.41,-1.52,0.05,52.05,50.04]];
+var BD=[["SOXL",53.27,5.07,7241.54,56.08,43.6],["SNDK",830.68,1.75,2994.86,852.25,750.84],["SKHYNIX",867.77,4.89,1477.12,883,786.9],["KORU",7.045,7.89,1185.67,7.2,5.93],["MU",741.19,2.21,1173.83,754.85,667.83],["SPCX",142.91,3.58,1970.75,143.8,136.04],["SOXS",53.81,-5.53,1840.55,65.43,50.45],["GOOGL",282.59,-0.6,212.98,285.74,278.83],["SKHY",127.86,3.48,745.02,130,117.47],["INTC",56.52,3.1,238.72,57.05,52.49],["SNXX",3.106,3.22,727.46,3.257,2.53],["CRCL",56.4,-2,170.42,57.95,53.33],["QQQ",665.15,0.15,580.46,670.45,647.5],["NVDA",160.64,1.71,3672.48,164,150.48],["MSTR",99.6,-3.41,237.23,104.11,96.56],["AMD",519.06,1.22,234.95,532.66,481.26],["TSLA",384.85,1.48,107.41,386.12,374.75],["SAMSUNG",147.35,3.04,193.03,150.43,137.9],["TQQQ",53.57,0.26,323.94,54.93,49.47],["NBIS",115.28,5.81,292.56,119.67,102.45],["EWY",139.52,2.77,192.07,140.53,131.68],["DRAM",40.53,3.02,224.23,41.27,37.1],["MUU",15.39,4.2,247.66,15.94,12.45],["SPY",737.48,-0.32,186.18,742.79,728.24],["MRVL",155.68,5.57,180.25,159.16,141.15],["LITE",588.01,6.12,137.23,604.31,535.35],["AAPL",350.28,-0.83,96.32,355.81,349.09],["INTW",5.307,6.2,70.18,5.406,4.574],["BE",183.06,1.84,56.21,188.75,163.23],["META",622.88,-0.26,53.46,628.41,614.67],["AAOI",40.47,-10.92,100.1,50.04,39.34],["ORCL",118.05,-1.14,31.4,121.13,113.23],["CRWV",53.51,6.45,117.19,55.61,46.92],["MVLL",10.22,11.09,87.31,10.65,8.43],["COIN",117.79,-1.69,53.6,121.76,114.29],["MSFT",509.12,-1.59,50.52,518.62,497.23],["PLTR",159.12,-0.43,30.56,162.82,154.16],["QCOM",169.63,-0.08,17.15,171.83,162.62],["APP",401.65,-3.31,6.01,415.58,388.99],["AXTI",38.3,-1.11,55.37,40.33,35.07],["AMZN",260.02,0.76,40.77,262.46,254.36],["ZHONGJI",65.47,0.41,57.25,68.26,61.24],["SQQQ",45.46,-0.44,112.04,49.09,44.22],["ARM",190.41,6.9,29.49,197.14,172.88],["CSOPSKHYNIX2L",1.789,7.71,38.23,1.859,1.499],["COHR",222.65,8.44,52.38,228.65,198.58],["BMNR",16.33,-0.37,27.68,16.54,15.62],["HOOD",70.96,-1.68,38.59,72.7,67.37],["CBRS",107.53,6.17,54.12,111.07,98.52],["ZHIPU",46.9,9.1,34.67,46.95,42.82],["IREN",17.14,3,40.29,17.83,15.19],["MRNA",207.8,-3.37,12.78,222.26,204.11],["WDC",292.99,3.67,20.13,299.05,272.17],["DELL",338.16,4.59,19.4,345.02,306.2],["BABA",87.32,-0.47,23.1,88.57,86.26],["MINIMAX",15.45,4.25,31.27,15.52,14.26],["TSM",375.6,0.04,63.51,388.2,354.13],["RKLB",56.63,-1.27,40.63,58.66,53.42],["FLNC",4.189,-2.63,7.16,4.49,4.04],["AVGO",349.52,3.32,38.24,354.85,329.48],["KSTR",17.94,2.4,7.18,18.18,17.18],["GLW",111.86,4.34,16.41,114.05,104.14],["SKUU",11.96,6.98,23.41,12.33,10.11],["SKDD",10.721,-7.16,25.06,12.699,10.325],["HK1810",29.73,-0.3,4.04,30.16,29.42],["SMCI",25.28,0.44,7.77,25.82,23.34],["STXX",520.77,3.39,6.07,534.31,484.24],["CRDO",130.99,6.45,12.8,135,115.9],["HK0700",374.3,-0.73,5.05,378.88,368.22],["GIGADEV",32.71,1.27,9.73,33.78,31.55],["ALAB",223.39,7.79,9.54,229.94,191.28],["AMAT",359.59,0.63,10.42,366.79,338.44],["TENCENT",47.69,-0.77,2.2,48.29,47.07],["DJT",4.106,-0.1,4.47,4.389,4.025],["USAR",6.786,-4.83,6.25,7.29,6.52],["ASTS",28.79,0.45,7.61,29.63,27.05],["UVXY",21.26,4.99,46.84,23.64,19.5],["RAM",5.33,5.86,15.2,5.517,4.462],["BNC",3.429,-4.16,5.57,3.583,3.322],["MSTU",15.01,-7.23,7.84,16.5,14.13],["TTWO",209.87,-2.78,11.42,220.22,202.3],["LLY",1407.97,-1.3,5.6,1437.51,1400.03],["NFLX",59.77,-1.6,3.21,61.03,59.46],["SHAZ",23.61,19.61,13.33,24.44,18.51],["ASML",1414.9,-1.05,6.13,1449.54,1354.08],["SPCX_",142.96,3.59,1.09,143.82,136.07],["HYUNDAI",200.52,3.38,2.04,203.47,190.51],["IBM",231.98,-4.08,2.79,241.99,231.02],["DDOG",167.72,-3.38,0.36,174.86,162.39],["CRWD",223.66,0.05,5.69,226.74,213.93],["GEV",796.13,3.93,3.53,807.28,753.91],["STRC",99.06,-0.45,9.69,99.8,98.91],["NOW",93.66,-5.26,4.73,99.22,92.22],["ONDS",4.501,-3.5,2.13,4.73,4.321],["CYPH",1.98,2.59,8.01,2.227,1.865],["COST",1106.11,-0.42,3.43,1124.45,1103.69],["CSOPSAMSUNG2L",4.7,4.47,7.52,4.903,4.19],["NOK",7.76,1.44,2.75,7.88,7.48],["LRCX",217.55,0.9,5.16,222.18,202.26],["HUT",57.02,6.78,0.49,59.41,51.31],["NVO",40.29,-3.03,0.79,41.71,39.94],["TEM",64.33,-3.22,2.1,68.67,61.8],["UBER",69.02,-1.02,0.39,70.14,67.17],["BWET",662.04,4.42,0.67,671.13,618.51],["VST",129.02,-0.46,0.49,133.6,126.72],["HIMS",17.83,-3.73,1.78,18.7,17.16],["PENG",45.75,2.49,2.57,48.51,42],["RDDT",95.42,2.88,0.93,97.75,92.66],["MELI",1444.42,-1.09,0.18,1464.51,1427.75],["MCD",274.68,0.45,1.35,279.03,270.81],["EWJ",89.37,0.07,3.35,91.03,88.07],["PDD",77.95,0.04,1.83,79.3,76.88],["EWT",90.41,0.92,3.28,93.77,86.91],["BRKB",586.23,-1,1.45,593.13,583.84],["NET",288.33,-2.03,0.92,297.26,277.93],["AMC",3.2,-1.29,1.07,3.308,3.145],["QNTX",33.92,6.37,3.26,34.66,31.09],["TER",242.63,2.61,1.7,249.8,223.37],["TSLL",10.05,2.76,1.45,10.11,9.55],["SAMSUNGEM",608.5,8.4,1.57,608.66,541.77],["VRT",198.27,4.8,1.44,203.69,184],["KLAC",149.27,1.69,1.6,152.7,139.01],["BBX",8.229,-6.97,1.97,8.902,8.081],["WMT",126.76,-1.08,1.95,129.12,126.33],["MEITUAN",8.98,-0.99,1,9.32,8.91],["CAT",581.42,1.52,0.86,586.24,564.49],["TMF",27.77,1.05,0.37,27.96,27.26],["HK0992",17.13,4.07,0.66,17.28,16.02],["CIEN",273.85,5.22,1.6,280.05,252],["GME",25.24,-1.45,0.99,25.95,25.13],["V",416.75,-1.83,0.83,425.96,415.07],["XOM",165.76,-0.16,2.23,173.22,165.17],["BSP",43.12,4.79,1.57,44.17,40.26],["IONQ",26.05,-2.94,2.03,27.28,24.11],["BX",116.93,0.2,0.71,118.09,115.12],["SMH",474.62,1.42,4.49,483.73,446.14],["EWZ",31.06,0.68,1.11,31.49,30.76],["KO",98.22,-1.09,1.54,99.76,97.73],["AGPU",7.2,-8.74,1.61,8.11,6.66],["PFE",28.42,-1.46,0.19,28.92,28.31],["POPMART",18.33,-0.54,0.65,18.51,18.05],["NKE",35.41,-7.04,5.01,41.11,35.21],["SNOW",277.65,-1.35,0.85,282.88,264.28],["IWM",269.91,-0.75,1.78,273.32,268.09],["TXN",300.72,0.83,2.1,304.56,288.4],["DIS",117.07,0.43,2.45,122.81,114.59],["CRM",195.11,-8.69,1.53,213.9,193.58],["BOT",19.02,9.88,1.77,19.27,16.56],["FLEX",75.01,-0.85,1.14,77.52,70.33],["ANET",191.58,2,0.63,195.4,183.61],["NVDL",17.25,3.23,40.7,17.96,15.16],["RIVN",11.98,-0.75,0.49,12.24,11.79],["FWDI",4.337,0.44,1.23,4.499,4.115],["HPE",47.53,1.71,2.14,49.27,44.87],["OKLO",22.9,-0.56,0.77,23.43,21.86],["BYD",8.18,-0.49,0.54,8.27,8.08],["SOFI",14.49,-2.23,0.75,14.95,14.08],["RDW",7.004,-0.51,0.4,7.21,6.63],["ADBE",235.46,-4,1.54,246.32,233.5],["AMGN",457.75,-0.93,0.15,463.68,453.75],["JPM",331.13,-1.64,0.79,338.04,329.17],["SECZ",7.09,-3.8,0.54,7.61,6.67],["GDX",77.64,-2.51,0.58,81.4,77.16],["SONY",26.69,-0.82,0.61,27.06,26],["GPRO",0.624,1.96,0.68,0.656,0.592],["ZCSH",25.31,2.93,0.74,25.86,24.12],["WEN",8.637,2.81,1.02,8.821,8.336],["CSCO",95.76,0.33,0.61,97.06,93.72],["SHOP",142.24,-3.74,0.32,149.58,141.06],["CVNA",71.35,0.64,0.71,72.05,69.2],["MARA",6.74,1.97,1.8,6.91,6.28],["KUAISHOU",3.069,-0.94,0.78,3.108,3.033],["XLE",62.96,-0.83,0.29,64.67,62.86],["PAYP",13.32,1.45,0.9,13.48,12.78],["GTLB",44.94,-5.01,0.77,47.4,44.12],["DKNG",18.12,-1.36,1.25,18.57,18.01],["XBI",145.64,-0.34,0.43,148,143.36],["SMR",4.133,-3.37,0.8,4.364,4.049],["USDEX",4.702,4.72,2.07,5.03,4.05],["PANW",314.33,-0.98,1.47,320.43,301.88],["GS",881.63,-0.88,0.58,893.91,865.57],["APLD",15.23,3.82,1.13,15.98,13.85],["HD",339.81,-1.32,1.62,352.24,333.74],["UNH",389.29,-4.77,0.32,410.25,387.7],["URNM",38.25,0.45,1.23,38.76,37.3],["MDB",303.4,-4.3,0.72,320.9,292.39],["CEG",269.09,-2.95,0.22,280.92,267.14],["ZM",92.59,-3.41,0.79,96.35,90.75],["TWST",113.42,8.04,0.69,115.21,102.75],["MP",35.49,-2.02,0.42,37.25,34.68],["NAVER",127.89,0.29,0.5,129.44,126.45],["HK0625",42.51,1.53,0.21,43.3,41.44],["CRML",3.907,-7.26,1.29,4.36,3.773],["ACN",238.94,-3.19,0.39,248.43,237.3],["TBT",40.21,-0.69,0.17,40.61,40.06],["LYTE",14.25,3.86,0.85,14.55,13.16],["BAC",49.7,-0.66,0.5,50.3,49.16],["EIDO",10.62,0.09,0.49,10.63,10.46],["OXY",56.14,-1.75,0.12,58.26,56.07],["LGELECTRONICS",102.37,5.75,0.8,103.22,94.61],["HANMI",125.25,1.27,0.59,128.39,121.22],["ZS",187.66,-1.69,0.17,193.67,180.47],["RUM",4.962,-2.38,0.51,5.106,4.689],["MDT",101.94,-1.2,0.18,103.98,101.79],["TEAM",142.43,-4.63,0.73,149.95,139.47],["MRK",143.4,-0.49,0.28,145.05,142.6],["EBAY",118.6,-1.63,0.24,120.71,117.37],["AKAM",85.08,1.06,0.13,85.62,82.04],["KODEX200",59.98,2.76,0.22,61.8,56.66],["STM",44.95,0.31,0.15,45.75,43.09],["SNPS",439.9,-0.48,0.15,444.14,429.71],["VKTX",27.03,1.16,0.38,28.45,26.29],["TZA",51.08,2.47,0.5,52.02,49.27],["ABBV",292.42,-0.64,0.15,296.18,291.31],["BITO",8.62,0.12,0.4,8.69,8.41],["PYPL",57.94,-1.26,0.21,59.25,57.29],["PATH",12.5,-4.8,0.12,13.14,12.41],["EWZS",10.46,0.58,0.57,10.85,10.19],["IBKR",77.08,-1.73,0.93,79.14,75.73],["EQT",50.41,-1.52,0.05,52.05,50.04]];
 var BKR={SKHYNIX:1,SAMSUNG:1,KODEX200:1,SAMSUNGEM:1,HANMI:1,LGELECTRONICS:1,NAVER:1,HYUNDAI:1,EWY:1,KORU:1};
 var BET={EWY:1,EWJ:1,EWT:1,EWZ:1,XLE:1,XBI:1,TLT:1,SMH:1,SPY:1,QQQ:1,IWM:1,SOXL:1,SOXS:1,TQQQ:1,SQQQ:1,TMF:1,TBT:1,UVXY:1,GDX:1,URNM:1,KORU:1,BITO:1};
 var BNM={SKHYNIX:"SK하이닉스",SAMSUNG:"삼성전자",KODEX200:"KODEX 200",SAMSUNGEM:"삼성전기",HANMI:"한미반도체",LGELECTRONICS:"LG전자",NAVER:"NAVER",HYUNDAI:"현대차",EWY:"한국 ETF",KORU:"한국 3배 ETF"};
@@ -3631,7 +3790,7 @@ function kxCell(key,av,xs,inner){return '<td><span class="kxp">'+inner+'</span><
    safeMap은 행마다 try/catch로 감싸고, 실패한 행은 아바타·스파크라인 없이 숫자 칸만 '—'인 kxFbKr/kxFbUs 대체 행으로 바꾼다.
    기준 거래소에 없는 종목은 해외가·김프·등락·거래량을 '—'로 그린 행으로 남기고, 나머지 행은 정상으로 그린다. */
 function safeMap(list,fn,fb){var out=[];if(!list)return out;for(var i=0;i<list.length;i++){try{out.push(fn(list[i],i))}catch(e){var v=null;if(fb)try{v=fb(list[i],i)}catch(e2){}if(v!=null)out.push(v)}}return out}
-function kxFbKr(r){var nm=(r&&r[0])||"?";return{n:nm,tg:nm,fk:(r&&r[1])||nm,b:null,c:null,v:null,p:null,hi:null,lo:null,mc:null,html:'<tr class="na"><td><div class="nm"><div><b>'+nm+'</b><span class="l">데이터 대기</span></div></div></td><td><b>—</b></td><td><b>—</b></td></tr>'}}
+function kxFbKr(r){var nm=(r&&r[0])||"?";return{n:nm,tg:nm,fk:(r&&r[1])||nm,b:null,c:null,v:null,p:null,hi:null,lo:null,mc:null,html:'<tr class="na"><td><div class="nm"><div><b>'+krEn(nm)+'</b><span class="l">데이터 대기</span></div></div></td><td><b>—</b></td><td><b>—</b></td></tr>'}}
 function kxFbUs(s){var nm=s||"?";return{n:nm,tg:nm,fk:nm,b:null,c:null,v:null,p:null,hi:null,lo:null,mc:null,html:'<tr class="na"><td><div class="nm"><div><b>'+nm+'</b><span class="l">데이터 대기</span></div></div></td><td><b>—</b></td><td><b>—</b></td></tr>'}}
 function calc(){
 var fx=num(el("fx").value);if(!(fx>0))fx=1324.6;
@@ -3639,11 +3798,11 @@ if(mk==="us")return us(fx);
 KBR=safeMap(R,function(r){var fk=r[1]||r[0],bt=BR[r[0]];
 var rows={hl:r[1]?(D.filter(function(x){return x[0]===r[1]})[0]||null):null,bn:bt?brow(bt):null,okx:bt?xrow("okx",bt):null,by:bt?xrow("by",bt):null};
 var avl=kxAv(rows),xs=avl.length?kxPick(r[0],avl):null,h=xs?rows[xs]:null;
-if(!h)return{n:r[0],tg:r[0],fk:fk,b:null,c:null,v:null,p:null,hi:null,lo:null,mc:(MCN[r[0]]&&MCK[MCN[r[0]]]!=null)?MCK[MCN[r[0]]]:null,html:'<tr><td><div class="nm"><div><b>'+r[0]+'</b><span class="l">미상장</span></div></div></td><td><b>—</b></td><td><b>—</b></td></tr>'};
+if(!h)return{n:r[0],tg:r[0],fk:fk,b:null,c:null,v:null,p:null,hi:null,lo:null,mc:(MCN[r[0]]&&MCK[MCN[r[0]]]!=null)?MCK[MCN[r[0]]]:null,html:'<tr><td><div class="nm"><div><b>'+krEn(r[0])+'</b><span class="l">미상장</span></div></div></td><td><b>—</b></td><td><b>—</b></td></tr>'};
 var o=h[1]*fx,pv=(r[2]/o-1)*100,c=pv>0?"up":pv<0?"dn":"",tag=kxTag(xs,bt,r[1]),g=hlv2(h,r[1]||toCan("bn",bt));
 var pinner=krxOpen()?'<b>'+f(o)+'</b><span class="l">$'+f(h[1],h[1]<10?3:2)+'</span>':clnHtml(r[2]>0?f(r[2]):null)+'<span class="pcv">'+f(o)+'</span>';
 var pcell=kxCell(r[0],avl,xs,pinner);
-return{n:r[0],tg:tag,fk:fk,b:h[1],c:h[2],v:h[3]*fx/100,p:pv,hi:g.hi,lo:g.lo,mc:(MCN[r[0]]&&MCK[MCN[r[0]]]!=null)?MCK[MCN[r[0]]]:null,html:'<tr><td><div class="nm"><div><b>'+r[0]+'</b><span class="l">'+tag+'</span></div></div></td><td><b><span class="pill '+c+'">'+(pv>0?"+":"")+pv.toFixed(2)+'%</span></b></td><td>'+pc(h[2])+'</td></tr>'}},kxFbKr);rkb()}
+return{n:r[0],tg:tag,fk:fk,b:h[1],c:h[2],v:h[3]*fx/100,p:pv,hi:g.hi,lo:g.lo,mc:(MCN[r[0]]&&MCK[MCN[r[0]]]!=null)?MCK[MCN[r[0]]]:null,html:'<tr><td><div class="nm"><div><b>'+krEn(r[0])+'</b><span class="l">'+tag+'</span></div></div></td><td><b><span class="pill '+c+'">'+(pv>0?"+":"")+pv.toFixed(2)+'%</span></b></td><td>'+pc(h[2])+'</td></tr>'}},kxFbKr);rkb()}
 var XMAP={SKHX:"SKHYNIX",SMSN:"SAMSUNG"},RMAP={SKHYNIX:"SKHX",SAMSUNG:"SMSN"};
 var XTAG={hl:"HL",bn:"BN",okx:"OKX",by:"BY",nq:"NQ"};
 function xlist(x){return x==="bn"?BD:x==="okx"?OD:x==="by"?YD:x==="nq"?(typeof NQARR!=="undefined"?NQARR:[]):D}
@@ -3888,7 +4047,7 @@ function paMktSync(){var box=el("pamkt"),t=el("pamkt-t");if(!box||!t)return;box.
 window.__paShowMkt=function(m){paMkt=(m==="kospi"||m==="kosdaq")?m:"all";paMktSync();rkb();if(window.__navSync)window.__navSync()};
 var pamktX=el("pamkt-x");if(pamktX)pamktX.addEventListener("click",function(){window.__paShowMkt("all")});
 function rkb(){var rows=(KBR||[]).filter(function(r){return !!r});
-if(kq)rows=rows.filter(function(r){try{return r.n.indexOf(kq)>=0||(r.tg||"").toUpperCase().indexOf(kqU)>=0}catch(e){return false}});
+if(kq)rows=rows.filter(function(r){try{return r.n.indexOf(kq)>=0||(KREN[r.n]||"").toUpperCase().indexOf(kqU)>=0||(r.tg||"").toUpperCase().indexOf(kqU)>=0}catch(e){return false}});
 if(paMkt!=="all")rows=rows.filter(function(r){try{return paMktOf(r.n)===paMkt}catch(e){return false}});
 if(ks.k)try{rows.sort(function(x,y){var a=x[ks.k],b=y[ks.k];if(a==null&&b==null)return 0;if(a==null)return 1;if(b==null)return -1;var c=ks.k==="n"?(a<b?-1:a>b?1:0):a-b;return c*ks.d})}catch(e){}
 var _kbh=rows.map(function(r){return (r&&r.html)||""}).join("")||'<tr><td colspan="3">'+(paMkt==="kosdaq"&&!kq?"코스닥 종목은 현재 암호화폐 탭에 없어요":"검색 결과가 없습니다.")+'</td></tr>';if(el("kb")._h!==_kbh){el("kb").innerHTML=_kbh;el("kb")._h=_kbh}try{kbFlash()}catch(e){}try{arw(el("kh"),ks)}catch(e){}try{sms()}catch(e){}try{spkScan()}catch(e){}}
@@ -4361,7 +4520,7 @@ return av(it.t)}
    Common Stock·Ordinary Shares·Depositary·Registered·Repr 류의 부가 설명과 Inc.·Corp.·
    Corporation·Company·Ltd.·PLC 같은 법인 접미사는 잘라 핵심 이름만 남긴다
    (Alphabet Inc. Depositary Shs Repr 1/20th Conv Pfd Registered Shs → Alphabet).
-   비교 탭 사전에 한글명이 있는 종목은 한글명을 우선 표시하고 클래스 글자를 붙인다(알파벳 A).
+   비교 탭 사전에 한글명이 있는 종목은 한글명을 우선 표시하고 클래스 글자를 붙인다(알파벳·구글 A).
    주의: 그 사전(CMPNM)은 비교 탭 스크립트의 IIFE 안에 선언돼 전역이 아니므로, 비교 탭 쪽에서
    window.CMPNM으로 노출한 것을 통해 참조한다(전역 변수명으로 직접 참조하면 닿지 않아 영문명으로 폴백한다). */
 var NQKALIAS={GOOG:"GOOGL"};
@@ -4371,8 +4530,8 @@ if(!raw)return"";
 var cls="",m=raw.match(/\bClass\s+([A-Z])\b/)||raw.match(/\bCl\.?\s+([A-Z])\b/);
 if(m)cls=m[1];
 var can=String(it.t||"").replace(/\./g,""),ko="";
-try{var CD=(typeof CMPNM!=="undefined")?CMPNM:(window.CMPNM||null);var cn=CD?CD[NQKALIAS[can]||can]:null;if(cn&&cn[1])ko=cn[1]}catch(e){}
-if(ko){if(cls&&ko.indexOf("·")>0)ko=ko.split("·")[0];return cls?ko+" "+cls:ko}
+try{var CD=(typeof CMPNM!=="undefined")?CMPNM:(window.CMPNM||null);var cn=CD?CD[NQKALIAS[can]||can]:null;if(cn&&(cn[1]||cn[0]))ko=cn[1]||cn[0]}catch(e){}
+if(ko){return cls?ko+" "+cls:ko}
 var s=raw,cut=s.length,i,mm;
 var cuts=[/\bClass\s+[A-Z]\b/,/\bAmerican\s+Depositary\b/i,/\bUnsponsored\b/i,/\bDepositary\b/i,/\bDepository\b/i,/\bRepresenting\b/i,/\bRepr\b/i,/\bRegistered\b/i,/\bNew York Registry\b/i,/\bRegistry\b/i,/\bCommon\b/i,/\bOrdinary\b/i,/\bPreferred\b/i,/\bPreference\b/i,/\bCumulative\b/i,/\bPfd\b/i,/\bCum\b/i,/\bShares\b/i,/\bShs\b/i,/\bStock\b/i,/\bWarrants?\b/i,/\bRights\b/i,/\bUnits\b/i,/\bNotes\b/i,/\d+(\.\d+)?\s*%/,/,\s*Series\b/,/\sSeries\s+[A-Z0-9]/];
 for(i=0;i<cuts.length;i++){mm=s.search(cuts[i]);if(mm>=0&&mm<cut)cut=mm}
@@ -4568,10 +4727,10 @@ window.addEventListener("resize",function(){clearTimeout(ncRzT);ncRzT=setTimeout
 function gd2(n){return f(n,n<10?3:2)}
 function tvtheme(){var t=document.documentElement.getAttribute("data-theme");if(t)return t;return "dark"}
 var MT={
-au:{sym:"XAU",dec:2,usd:3906.07,buy:737000,sell:633000,tv:"TVC:GOLD",live:false,
+au:{sym:"XAU",dec:2,usd:3906.07,buy:730000,sell:632000,tv:"TVC:GOLD",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
-ag:{sym:"XAG",dec:3,usd:50.075,buy:9030,sell:7720,tv:"TVC:SILVER",live:false,
+ag:{sym:"XAG",dec:3,usd:50.075,buy:8480,sell:7240,tv:"TVC:SILVER",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
 cu:{sym:"HG",dec:4,usd:6.1885,dom:21700,tv:"TVC:COPPER",live:false,
@@ -8369,6 +8528,44 @@ var tabs=document.getElementById("tabs");if(!tabs)return;
 function el2(id){return document.getElementById(id)}
 function goSec(t){var b=tabs.querySelector('button[data-t="'+t+'"]');if(b)b.click()}
 function pmClick(mode){var pm=el2("pmode");if(!pm)return;var b=pm.querySelector('button[data-pm="'+mode+'"]');if(b)b.click()}
+/* 페이지 분리 (2026-11-16 사용자 지시): 메뉴 6개는 각자 페이지 주소를 가진다 —
+   홈은 그대로(기본 페이지), 암호화폐 crypto · 국내주식 kr · 미국주식 us · 국내지표 korea · 해외지표 usa.
+   주소는 #/페이지 형태이고, 메뉴를 누르면 히스토리에 쌓여 뒤로가기가 동작하며,
+   주소로 바로 들어오거나 뒤로·앞으로 이동해도 해당 페이지가 열린다.
+   페이지마다 문서 제목도 따로 붙는다 */
+var NAV2PAGE={home:"",crypto:"crypto",krstock:"kr",usstock:"us",kridx:"korea",usidx:"usa"};
+var PAGE2NAV={crypto:"crypto",kr:"krstock",us:"usstock",korea:"kridx",usa:"usidx"};
+var NAVTITLE={home:"김프원",crypto:"암호화폐 | 김프원",krstock:"국내주식 | 김프원",usstock:"미국주식 | 김프원",kridx:"국내지표 | 김프원",usidx:"해외지표 | 김프원"};
+function pageHash(key){var p=NAV2PAGE[key];return p?"#/"+p:"#/"}
+function curSlug(){var h=(location.hash||"").replace(/^#\/?/,"").split(/[?&#]/)[0];if(h)return h;try{var q=new URLSearchParams(location.search).get("page");if(q)return q}catch(e){}return ""}
+function syncPage(key,push){
+if(!key||!(key in NAV2PAGE))return;
+if(NAVTITLE[key])document.title=NAVTITLE[key];
+var want=pageHash(key);
+var cur=location.hash||"";
+if(cur===want||(key==="home"&&(cur===""||cur==="#")))return;
+try{if(push)history.pushState(null,"",want);else history.replaceState(null,"",want)}catch(e){}
+}
+function goNav(k){
+if(k==="home"){goSec("ph");if(window.__ixShowCat)window.__ixShowCat("main")}
+else if(k==="crypto"){window.__paRight=null;goSec("pa");if(window.__cxReset)window.__cxReset();if(window.__paShowMkt)window.__paShowMkt("all")}
+else if(k==="kridx"){goSec("p-kridx")}
+else if(k==="usidx"){goSec("p-usidx")}
+else if(k==="market"){goSec("p-market")}
+else if(k==="kospi"){goSec("p-kospi")}
+else if(k==="kosdaq"){goSec("p-kosdaq")}
+else if(k==="krstock"){goSec("p-kr")}
+else if(k==="usstock"){goSec("p-usstock")}
+else if(k==="nasdaq"){goSec("p-nasdaq")}
+else if(k==="spx"){goSec("p-spx")}
+else if(k==="etf"){goSec("p-etf")}
+else if(k==="calc"){goSec("p-calc")}
+}
+function routeFromLocation(){
+var slug=curSlug();if(!slug)return false;
+var k=PAGE2NAV[slug];if(!k)return false;
+goNav(k);syncNav();return true;
+}
 function syncNav(){
 var key=null;
 function vis(id){var s=el2(id);return !!(s&&!s.hidden)}
@@ -8386,49 +8583,26 @@ else if(vis("p-calc"))key="calc";
 else if(vis("ph"))key="home";
 else if(vis("pa"))key="crypto";
 tabs.querySelectorAll("[data-nav]").forEach(function(x){x.setAttribute("aria-pressed",String(x.dataset.nav===key))});
+syncPage(key,false);
 }
 window.__navSync=syncNav;
 tabs.addEventListener("click",function(e){
 var b=e.target.closest("[data-nav]");if(!b)return;
 e.preventDefault();
 var k=b.dataset.nav;
-if(k==="home"){goSec("ph");if(window.__ixShowCat)window.__ixShowCat("main")}
-else if(k==="crypto"){window.__paRight=null;goSec("pa");if(window.__paShowMkt)window.__paShowMkt("all")}
-else if(k==="kridx"){goSec("p-kridx")}
-else if(k==="usidx"){goSec("p-usidx")}
-else if(k==="market"){goSec("p-market")}
-else if(k==="kospi"){goSec("p-kospi")}
-else if(k==="kosdaq"){goSec("p-kosdaq")}
-else if(k==="krstock"){goSec("p-kr")}
-else if(k==="usstock"){goSec("p-usstock")}
-else if(k==="nasdaq"){goSec("p-nasdaq")}
-else if(k==="spx"){goSec("p-spx")}
-else if(k==="etf"){goSec("p-etf")}
-else if(k==="calc"){goSec("p-calc")}
+goNav(k);
+syncPage(k,true);
 syncNav();
-routePush(k);
+window.scrollTo(0,0);
 });
 /* 메뉴 밖에서 일어난 이동(검색 바로가기·지수 칩·주식/ETF 전환·게시물 전체보기 등)에도
    강조를 실제 화면에 맞춘다: 섹션 hidden 변화를 감시하고, 칩·모드 클릭은 뒤따라 동기화한다 */
-if(window.MutationObserver){var mo=new MutationObserver(function(){syncNav();routeSync()});["ph","pa","pb","pg","pf","pc","pi","pk","p-kridx","p-usidx","p-market","p-kospi","p-kosdaq","p-kr","p-usstock","p-nasdaq","p-spx","p-etf","p-calc"].forEach(function(id){var s=el2(id);if(s)mo.observe(s,{attributes:true,attributeFilter:["hidden"]})})}
+if(window.MutationObserver){var mo=new MutationObserver(function(){syncNav()});["ph","pa","pb","pg","pf","pc","pi","pk","p-kridx","p-usidx","p-market","p-kospi","p-kosdaq","p-kr","p-usstock","p-nasdaq","p-spx","p-etf","p-calc"].forEach(function(id){var s=el2(id);if(s)mo.observe(s,{attributes:true,attributeFilter:["hidden"]})})}
 var ixc=el2("ixcats");if(ixc)ixc.addEventListener("click",function(){setTimeout(syncNav,0)});
 var pm=el2("pmode");if(pm)pm.addEventListener("click",function(){setTimeout(syncNav,0)});
-syncNav();
-/* 페이지 분리 (2026-11-16): 메뉴 6개에 실제 주소 — 홈 / · 암호화폐 /crypto · 국내주식 /kr · 미국주식 /us · 국내지표 /korea · 해외지표 /usa.
-   클릭은 새로고침 없이 섹션만 바꾸고 주소는 pushState로 남긴다. /crypto·/korea·/usa 직접 접속은
-   서버 _redirects가 이 파일을 그대로 보여 주고, 아래 초기 라우팅이 해당 섹션을 연다 */
-var NAV2PATH={home:"/",crypto:"/crypto",krstock:"/kr",usstock:"/us",kridx:"/korea",usidx:"/usa"};
-var PATH2NAV={"/":"home","/crypto":"crypto","/kr":"krstock","/us":"usstock","/korea":"kridx","/usa":"usidx"};
-var NAVTITLE={crypto:"암호화폐 | 김프원",krstock:"국내주식 | 김프원",usstock:"미국주식 | 김프원",kridx:"국내지표 | 김프원",usidx:"해외지표 | 김프원"};
-var baseTitle=document.title;
-function pathKey(){var p=location.pathname.replace(/\/+$/,"");return PATH2NAV[p||"/"]||null}
-function applyTitle(k){document.title=(k&&NAVTITLE[k])?NAVTITLE[k]:baseTitle}
-function routePush(k){var p=NAV2PATH[k];if(!p)return;applyTitle(k);if(location.pathname!==p){try{history.pushState(null,"",p)}catch(e){}}}
-function routeSync(){var x=tabs.querySelector("[data-nav][aria-pressed=\"true\"]");if(!x)return;var k=x.dataset.nav,p=NAV2PATH[k];if(!p)return;applyTitle(k);if(location.pathname!==p){try{history.replaceState(null,"",p)}catch(e){}}}
-function openKey(k){var b=tabs.querySelector('[data-nav="'+k+'"]');if(b)b.click()}
-window.addEventListener("popstate",function(){var k=pathKey();if(k)openKey(k)});
-var __ik=pathKey();if(__ik&&__ik!=="home")openKey(__ik);applyTitle(__ik||"home");
-syncNav();
+window.addEventListener("hashchange",function(){routeFromLocation()});
+window.addEventListener("popstate",function(){routeFromLocation()});
+if(!routeFromLocation())syncNav();
 })();
 </script>
 <script>
@@ -8695,14 +8869,13 @@ b.setAttribute("aria-expanded",open?"false":"true");
 if(body)body.hidden=open;
 });
 });
-/* --- 섹션 전체 접기/펼치기 (제목 옆 버튼) --- */
-var fmb=document.querySelector("[data-fxmaster]");
-if(fmb){fmb.addEventListener("click",function(){
-var a=document.getElementById("fxall");if(!a)return;
-var open=fmb.getAttribute("aria-expanded")==="true";
-fmb.setAttribute("aria-expanded",open?"false":"true");
-a.hidden=open;
-});}
+/* --- 섹션 전체 접기/펼치기 (제목 옆 버튼 하나로 제목 아래 전부) --- */
+var fxmtgl=document.getElementById("fxmtgl");
+if(fxmtgl)fxmtgl.addEventListener("click",function(){
+var open=fxmtgl.getAttribute("aria-expanded")==="true";
+fxmtgl.setAttribute("aria-expanded",open?"false":"true");
+document.querySelectorAll("#fxsec>*:not(.fxhd)").forEach(function(el){el.hidden=open});
+});
 /* --- 차트 (계단형 SVG, 기간 전환) --- */
 var box=gel("fxchart"),tip=gel("fxtip");
 var curPts=[],curX=null,curY=null;
