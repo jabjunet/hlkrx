@@ -2750,17 +2750,42 @@ function fc(r){r=Number(r);if(!isFinite(r))return '<span class="na">—</span>';
 function rowHtml(nm,sym,price,chg){return '<tr><td><b>'+esc(nm)+'</b>'+(sym?'<small>'+esc(sym)+"</small>":"")+"</td><td>"+fp(price)+"</td><td>"+fc(chg)+"</td></tr>"}
 function failHtml(which){return '<tr><td colspan="3">불러오지 못했어요 <button type="button" class="abretry" data-cxretry="'+which+'">다시 시도</button></td></tr>'}
 function koName(t){try{var c=window.CMPNM&&window.CMPNM[t];if(c)return c[1]||""}catch(e){}try{if(typeof NM!=="undefined"&&NM[t])return NM[t]}catch(e){}return ""}
+var upCacheNames=null,upCacheMkts=null,upBusy=false,upHasData=false;
+function cxDelay(ms){return new Promise(function(res){setTimeout(res,ms)})}
+function upFetchJson(url){
+var delays=[3000,6000,12000],idx=0;
+function attempt(){
+return fetch(url).then(function(r){if(!r.ok)throw new Error("upbit "+r.status);return r.json()}).catch(function(err){
+if(idx<delays.length){var w=delays[idx];idx++;return cxDelay(w).then(attempt)}
+throw err;
+});
+}
+return attempt();
+}
 function loadUp(){
-fetch("https://api.upbit.com/v1/market/all?isDetails=false").then(function(r){if(!r.ok)throw new Error("upbit market "+r.status);return r.json()}).then(function(list){
+if(upBusy)return;
+upBusy=true;
+if(!upHasData)upB.innerHTML='<tr><td colspan="3">불러오는 중…</td></tr>';
+var marketPromise;
+if(upCacheMkts&&upCacheNames){
+marketPromise=Promise.resolve({names:upCacheNames,mkts:upCacheMkts});
+}else{
+marketPromise=upFetchJson("https://api.upbit.com/v1/market/all?isDetails=false").then(function(list){
 var names={};var mkts=[];
 (list||[]).forEach(function(m){if(m&&m.market&&m.market.indexOf("KRW-")===0){names[m.market]=m.korean_name||m.market.slice(4);mkts.push(m.market)}});
 if(!mkts.length)throw new Error("upbit empty");
-return fetch("https://api.upbit.com/v1/ticker?markets="+mkts.join(",")).then(function(r){if(!r.ok)throw new Error("upbit ticker "+r.status);return r.json()}).then(function(rows){
+upCacheNames=names;upCacheMkts=mkts;
+return cxDelay(2000).then(function(){return {names:names,mkts:mkts}});
+});
+}
+marketPromise.then(function(ctx){
+return upFetchJson("https://api.upbit.com/v1/ticker?markets="+ctx.mkts.join(",")).then(function(rows){
 rows=(rows||[]).slice().sort(function(a,b){return (b.acc_trade_price_24h||0)-(a.acc_trade_price_24h||0)});
 if(upN)upN.textContent=rows.length+"개";
-upB.innerHTML=rows.map(function(x){return rowHtml(names[x.market]||x.market.slice(4),x.market.slice(4),x.trade_price,Number(x.signed_change_rate)*100)}).join("")||'<tr><td colspan="3">표시할 종목이 없어요</td></tr>';
+upB.innerHTML=rows.map(function(x){return rowHtml(ctx.names[x.market]||x.market.slice(4),x.market.slice(4),x.trade_price,Number(x.signed_change_rate)*100)}).join("")||'<tr><td colspan="3">표시할 종목이 없어요</td></tr>';
+upHasData=true;
 });
-}).catch(function(){upB.innerHTML=failHtml("up")});
+}).catch(function(){upB.innerHTML=failHtml("up")}).then(function(){upBusy=false});
 }
 function loadBt(){
 fetch("https://api.bithumb.com/public/ticker/ALL_KRW").then(function(r){if(!r.ok)throw new Error("bithumb "+r.status);return r.json()}).then(function(j){
