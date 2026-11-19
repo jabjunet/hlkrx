@@ -2359,17 +2359,30 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 <style>
 /* ===== 암호화폐 탭: DVOL · 코인 변동성지수 패널 (신규) =====
    평소(좁은 화면·폰)에는 세 칸 아래·스테이블코인 칸 위 전체 폭 1칸으로
-   보이고, 화면이 충분히 넓을 때만(1600px 이상) #pa 왼쪽 바깥 여백에
-   세로 패널로 붙는다. 넓은 화면에서는 절대 배치라 세 칸의 배치·폭·
-   높이에는 영향을 주지 않고, 윗선은 세 칸 윗선(.pasplit 맨 위)에 맞춘다.
+   보이고, 화면이 충분히 넓을 때만(1480px 이상) #pa 왼쪽 바깥 여백에
+   작은 세로 패널(폭 184px·compact 크기)로 붙는다. 넓은 화면에서는
+   절대 배치라 세 칸의 배치·폭·높이에는 영향을 주지 않고, 윗선은
+   세 칸 윗선(.pasplit 맨 위)에 맞춘다.
    선 색은 이 패널 전용 변수(--dvln)를 쓴다 */
 #pa .pasplit>.dvbox{grid-column:1/-1}
 #pa .dvbox{--dvln:#c77400}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #pa .dvbox{--dvln:#f0a832}}
 :root[data-theme="dark"] #pa .dvbox{--dvln:#f0a832}
-@media(min-width:1600px){
+@media(min-width:1480px){
 #pa .pasplit{position:relative}
-#pa .pasplit>.dvbox{position:absolute;top:0;right:calc(100% + 12px);width:232px}
+#pa .pasplit>.dvbox{position:absolute;top:0;right:calc(100% + 10px);width:184px;padding:9px}
+#pa .dvbox .pabox-hd{margin-bottom:6px}
+#pa .dvbox .pabox-ti{font-size:13px}
+#pa .dvbox .dv-sym{font-size:11px}
+#pa .dvbox .dv-big{font-size:24px}
+#pa .dvbox .dv-chg{font-size:11.5px}
+#pa .dvbox .dv-eth{margin-top:5px}
+#pa .dvbox .dv-eth b{font-size:14px}
+#pa .dvbox .dv-chart{margin-top:8px;min-height:86px}
+#pa .dvbox .dv-zones{margin-top:7px;gap:2px}
+#pa .dvbox .dv-zone{padding:3px 6px;gap:6px;font-size:11.5px}
+#pa .dvbox .dv-zone .dv-zr{min-width:44px}
+#pa .dvbox .dv-src{margin-top:6px;font-size:10.5px}
 }
 #pa .dv-btc{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 #pa .dv-sym{font-size:12px;font-weight:700;color:var(--mut);white-space:nowrap}
@@ -3604,7 +3617,7 @@ var TIP='<div class="dv-tip" id="dv-tip" hidden></div>';
 var days=dvState.btc;
 if(!days||days.length<2){chartEl.innerHTML=TIP;dvCur=null;return}
 var pts=days.slice(-90);
-var W=Math.max(200,chartEl.clientWidth||232),H=190;
+var W=Math.max(200,chartEl.clientWidth||232),H=(box.clientWidth>0&&box.clientWidth<=200)?104:190;
 var leftPad=30,rightPad=6,topPad=8,botPad=18,plotW=W-leftPad-rightPad,plotH=H-topPad-botPad;
 var mn=Infinity,mx=-Infinity,i;
 for(i=0;i<pts.length;i++){if(pts[i].v<mn)mn=pts[i].v;if(pts[i].v>mx)mx=pts[i].v}
