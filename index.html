@@ -2357,18 +2357,15 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 }
 </style>
 <style>
-/* ===== 암호화폐 탭: DVOL · 코인 변동성지수 패널 (신규) =====
-   평소(좁은 화면·폰)에는 세 칸 아래·스테이블코인 칸 위 전체 폭 1칸으로
+/* ===== 암호화폐 탭: DVOL 변동성지수 칸 (간소화) =====
+   각 칸은 제목·코인 라벨+현재값·전일 대비 줄만 보여준다.
+   평소(좁은 화면·폰)에는 세 칸 아래·스테이블코인 칸 위 전체 폭으로
    보이고, 화면이 충분히 넓을 때만(1480px 이상) #pa 왼쪽 바깥 여백에
-   작은 세로 패널(폭 184px·compact 크기)로 붙는다. 넓은 화면에서는
+   작은 세로 패널(폭 184px)로 두 칸이 쌓여 붙는다. 넓은 화면에서는
    절대 배치라 세 칸의 배치·폭·높이에는 영향을 주지 않고, 윗선은
-   세 칸 윗선(.pasplit 맨 위)에 맞춘다.
-   선 색은 이 패널 전용 변수(--dvln)를 쓴다 */
+   세 칸 윗선(.pasplit 맨 위)에 맞춘다 */
 #pa .pasplit>.dvbox{grid-column:1/-1}
 #pa .pasplit>.dvwrap{grid-column:1/-1;display:flex;flex-direction:column;gap:12px;min-width:0}
-#pa .dvbox{--dvln:#c77400}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #pa .dvbox{--dvln:#f0a832}}
-:root[data-theme="dark"] #pa .dvbox{--dvln:#f0a832}
 @media(min-width:1480px){
 #pa .pasplit{position:relative}
 #pa .pasplit>.dvwrap{position:absolute;top:0;right:calc(100% + 10px);width:184px}
@@ -2378,35 +2375,14 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pa .dvbox .dv-sym{font-size:11px}
 #pa .dvbox .dv-big{font-size:24px}
 #pa .dvbox .dv-chg{font-size:11.5px}
-#pa .dvbox .dv-chart{margin-top:8px;min-height:86px}
-#pa .dvbox .dv-zones{margin-top:7px;gap:2px}
-#pa .dvbox .dv-zone{padding:3px 6px;gap:6px;font-size:11.5px}
-#pa .dvbox .dv-zone .dv-zr{min-width:44px}
-#pa .dvbox .dv-src{margin-top:6px;font-size:10.5px}
 }
 #pa .dv-btc{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 #pa .dv-sym{font-size:12px;font-weight:700;color:var(--mut);white-space:nowrap}
 #pa .dv-big{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1;color:var(--tx)}
+#pa .dv-chgline{margin-top:2px}
 #pa .dv-chg{font-size:13px;font-weight:800;white-space:nowrap}
 #pa .dv-chg.up{color:var(--up)}
 #pa .dv-chg.dn{color:var(--dn)}
-#pa .dv-chart{position:relative;margin-top:10px;min-height:120px}
-#pa .dv-chart svg{display:block;width:100%;height:auto}
-#pa .dv-ln{fill:none;stroke:var(--dvln);stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}
-#pa .dv-area{fill:var(--dvln);opacity:.09}
-#pa .dv-dot{fill:var(--dvln);stroke:var(--sf);stroke-width:1.5}
-#pa .dv-grid{stroke:var(--bd);stroke-width:1}
-#pa .dv-tip{position:absolute;pointer-events:none;background:var(--tx);color:var(--bg);font-size:12px;font-weight:600;line-height:1.55;padding:6px 9px;border-radius:8px;white-space:nowrap;z-index:5;transform:translate(-50%,-112%)}
-#pa .dv-tip[hidden]{display:none}
-#pa .dv-tip b{display:block;font-size:12.5px}
-#pa .dv-zones{margin-top:10px;display:flex;flex-direction:column;gap:3px}
-#pa .dv-zone{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:7px;font-size:12.5px;color:var(--mut)}
-#pa .dv-zone .dv-zr{font-weight:700;min-width:52px}
-#pa .dv-zone .dv-zl{font-weight:600}
-#pa .dv-zone .dv-dotz{width:7px;height:7px;border-radius:50%;flex:none}
-#pa .dv-zone.on{background:var(--sf2);color:var(--tx)}
-#pa .dv-zone.on .dv-zl{font-weight:800}
-#pa .dv-src{font-size:11px;color:var(--mut);margin:8px 0 0;text-align:right}
 @media(max-width:720px){#pa .dv-big{font-size:26px}}
 </style>
 </head>
@@ -2470,7 +2446,7 @@ var D={
 "등락률은 TradingView 기준 전일 종가 대비이며 1분마다 갱신합니다. 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준으로 표시됩니다.":"Changes are vs. the previous close (TradingView) and refresh every minute. Low-volume stocks are excluded. When the market is closed, figures are based on the last close.",
 "미국 주요 경제지표의 최근 발표 결과와 발표 예정 일정입니다. 발표 시각은 한국 시간 기준이고, 예상치는 시장 전망치입니다.":"Recent results and upcoming release schedule for major US economic indicators. Times are Korea Standard Time; forecasts are market consensus.",
 "비농업 고용":"Nonfarm Payrolls","실업률":"Unemployment Rate","평균 시간당 임금":"Avg Hourly Earnings","미시간대 소비자심리지수 (예비)":"Michigan Consumer Sentiment (Prel.)","소비자심리지수":"Consumer Sentiment","소비자물가":"CPI","근원 소비자물가":"Core CPI","신규 실업수당 청구":"Initial Jobless Claims","생산자물가":"PPI","근원 생산자물가":"Core PPI","근원 소매판매":"Core Retail Sales","소매판매":"Retail Sales","국내총생산":"GDP","FOMC 기준금리":"FOMC Rate Decision","소비자신뢰지수":"Consumer Confidence","ISM 제조업":"ISM Manufacturing","ISM 서비스업":"ISM Services","무역수지":"Trade Balance","내구재 주문":"Durable Goods Orders","주택착공":"Housing Starts","기존주택판매":"Existing Home Sales","신규주택판매":"New Home Sales","JOLTS 구인":"JOLTS Job Openings","ADP 고용변화":"ADP Employment Change",
-"전체 종목":"All Stocks","스테이블코인 공급량 증감":"Stablecoin Supply Change","스테이블코인 공급량 증감 칸 접기·펼치기":"Collapse or expand the stablecoin supply card","합계":"Total","7일":"7D","30일":"30D","90일":"90D","180일":"180D","1년":"1Y","USDT 현재 공급량":"USDT Current Supply","USDC 현재 공급량":"USDC Current Supply","최근 30일 증감":"30D Change","합계 최근 30일 증감":"Total 30D Change","현재 합계 공급량":"Total Current Supply","코인 선택":"Select coin","기간 선택":"Select period","+ 순발행(자금 유입)":"+ Net issuance (inflow)","− 순상환(자금 유출)":"− Net redemption (outflow)","1년은 주별 합산 · 전체는 월별 합산":"1Y is summed weekly · All is summed monthly","차트 종류":"Chart Type","공급량이 늘면 자금 유입":"Supply up = money in","줄면 자금 유출":"Supply down = money out","최근 7일 증감":"7D Change","최근 90일 증감":"90D Change","최근 180일 증감":"180D Change","최근 1년 증감":"1Y Change","전체 기간 증감":"All-time Change","전날 대비":"vs Prev. Day","출처: DefiLlama":"Source: DefiLlama","DVOL · 코인 변동성지수":"DVOL · Crypto Volatility Index","DVOL · 이더리움 변동성지수":"DVOL · Ethereum Volatility Index","잠잠":"Calm","평소":"Normal","긴장":"Tense","공포":"Fear","출처: Deribit":"Source: Deribit","40 아래":"Below 40","80 위":"Above 80","전일 대비":"vs Prev. Day","순증감":"Net change","공급량":"Supply","불러오지 못했어요":"Could not load","변동":"Change","한국 주식":"Korean Stocks","해외 주식":"Global Stocks","국장":"KR Market","미장":"US Market",
+"전체 종목":"All Stocks","스테이블코인 공급량 증감":"Stablecoin Supply Change","스테이블코인 공급량 증감 칸 접기·펼치기":"Collapse or expand the stablecoin supply card","합계":"Total","7일":"7D","30일":"30D","90일":"90D","180일":"180D","1년":"1Y","USDT 현재 공급량":"USDT Current Supply","USDC 현재 공급량":"USDC Current Supply","최근 30일 증감":"30D Change","합계 최근 30일 증감":"Total 30D Change","현재 합계 공급량":"Total Current Supply","코인 선택":"Select coin","기간 선택":"Select period","+ 순발행(자금 유입)":"+ Net issuance (inflow)","− 순상환(자금 유출)":"− Net redemption (outflow)","1년은 주별 합산 · 전체는 월별 합산":"1Y is summed weekly · All is summed monthly","차트 종류":"Chart Type","공급량이 늘면 자금 유입":"Supply up = money in","줄면 자금 유출":"Supply down = money out","최근 7일 증감":"7D Change","최근 90일 증감":"90D Change","최근 180일 증감":"180D Change","최근 1년 증감":"1Y Change","전체 기간 증감":"All-time Change","전날 대비":"vs Prev. Day","출처: DefiLlama":"Source: DefiLlama","DVOL · 비트코인 변동성지수":"DVOL · Bitcoin Volatility Index","DVOL · 이더리움 변동성지수":"DVOL · Ethereum Volatility Index","잠잠":"Calm","평소":"Normal","긴장":"Tense","공포":"Fear","출처: Deribit":"Source: Deribit","40 아래":"Below 40","80 위":"Above 80","전일 대비":"vs Prev. Day","순증감":"Net change","공급량":"Supply","불러오지 못했어요":"Could not load","변동":"Change","한국 주식":"Korean Stocks","해외 주식":"Global Stocks","국장":"KR Market","미장":"US Market",
 "한국 시간 기준 · 국내 프리·애프터는 넥스트레이드(NXT) 포함":"KST · KR pre/after-market includes Nextrade (NXT)","한국 시간 기준 · 미장은 서머타임 자동 반영":"KST · US hours adjust for daylight saving time automatically",
 "휴장":"Closed","프리마켓 중":"Pre-market","정규장 중":"Market Open","애프터마켓 중":"After-hours","장외 시간":"Off-hours",
 "종목 검색":"Search stocks","정렬":"Sort","전일대비":"vs Prev Close","고가대비":"vs High","저가대비":"vs Low","거래량":"Volume",
@@ -2795,7 +2771,7 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 </section>
 </div>
 <div class="pathird pabox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">전체 종목</span><span class="pabox-n" id="aball-n"></span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="전체 종목 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="pabox-bd"><div class="absec" id="absec-kr"><div class="abpair"><div class="abcell"><span class="abbox-t">기준 거래소</span><span class="xselw absw"><button type="button" class="xsel" id="absel-b-kr" aria-haspopup="listbox" aria-expanded="false" aria-label="전체 종목 기준 거래소"><span class="xnm" id="abnm-b-kr">Hyperliquid</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="ab-base-kr" role="listbox" aria-label="전체 종목 기준 거래소" hidden><button type="button" role="option" data-abx="us" aria-selected="false">나스닥</button><button type="button" role="option" data-abx="hl" aria-selected="true">Hyperliquid</button><button type="button" role="option" data-abx="bn" aria-selected="false">Binance</button><button type="button" role="option" data-abx="okx" aria-selected="false">OKX</button><button type="button" role="option" data-abx="by" aria-selected="false">Bybit</button></div></span></div><div class="abcell"><span class="abbox-t">비교 거래소</span><span class="xselw absw"><button type="button" class="xsel" id="absel-c-kr" aria-haspopup="listbox" aria-expanded="false" aria-label="전체 종목 비교 거래소"><span class="xnm" id="abnm-c-kr">Binance</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="ab-cmp-kr" role="listbox" aria-label="전체 종목 비교 거래소" hidden><button type="button" role="option" data-abx="bn" aria-selected="true">Binance</button><button type="button" role="option" data-abx="hl" aria-selected="false">Hyperliquid</button><button type="button" role="option" data-abx="okx" aria-selected="false">OKX</button><button type="button" role="option" data-abx="by" aria-selected="false">Bybit</button><button type="button" role="option" data-abx="us" aria-selected="false">나스닥</button></div></span></div></div><div class="wrap"><table class="kp kp4"><thead><tr><th>이름</th><th>김프</th><th>변동</th></tr></thead><tbody id="ab3kr"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div>
-<div class="dvwrap" id="dvwrap"><div class="pabox dvbox" id="dvbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">DVOL · 코인 변동성지수</span></div><div class="dv-btc"><span class="dv-sym">BTC DVOL</span><b class="dv-big" id="dv-btc-v">—</b><span class="dv-chg" id="dv-btc-c"></span></div><div class="dv-chart" id="dv-chart"><div class="dv-tip" id="dv-tip" hidden></div></div><div class="dv-zones" id="dv-zones"><div class="dv-zone" data-dvz="0"><span class="dv-dotz" style="background:#3b82c4"></span><span class="dv-zr">40 아래</span><span class="dv-zl">잠잠</span></div><div class="dv-zone" data-dvz="1"><span class="dv-dotz" style="background:#1f9d63"></span><span class="dv-zr">40~60</span><span class="dv-zl">평소</span></div><div class="dv-zone" data-dvz="2"><span class="dv-dotz" style="background:#d97706"></span><span class="dv-zr">60~80</span><span class="dv-zl">긴장</span></div><div class="dv-zone" data-dvz="3"><span class="dv-dotz" style="background:#d92d20"></span><span class="dv-zr">80 위</span><span class="dv-zl">공포</span></div></div><p class="dv-src">출처: Deribit<span id="dv-src-base"> · 2026-11-19 기준</span></p></div><div class="pabox dvbox" id="dvebox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">DVOL · 이더리움 변동성지수</span></div><div class="dv-btc"><span class="dv-sym">ETH DVOL</span><b class="dv-big" id="dv-eth-v">—</b><span class="dv-chg" id="dv-eth-c"></span></div><div class="dv-chart" id="dv-chart-e"><div class="dv-tip" id="dv-tip-e" hidden></div></div><div class="dv-zones" id="dv-zones-e"><div class="dv-zone" data-dvz="0"><span class="dv-dotz" style="background:#3b82c4"></span><span class="dv-zr">40 아래</span><span class="dv-zl">잠잠</span></div><div class="dv-zone" data-dvz="1"><span class="dv-dotz" style="background:#1f9d63"></span><span class="dv-zr">40~60</span><span class="dv-zl">평소</span></div><div class="dv-zone" data-dvz="2"><span class="dv-dotz" style="background:#d97706"></span><span class="dv-zr">60~80</span><span class="dv-zl">긴장</span></div><div class="dv-zone" data-dvz="3"><span class="dv-dotz" style="background:#d92d20"></span><span class="dv-zr">80 위</span><span class="dv-zl">공포</span></div></div><p class="dv-src">출처: Deribit<span id="dv-src-base-e"> · 2026-11-19 기준</span></p></div></div>
+<div class="dvwrap" id="dvwrap"><div class="pabox dvbox" id="dvbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">DVOL · 비트코인 변동성지수</span></div><div class="dv-btc"><span class="dv-sym">BTC DVOL</span><b class="dv-big" id="dv-btc-v">—</b></div><div class="dv-chgline"><span class="dv-chg" id="dv-btc-c"></span></div></div><div class="pabox dvbox" id="dvebox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">DVOL · 이더리움 변동성지수</span></div><div class="dv-btc"><span class="dv-sym">ETH DVOL</span><b class="dv-big" id="dv-eth-v">—</b></div><div class="dv-chgline"><span class="dv-chg" id="dv-eth-c"></span></div></div></div>
 <div class="pabox scbox" id="scbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">스테이블코인 공급량 증감</span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="스테이블코인 공급량 증감 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="sc-sum"><div class="sc-sum-it" id="sc-sum-usdt"><span class="sc-loadtx">불러오는 중…</span></div><div class="sc-sum-it" id="sc-sum-usdc"><span class="sc-loadtx">불러오는 중…</span></div><div class="sc-sum-it sc-total" id="sc-sum-total"><span class="sc-loadtx">불러오는 중…</span></div></div><div class="sc-ctl"><div class="pair" role="group" aria-label="코인 선택"><button type="button" data-scs="total" aria-pressed="true">합계</button><button type="button" data-scs="usdt" aria-pressed="false">USDT</button><button type="button" data-scs="usdc" aria-pressed="false">USDC</button></div><div class="pair sc-days" id="sc-days" role="group" aria-label="기간 선택"><button type="button" data-scd="0" data-scall aria-pressed="false" aria-expanded="false">전체<span class="sc-arr" aria-hidden="true">▾</span></button><button type="button" data-scd="7" aria-pressed="false" hidden>7일</button><button type="button" data-scd="30" aria-pressed="true" hidden>30일</button><button type="button" data-scd="90" aria-pressed="false" hidden>90일</button><button type="button" data-scd="180" aria-pressed="false" hidden>180일</button><button type="button" data-scd="365" aria-pressed="false" hidden>1년</button></div><div class="pair sc-mode" role="group" aria-label="차트 종류"><button type="button" data-scm="chg" aria-pressed="true">순증감</button><button type="button" data-scm="sup" aria-pressed="false">공급량</button></div></div><p class="sc-leg" id="sc-leg-bar"><b class="sc-pos">+ 순발행(자금 유입)</b> · <b class="sc-neg">− 순상환(자금 유출)</b></p><p class="sc-leg" id="sc-leg-line" hidden><span>공급량이 늘면 자금 유입</span> · <span>줄면 자금 유출</span></p><p class="sc-pchg" id="sc-pchg" hidden></p><div class="sc-chart" id="sc-chart"><div class="sc-load2">불러오는 중…</div><div class="sc-tip" id="sc-tip" hidden></div></div><p class="sc-agg" id="sc-agg" hidden>1년은 주별 합산 · 전체는 월별 합산</p><p class="sc-src">출처: DefiLlama<span id="sc-src-base"> · 2026-11-19 기준</span></p></div>
 </div>
 <div class="cxview" id="cxv-krex" data-cxview="krex" hidden><div class="cxview-body" id="cxbody-krex"><div class="cxexgrid"><div class="cxexbox"><div class="cxexhd"><span class="cxexti">업비트</span><span class="cxexn" id="cxup-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxup-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div><div class="cxexbox"><div class="cxexhd"><span class="cxexti">빗썸</span><span class="cxexn" id="cxbt-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxbt-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div></div>
@@ -3562,95 +3538,43 @@ scLoadAll();
 })();
 </script>
 <script>
-window.DVOL_EMBED={"date":"2026-11-19","btc":[[1787270400,43.29],[1787356800,42.27],[1787443200,43.18],[1787529600,43.41],[1787616000,43.28],[1787702400,40.37],[1787788800,41.52],[1787875200,38.34],[1787961600,37.43],[1788048000,36.99],[1788134400,37.63],[1788220800,37.93],[1788307200,37.19],[1788393600,39.78],[1788480000,37.96],[1788566400,38.66],[1788652800,39.32],[1788739200,38.79],[1788825600,39.92],[1788912000,40.2],[1788998400,40.24],[1789084800,36.75],[1789171200,36.98],[1789257600,38.89],[1789344000,38.57],[1789430400,39.01],[1789516800,36.19],[1789603200,33.59],[1789689600,35.46],[1789776000,36.32],[1789862400,35.65],[1789948800,38.14],[1790035200,37.4],[1790121600,35.81],[1790208000,36.04],[1790294400,34.62],[1790380800,34.92],[1790467200,35.07],[1790553600,35.93],[1790640000,35.12],[1790726400,35.23],[1790812800,36.44],[1790899200,34.82],[1790985600,35.36],[1791072000,36.5],[1791158400,36.1],[1791244800,36.13],[1791331200,36.76],[1791417600,37.74],[1791504000,36.39],[1791590400,36.99],[1791676800,37.34],[1791763200,37.71],[1791849600,38.23],[1791936000,39.12],[1792022400,38.75],[1792108800,37.66],[1792195200,37.93],[1792281600,38.82],[1792368000,37.33],[1792454400,36.86],[1792540800,37.1],[1792627200,37.99],[1792713600,37.35],[1792800000,37.93],[1792886400,38.8],[1792972800,38.56],[1793059200,37.69],[1793145600,37.26],[1793232000,41.99],[1793318400,40.59],[1793404800,40.03],[1793491200,40.28],[1793577600,39.3],[1793664000,39.73],[1793750400,38.06],[1793836800,42.27],[1793923200,39.43],[1794009600,40.2],[1794096000,40.99],[1794182400,39.87],[1794268800,39.45],[1794355200,38.92],[1794441600,40.07],[1794528000,39.87],[1794614400,47.29],[1794700800,43.95],[1794787200,43.13],[1794873600,43.29],[1794960000,45.7],[1795046400,45.96]],"eth":[[1787270400,57.73],[1787356800,57.01],[1787443200,60.31],[1787529600,58.44],[1787616000,58.15],[1787702400,56.06],[1787788800,57.08],[1787875200,50.85],[1787961600,51.11],[1788048000,51.76],[1788134400,51.31],[1788220800,51.83],[1788307200,50.92],[1788393600,53.28],[1788480000,51.09],[1788566400,51.72],[1788652800,53.19],[1788739200,52.6],[1788825600,53.86],[1788912000,53.73],[1788998400,53.36],[1789084800,51.76],[1789171200,52.61],[1789257600,54.29],[1789344000,54.92],[1789430400,55.19],[1789516800,52.83],[1789603200,50.11],[1789689600,49.92],[1789776000,50.81],[1789862400,51.5],[1789948800,52.61],[1790035200,51.12],[1790121600,51.56],[1790208000,51.04],[1790294400,48.03],[1790380800,49.02],[1790467200,48.96],[1790553600,49.98],[1790640000,48.98],[1790726400,49.35],[1790812800,49.65],[1790899200,48.13],[1790985600,48.49],[1791072000,49.64],[1791158400,48.36],[1791244800,47.52],[1791331200,47.96],[1791417600,50.34],[1791504000,49.25],[1791590400,50.39],[1791676800,50.72],[1791763200,51.88],[1791849600,51.53],[1791936000,52.64],[1792022400,52.71],[1792108800,51.4],[1792195200,52.22],[1792281600,53.38],[1792368000,51.94],[1792454400,52.31],[1792540800,50.42],[1792627200,52.24],[1792713600,51.98],[1792800000,53.51],[1792886400,53.62],[1792972800,53.01],[1793059200,53.23],[1793145600,52.5],[1793232000,58.21],[1793318400,55.24],[1793404800,55.44],[1793491200,54.4],[1793577600,52.77],[1793664000,52.19],[1793750400,51.9],[1793836800,57.44],[1793923200,55.2],[1794009600,55.98],[1794096000,57.97],[1794182400,56.36],[1794268800,55.81],[1794355200,54.78],[1794441600,56.06],[1794528000,55.55],[1794614400,63.36],[1794700800,57.1],[1794787200,57.86],[1794873600,58.13],[1794960000,59.87],[1795046400,60.21]]};
+window.DVOL_EMBED={"date":"2026-11-19","btc":[[1794700800,43.95],[1794787200,43.13],[1794873600,43.29],[1794960000,45.7],[1795046400,45.96]],"eth":[[1794700800,57.1],[1794787200,57.86],[1794873600,58.13],[1794960000,59.87],[1795046400,60.21]]};
 </script>
 <script>
-/* ===== DVOL · 코인 변동성지수 패널 (신규) =====
+/* ===== DVOL 변동성지수 칸 (간소화) =====
    Deribit 공개 API(키 없음)의 get_volatility_index_data로 BTC·ETH DVOL
-   일별 종가를 받아, BTC 칸과 그 아래 ETH 전용 칸에 각각 현재값(크게)·
-   전일 대비 증감·최근 90일 선 차트·구간 안내를 보여준다. CORS는 Access-Control-
-   Allow-Origin이 요청 Origin을 그대로 돌려줘 브라우저에서 바로 부른다.
-   첫 표시는 스테이블코인 칸과 같은 방식: 빌드 시점에 받아 페이지에
-   내장한 값(window.DVOL_EMBED)으로 즉시 그리고('기준일' 표기는 내장을
-   보고 있을 때만 보인다), 뒤에서 라이브 조회로 교체한다. 조회가
-   실패하면 내장 데이터를 조용히 유지한다. 갱신은 암호화폐 탭을 열 때와
-   5분 간격(탭이 열려 있을 때만) */
+   일별 종가를 받아, BTC 칸과 그 아래 ETH 전용 칸에 각각 현재값(크게)과
+   전일 대비 증감만 보여준다. 차트·구간 안내는 두지 않는다.
+   첫 표시는 빌드 시점에 받아 페이지에 내장한 값(window.DVOL_EMBED,
+   값·전일 대비 계산에 필요한 최근 며칠치만)으로 즉시 그리고, 뒤에서
+   라이브 조회로 교체한다. 조회가 실패하면 내장 데이터를 조용히
+   유지한다. 갱신은 암호화폐 탭을 열 때와 5분 간격(탭이 열려 있을 때만) */
 (function(){
 if(!document.getElementById("dvbox"))return;
 var dvState={btc:null,eth:null};
-var dvLive={btc:false,eth:false};
-var dvPanels=[
-{key:"btc",sym:"BTC",box:document.getElementById("dvbox"),chartEl:document.getElementById("dv-chart"),tipId:"dv-tip",cur:null},
-{key:"eth",sym:"ETH",box:document.getElementById("dvebox"),chartEl:document.getElementById("dv-chart-e"),tipId:"dv-tip-e",cur:null}
-];
+var dvKeys=["btc","eth"];
 function dvEmbDays(pairs){
 if(!pairs||pairs.length<2)return null;
 var out=[];
 for(var i=0;i<pairs.length;i++)out.push({date:pairs[i][0],v:pairs[i][1]});
 return out;
 }
-["btc","eth"].forEach(function(k){
+dvKeys.forEach(function(k){
 var d=null;try{d=window.DVOL_EMBED?dvEmbDays(window.DVOL_EMBED[k]):null}catch(e){}
 if(d)dvState[k]=d;
 });
-var WD=["일","월","화","수","목","금","토"];
 function dvFmt(v){return v.toFixed(1)}
-function dvZoneIdx(v){return v<40?0:v<60?1:v<80?2:3}
-function dvSyncSrc(){var b=document.getElementById("dv-src-base");if(b)b.hidden=dvLive.btc;var e=document.getElementById("dv-src-base-e");if(e)e.hidden=dvLive.eth}
-function dvRenderHead(){
-dvPanels.forEach(function(p){
-var d=dvState[p.key];if(!d||d.length<2)return;
+function dvRender(){
+dvKeys.forEach(function(k){
+var d=dvState[k];if(!d||d.length<2)return;
 var last=d[d.length-1],prev=d[d.length-2],ch=last.v-prev.v;
-var bv=document.getElementById("dv-"+p.key+"-v"),bc=document.getElementById("dv-"+p.key+"-c");
+var bv=document.getElementById("dv-"+k+"-v"),bc=document.getElementById("dv-"+k+"-c");
 if(bv)bv.textContent=dvFmt(last.v);
 if(bc){bc.textContent="전일 대비 "+(ch>=0?"+":"-")+Math.abs(ch).toFixed(1);bc.className="dv-chg "+(ch>=0?"up":"dn")}
-var zi=dvZoneIdx(last.v);
-if(p.box)p.box.querySelectorAll(".dv-zone").forEach(function(z){z.classList.toggle("on",+z.getAttribute("data-dvz")===zi)});
 });
 }
-function dvDateLbl(ts){var d=new Date(ts*1000);return (d.getUTCMonth()+1)+"/"+d.getUTCDate()}
-function dvDateFull(ts){var d=new Date(ts*1000);return d.getUTCFullYear()+"년 "+(d.getUTCMonth()+1)+"월 "+d.getUTCDate()+"일 ("+WD[d.getUTCDay()]+")"}
-function dvRenderChart(p){
-var chartEl=p.chartEl;if(!chartEl)return;
-var TIP='<div class="dv-tip" id="'+p.tipId+'" hidden></div>';
-var days=dvState[p.key];
-if(!days||days.length<2){chartEl.innerHTML=TIP;p.cur=null;return}
-var pts=days.slice(-90);
-var W=Math.max(200,chartEl.clientWidth||232),H=(p.box&&p.box.clientWidth>0&&p.box.clientWidth<=200)?104:190;
-var leftPad=30,rightPad=6,topPad=8,botPad=18,plotW=W-leftPad-rightPad,plotH=H-topPad-botPad;
-var mn=Infinity,mx=-Infinity,i;
-for(i=0;i<pts.length;i++){if(pts[i].v<mn)mn=pts[i].v;if(pts[i].v>mx)mx=pts[i].v}
-if(mx<=mn)mx=mn+1;
-var padV=(mx-mn)*0.1;mn-=padV;mx+=padV;
-var LX=function(i){return leftPad+(pts.length<2?plotW/2:plotW*i/(pts.length-1))};
-var LY=function(v){return topPad+plotH*(1-(v-mn)/(mx-mn))};
-var s='<svg viewBox="0 0 '+W+" "+H+'" role="img" aria-label="'+p.sym+' DVOL 최근 90일 선그래프">';
-for(var g=0;g<3;g++){
-var gv=mn+(mx-mn)*g/2,gy=LY(gv);
-s+='<line class="dv-grid" x1="'+leftPad+'" x2="'+(W-rightPad)+'" y1="'+gy.toFixed(1)+'" y2="'+gy.toFixed(1)+'"></line>';
-s+='<text x="'+(leftPad-5)+'" y="'+(gy+3.5).toFixed(1)+'" text-anchor="end" style="fill:var(--mut);font-size:10px">'+Math.round(gv)+"</text>";
-}
-var line="",area="";
-for(i=0;i<pts.length;i++){var px=LX(i).toFixed(1),py=LY(pts[i].v).toFixed(1);line+=(i?"L":"M")+px+" "+py;area+=(i?"L":"M")+px+" "+py}
-area+="L"+LX(pts.length-1).toFixed(1)+" "+(topPad+plotH)+" L"+LX(0).toFixed(1)+" "+(topPad+plotH)+" Z";
-s+='<path class="dv-area" d="'+area+'"></path>';
-s+='<path class="dv-ln" d="'+line+'"></path>';
-s+='<circle class="dv-dot" cx="-10" cy="-10" r="3.5" style="display:none"></circle>';
-for(i=0;i<pts.length;i++){
-var hx0=i===0?leftPad:(LX(i)+LX(i-1))/2,hx1=i===pts.length-1?W-rightPad:(LX(i)+LX(i+1))/2;
-s+='<rect data-dvi="'+i+'" x="'+hx0.toFixed(1)+'" y="'+topPad+'" width="'+Math.max(1,hx1-hx0).toFixed(1)+'" height="'+plotH+'" fill="transparent"></rect>';
-}
-var mid=Math.floor((pts.length-1)/2);
-s+='<text x="'+leftPad+'" y="'+(H-4)+'" style="fill:var(--mut);font-size:10px">'+dvDateLbl(pts[0].date)+"</text>";
-s+='<text x="'+(leftPad+plotW/2)+'" y="'+(H-4)+'" text-anchor="middle" style="fill:var(--mut);font-size:10px">'+dvDateLbl(pts[mid].date)+"</text>";
-s+='<text x="'+(W-rightPad)+'" y="'+(H-4)+'" text-anchor="end" style="fill:var(--mut);font-size:10px">'+dvDateLbl(pts[pts.length-1].date)+"</text>";
-s+="</svg>";
-chartEl.innerHTML=s+TIP;
-p.cur={pts:pts,W:W,H:H,leftPad:leftPad,topPad:topPad,plotW:plotW,plotH:plotH,mn:mn,mx:mx};
-}
-function dvRender(){dvRenderHead();dvPanels.forEach(dvRenderChart);dvSyncSrc()}
 function dvFetch(cur){
-var now=Date.now(),start=now-95*86400*1000;
+var now=Date.now(),start=now-7*86400*1000;
 return fetch("https://www.deribit.com/api/v2/public/get_volatility_index_data?currency="+cur+"&start_timestamp="+start+"&end_timestamp="+now+"&resolution=86400").then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
 var data=j&&j.result&&j.result.data;
 if(!data||data.length<2)throw new Error("empty");
@@ -3662,34 +3586,12 @@ return out;
 }
 function dvLoad(){
 ["BTC","ETH"].forEach(function(cur){
-dvFetch(cur).then(function(days){dvState[cur.toLowerCase()]=days;dvLive[cur.toLowerCase()]=true;dvRender()}).catch(function(){});
+dvFetch(cur).then(function(days){dvState[cur.toLowerCase()]=days;dvRender()}).catch(function(){});
 });
 }
-/* 차트 호버: 스테이블코인 칸 선 차트와 같은 방식의 툴팁 (칸마다 따로) */
-dvPanels.forEach(function(p){
-var chartEl=p.chartEl;if(!chartEl)return;
-chartEl.addEventListener("pointerleave",function(){var tip=document.getElementById(p.tipId);if(tip)tip.hidden=true;var dot=chartEl.querySelector(".dv-dot");if(dot)dot.style.display="none"});
-chartEl.addEventListener("pointermove",function(ev){
-if(!p.cur)return;
-var t=ev.target;
-if(!t||!t.getAttribute||t.getAttribute("data-dvi")===null)return;
-var i=+t.getAttribute("data-dvi"),pt=p.cur.pts[i];if(!pt)return;
-var tip=document.getElementById(p.tipId),dot=chartEl.querySelector(".dv-dot");if(!tip)return;
-var lx=p.cur.leftPad+(p.cur.pts.length<2?p.cur.plotW/2:p.cur.plotW*i/(p.cur.pts.length-1));
-var ly=p.cur.topPad+p.cur.plotH*(1-(pt.v-p.cur.mn)/(p.cur.mx-p.cur.mn));
-if(dot){dot.setAttribute("cx",lx);dot.setAttribute("cy",ly);dot.style.display=""}
-tip.innerHTML="<b>"+dvDateFull(pt.date)+"</b>"+p.sym+" DVOL "+dvFmt(pt.v);
-var cw=chartEl.clientWidth||p.cur.W,chh=chartEl.clientHeight||p.cur.H;
-tip.style.left=Math.max(46,Math.min(cw-46,lx/p.cur.W*cw))+"px";
-tip.style.top=(ly/p.cur.H*chh)+"px";
-tip.hidden=false;
-});
-});
-var dvRzT=null;
-window.addEventListener("resize",function(){if(dvRzT)return;dvRzT=setTimeout(function(){dvRzT=null;dvPanels.forEach(dvRenderChart)},200)});
 var pa=document.getElementById("pa"),dvLastLoad=0;
 function dvRefresh(){var now=Date.now();if(now-dvLastLoad<60000)return;dvLastLoad=now;dvLoad()}
-if(pa&&window.MutationObserver)new MutationObserver(function(){if(!pa.hidden){dvPanels.forEach(dvRenderChart);dvRefresh()}}).observe(pa,{attributes:true,attributeFilter:["hidden"]});
+if(pa&&window.MutationObserver)new MutationObserver(function(){if(!pa.hidden)dvRefresh()}).observe(pa,{attributes:true,attributeFilter:["hidden"]});
 setInterval(function(){if(pa&&!pa.hidden){dvLastLoad=Date.now();dvLoad()}},5*60000);
 dvRender();
 dvLastLoad=Date.now();
