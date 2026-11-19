@@ -2271,13 +2271,13 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 </style>
 <style>
 /* ===== 암호화폐 탭 상단 작은 카테고리 칸 (사용자 지시): 코인 타일 띠 바로 위 오른쪽에
-   국내거래소·에어드랍·밈·DEX·LP 다섯 칸을 작게 붙인다. 기존 칩과 같은 색 체계를 쓰고
+   국내거래소·주식·에어드랍·밈·DEX·LP 여섯 칸을 작게 붙인다. 기존 칩과 같은 색 체계를 쓰고
    폰에서는 오른쪽 정렬 그대로 줄바꿈만 허용해 가로 스크롤이 생기지 않게 한다 */
 #pa .cxcats{display:flex;justify-content:flex-end;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 6px}
 #pa .cxcat{display:inline-flex;align-items:center;min-height:24px;padding:2px 9px;border:1px solid var(--bd);border-radius:7px;background:var(--sf);color:var(--mut);font-family:inherit;font-size:11.5px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer}
 #pa .cxcat:hover{color:var(--tx);border-color:var(--mut)}
 #pa .cxcat[aria-pressed="true"]{background:var(--ac);color:var(--acx);border-color:var(--ac)}
-/* 카테고리 전용 화면: 칩을 누르면 코인 타일 띠·세 칸이 사라지고 위쪽 칩 줄만
+/* 카테고리 전용 화면: 칩을 누르면 코인 타일 띠·메인 칸 묶음이 사라지고 위쪽 칩 줄만
    남는다. 화면 안은 비워 둔다 — 내용은 각 화면의 .cxview-body 안에 따로 넣는다 */
 #pa .cxstrip[hidden],#pa .pasplit[hidden]{display:none}
 #pa .cxview[hidden]{display:none}
@@ -2359,11 +2359,13 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 <style>
 /* ===== 암호화폐 탭: DVOL 변동성지수 칸 (간소화) =====
    각 칸은 제목·코인 라벨+현재값·전일 대비 줄만 보여준다.
-   평소(좁은 화면·폰)에는 세 칸 아래·스테이블코인 칸 위 전체 폭으로
+   평소(좁은 화면·폰)에는 코인 타일 아래·스테이블코인 칸 위 전체 폭으로
    보이고, 화면이 충분히 넓을 때만(1480px 이상) #pa 왼쪽 바깥 여백에
    작은 세로 패널(폭 184px)로 두 칸이 쌓여 붙는다. 넓은 화면에서는
-   절대 배치라 세 칸의 배치·폭·높이에는 영향을 주지 않고, 윗선은
-   세 칸 윗선(.pasplit 맨 위)에 맞춘다 */
+   절대 배치라 메인 칸 묶음의 배치·폭·높이에는 영향을 주지 않고, 윗선은
+   메인 칸 묶음 윗선(.pasplit 맨 위=코인 타일 바로 아래)에 맞춘다.
+   세 칸(한국 주식·나스닥·전체 종목)이 주식 카테고리 화면으로 옮겨진 뒤에도
+   DVOL 두 칸은 이 메인 자리에 그대로 남는다 */
 #pa .pasplit>.dvbox{grid-column:1/-1}
 #pa .pasplit>.dvwrap{grid-column:1/-1;display:flex;flex-direction:column;gap:12px;min-width:0}
 @media(min-width:1480px){
@@ -2695,9 +2697,13 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 })();
 </script>
 <section id="pa" hidden>
-<div class="cxcats" role="group" aria-label="암호화폐 카테고리"><button type="button" class="cxcat" data-cx="krex" aria-pressed="false">국내거래소</button><button type="button" class="cxcat" data-cx="airdrop" aria-pressed="false">에어드랍</button><button type="button" class="cxcat" data-cx="meme" aria-pressed="false">밈</button><button type="button" class="cxcat" data-cx="dex" aria-pressed="false">DEX</button><button type="button" class="cxcat" data-cx="lp" aria-pressed="false">LP</button></div>
+<div class="cxcats" role="group" aria-label="암호화폐 카테고리"><button type="button" class="cxcat" data-cx="krex" aria-pressed="false">국내거래소</button><button type="button" class="cxcat" data-cx="stock" aria-pressed="false">주식</button><button type="button" class="cxcat" data-cx="airdrop" aria-pressed="false">에어드랍</button><button type="button" class="cxcat" data-cx="meme" aria-pressed="false">밈</button><button type="button" class="cxcat" data-cx="dex" aria-pressed="false">DEX</button><button type="button" class="cxcat" data-cx="lp" aria-pressed="false">LP</button></div>
 <div class="cxstrip"><div class="cxtiles" id="cxtiles" aria-label="주요 코인"></div></div>
-<div class="pasplit"><div class="paleft pabox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">한국 주식</span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="한국 주식 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button></div><span class="xselw xcsw"><button type="button" class="xsel" id="xcsel" aria-haspopup="listbox" aria-expanded="false" aria-label="비교 거래소"><span class="xnm" id="xcnm">Hyperliquid</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="xcmenu" role="listbox" aria-label="비교 거래소" hidden><button type="button" role="option" data-x="hl" aria-selected="true">Hyperliquid</button><button type="button" role="option" data-x="bn" aria-selected="false">Binance</button><button type="button" role="option" data-x="okx" aria-selected="false">OKX</button><button type="button" role="option" data-x="by" aria-selected="false">Bybit</button></div></span></div>
+<div class="pasplit"><div class="dvwrap" id="dvwrap"><div class="pabox dvbox" id="dvbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">DVOL · 비트코인 변동성지수</span></div><div class="dv-btc"><span class="dv-sym">BTC DVOL</span><b class="dv-big" id="dv-btc-v">—</b></div><div class="dv-chgline"><span class="dv-chg" id="dv-btc-c"></span></div></div><div class="pabox dvbox" id="dvebox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">DVOL · 이더리움 변동성지수</span></div><div class="dv-btc"><span class="dv-sym">ETH DVOL</span><b class="dv-big" id="dv-eth-v">—</b></div><div class="dv-chgline"><span class="dv-chg" id="dv-eth-c"></span></div></div></div>
+<div class="pabox scbox" id="scbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">스테이블코인 공급량 증감</span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="스테이블코인 공급량 증감 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="sc-sum"><div class="sc-sum-it" id="sc-sum-usdt"><span class="sc-loadtx">불러오는 중…</span></div><div class="sc-sum-it" id="sc-sum-usdc"><span class="sc-loadtx">불러오는 중…</span></div><div class="sc-sum-it sc-total" id="sc-sum-total"><span class="sc-loadtx">불러오는 중…</span></div></div><div class="sc-ctl"><div class="pair" role="group" aria-label="코인 선택"><button type="button" data-scs="total" aria-pressed="true">합계</button><button type="button" data-scs="usdt" aria-pressed="false">USDT</button><button type="button" data-scs="usdc" aria-pressed="false">USDC</button></div><div class="pair sc-days" id="sc-days" role="group" aria-label="기간 선택"><button type="button" data-scd="0" data-scall aria-pressed="false" aria-expanded="false">전체<span class="sc-arr" aria-hidden="true">▾</span></button><button type="button" data-scd="7" aria-pressed="false" hidden>7일</button><button type="button" data-scd="30" aria-pressed="true" hidden>30일</button><button type="button" data-scd="90" aria-pressed="false" hidden>90일</button><button type="button" data-scd="180" aria-pressed="false" hidden>180일</button><button type="button" data-scd="365" aria-pressed="false" hidden>1년</button></div><div class="pair sc-mode" role="group" aria-label="차트 종류"><button type="button" data-scm="chg" aria-pressed="true">순증감</button><button type="button" data-scm="sup" aria-pressed="false">공급량</button></div></div><p class="sc-leg" id="sc-leg-bar"><b class="sc-pos">+ 순발행(자금 유입)</b> · <b class="sc-neg">− 순상환(자금 유출)</b></p><p class="sc-leg" id="sc-leg-line" hidden><span>공급량이 늘면 자금 유입</span> · <span>줄면 자금 유출</span></p><p class="sc-pchg" id="sc-pchg" hidden></p><div class="sc-chart" id="sc-chart"><div class="sc-load2">불러오는 중…</div><div class="sc-tip" id="sc-tip" hidden></div></div><p class="sc-agg" id="sc-agg" hidden>1년은 주별 합산 · 전체는 월별 합산</p><p class="sc-src">출처: DefiLlama<span id="sc-src-base"> · 2026-11-19 기준</span></p></div>
+</div>
+<div class="cxview" id="cxv-krex" data-cxview="krex" hidden><div class="cxview-body" id="cxbody-krex"><div class="cxexgrid"><div class="cxexbox"><div class="cxexhd"><span class="cxexti">업비트</span><span class="cxexn" id="cxup-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxup-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div><div class="cxexbox"><div class="cxexhd"><span class="cxexti">빗썸</span><span class="cxexn" id="cxbt-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxbt-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div></div>
+<div class="cxview" id="cxv-stock" data-cxview="stock" hidden><div class="cxview-body" id="cxbody-stock"><div class="pasplit"><div class="paleft pabox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">한국 주식</span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="한국 주식 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button></div><span class="xselw xcsw"><button type="button" class="xsel" id="xcsel" aria-haspopup="listbox" aria-expanded="false" aria-label="비교 거래소"><span class="xnm" id="xcnm">Hyperliquid</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="xcmenu" role="listbox" aria-label="비교 거래소" hidden><button type="button" role="option" data-x="hl" aria-selected="true">Hyperliquid</button><button type="button" role="option" data-x="bn" aria-selected="false">Binance</button><button type="button" role="option" data-x="okx" aria-selected="false">OKX</button><button type="button" role="option" data-x="by" aria-selected="false">Bybit</button></div></span></div>
 <input id="fx" type="hidden" value="1,354.84">
 <input type="hidden" id="qk">
 <div class="pamkt" id="pamkt" hidden><span id="pamkt-t"></span><button type="button" id="pamkt-x">전체 보기</button></div>
@@ -2769,11 +2775,7 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 <p class="note" id="etfnote" hidden>실제 거래소에 상장된 ETF입니다. 가격은 TradingView 기준으로 불러와 표시하고 1분마다 갱신합니다(미국 ETF는 달러, 국내 ETF는 원). 조회가 안 될 때는 2026-11-19 조회 스냅샷을 보여줍니다. 같은 종목이나 같은 지수를 추종하는 ETF는 행 아래에 하이퍼리퀴드(HL)·바이낸스(BN)·OKX·바이비트(BY) 선물 가격도 함께 표시하고, 티커가 같은 선물은 실제 가격과의 차이도 보여줍니다. 선물 가격은 각 거래소 시세로 15초마다 갱신됩니다. 레버리지·인버스 ETF는 일일 수익률을 배율로 추종해 장기 보유 시 기초지수 수익률과 크게 달라질 수 있습니다.</p>
 </section>
 </div>
-<div class="pathird pabox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">전체 종목</span><span class="pabox-n" id="aball-n"></span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="전체 종목 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="pabox-bd"><div class="absec" id="absec-kr"><div class="abpair"><div class="abcell"><span class="abbox-t">기준 거래소</span><span class="xselw absw"><button type="button" class="xsel" id="absel-b-kr" aria-haspopup="listbox" aria-expanded="false" aria-label="전체 종목 기준 거래소"><span class="xnm" id="abnm-b-kr">Hyperliquid</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="ab-base-kr" role="listbox" aria-label="전체 종목 기준 거래소" hidden><button type="button" role="option" data-abx="us" aria-selected="false">나스닥</button><button type="button" role="option" data-abx="hl" aria-selected="true">Hyperliquid</button><button type="button" role="option" data-abx="bn" aria-selected="false">Binance</button><button type="button" role="option" data-abx="okx" aria-selected="false">OKX</button><button type="button" role="option" data-abx="by" aria-selected="false">Bybit</button></div></span></div><div class="abcell"><span class="abbox-t">비교 거래소</span><span class="xselw absw"><button type="button" class="xsel" id="absel-c-kr" aria-haspopup="listbox" aria-expanded="false" aria-label="전체 종목 비교 거래소"><span class="xnm" id="abnm-c-kr">Binance</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="ab-cmp-kr" role="listbox" aria-label="전체 종목 비교 거래소" hidden><button type="button" role="option" data-abx="bn" aria-selected="true">Binance</button><button type="button" role="option" data-abx="hl" aria-selected="false">Hyperliquid</button><button type="button" role="option" data-abx="okx" aria-selected="false">OKX</button><button type="button" role="option" data-abx="by" aria-selected="false">Bybit</button><button type="button" role="option" data-abx="us" aria-selected="false">나스닥</button></div></span></div></div><div class="wrap"><table class="kp kp4"><thead><tr><th>이름</th><th>김프</th><th>변동</th></tr></thead><tbody id="ab3kr"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div>
-<div class="dvwrap" id="dvwrap"><div class="pabox dvbox" id="dvbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">DVOL · 비트코인 변동성지수</span></div><div class="dv-btc"><span class="dv-sym">BTC DVOL</span><b class="dv-big" id="dv-btc-v">—</b></div><div class="dv-chgline"><span class="dv-chg" id="dv-btc-c"></span></div></div><div class="pabox dvbox" id="dvebox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">DVOL · 이더리움 변동성지수</span></div><div class="dv-btc"><span class="dv-sym">ETH DVOL</span><b class="dv-big" id="dv-eth-v">—</b></div><div class="dv-chgline"><span class="dv-chg" id="dv-eth-c"></span></div></div></div>
-<div class="pabox scbox" id="scbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">스테이블코인 공급량 증감</span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="스테이블코인 공급량 증감 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="sc-sum"><div class="sc-sum-it" id="sc-sum-usdt"><span class="sc-loadtx">불러오는 중…</span></div><div class="sc-sum-it" id="sc-sum-usdc"><span class="sc-loadtx">불러오는 중…</span></div><div class="sc-sum-it sc-total" id="sc-sum-total"><span class="sc-loadtx">불러오는 중…</span></div></div><div class="sc-ctl"><div class="pair" role="group" aria-label="코인 선택"><button type="button" data-scs="total" aria-pressed="true">합계</button><button type="button" data-scs="usdt" aria-pressed="false">USDT</button><button type="button" data-scs="usdc" aria-pressed="false">USDC</button></div><div class="pair sc-days" id="sc-days" role="group" aria-label="기간 선택"><button type="button" data-scd="0" data-scall aria-pressed="false" aria-expanded="false">전체<span class="sc-arr" aria-hidden="true">▾</span></button><button type="button" data-scd="7" aria-pressed="false" hidden>7일</button><button type="button" data-scd="30" aria-pressed="true" hidden>30일</button><button type="button" data-scd="90" aria-pressed="false" hidden>90일</button><button type="button" data-scd="180" aria-pressed="false" hidden>180일</button><button type="button" data-scd="365" aria-pressed="false" hidden>1년</button></div><div class="pair sc-mode" role="group" aria-label="차트 종류"><button type="button" data-scm="chg" aria-pressed="true">순증감</button><button type="button" data-scm="sup" aria-pressed="false">공급량</button></div></div><p class="sc-leg" id="sc-leg-bar"><b class="sc-pos">+ 순발행(자금 유입)</b> · <b class="sc-neg">− 순상환(자금 유출)</b></p><p class="sc-leg" id="sc-leg-line" hidden><span>공급량이 늘면 자금 유입</span> · <span>줄면 자금 유출</span></p><p class="sc-pchg" id="sc-pchg" hidden></p><div class="sc-chart" id="sc-chart"><div class="sc-load2">불러오는 중…</div><div class="sc-tip" id="sc-tip" hidden></div></div><p class="sc-agg" id="sc-agg" hidden>1년은 주별 합산 · 전체는 월별 합산</p><p class="sc-src">출처: DefiLlama<span id="sc-src-base"> · 2026-11-19 기준</span></p></div>
-</div>
-<div class="cxview" id="cxv-krex" data-cxview="krex" hidden><div class="cxview-body" id="cxbody-krex"><div class="cxexgrid"><div class="cxexbox"><div class="cxexhd"><span class="cxexti">업비트</span><span class="cxexn" id="cxup-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxup-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div><div class="cxexbox"><div class="cxexhd"><span class="cxexti">빗썸</span><span class="cxexn" id="cxbt-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxbt-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div></div>
+<div class="pathird pabox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">전체 종목</span><span class="pabox-n" id="aball-n"></span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="전체 종목 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="pabox-bd"><div class="absec" id="absec-kr"><div class="abpair"><div class="abcell"><span class="abbox-t">기준 거래소</span><span class="xselw absw"><button type="button" class="xsel" id="absel-b-kr" aria-haspopup="listbox" aria-expanded="false" aria-label="전체 종목 기준 거래소"><span class="xnm" id="abnm-b-kr">Hyperliquid</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="ab-base-kr" role="listbox" aria-label="전체 종목 기준 거래소" hidden><button type="button" role="option" data-abx="us" aria-selected="false">나스닥</button><button type="button" role="option" data-abx="hl" aria-selected="true">Hyperliquid</button><button type="button" role="option" data-abx="bn" aria-selected="false">Binance</button><button type="button" role="option" data-abx="okx" aria-selected="false">OKX</button><button type="button" role="option" data-abx="by" aria-selected="false">Bybit</button></div></span></div><div class="abcell"><span class="abbox-t">비교 거래소</span><span class="xselw absw"><button type="button" class="xsel" id="absel-c-kr" aria-haspopup="listbox" aria-expanded="false" aria-label="전체 종목 비교 거래소"><span class="xnm" id="abnm-c-kr">Binance</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="ab-cmp-kr" role="listbox" aria-label="전체 종목 비교 거래소" hidden><button type="button" role="option" data-abx="bn" aria-selected="true">Binance</button><button type="button" role="option" data-abx="hl" aria-selected="false">Hyperliquid</button><button type="button" role="option" data-abx="okx" aria-selected="false">OKX</button><button type="button" role="option" data-abx="by" aria-selected="false">Bybit</button><button type="button" role="option" data-abx="us" aria-selected="false">나스닥</button></div></span></div></div><div class="wrap"><table class="kp kp4"><thead><tr><th>이름</th><th>김프</th><th>변동</th></tr></thead><tbody id="ab3kr"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div></div></div></div>
 <div class="cxview" id="cxv-airdrop" data-cxview="airdrop" hidden><div class="cxview-body" id="cxbody-airdrop"></div></div>
 <div class="cxview" id="cxv-meme" data-cxview="meme" hidden><div class="cxview-body" id="cxbody-meme"></div></div>
 <div class="cxview" id="cxv-dex" data-cxview="dex" hidden><div class="cxview-body" id="cxbody-dex"></div></div>
@@ -2781,9 +2783,14 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 </section>
 <script>
 /* ===== 암호화폐 카테고리 화면 전환 (사용자 지시) =====
-   상단 작은 칸(국내거래소·에어드랍·밈·DEX·LP)을 누르면 코인 타일 띠와 세 칸이
-   사라지고 위쪽 칩 줄만 남는다 — 카테고리 화면(.cxview) 안은 국내거래소만
-   업비트·빗썸 전체 종목이 들어가고, 나머지 화면은 비워 둔다.
+   상단 작은 칸(국내거래소·주식·에어드랍·밈·DEX·LP)을 누르면 코인 타일 띠와
+   메인 칸 묶음(DVOL·스테이블코인)이 사라지고 위쪽 칩 줄만 남는다 — 카테고리
+   화면(.cxview) 안은 국내거래소에 업비트·빗썸 전체 종목이, 주식 화면에는
+   원래 메인에 있던 세 칸(한국 주식·나스닥·전체 종목)이 통째로 들어가고,
+   나머지 화면은 비워 둔다. 세 칸은 주식 화면 안에서 기존 .pasplit 그리드를
+   그대로 써 데스크톱 3열·폰 1열 배치가 메인과 같고, 숨김 상태에서는 나스닥
+   목록 이어 불러오기(감지 칸)가 동작하지 않아 로딩은 주식 화면을 열 때
+   시작된다. split 변수(pa의 첫 .pasplit)는 메인 묶음만 가리킨다.
    칩 줄은 그대로 남아 다른 카테고리로 바로 옮길 수 있고, 눌려 있는 칩을
    다시 누르면 원래 암호화폐 화면으로 돌아온다. 주소에는
    #/crypto?cx=키 형태로 남겨 뒤로가기·새로고침에도 같은 화면이 유지되고,
@@ -3022,6 +3029,10 @@ box.classList.toggle("pabox-closed",open);
 });
 });
 /* ===== 세 칸 높이 맞춤 (2026-11-17 사용자 지시) =====
+   세 칸이 주식 카테고리 화면(#cxv-stock) 안으로 옮겨져 대상 그리드는
+   그 안의 .pasplit이다. 주식 화면이 숨겨져 있는 동안에는 한국 주식 칸
+   높이가 0이라 인라인 높이를 풀어 두고, 화면이 열려 크기가 잡히면
+   ResizeObserver가 다시 맞춘다.
    데스크톱 3열에서 나스닥·전체 종목 칸 높이를 첫 번째 칸(한국 주식)의 자연
    높이와 같게 맞춘다. 한국 주식 칸 크기가 바뀔 때마다(목록 로딩·접기/펼치기·
    창 크기 변경) ResizeObserver와 resize로 다시 맞춘다. 접힌 칸은 제목 줄만
@@ -3032,7 +3043,7 @@ box.classList.toggle("pabox-closed",open);
 var paScrT=0;
 document.addEventListener("scroll",function(){paScrT=Date.now()},{capture:true,passive:true});
 (function(){
-var split=document.querySelector("#pa .pasplit");if(!split)return;
+var split=document.querySelector("#cxv-stock .pasplit");if(!split)return;
 var L=split.querySelector(".paleft"),M=split.querySelector(".paright"),R=split.querySelector(".pathird");
 if(!L||!M||!R)return;
 var raf=0,lastH=-1;
