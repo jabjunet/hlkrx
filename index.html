@@ -2285,6 +2285,9 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    각 칸 안 목록은 칸 안에서만 스크롤한다 — 세 칸 목록과 같은 방식 */
 #pa .cxexgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
 @media(max-width:720px){#pa .cxexgrid{grid-template-columns:1fr}}
+/* 메인 코인 행 왼쪽 열: 바이낸스 칸 아래에 합친 변동성지수 칸을 붙이는 세로 묶음.
+   폰에서는 그리드가 한 열로 쌓이며 바이낸스 → 변동성지수 → 하이퍼리퀴드 순이 된다 */
+#pa .cxleftcol{display:flex;flex-direction:column;gap:14px;min-width:0}
 #pa .cxexbox{border:1px solid var(--bd);border-radius:12px;background:var(--sf);padding:10px;min-width:0}
 #pa .cxexhd{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
 #pa .cxexti{font-size:14.5px;font-weight:800;color:var(--tx)}
@@ -2361,35 +2364,31 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 }
 </style>
 <style>
-/* ===== 암호화폐 탭: DVOL 변동성지수 칸 (간소화) =====
-   각 칸은 제목·코인 라벨+현재값·전일 대비 줄만 보여준다.
-   평소(좁은 화면·폰)에는 코인 타일 아래·스테이블코인 칸 위 전체 폭으로
-   보이고, 화면이 충분히 넓을 때만(1480px 이상) #pa 왼쪽 바깥 여백에
-   작은 세로 패널(폭 184px)로 두 칸이 쌓여 붙는다. 넓은 화면에서는
-   절대 배치라 메인 칸 묶음의 배치·폭·높이에는 영향을 주지 않고, 윗선은
-   메인 칸 묶음 윗선(.pasplit 맨 위=코인 타일 바로 아래)에 맞춘다.
-   세 칸(한국 주식·나스닥·전체 종목)이 주식 카테고리 화면으로 옮겨진 뒤에도
-   DVOL 두 칸은 이 메인 자리에 그대로 남는다 */
-#pa .pasplit>.dvbox{grid-column:1/-1}
-#pa .pasplit>.dvwrap{grid-column:1/-1;display:flex;flex-direction:column;gap:12px;min-width:0}
-@media(min-width:1480px){
-#pa .pasplit{position:relative}
-#pa .pasplit>.dvwrap{position:absolute;top:0;right:calc(100% + 10px);width:184px}
-#pa .dvbox{padding:9px}
-#pa .dvbox .pabox-hd{margin-bottom:6px}
-#pa .dvbox .pabox-ti{font-size:13px}
-#pa .dvbox .dv-sym{font-size:11px}
-#pa .dvbox .dv-big{font-size:24px}
-#pa .dvbox .dv-chg{font-size:11.5px}
-}
-#pa .dv-btc{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-#pa .dv-sym{font-size:12px;font-weight:700;color:var(--mut);white-space:nowrap}
-#pa .dv-big{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1;color:var(--tx)}
-#pa .dv-chgline{margin-top:2px}
-#pa .dv-chg{font-size:13px;font-weight:800;white-space:nowrap}
+/* ===== 암호화폐 탭: 변동성지수 한 칸 (DVOL BTC·ETH + CVI) =====
+   왼쪽 열의 바이낸스 칸 바로 아래에 왼쪽 절반 폭으로 붙는 한 칸.
+   칸 안에서 BTC DVOL·ETH DVOL·CVI 세 값을 작은 글자로 나란히 보여준다
+   (폰에서는 바이낸스 칸 바로 아래에 같은 한 줄 배치로 온다).
+   그 아래 스테이블코인 칸은 전체 폭 그대로다.
+   CVI는 BTC·ETH DVOL을 시가총액 비중으로 가중한 종합값이다. */
+#pa .dvwrap{min-width:0;width:100%}
+#pa .dvwrap .pabox-ti{font-size:13px}
+#pa .dv-note{margin-left:auto;font-size:10.5px;font-weight:600;color:var(--mut);white-space:nowrap}
+#pa .dv-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 12px}
+#pa .dv-it{min-width:0}
+#pa .dv-it+.dv-it{border-left:1px solid var(--bd);padding-left:12px}
+#pa .dv-sym{display:block;font-size:11px;font-weight:700;color:var(--mut);white-space:nowrap}
+#pa .dv-big{display:block;font-size:21px;font-weight:800;letter-spacing:-.02em;line-height:1.2;color:var(--tx)}
+#pa .dv-chg{display:block;font-size:11px;font-weight:800;white-space:nowrap;margin-top:1px}
 #pa .dv-chg.up{color:var(--up)}
 #pa .dv-chg.dn{color:var(--dn)}
-@media(max-width:720px){#pa .dv-big{font-size:26px}}
+/* 제목 줄 '전체 차트' 버튼: 동그라미 친 빈자리에 두고, 누르면 브라우저 새 창이 열린다 */
+#pa .dv-allbtn{flex:none;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:999px;padding:4px 11px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;line-height:1.35}
+#pa .dv-allbtn:hover{border-color:var(--mut)}
+@media(max-width:720px){#pa .dv-grid{gap:6px 8px}#pa .dv-it+.dv-it{padding-left:8px}#pa .dv-big{font-size:18px}#pa .dv-note{display:none}}
+/* ===== 변동성지수 전체 차트 새 창 =====
+   '전체 차트' 버튼을 누르면 페이지 안 모달이 아니라 브라우저 새 창이 열린다.
+   새 창의 스타일은 그 창 문서를 만들 때 스크립트가 직접 써 넣으므로
+   이 페이지에는 새 창 전용 스타일을 두지 않는다 */
 </style>
 </head>
 <body>
@@ -2452,7 +2451,7 @@ var D={
 "등락률은 TradingView 기준 전일 종가 대비이며 1분마다 갱신합니다. 거래가 적은 종목은 제외하고 보여줍니다. 장이 닫힌 동안에는 마지막 종가 기준으로 표시됩니다.":"Changes are vs. the previous close (TradingView) and refresh every minute. Low-volume stocks are excluded. When the market is closed, figures are based on the last close.",
 "미국 주요 경제지표의 최근 발표 결과와 발표 예정 일정입니다. 발표 시각은 한국 시간 기준이고, 예상치는 시장 전망치입니다.":"Recent results and upcoming release schedule for major US economic indicators. Times are Korea Standard Time; forecasts are market consensus.",
 "비농업 고용":"Nonfarm Payrolls","실업률":"Unemployment Rate","평균 시간당 임금":"Avg Hourly Earnings","미시간대 소비자심리지수 (예비)":"Michigan Consumer Sentiment (Prel.)","소비자심리지수":"Consumer Sentiment","소비자물가":"CPI","근원 소비자물가":"Core CPI","신규 실업수당 청구":"Initial Jobless Claims","생산자물가":"PPI","근원 생산자물가":"Core PPI","근원 소매판매":"Core Retail Sales","소매판매":"Retail Sales","국내총생산":"GDP","FOMC 기준금리":"FOMC Rate Decision","소비자신뢰지수":"Consumer Confidence","ISM 제조업":"ISM Manufacturing","ISM 서비스업":"ISM Services","무역수지":"Trade Balance","내구재 주문":"Durable Goods Orders","주택착공":"Housing Starts","기존주택판매":"Existing Home Sales","신규주택판매":"New Home Sales","JOLTS 구인":"JOLTS Job Openings","ADP 고용변화":"ADP Employment Change",
-"전체 종목":"All Stocks","스테이블코인 공급량 증감":"Stablecoin Supply Change","스테이블코인 공급량 증감 칸 접기·펼치기":"Collapse or expand the stablecoin supply card","합계":"Total","7일":"7D","30일":"30D","90일":"90D","180일":"180D","1년":"1Y","USDT 현재 공급량":"USDT Current Supply","USDC 현재 공급량":"USDC Current Supply","최근 30일 증감":"30D Change","합계 최근 30일 증감":"Total 30D Change","현재 합계 공급량":"Total Current Supply","코인 선택":"Select coin","기간 선택":"Select period","+ 순발행(자금 유입)":"+ Net issuance (inflow)","− 순상환(자금 유출)":"− Net redemption (outflow)","1년은 주별 합산 · 전체는 월별 합산":"1Y is summed weekly · All is summed monthly","차트 종류":"Chart Type","공급량이 늘면 자금 유입":"Supply up = money in","줄면 자금 유출":"Supply down = money out","최근 7일 증감":"7D Change","최근 90일 증감":"90D Change","최근 180일 증감":"180D Change","최근 1년 증감":"1Y Change","전체 기간 증감":"All-time Change","전날 대비":"vs Prev. Day","출처: DefiLlama":"Source: DefiLlama","DVOL · 비트코인 변동성지수":"DVOL · Bitcoin Volatility Index","DVOL · 이더리움 변동성지수":"DVOL · Ethereum Volatility Index","하이퍼리퀴드":"Hyperliquid","잠잠":"Calm","평소":"Normal","긴장":"Tense","공포":"Fear","출처: Deribit":"Source: Deribit","40 아래":"Below 40","80 위":"Above 80","전일 대비":"vs Prev. Day","순증감":"Net change","공급량":"Supply","불러오지 못했어요":"Could not load","변동":"Change","한국 주식":"Korean Stocks","해외 주식":"Global Stocks","국장":"KR Market","미장":"US Market",
+"전체 종목":"All Stocks","스테이블코인 공급량 증감":"Stablecoin Supply Change","스테이블코인 공급량 증감 칸 접기·펼치기":"Collapse or expand the stablecoin supply card","합계":"Total","7일":"7D","30일":"30D","90일":"90D","180일":"180D","1년":"1Y","USDT 현재 공급량":"USDT Current Supply","USDC 현재 공급량":"USDC Current Supply","최근 30일 증감":"30D Change","합계 최근 30일 증감":"Total 30D Change","현재 합계 공급량":"Total Current Supply","코인 선택":"Select coin","기간 선택":"Select period","+ 순발행(자금 유입)":"+ Net issuance (inflow)","− 순상환(자금 유출)":"− Net redemption (outflow)","1년은 주별 합산 · 전체는 월별 합산":"1Y is summed weekly · All is summed monthly","차트 종류":"Chart Type","공급량이 늘면 자금 유입":"Supply up = money in","줄면 자금 유출":"Supply down = money out","최근 7일 증감":"7D Change","최근 90일 증감":"90D Change","최근 180일 증감":"180D Change","최근 1년 증감":"1Y Change","전체 기간 증감":"All-time Change","전날 대비":"vs Prev. Day","출처: DefiLlama":"Source: DefiLlama","DVOL · 비트코인 변동성지수":"DVOL · Bitcoin Volatility Index","DVOL · 이더리움 변동성지수":"DVOL · Ethereum Volatility Index","변동성지수 · DVOL · CVI":"Volatility · DVOL · CVI","전체 차트":"All Charts","변동성지수 전체 차트":"Volatility Index Charts","CVI는 BTC·ETH 시총 가중 종합값":"CVI is a BTC·ETH market-cap weighted composite","CVI는 BTC·ETH 시총 가중":"CVI = BTC·ETH mkt-cap weighted","CVI · 종합":"CVI · Combined","종합":"Combined","하이퍼리퀴드":"Hyperliquid","잠잠":"Calm","평소":"Normal","긴장":"Tense","공포":"Fear","출처: Deribit":"Source: Deribit","40 아래":"Below 40","80 위":"Above 80","전일 대비":"vs Prev. Day","순증감":"Net change","공급량":"Supply","불러오지 못했어요":"Could not load","변동":"Change","한국 주식":"Korean Stocks","해외 주식":"Global Stocks","국장":"KR Market","미장":"US Market",
 "한국 시간 기준 · 국내 프리·애프터는 넥스트레이드(NXT) 포함":"KST · KR pre/after-market includes Nextrade (NXT)","한국 시간 기준 · 미장은 서머타임 자동 반영":"KST · US hours adjust for daylight saving time automatically",
 "휴장":"Closed","프리마켓 중":"Pre-market","정규장 중":"Market Open","애프터마켓 중":"After-hours","장외 시간":"Off-hours",
 "종목 검색":"Search stocks","정렬":"Sort","전일대비":"vs Prev Close","고가대비":"vs High","저가대비":"vs Low","거래량":"Volume",
@@ -2701,8 +2700,8 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 <section id="pa" hidden>
 <div class="cxcats" role="group" aria-label="암호화폐 카테고리"><button type="button" class="cxcat" data-cx="krex" aria-pressed="false">국내거래소</button><button type="button" class="cxcat" data-cx="stock" aria-pressed="false">주식</button><button type="button" class="cxcat" data-cx="airdrop" aria-pressed="false">에어드랍</button><button type="button" class="cxcat" data-cx="meme" aria-pressed="false">밈</button><button type="button" class="cxcat" data-cx="dex" aria-pressed="false">DEX</button><button type="button" class="cxcat" data-cx="lp" aria-pressed="false">LP</button></div>
 <div class="cxstrip"><div class="cxtiles" id="cxtiles" aria-label="주요 코인"></div></div>
-<div class="pasplit"><div class="dvwrap" id="dvwrap"><div class="pabox dvbox" id="dvbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">DVOL · 비트코인 변동성지수</span></div><div class="dv-btc"><span class="dv-sym">BTC DVOL</span><b class="dv-big" id="dv-btc-v">—</b></div><div class="dv-chgline"><span class="dv-chg" id="dv-btc-c"></span></div></div><div class="pabox dvbox" id="dvebox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">DVOL · 이더리움 변동성지수</span></div><div class="dv-btc"><span class="dv-sym">ETH DVOL</span><b class="dv-big" id="dv-eth-v">—</b></div><div class="dv-chgline"><span class="dv-chg" id="dv-eth-c"></span></div></div></div>
-<div class="cxexgrid cxcoinrow"><div class="cxexbox"><div class="cxexhd"><span class="cxexti">바이낸스</span><span class="cxexn" id="cxbn-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxbn-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div><div class="cxexbox"><div class="cxexhd"><span class="cxexti">하이퍼리퀴드</span><span class="cxexn" id="cxhl-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxhl-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div>
+<div class="pasplit">
+<div class="cxexgrid cxcoinrow"><div class="cxleftcol"><div class="cxexbox"><div class="cxexhd"><span class="cxexti">바이낸스</span><span class="cxexn" id="cxbn-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxbn-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div><div class="pabox dvwrap" id="dvbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">변동성지수 · DVOL · CVI</span><button type="button" class="dv-allbtn" id="dv-all-btn">전체 차트</button><span class="dv-note">CVI는 BTC·ETH 시총 가중</span></div><div class="dv-grid"><div class="dv-it"><span class="dv-sym">BTC DVOL</span><b class="dv-big" id="dv-btc-v">—</b><span class="dv-chg" id="dv-btc-c"></span></div><div class="dv-it"><span class="dv-sym">ETH DVOL</span><b class="dv-big" id="dv-eth-v">—</b><span class="dv-chg" id="dv-eth-c"></span></div><div class="dv-it"><span class="dv-sym">CVI · 종합</span><b class="dv-big" id="dv-cvi-v">—</b><span class="dv-chg" id="dv-cvi-c"></span></div></div></div></div><div class="cxexbox"><div class="cxexhd"><span class="cxexti">하이퍼리퀴드</span><span class="cxexn" id="cxhl-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxhl-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div>
 <div class="pabox scbox" id="scbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">스테이블코인 공급량 증감</span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="스테이블코인 공급량 증감 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="sc-sum"><div class="sc-sum-it" id="sc-sum-usdt"><span class="sc-loadtx">불러오는 중…</span></div><div class="sc-sum-it" id="sc-sum-usdc"><span class="sc-loadtx">불러오는 중…</span></div><div class="sc-sum-it sc-total" id="sc-sum-total"><span class="sc-loadtx">불러오는 중…</span></div></div><div class="sc-ctl"><div class="pair" role="group" aria-label="코인 선택"><button type="button" data-scs="total" aria-pressed="true">합계</button><button type="button" data-scs="usdt" aria-pressed="false">USDT</button><button type="button" data-scs="usdc" aria-pressed="false">USDC</button></div><div class="pair sc-days" id="sc-days" role="group" aria-label="기간 선택"><button type="button" data-scd="0" data-scall aria-pressed="false" aria-expanded="false">전체<span class="sc-arr" aria-hidden="true">▾</span></button><button type="button" data-scd="7" aria-pressed="false" hidden>7일</button><button type="button" data-scd="30" aria-pressed="true" hidden>30일</button><button type="button" data-scd="90" aria-pressed="false" hidden>90일</button><button type="button" data-scd="180" aria-pressed="false" hidden>180일</button><button type="button" data-scd="365" aria-pressed="false" hidden>1년</button></div><div class="pair sc-mode" role="group" aria-label="차트 종류"><button type="button" data-scm="chg" aria-pressed="true">순증감</button><button type="button" data-scm="sup" aria-pressed="false">공급량</button></div></div><p class="sc-leg" id="sc-leg-bar"><b class="sc-pos">+ 순발행(자금 유입)</b> · <b class="sc-neg">− 순상환(자금 유출)</b></p><p class="sc-leg" id="sc-leg-line" hidden><span>공급량이 늘면 자금 유입</span> · <span>줄면 자금 유출</span></p><p class="sc-pchg" id="sc-pchg" hidden></p><div class="sc-chart" id="sc-chart"><div class="sc-load2">불러오는 중…</div><div class="sc-tip" id="sc-tip" hidden></div></div><p class="sc-agg" id="sc-agg" hidden>1년은 주별 합산 · 전체는 월별 합산</p><p class="sc-src">출처: DefiLlama<span id="sc-src-base"> · 2026-11-19 기준</span></p></div>
 </div>
 <div class="cxview" id="cxv-krex" data-cxview="krex" hidden><div class="cxview-body" id="cxbody-krex"><div class="cxexgrid"><div class="cxexbox"><div class="cxexhd"><span class="cxexti">업비트</span><span class="cxexn" id="cxup-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxup-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div><div class="cxexbox"><div class="cxexhd"><span class="cxexti">빗썸</span><span class="cxexn" id="cxbt-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxbt-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div></div>
@@ -3645,10 +3644,13 @@ scLoadAll();
 window.DVOL_EMBED={"date":"2026-11-19","btc":[[1794700800,43.95],[1794787200,43.13],[1794873600,43.29],[1794960000,45.7],[1795046400,45.96]],"eth":[[1794700800,57.1],[1794787200,57.86],[1794873600,58.13],[1794960000,59.87],[1795046400,60.21]]};
 </script>
 <script>
-/* ===== DVOL 변동성지수 칸 (간소화) =====
+/* ===== 변동성지수 한 칸 (DVOL BTC·ETH + CVI) =====
    Deribit 공개 API(키 없음)의 get_volatility_index_data로 BTC·ETH DVOL
-   일별 종가를 받아, BTC 칸과 그 아래 ETH 전용 칸에 각각 현재값(크게)과
-   전일 대비 증감만 보여준다. 차트·구간 안내는 두지 않는다.
+   일별 종가를 받아 한 칸 안에 현재값과 전일 대비 증감만 작게 보여준다.
+   차트·구간 안내는 두지 않는다. CVI는 공식 CVI 피드(cvi.finance)가
+   중단 상태라, BTC·ETH DVOL을 시가총액 비중으로 가중한 종합값으로
+   계산한다 — 비중은 CoinGecko 전체 시총 점유율(BTC·ETH 도미넌스)로
+   구하고, 조회가 실패하면 최근 비중(85:15)으로 계산한다.
    첫 표시는 빌드 시점에 받아 페이지에 내장한 값(window.DVOL_EMBED,
    값·전일 대비 계산에 필요한 최근 며칠치만)으로 즉시 그리고, 뒤에서
    라이브 조회로 교체한다. 조회가 실패하면 내장 데이터를 조용히
@@ -3657,6 +3659,7 @@ window.DVOL_EMBED={"date":"2026-11-19","btc":[[1794700800,43.95],[1794787200,43.
 if(!document.getElementById("dvbox"))return;
 var dvState={btc:null,eth:null};
 var dvKeys=["btc","eth"];
+var dvW={btc:0.85,eth:0.15};
 function dvEmbDays(pairs){
 if(!pairs||pairs.length<2)return null;
 var out=[];
@@ -3676,6 +3679,21 @@ var bv=document.getElementById("dv-"+k+"-v"),bc=document.getElementById("dv-"+k+
 if(bv)bv.textContent=dvFmt(last.v);
 if(bc){bc.textContent="전일 대비 "+(ch>=0?"+":"-")+Math.abs(ch).toFixed(1);bc.className="dv-chg "+(ch>=0?"up":"dn")}
 });
+var b=dvState.btc,e=dvState.eth;
+if(b&&e&&b.length>=2&&e.length>=2){
+var bl=b[b.length-1].v,bp=b[b.length-2].v,el=e[e.length-1].v,ep=e[e.length-2].v;
+var cv=bl*dvW.btc+el*dvW.eth,cp=bp*dvW.btc+ep*dvW.eth,cch=cv-cp;
+var cvv=document.getElementById("dv-cvi-v"),cvc=document.getElementById("dv-cvi-c");
+if(cvv)cvv.textContent=dvFmt(cv);
+if(cvc){cvc.textContent="전일 대비 "+(cch>=0?"+":"-")+Math.abs(cch).toFixed(1);cvc.className="dv-chg "+(cch>=0?"up":"dn")}
+}
+}
+function dvLoadW(){
+fetch("https://api.coingecko.com/api/v3/global").then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
+var m=j&&j.data&&j.data.market_cap_percentage;
+if(!m||!(m.btc>0)||!(m.eth>0))throw new Error("empty");
+var t=m.btc+m.eth;dvW={btc:m.btc/t,eth:m.eth/t};dvRender();
+}).catch(function(){});
 }
 function dvFetch(cur){
 var now=Date.now(),start=now-7*86400*1000;
@@ -3692,6 +3710,7 @@ function dvLoad(){
 ["BTC","ETH"].forEach(function(cur){
 dvFetch(cur).then(function(days){dvState[cur.toLowerCase()]=days;dvRender()}).catch(function(){});
 });
+dvLoadW();
 }
 var pa=document.getElementById("pa"),dvLastLoad=0;
 function dvRefresh(){var now=Date.now();if(now-dvLastLoad<60000)return;dvLastLoad=now;dvLoad()}
@@ -3700,6 +3719,277 @@ setInterval(function(){if(pa&&!pa.hidden){dvLastLoad=Date.now();dvLoad()}},5*600
 dvRender();
 dvLastLoad=Date.now();
 dvLoad();
+})();
+</script>
+<script>
+window.DVOL90_EMBED={"date":"2026-11-22","btc":[[1787097600,37.84],[1787184000,39.44],[1787270400,43.29],[1787356800,42.27],[1787443200,43.18],[1787529600,43.41],[1787616000,43.28],[1787702400,40.37],[1787788800,41.52],[1787875200,38.34],[1787961600,37.43],[1788048000,36.99],[1788134400,37.63],[1788220800,37.93],[1788307200,37.19],[1788393600,39.78],[1788480000,37.96],[1788566400,38.66],[1788652800,39.32],[1788739200,38.79],[1788825600,39.92],[1788912000,40.2],[1788998400,40.24],[1789084800,36.75],[1789171200,36.98],[1789257600,38.89],[1789344000,38.57],[1789430400,39.01],[1789516800,36.19],[1789603200,33.59],[1789689600,35.46],[1789776000,36.32],[1789862400,35.65],[1789948800,38.14],[1790035200,37.4],[1790121600,35.81],[1790208000,36.04],[1790294400,34.62],[1790380800,34.92],[1790467200,35.07],[1790553600,35.93],[1790640000,35.12],[1790726400,35.23],[1790812800,36.44],[1790899200,34.82],[1790985600,35.36],[1791072000,36.5],[1791158400,36.1],[1791244800,36.13],[1791331200,36.76],[1791417600,37.74],[1791504000,36.39],[1791590400,36.99],[1791676800,37.34],[1791763200,37.71],[1791849600,38.23],[1791936000,39.12],[1792022400,38.75],[1792108800,37.66],[1792195200,37.93],[1792281600,38.82],[1792368000,37.33],[1792454400,36.86],[1792540800,37.1],[1792627200,37.99],[1792713600,37.35],[1792800000,37.93],[1792886400,38.8],[1792972800,38.56],[1793059200,37.69],[1793145600,37.26],[1793232000,41.99],[1793318400,40.59],[1793404800,40.03],[1793491200,40.28],[1793577600,39.3],[1793664000,39.73],[1793750400,38.06],[1793836800,42.27],[1793923200,39.43],[1794009600,40.2],[1794096000,40.99],[1794182400,39.87],[1794268800,39.45],[1794355200,38.92],[1794441600,40.07],[1794528000,39.87],[1794614400,47.29],[1794700800,43.95],[1794787200,43.13],[1794873600,43.29],[1794960000,45.7],[1795046400,45.88],[1795132800,52.54],[1795219200,58.02],[1795305600,57.59]],"eth":[[1787097600,52.54],[1787184000,52.57],[1787270400,57.73],[1787356800,57.01],[1787443200,60.31],[1787529600,58.44],[1787616000,58.15],[1787702400,56.06],[1787788800,57.08],[1787875200,50.85],[1787961600,51.11],[1788048000,51.76],[1788134400,51.31],[1788220800,51.83],[1788307200,50.92],[1788393600,53.28],[1788480000,51.09],[1788566400,51.72],[1788652800,53.19],[1788739200,52.6],[1788825600,53.86],[1788912000,53.73],[1788998400,53.36],[1789084800,51.76],[1789171200,52.61],[1789257600,54.29],[1789344000,54.92],[1789430400,55.19],[1789516800,52.83],[1789603200,50.11],[1789689600,49.92],[1789776000,50.81],[1789862400,51.5],[1789948800,52.61],[1790035200,51.12],[1790121600,51.56],[1790208000,51.04],[1790294400,48.03],[1790380800,49.02],[1790467200,48.96],[1790553600,49.98],[1790640000,48.98],[1790726400,49.35],[1790812800,49.65],[1790899200,48.13],[1790985600,48.49],[1791072000,49.64],[1791158400,48.36],[1791244800,47.52],[1791331200,47.96],[1791417600,50.34],[1791504000,49.25],[1791590400,50.39],[1791676800,50.72],[1791763200,51.88],[1791849600,51.53],[1791936000,52.64],[1792022400,52.71],[1792108800,51.4],[1792195200,52.22],[1792281600,53.38],[1792368000,51.94],[1792454400,52.31],[1792540800,50.42],[1792627200,52.24],[1792713600,51.98],[1792800000,53.51],[1792886400,53.62],[1792972800,53.01],[1793059200,53.23],[1793145600,52.5],[1793232000,58.21],[1793318400,55.24],[1793404800,55.44],[1793491200,54.4],[1793577600,52.77],[1793664000,52.19],[1793750400,51.9],[1793836800,57.44],[1793923200,55.2],[1794009600,55.98],[1794096000,57.97],[1794182400,56.36],[1794268800,55.81],[1794355200,54.78],[1794441600,56.06],[1794528000,55.55],[1794614400,63.36],[1794700800,57.1],[1794787200,57.86],[1794873600,58.13],[1794960000,59.87],[1795046400,61.31],[1795132800,65.35],[1795219200,70.6],[1795305600,70.13]]};
+</script>
+<script>
+/* ===== 변동성지수 전체 차트 새 창 =====
+   변동성지수 칸 제목 줄의 '전체 차트' 버튼을 누르면 페이지 안 모달이 아니라
+   브라우저 새 창(window.open)이 열리고, 그 창 안에 BTC DVOL·ETH DVOL·CVI
+   세 선 차트를 기간(30일·90일·180일·1년)별로 보여준다.
+   새 창 맨 위에는 본 페이지와 같은 사이트 헤더(로고·실시간·탭 줄, 암호화폐
+   탭 활성 표시)를 그대로 얹고, 그 아래 기존 차트 헤더(제목·기간 버튼)를
+   유지한다 (2026-11-22 사용자 지시: 새 창에 들어와도 헤더 유지).
+   헤더의 로고·탭은 장식이 아니라 실제 버튼이다 (2026-11-22 후속 지시로
+   수정: 처음엔 글자(span)로만 그려 눌리지 않았다) — 누르면 원래 창(본
+   페이지)이 그 탭으로 이동하고 차트 창은 닫힌다.
+   2026-11-22 후속 지시: 차트는 지금처럼 3개 따로 두되 참고 화면(INDEXerGO)
+   수준으로 크게 — 본문 폭은 본 페이지와 같은 1400px, 차트 높이는 360px로
+   키우고, 헤더도 마찬가지로 본 사이트 헤더와 같은 모양·크기의 전체 폭
+   띠(로고 줄 + 탭 줄이 화면 양 끝까지 닿음)로 맞춘다.
+   새 창에는 껍데기(헤더·제목·기간 버튼·차트 자리·스타일)만 써 넣고, 차트를
+   그리고 데이터를 채우는 일은 이 페이지의 스크립트가 새 창 문서를 대상으로
+   직접 수행한다(새 창에 스크립트를 따로 넣지 않는다).
+   데이터는 Deribit 공개 API의 일별 종가 — 첫 표시는 빌드 시점에 받아
+   내장한 최근 90일(window.DVOL90_EMBED)로 즉시 그리고, 창을 열 때
+   1년치를 새로 받아 교체한다(실패하면 내장 유지).
+   CVI는 칸과 같은 방식 — BTC·ETH DVOL을 시가총액 비중으로 가중한
+   종합값이고, 비중은 CoinGecko 도미넌스로 구한다(실패 시 85:15).
+   브라우저가 팝업을 차단하면 버튼 아래에 허용 안내를 잠깐 보여준다 */
+(function(){
+var openBtn=document.getElementById("dv-all-btn");
+if(!openBtn)return;
+var WD=["일","월","화","수","목","금","토"];
+var st={btc:null,eth:null},W8={btc:0.85,eth:0.15},loaded=false,lastFetch=0;
+var LBL={btc:"BTC DVOL",eth:"ETH DVOL",cvi:"CVI"};
+function emb(pairs){if(!pairs||pairs.length<2)return null;var o=[];for(var i=0;i<pairs.length;i++)o.push({date:pairs[i][0],v:pairs[i][1]});return o}
+try{if(window.DVOL90_EMBED){st.btc=emb(window.DVOL90_EMBED.btc);st.eth=emb(window.DVOL90_EMBED.eth)}}catch(e){}
+function cviSeries(){
+if(!st.btc||!st.eth)return null;
+var m={},out=[],i;
+for(i=0;i<st.eth.length;i++)m[st.eth[i].date]=st.eth[i].v;
+for(i=0;i<st.btc.length;i++){var d=st.btc[i];if(m[d.date]!=null)out.push({date:d.date,v:d.v*W8.btc+m[d.date]*W8.eth})}
+return out.length>=2?out:null;
+}
+function series(key){return key==="cvi"?cviSeries():st[key]}
+function dateLbl(ts){var d=new Date(ts*1000);return (d.getUTCMonth()+1)+"/"+d.getUTCDate()}
+function dateFull(ts){var d=new Date(ts*1000);return d.getUTCFullYear()+"년 "+(d.getUTCMonth()+1)+"월 "+d.getUTCDate()+"일 ("+WD[d.getUTCDay()]+")"}
+var pop=null;
+function draw(key,cls){
+if(!pop||!pop.doc)return;
+var doc=pop.doc,days=pop.days;
+var el=doc.getElementById("dvc-"+key);if(!el)return;
+var vEl=doc.getElementById("dvc-"+key+"-v"),cEl=doc.getElementById("dvc-"+key+"-c");
+var full=series(key);
+if(!full||full.length<2){el.innerHTML='<div class="dv-load">'+pop.t.loading+'</div>';pop.cur[key]=null;return}
+var arr=full.slice(-days);
+if(arr.length<2){el.innerHTML='<div class="dv-load">'+pop.t.loading+'</div>';pop.cur[key]=null;return}
+var last=arr[arr.length-1],first=arr[0],ch=last.v-first.v;
+if(vEl)vEl.textContent=last.v.toFixed(1);
+if(cEl){var lb=pop.en?(days===365?"vs 1 year ago":"vs "+Math.min(days,arr.length-1)+" days ago"):(days===365?"1년 전 대비":Math.min(days,arr.length-1)+"일 전 대비");cEl.textContent=lb+" "+(ch>=0?"+":"-")+Math.abs(ch).toFixed(1);cEl.className="dv-sec-c "+(ch>=0?"up":"dn")}
+var W=Math.max(300,el.clientWidth||1200),H=360,leftPad=46,rightPad=12,topPad=14,botPad=26,plotW=W-leftPad-rightPad,plotH=H-topPad-botPad;
+var mn=Infinity,mx=-Infinity,i;
+for(i=0;i<arr.length;i++){if(arr[i].v<mn)mn=arr[i].v;if(arr[i].v>mx)mx=arr[i].v}
+if(mx<=mn)mx=mn+1;
+var pv=(mx-mn)*0.08;mn-=pv;mx+=pv;
+function X(i){return leftPad+(arr.length<2?plotW/2:plotW*i/(arr.length-1))}
+function Y(v){return topPad+plotH*(1-(v-mn)/(mx-mn))}
+var s='<svg viewBox="0 0 '+W+" "+H+'" role="img" aria-label="'+LBL[key]+' 일별 변동성지수 선그래프">';
+for(var g=0;g<3;g++){
+var gv=mn+(mx-mn)*g/2,gy=Y(gv);
+s+='<line class="dv-grid-l" x1="'+leftPad+'" x2="'+(W-rightPad)+'" y1="'+gy.toFixed(1)+'" y2="'+gy.toFixed(1)+'"></line>';
+s+='<text x="'+(leftPad-6)+'" y="'+(gy+4).toFixed(1)+'" text-anchor="end" style="fill:var(--mut);font-size:12px">'+Math.round(gv)+"</text>";
+}
+var line="",area="";
+for(i=0;i<arr.length;i++){var px=X(i).toFixed(1),py=Y(arr[i].v).toFixed(1);line+=(i?"L":"M")+px+" "+py;area+=(i?"L":"M")+px+" "+py}
+area+="L"+X(arr.length-1).toFixed(1)+" "+(topPad+plotH)+" L"+X(0).toFixed(1)+" "+(topPad+plotH)+" Z";
+s+='<path class="dv-area dv-ar'+cls+'" d="'+area+'"></path>';
+s+='<path class="dv-ln dv-ln'+cls+'" d="'+line+'"></path>';
+s+='<circle class="dv-dot dv-dt'+cls+'" id="dvc-'+key+'-dot" cx="-10" cy="-10" r="4.5" style="display:none"></circle>';
+for(i=0;i<arr.length;i++){
+var hx0=i===0?leftPad:(X(i)+X(i-1))/2,hx1=i===arr.length-1?W-rightPad:(X(i)+X(i+1))/2;
+s+='<rect data-dvi="'+i+'" x="'+hx0.toFixed(1)+'" y="'+topPad+'" width="'+Math.max(1,hx1-hx0).toFixed(1)+'" height="'+plotH+'" fill="transparent"></rect>';
+}
+var mid=Math.floor((arr.length-1)/2);
+s+='<text x="'+leftPad+'" y="'+(H-6)+'" style="fill:var(--mut);font-size:12px">'+dateLbl(arr[0].date)+"</text>";
+s+='<text x="'+(leftPad+plotW/2)+'" y="'+(H-6)+'" text-anchor="middle" style="fill:var(--mut);font-size:12px">'+dateLbl(arr[mid].date)+"</text>";
+s+='<text x="'+(W-rightPad)+'" y="'+(H-6)+'" text-anchor="end" style="fill:var(--mut);font-size:12px">'+dateLbl(arr[arr.length-1].date)+"</text>";
+s+="</svg>";
+el.innerHTML=s+'<div class="dv-tip" id="dvc-'+key+'-tip" hidden></div>';
+pop.cur[key]={arr:arr,W:W,H:H,leftPad:leftPad,topPad:topPad,plotW:plotW,plotH:plotH,mn:mn,mx:mx};
+}
+function renderAll(){if(!pop||!pop.win||pop.win.closed)return;draw("btc",1);draw("eth",2);draw("cvi",3)}
+function bindTip(key){
+if(!pop||!pop.doc)return;
+var doc=pop.doc;
+var el=doc.getElementById("dvc-"+key);if(!el)return;
+function hide(){var t=doc.getElementById("dvc-"+key+"-tip");if(t)t.hidden=true;var d=doc.getElementById("dvc-"+key+"-dot");if(d)d.style.display="none"}
+function show(i){
+var c=pop.cur[key];if(!c)return;
+var tip=doc.getElementById("dvc-"+key+"-tip");if(!tip)return;
+var d=c.arr[i];if(!d)return;
+tip.innerHTML="<b>"+dateFull(d.date)+"</b>"+d.v.toFixed(1);
+var px=c.leftPad+(c.arr.length<2?c.plotW/2:c.plotW*i/(c.arr.length-1));
+var py=c.topPad+c.plotH*(1-(d.v-c.mn)/(c.mx-c.mn));
+var dot=doc.getElementById("dvc-"+key+"-dot");
+if(dot){dot.setAttribute("cx",px.toFixed(1));dot.setAttribute("cy",py.toFixed(1));dot.style.display=""}
+var cw=el.clientWidth||c.W,chh=el.clientHeight||c.H;
+tip.hidden=false;
+var tw=tip.offsetWidth||110;
+tip.style.left=Math.max(tw/2+2,Math.min(cw-tw/2-2,px/c.W*cw))+"px";
+tip.style.top=Math.max(34,py/c.H*chh)+"px";
+}
+el.addEventListener("pointermove",function(e){var t=e.target;if(t&&t.getAttribute&&t.getAttribute("data-dvi")!=null)show(+t.getAttribute("data-dvi"));else hide()});
+el.addEventListener("pointerdown",function(e){var t=e.target;if(t&&t.getAttribute&&t.getAttribute("data-dvi")!=null)show(+t.getAttribute("data-dvi"))});
+el.addEventListener("pointerleave",hide);
+}
+function fetchCur(cur2){
+var now=Date.now(),start=now-365*86400*1000;
+return fetch("https://www.deribit.com/api/v2/public/get_volatility_index_data?currency="+cur2+"&start_timestamp="+start+"&end_timestamp="+now+"&resolution=86400").then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
+var data=j&&j.result&&j.result.data;
+if(!data||data.length<2)throw new Error("empty");
+var out=[];
+for(var i=0;i<data.length;i++)out.push({date:Math.round(data[i][0]/1000),v:data[i][4]});
+out.sort(function(a,b){return a.date-b.date});
+return out;
+});
+}
+function loadW(){
+fetch("https://api.coingecko.com/api/v3/global").then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
+var m=j&&j.data&&j.data.market_cap_percentage;
+if(!m||!(m.btc>0)||!(m.eth>0))return;
+var t=m.btc+m.eth;W8={btc:m.btc/t,eth:m.eth/t};
+renderAll();
+}).catch(function(){});
+}
+function load(){
+lastFetch=Date.now();
+fetchCur("BTC").then(function(d){st.btc=d;renderAll()}).catch(function(){});
+fetchCur("ETH").then(function(d){st.eth=d;renderAll()}).catch(function(){});
+loadW();
+}
+function popTheme(){
+if(document.documentElement.getAttribute("data-theme")==="light")
+return{bg:"#f7f8fa",sf:"#ffffff",sf2:"#f1f3f5",tx:"#1a1e24",mut:"#68727e",bd:"#e4e7eb",up:"#d02a38",dn:"#1668c4",dv1:"#d97c06",dv2:"#4a7dd4",dv3:"#1d9e57",scheme:"light"};
+return{bg:"#0b0d10",sf:"#14171b",sf2:"#1d2126",tx:"#eceff3",mut:"#8f99a6",bd:"#262b31",up:"#ff5f6b",dn:"#5ea0ff",dv1:"#f0a832",dv2:"#7ea6f2",dv3:"#2fbf71",scheme:"dark"};
+}
+function popCSS(c){
+return ":root{--bg:"+c.bg+";--sf:"+c.sf+";--sf2:"+c.sf2+";--tx:"+c.tx+";--mut:"+c.mut+";--bd:"+c.bd+";--up:"+c.up+";--dn:"+c.dn+";--dv1:"+c.dv1+";--dv2:"+c.dv2+";--dv3:"+c.dv3+";color-scheme:"+c.scheme+"}"
++"*{box-sizing:border-box}"
++"body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 \"Pretendard\",\"Apple SD Gothic Neo\",\"Noto Sans KR\",system-ui,sans-serif;font-variant-numeric:tabular-nums}"
++".hd{display:flex;flex-direction:column;gap:1px;width:100%;margin:0 0 6px;padding:6px 20px 2px;border-bottom:1px solid var(--bd);background:var(--bg)}"
++".hd-in{width:100%;margin:0;padding:0}"
++".hd-t{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-width:0}"
++".brand{font-family:inherit;font-size:23px;font-weight:300;letter-spacing:-.015em;line-height:1;color:var(--tx);white-space:nowrap;background:none;border:0;padding:0;cursor:pointer;text-align:left}"
++".brand b{font-weight:800}"
++".hd-live{display:inline-flex;align-items:center;gap:7px;padding:1px 2px;font-size:12px;color:var(--mut);white-space:nowrap}"
++".hd-live i{width:9px;height:9px;border-radius:50%;background:#1d9e57;flex:none}"
++".hd-tabs{display:flex;align-items:stretch;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;width:100%;justify-content:flex-start;margin:0;padding:0}"
++".hd-tabs::-webkit-scrollbar{display:none}"
++".hd-tabs button{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:33px;padding:2px 10px;font:inherit;font-size:16px;font-weight:600;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;cursor:pointer}"
++".hd-tabs button.on{color:var(--tx);font-weight:800;border-bottom-color:var(--tx)}"
++"@media(min-width:1024px){.hd-tabs button{font-size:16.5px}}"
++"@media(max-width:720px){.hd{padding-left:16px;padding-right:16px}.hd-tabs button{min-height:40px;padding:7px 16px;border-bottom:0;border-radius:999px;font-size:14px;font-weight:700;margin-bottom:0}.hd-tabs button.on{background:#16c784;color:#04160d;border-bottom-color:transparent;box-shadow:0 4px 14px rgba(22,199,132,.25)}}"
++".wrap{max-width:1400px;margin:0 auto;padding:18px 24px 44px}"
++"@media(max-width:720px){.wrap{padding:14px 16px 32px}}"
++"h1{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.25;margin:0 0 16px}"
++".pair{display:inline-flex;gap:2px;background:var(--sf2);border:1px solid var(--bd);border-radius:999px;padding:3px;margin:0}"
++".pair button{min-height:36px;padding:7px 16px;border:0;background:transparent;color:var(--mut);border-radius:999px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}"
++".pair button[aria-pressed=\"true\"]{background:var(--tx);color:var(--bg);font-weight:700}"
++".dv-sec{padding:20px 0 10px;border-top:1px solid var(--bd);margin-top:20px}"
++".dv-sec-hd{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}"
++".dv-sec-t{font-size:15px;font-weight:800;color:var(--tx)}"
++".dv-sec-v{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--tx)}"
++".dv-sec-c{font-size:13px;font-weight:800;white-space:nowrap}"
++".dv-sec-c.up{color:var(--up)}.dv-sec-c.dn{color:var(--dn)}"
++".dv-chart{position:relative;min-height:320px}"
++"@media(max-width:720px){.dv-chart{min-height:220px}}"
++".dv-chart svg{display:block;width:100%;height:auto}"
++".dv-ln{fill:none;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}"
++".dv-ln1{stroke:var(--dv1)}.dv-ln2{stroke:var(--dv2)}.dv-ln3{stroke:var(--dv3)}"
++".dv-area{opacity:.09}.dv-ar1{fill:var(--dv1)}.dv-ar2{fill:var(--dv2)}.dv-ar3{fill:var(--dv3)}"
++".dv-grid-l{stroke:var(--bd);stroke-width:1}"
++".dv-dot{stroke:var(--sf);stroke-width:1.5}.dv-dt1{fill:var(--dv1)}.dv-dt2{fill:var(--dv2)}.dv-dt3{fill:var(--dv3)}"
++".dv-tip{position:absolute;pointer-events:none;background:var(--tx);color:var(--bg);font-size:13px;font-weight:600;line-height:1.5;padding:7px 10px;border-radius:8px;white-space:nowrap;z-index:5;transform:translate(-50%,-112%)}"
++".dv-tip[hidden]{display:none}"
++".dv-load{padding:120px 0;text-align:center;color:var(--mut);font-size:14px}"
++".dv-src{font-size:12px;color:var(--mut);margin:14px 0 0;text-align:right}";
+}
+function popSkeleton(c,t,en){
+return '<!DOCTYPE html><html lang="'+(en?"en":"ko")+'"><head><meta charset="utf-8">'
++'<meta name="viewport" content="width=device-width, initial-scale=1">'
++"<title>"+t.title+"</title><style>"+popCSS(c)+"</style></head><body>"
++'<header class="hd"><div class="hd-in"><div class="hd-t"><button type="button" class="brand" data-dvnav="0">kimp<b>won</b></button><span class="hd-live"><i></i>'+t.live+'</span></div><nav class="hd-tabs" aria-label="'+t.navLabel+'"><button type="button" data-dvnav="0">'+t.nav[0]+'</button><button type="button" data-dvnav="1" class="on" aria-current="page">'+t.nav[1]+'</button><button type="button" data-dvnav="2">'+t.nav[2]+'</button><button type="button" data-dvnav="3">'+t.nav[3]+'</button><button type="button" data-dvnav="4">'+t.nav[4]+'</button><button type="button" data-dvnav="5">'+t.nav[5]+'</button></nav></div></header>'
++'<main class="wrap"><h1>'+t.title+"</h1>"
++'<div class="pair" role="group" aria-label="'+t.period+'">'
++'<button type="button" data-dvdays="30" aria-pressed="false">'+t.d30+'</button>'
++'<button type="button" data-dvdays="90" aria-pressed="true">'+t.d90+'</button>'
++'<button type="button" data-dvdays="180" aria-pressed="false">'+t.d180+'</button>'
++'<button type="button" data-dvdays="365" aria-pressed="false">'+t.d365+'</button></div>'
++'<div class="dv-sec"><div class="dv-sec-hd"><span class="dv-sec-t">BTC DVOL</span><b class="dv-sec-v" id="dvc-btc-v">—</b><span class="dv-sec-c" id="dvc-btc-c"></span></div><div class="dv-chart" id="dvc-btc"></div></div>'
++'<div class="dv-sec"><div class="dv-sec-hd"><span class="dv-sec-t">ETH DVOL</span><b class="dv-sec-v" id="dvc-eth-v">—</b><span class="dv-sec-c" id="dvc-eth-c"></span></div><div class="dv-chart" id="dvc-eth"></div></div>'
++'<div class="dv-sec"><div class="dv-sec-hd"><span class="dv-sec-t">'+t.cvi+'</span><b class="dv-sec-v" id="dvc-cvi-v">—</b><span class="dv-sec-c" id="dvc-cvi-c"></span></div><div class="dv-chart" id="dvc-cvi"></div></div>'
++'<p class="dv-src">'+t.src+"</p></main></body></html>";
+}
+var noteEl=null,noteT=null;
+function showBlockNote(en){
+if(!noteEl){
+noteEl=document.createElement("span");
+noteEl.style.cssText="flex-basis:100%;font-size:11.5px;font-weight:600;color:#d98a16;white-space:normal;line-height:1.45";
+var box=document.getElementById("dvbox");
+var hd=box?box.querySelector(".pabox-hd"):null;
+if(hd)hd.appendChild(noteEl);else if(openBtn.parentNode)openBtn.parentNode.appendChild(noteEl);
+}
+noteEl.textContent=en?"The new window was blocked. Please allow pop-ups for this site, then press again.":"새 창이 차단됐어요. 이 사이트의 팝업을 허용한 뒤 다시 눌러 주세요.";
+if(noteT)clearTimeout(noteT);
+noteT=setTimeout(function(){if(noteEl)noteEl.textContent=""},5000);
+}
+function openWin(){
+if(pop&&pop.win&&!pop.win.closed){
+try{pop.win.focus()}catch(e){}
+if(!loaded||Date.now()-lastFetch>5*60000){loaded=true;load()}
+return;
+}
+var en=false;
+try{en=localStorage.getItem("hlkrx_lang")==="en"||document.documentElement.getAttribute("lang")==="en"}catch(e){}
+var t=en?{title:"Volatility Index Charts",period:"Select period",d30:"30D",d90:"90D",d180:"180D",d365:"1Y",cvi:"CVI · Combined",src:"Source: Deribit · CVI is a BTC·ETH market-cap weighted composite",loading:"Loading…",live:"Live",navLabel:"Site menu",nav:["Home","Crypto","KR Stocks","US Stocks","Domestic Indices","Global Indices"]}
+:{title:"변동성지수 전체 차트",period:"기간 선택",d30:"30일",d90:"90일",d180:"180일",d365:"1년",cvi:"CVI · 종합",src:"출처: Deribit · CVI는 BTC·ETH 시총 가중 종합값",loading:"불러오는 중…",live:"실시간",navLabel:"사이트 메뉴",nav:["홈","암호화폐","국내주식","미국주식","국내지표","해외지표"]};
+var w=null;
+try{w=window.open("","_blank")}catch(e){}
+if(!w){showBlockNote(en);return}
+try{
+w.document.open();
+w.document.write(popSkeleton(popTheme(),t,en));
+w.document.close();
+}catch(e){showBlockNote(en);return}
+pop={win:w,doc:w.document,days:90,cur:{},en:en,t:t};
+var btns=pop.doc.querySelectorAll("[data-dvdays]");
+for(var i=0;i<btns.length;i++)(function(b){
+b.addEventListener("click",function(){
+if(!pop)return;
+pop.days=+b.getAttribute("data-dvdays");
+var ys=pop.doc.querySelectorAll("[data-dvdays]");
+for(var j=0;j<ys.length;j++)ys[j].setAttribute("aria-pressed",String(ys[j]===b));
+renderAll();
+});
+})(btns[i]);
+/* 새 창 헤더의 로고·탭 버튼: 누르면 본 페이지(이 창을 연 원래 창)가 그 탭으로
+   이동하고 차트 창은 닫힌다. 이동은 본 페이지 헤더 탭 링크를 그대로 눌러
+   처리하므로 주소·제목·강조 동기화까지 본 페이지 동작과 똑같이 따라간다 */
+var NAVKEY=["home","crypto","krstock","usstock","kridx","usidx"];
+var NAVHASH={home:"#/",crypto:"#/crypto",krstock:"#/kr",usstock:"#/us",kridx:"#/korea",usidx:"#/usa"};
+var nbs=pop.doc.querySelectorAll("[data-dvnav]");
+for(var n=0;n<nbs.length;n++)(function(b){
+b.addEventListener("click",function(){
+var key=NAVKEY[+b.getAttribute("data-dvnav")]||"home";
+var a=document.querySelector('#tabs [data-nav="'+key+'"]');
+if(a)a.click();
+else{try{location.hash=NAVHASH[key]}catch(e){}}
+try{window.focus()}catch(e){}
+try{w.close()}catch(e){}
+});
+})(nbs[n]);
+["btc","eth","cvi"].forEach(bindTip);
+pop.doc.addEventListener("keydown",function(e){if(e.key==="Escape")w.close()});
+var rzT=null;
+w.addEventListener("resize",function(){if(rzT)return;rzT=setTimeout(function(){rzT=null;renderAll()},200)});
+renderAll();
+if(!loaded||Date.now()-lastFetch>5*60000){loaded=true;load()}
+try{w.focus()}catch(e){}
+}
+openBtn.addEventListener("click",openWin);
 })();
 </script>
 <style>
