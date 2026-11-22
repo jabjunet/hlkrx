@@ -2381,14 +2381,53 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pa .dv-chg{display:block;font-size:11px;font-weight:800;white-space:nowrap;margin-top:1px}
 #pa .dv-chg.up{color:var(--up)}
 #pa .dv-chg.dn{color:var(--dn)}
-/* 제목 줄 '전체 차트' 버튼: 동그라미 친 빈자리에 두고, 누르면 브라우저 새 창이 열린다 */
+/* 제목 줄 '전체 차트' 버튼: 동그라미 친 빈자리에 두고, 누르면 아래 차트 화면으로 넘어간다 */
 #pa .dv-allbtn{flex:none;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:999px;padding:4px 11px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;line-height:1.35}
 #pa .dv-allbtn:hover{border-color:var(--mut)}
 @media(max-width:720px){#pa .dv-grid{gap:6px 8px}#pa .dv-it+.dv-it{padding-left:8px}#pa .dv-big{font-size:18px}#pa .dv-note{display:none}}
-/* ===== 변동성지수 전체 차트 새 창 =====
-   '전체 차트' 버튼을 누르면 페이지 안 모달이 아니라 브라우저 새 창이 열린다.
-   새 창의 스타일은 그 창 문서를 만들 때 스크립트가 직접 써 넣으므로
-   이 페이지에는 새 창 전용 스타일을 두지 않는다 */
+/* ===== 변동성지수 전체 차트 화면 (페이지 안 전환) =====
+   '전체 차트' 버튼을 누르면 새 창이 아니라 이 페이지 안에서 화면이 넘어간다:
+   카테고리 화면(.cxview)과 같은 방식으로 코인 타일 띠·메인 칸 묶음이 사라지고
+   차트 화면(#dvview)만 남으며, 사이트 헤더는 그대로 위에 있다.
+   차트 화면은 #pa(1100px)보다 넓게 본문 폭(1400px)까지 펼치고,
+   선 색은 테마(다크/라이트)를 따라간다 */
+#pa .dvview{--dv1:#d97c06;--dv2:#4a7dd4;--dv3:#1d9e57}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #pa .dvview{--dv1:#f0a832;--dv2:#7ea6f2;--dv3:#2fbf71}}
+:root[data-theme="dark"] #pa .dvview{--dv1:#f0a832;--dv2:#7ea6f2;--dv3:#2fbf71}
+#pa .dvpage{width:min(1352px,calc(100vw - 48px));margin-left:50%;transform:translateX(-50%);padding:6px 0 8px}
+@media(max-width:720px){#pa .dvpage{width:calc(100vw - 32px)}}
+#pa .dv-back{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--bd);background:var(--sf);color:var(--mut);border-radius:999px;padding:5px 13px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;margin:0 0 12px}
+#pa .dv-back:hover{color:var(--tx);border-color:var(--mut)}
+#pa .dvpage-ti{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.25;margin:0 0 16px;color:var(--tx)}
+#pa .dvview .pair button{min-height:36px;padding:7px 16px;font-size:14px}
+#pa .dv-sec{padding:20px 0 10px;border-top:1px solid var(--bd);margin-top:20px}
+#pa .dv-sec-hd{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+#pa .dv-sec-t{font-size:15px;font-weight:800;color:var(--tx)}
+#pa .dv-sec-v{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--tx)}
+#pa .dv-sec-c{font-size:13px;font-weight:800;white-space:nowrap}
+#pa .dv-sec-c.up{color:var(--up)}
+#pa .dv-sec-c.dn{color:var(--dn)}
+#pa .dv-chart{position:relative;min-height:320px}
+@media(max-width:720px){#pa .dv-chart{min-height:200px}}
+#pa .dv-chart svg{display:block;width:100%;height:auto}
+#pa .dv-ln{fill:none;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+#pa .dv-ln1{stroke:var(--dv1)}
+#pa .dv-ln2{stroke:var(--dv2)}
+#pa .dv-ln3{stroke:var(--dv3)}
+#pa .dv-area{opacity:.09}
+#pa .dv-ar1{fill:var(--dv1)}
+#pa .dv-ar2{fill:var(--dv2)}
+#pa .dv-ar3{fill:var(--dv3)}
+#pa .dv-grid-l{stroke:var(--bd);stroke-width:1}
+#pa .dv-dot{stroke:var(--sf);stroke-width:1.5}
+#pa .dv-dt1{fill:var(--dv1)}
+#pa .dv-dt2{fill:var(--dv2)}
+#pa .dv-dt3{fill:var(--dv3)}
+#pa .dv-tip{position:absolute;pointer-events:none;background:var(--tx);color:var(--bg);font-size:13px;font-weight:600;line-height:1.5;padding:7px 10px;border-radius:8px;white-space:nowrap;z-index:5;transform:translate(-50%,-112%)}
+#pa .dv-tip[hidden]{display:none}
+#pa .dv-tip b{display:block}
+#pa .dv-load{padding:120px 0;text-align:center;color:var(--mut);font-size:14px}
+#pa .dv-src{font-size:12px;color:var(--mut);margin:14px 0 0;text-align:right}
 </style>
 </head>
 <body>
@@ -2782,6 +2821,7 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 <div class="cxview" id="cxv-meme" data-cxview="meme" hidden><div class="cxview-body" id="cxbody-meme"></div></div>
 <div class="cxview" id="cxv-dex" data-cxview="dex" hidden><div class="cxview-body" id="cxbody-dex"></div></div>
 <div class="cxview" id="cxv-lp" data-cxview="lp" hidden><div class="cxview-body" id="cxbody-lp"></div></div>
+<div class="cxview dvview" id="dvview" hidden><div class="dvpage"><button type="button" class="dv-back" id="dv-back"><span aria-hidden="true">←</span><span>암호화폐</span></button><h2 class="dvpage-ti">변동성지수 전체 차트</h2><div class="pair" role="group" aria-label="기간 선택"><button type="button" data-dvdays="30" aria-pressed="false">30일</button><button type="button" data-dvdays="90" aria-pressed="true">90일</button><button type="button" data-dvdays="180" aria-pressed="false">180일</button><button type="button" data-dvdays="365" aria-pressed="false">1년</button></div><div class="dv-sec"><div class="dv-sec-hd"><span class="dv-sec-t">BTC DVOL</span><b class="dv-sec-v" id="dvc-btc-v">—</b><span class="dv-sec-c" id="dvc-btc-c"></span></div><div class="dv-chart" id="dvc-btc"></div></div><div class="dv-sec"><div class="dv-sec-hd"><span class="dv-sec-t">ETH DVOL</span><b class="dv-sec-v" id="dvc-eth-v">—</b><span class="dv-sec-c" id="dvc-eth-c"></span></div><div class="dv-chart" id="dvc-eth"></div></div><div class="dv-sec"><div class="dv-sec-hd"><span class="dv-sec-t">CVI · 종합</span><b class="dv-sec-v" id="dvc-cvi-v">—</b><span class="dv-sec-c" id="dvc-cvi-c"></span></div><div class="dv-chart" id="dvc-cvi"></div></div><p class="dv-src"><span>출처: Deribit</span> · <span>CVI는 BTC·ETH 시총 가중 종합값</span></p></div></div>
 </section>
 <script>
 /* ===== 암호화폐 카테고리 화면 전환 (사용자 지시) =====
@@ -3725,34 +3765,32 @@ dvLoad();
 window.DVOL90_EMBED={"date":"2026-11-22","btc":[[1787097600,37.84],[1787184000,39.44],[1787270400,43.29],[1787356800,42.27],[1787443200,43.18],[1787529600,43.41],[1787616000,43.28],[1787702400,40.37],[1787788800,41.52],[1787875200,38.34],[1787961600,37.43],[1788048000,36.99],[1788134400,37.63],[1788220800,37.93],[1788307200,37.19],[1788393600,39.78],[1788480000,37.96],[1788566400,38.66],[1788652800,39.32],[1788739200,38.79],[1788825600,39.92],[1788912000,40.2],[1788998400,40.24],[1789084800,36.75],[1789171200,36.98],[1789257600,38.89],[1789344000,38.57],[1789430400,39.01],[1789516800,36.19],[1789603200,33.59],[1789689600,35.46],[1789776000,36.32],[1789862400,35.65],[1789948800,38.14],[1790035200,37.4],[1790121600,35.81],[1790208000,36.04],[1790294400,34.62],[1790380800,34.92],[1790467200,35.07],[1790553600,35.93],[1790640000,35.12],[1790726400,35.23],[1790812800,36.44],[1790899200,34.82],[1790985600,35.36],[1791072000,36.5],[1791158400,36.1],[1791244800,36.13],[1791331200,36.76],[1791417600,37.74],[1791504000,36.39],[1791590400,36.99],[1791676800,37.34],[1791763200,37.71],[1791849600,38.23],[1791936000,39.12],[1792022400,38.75],[1792108800,37.66],[1792195200,37.93],[1792281600,38.82],[1792368000,37.33],[1792454400,36.86],[1792540800,37.1],[1792627200,37.99],[1792713600,37.35],[1792800000,37.93],[1792886400,38.8],[1792972800,38.56],[1793059200,37.69],[1793145600,37.26],[1793232000,41.99],[1793318400,40.59],[1793404800,40.03],[1793491200,40.28],[1793577600,39.3],[1793664000,39.73],[1793750400,38.06],[1793836800,42.27],[1793923200,39.43],[1794009600,40.2],[1794096000,40.99],[1794182400,39.87],[1794268800,39.45],[1794355200,38.92],[1794441600,40.07],[1794528000,39.87],[1794614400,47.29],[1794700800,43.95],[1794787200,43.13],[1794873600,43.29],[1794960000,45.7],[1795046400,45.88],[1795132800,52.54],[1795219200,58.02],[1795305600,57.59]],"eth":[[1787097600,52.54],[1787184000,52.57],[1787270400,57.73],[1787356800,57.01],[1787443200,60.31],[1787529600,58.44],[1787616000,58.15],[1787702400,56.06],[1787788800,57.08],[1787875200,50.85],[1787961600,51.11],[1788048000,51.76],[1788134400,51.31],[1788220800,51.83],[1788307200,50.92],[1788393600,53.28],[1788480000,51.09],[1788566400,51.72],[1788652800,53.19],[1788739200,52.6],[1788825600,53.86],[1788912000,53.73],[1788998400,53.36],[1789084800,51.76],[1789171200,52.61],[1789257600,54.29],[1789344000,54.92],[1789430400,55.19],[1789516800,52.83],[1789603200,50.11],[1789689600,49.92],[1789776000,50.81],[1789862400,51.5],[1789948800,52.61],[1790035200,51.12],[1790121600,51.56],[1790208000,51.04],[1790294400,48.03],[1790380800,49.02],[1790467200,48.96],[1790553600,49.98],[1790640000,48.98],[1790726400,49.35],[1790812800,49.65],[1790899200,48.13],[1790985600,48.49],[1791072000,49.64],[1791158400,48.36],[1791244800,47.52],[1791331200,47.96],[1791417600,50.34],[1791504000,49.25],[1791590400,50.39],[1791676800,50.72],[1791763200,51.88],[1791849600,51.53],[1791936000,52.64],[1792022400,52.71],[1792108800,51.4],[1792195200,52.22],[1792281600,53.38],[1792368000,51.94],[1792454400,52.31],[1792540800,50.42],[1792627200,52.24],[1792713600,51.98],[1792800000,53.51],[1792886400,53.62],[1792972800,53.01],[1793059200,53.23],[1793145600,52.5],[1793232000,58.21],[1793318400,55.24],[1793404800,55.44],[1793491200,54.4],[1793577600,52.77],[1793664000,52.19],[1793750400,51.9],[1793836800,57.44],[1793923200,55.2],[1794009600,55.98],[1794096000,57.97],[1794182400,56.36],[1794268800,55.81],[1794355200,54.78],[1794441600,56.06],[1794528000,55.55],[1794614400,63.36],[1794700800,57.1],[1794787200,57.86],[1794873600,58.13],[1794960000,59.87],[1795046400,61.31],[1795132800,65.35],[1795219200,70.6],[1795305600,70.13]]};
 </script>
 <script>
-/* ===== 변동성지수 전체 차트 새 창 =====
-   변동성지수 칸 제목 줄의 '전체 차트' 버튼을 누르면 페이지 안 모달이 아니라
-   브라우저 새 창(window.open)이 열리고, 그 창 안에 BTC DVOL·ETH DVOL·CVI
-   세 선 차트를 기간(30일·90일·180일·1년)별로 보여준다.
-   새 창 맨 위에는 본 페이지와 같은 사이트 헤더(로고·실시간·탭 줄, 암호화폐
-   탭 활성 표시)를 그대로 얹고, 그 아래 기존 차트 헤더(제목·기간 버튼)를
-   유지한다 (2026-11-22 사용자 지시: 새 창에 들어와도 헤더 유지).
-   헤더의 로고·탭은 장식이 아니라 실제 버튼이다 (2026-11-22 후속 지시로
-   수정: 처음엔 글자(span)로만 그려 눌리지 않았다) — 누르면 원래 창(본
-   페이지)이 그 탭으로 이동하고 차트 창은 닫힌다.
-   2026-11-22 후속 지시: 차트는 지금처럼 3개 따로 두되 참고 화면(INDEXerGO)
-   수준으로 크게 — 본문 폭은 본 페이지와 같은 1400px, 차트 높이는 360px로
-   키우고, 헤더도 마찬가지로 본 사이트 헤더와 같은 모양·크기의 전체 폭
-   띠(로고 줄 + 탭 줄이 화면 양 끝까지 닿음)로 맞춘다.
-   새 창에는 껍데기(헤더·제목·기간 버튼·차트 자리·스타일)만 써 넣고, 차트를
-   그리고 데이터를 채우는 일은 이 페이지의 스크립트가 새 창 문서를 대상으로
-   직접 수행한다(새 창에 스크립트를 따로 넣지 않는다).
+/* ===== 변동성지수 전체 차트 화면 (페이지 안 전환) =====
+   변동성지수 칸 제목 줄의 '전체 차트' 버튼을 누르면 새 창이 아니라 이
+   페이지 안에서 화면이 넘어간다 (2026-11-22 사용자 지시로 새 창 방식 폐기):
+   암호화폐 카테고리 화면(.cxview)과 같은 방식으로 코인 타일 띠·메인 칸
+   묶음이 사라지고 차트 화면(#dvview)만 남고, 사이트 헤더는 그대로 위에
+   있다. 화면 안 '암호화폐' 뒤로 버튼·헤더 탭·브라우저 뒤로가기로 원래
+   암호화폐 화면에 돌아간다. 주소는 #/crypto?cx=dvol 로 남겨
+   뒤로가기·새로고침에도 같은 화면이 유지된다.
+   화면 안에는 BTC DVOL·ETH DVOL·CVI 세 선 차트를 기간(30일·90일·180일·
+   1년)별로 크게(본문 1400px 폭·차트 높이 360px) 보여준다.
    데이터는 Deribit 공개 API의 일별 종가 — 첫 표시는 빌드 시점에 받아
-   내장한 최근 90일(window.DVOL90_EMBED)로 즉시 그리고, 창을 열 때
+   내장한 최근 90일(window.DVOL90_EMBED)로 즉시 그리고, 화면을 열 때
    1년치를 새로 받아 교체한다(실패하면 내장 유지).
    CVI는 칸과 같은 방식 — BTC·ETH DVOL을 시가총액 비중으로 가중한
-   종합값이고, 비중은 CoinGecko 도미넌스로 구한다(실패 시 85:15).
-   브라우저가 팝업을 차단하면 버튼 아래에 허용 안내를 잠깐 보여준다 */
+   종합값이고, 비중은 CoinGecko 도미넌스로 구한다(실패 시 85:15) */
 (function(){
 var openBtn=document.getElementById("dv-all-btn");
-if(!openBtn)return;
+var view=document.getElementById("dvview");
+if(!openBtn||!view)return;
+var pa=document.getElementById("pa");
+var strip=pa?pa.querySelector(".cxstrip"):null;
+var split=pa?pa.querySelector(".pasplit"):null;
+var cats=pa?Array.prototype.slice.call(pa.querySelectorAll(".cxcat")):[];
 var WD=["일","월","화","수","목","금","토"];
 var st={btc:null,eth:null},W8={btc:0.85,eth:0.15},loaded=false,lastFetch=0;
+var days=90,cur={},dvOpen=false;
 var LBL={btc:"BTC DVOL",eth:"ETH DVOL",cvi:"CVI"};
 function emb(pairs){if(!pairs||pairs.length<2)return null;var o=[];for(var i=0;i<pairs.length;i++)o.push({date:pairs[i][0],v:pairs[i][1]});return o}
 try{if(window.DVOL90_EMBED){st.btc=emb(window.DVOL90_EMBED.btc);st.eth=emb(window.DVOL90_EMBED.eth)}}catch(e){}
@@ -3766,19 +3804,17 @@ return out.length>=2?out:null;
 function series(key){return key==="cvi"?cviSeries():st[key]}
 function dateLbl(ts){var d=new Date(ts*1000);return (d.getUTCMonth()+1)+"/"+d.getUTCDate()}
 function dateFull(ts){var d=new Date(ts*1000);return d.getUTCFullYear()+"년 "+(d.getUTCMonth()+1)+"월 "+d.getUTCDate()+"일 ("+WD[d.getUTCDay()]+")"}
-var pop=null;
+function isEn(){try{return localStorage.getItem("hlkrx_lang")==="en"||document.documentElement.getAttribute("lang")==="en"}catch(e){return false}}
 function draw(key,cls){
-if(!pop||!pop.doc)return;
-var doc=pop.doc,days=pop.days;
-var el=doc.getElementById("dvc-"+key);if(!el)return;
-var vEl=doc.getElementById("dvc-"+key+"-v"),cEl=doc.getElementById("dvc-"+key+"-c");
+var el=document.getElementById("dvc-"+key);if(!el)return;
+var vEl=document.getElementById("dvc-"+key+"-v"),cEl=document.getElementById("dvc-"+key+"-c");
 var full=series(key);
-if(!full||full.length<2){el.innerHTML='<div class="dv-load">'+pop.t.loading+'</div>';pop.cur[key]=null;return}
+if(!full||full.length<2){el.innerHTML='<div class="dv-load">'+(isEn()?"Loading…":"불러오는 중…")+'</div>';cur[key]=null;return}
 var arr=full.slice(-days);
-if(arr.length<2){el.innerHTML='<div class="dv-load">'+pop.t.loading+'</div>';pop.cur[key]=null;return}
+if(arr.length<2){el.innerHTML='<div class="dv-load">'+(isEn()?"Loading…":"불러오는 중…")+'</div>';cur[key]=null;return}
 var last=arr[arr.length-1],first=arr[0],ch=last.v-first.v;
 if(vEl)vEl.textContent=last.v.toFixed(1);
-if(cEl){var lb=pop.en?(days===365?"vs 1 year ago":"vs "+Math.min(days,arr.length-1)+" days ago"):(days===365?"1년 전 대비":Math.min(days,arr.length-1)+"일 전 대비");cEl.textContent=lb+" "+(ch>=0?"+":"-")+Math.abs(ch).toFixed(1);cEl.className="dv-sec-c "+(ch>=0?"up":"dn")}
+if(cEl){var lb=isEn()?(days===365?"vs 1 year ago":"vs "+Math.min(days,arr.length-1)+" days ago"):(days===365?"1년 전 대비":Math.min(days,arr.length-1)+"일 전 대비");cEl.textContent=lb+" "+(ch>=0?"+":"-")+Math.abs(ch).toFixed(1);cEl.className="dv-sec-c "+(ch>=0?"up":"dn")}
 var W=Math.max(300,el.clientWidth||1200),H=360,leftPad=46,rightPad=12,topPad=14,botPad=26,plotW=W-leftPad-rightPad,plotH=H-topPad-botPad;
 var mn=Infinity,mx=-Infinity,i;
 for(i=0;i<arr.length;i++){if(arr[i].v<mn)mn=arr[i].v;if(arr[i].v>mx)mx=arr[i].v}
@@ -3808,22 +3844,20 @@ s+='<text x="'+(leftPad+plotW/2)+'" y="'+(H-6)+'" text-anchor="middle" style="fi
 s+='<text x="'+(W-rightPad)+'" y="'+(H-6)+'" text-anchor="end" style="fill:var(--mut);font-size:12px">'+dateLbl(arr[arr.length-1].date)+"</text>";
 s+="</svg>";
 el.innerHTML=s+'<div class="dv-tip" id="dvc-'+key+'-tip" hidden></div>';
-pop.cur[key]={arr:arr,W:W,H:H,leftPad:leftPad,topPad:topPad,plotW:plotW,plotH:plotH,mn:mn,mx:mx};
+cur[key]={arr:arr,W:W,H:H,leftPad:leftPad,topPad:topPad,plotW:plotW,plotH:plotH,mn:mn,mx:mx};
 }
-function renderAll(){if(!pop||!pop.win||pop.win.closed)return;draw("btc",1);draw("eth",2);draw("cvi",3)}
+function renderAll(){if(!dvOpen)return;draw("btc",1);draw("eth",2);draw("cvi",3)}
 function bindTip(key){
-if(!pop||!pop.doc)return;
-var doc=pop.doc;
-var el=doc.getElementById("dvc-"+key);if(!el)return;
-function hide(){var t=doc.getElementById("dvc-"+key+"-tip");if(t)t.hidden=true;var d=doc.getElementById("dvc-"+key+"-dot");if(d)d.style.display="none"}
+var el=document.getElementById("dvc-"+key);if(!el)return;
+function hide(){var t=document.getElementById("dvc-"+key+"-tip");if(t)t.hidden=true;var d=document.getElementById("dvc-"+key+"-dot");if(d)d.style.display="none"}
 function show(i){
-var c=pop.cur[key];if(!c)return;
-var tip=doc.getElementById("dvc-"+key+"-tip");if(!tip)return;
+var c=cur[key];if(!c)return;
+var tip=document.getElementById("dvc-"+key+"-tip");if(!tip)return;
 var d=c.arr[i];if(!d)return;
 tip.innerHTML="<b>"+dateFull(d.date)+"</b>"+d.v.toFixed(1);
 var px=c.leftPad+(c.arr.length<2?c.plotW/2:c.plotW*i/(c.arr.length-1));
 var py=c.topPad+c.plotH*(1-(d.v-c.mn)/(c.mx-c.mn));
-var dot=doc.getElementById("dvc-"+key+"-dot");
+var dot=document.getElementById("dvc-"+key+"-dot");
 if(dot){dot.setAttribute("cx",px.toFixed(1));dot.setAttribute("cy",py.toFixed(1));dot.style.display=""}
 var cw=el.clientWidth||c.W,chh=el.clientHeight||c.H;
 tip.hidden=false;
@@ -3835,6 +3869,7 @@ el.addEventListener("pointermove",function(e){var t=e.target;if(t&&t.getAttribut
 el.addEventListener("pointerdown",function(e){var t=e.target;if(t&&t.getAttribute&&t.getAttribute("data-dvi")!=null)show(+t.getAttribute("data-dvi"))});
 el.addEventListener("pointerleave",hide);
 }
+["btc","eth","cvi"].forEach(bindTip);
 function fetchCur(cur2){
 var now=Date.now(),start=now-365*86400*1000;
 return fetch("https://www.deribit.com/api/v2/public/get_volatility_index_data?currency="+cur2+"&start_timestamp="+start+"&end_timestamp="+now+"&resolution=86400").then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
@@ -3860,136 +3895,55 @@ fetchCur("BTC").then(function(d){st.btc=d;renderAll()}).catch(function(){});
 fetchCur("ETH").then(function(d){st.eth=d;renderAll()}).catch(function(){});
 loadW();
 }
-function popTheme(){
-if(document.documentElement.getAttribute("data-theme")==="light")
-return{bg:"#f7f8fa",sf:"#ffffff",sf2:"#f1f3f5",tx:"#1a1e24",mut:"#68727e",bd:"#e4e7eb",up:"#d02a38",dn:"#1668c4",dv1:"#d97c06",dv2:"#4a7dd4",dv3:"#1d9e57",scheme:"light"};
-return{bg:"#0b0d10",sf:"#14171b",sf2:"#1d2126",tx:"#eceff3",mut:"#8f99a6",bd:"#262b31",up:"#ff5f6b",dn:"#5ea0ff",dv1:"#f0a832",dv2:"#7ea6f2",dv3:"#2fbf71",scheme:"dark"};
-}
-function popCSS(c){
-return ":root{--bg:"+c.bg+";--sf:"+c.sf+";--sf2:"+c.sf2+";--tx:"+c.tx+";--mut:"+c.mut+";--bd:"+c.bd+";--up:"+c.up+";--dn:"+c.dn+";--dv1:"+c.dv1+";--dv2:"+c.dv2+";--dv3:"+c.dv3+";color-scheme:"+c.scheme+"}"
-+"*{box-sizing:border-box}"
-+"body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 \"Pretendard\",\"Apple SD Gothic Neo\",\"Noto Sans KR\",system-ui,sans-serif;font-variant-numeric:tabular-nums}"
-+".hd{display:flex;flex-direction:column;gap:1px;width:100%;margin:0 0 6px;padding:6px 20px 2px;border-bottom:1px solid var(--bd);background:var(--bg)}"
-+".hd-in{width:100%;margin:0;padding:0}"
-+".hd-t{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-width:0}"
-+".brand{font-family:inherit;font-size:23px;font-weight:300;letter-spacing:-.015em;line-height:1;color:var(--tx);white-space:nowrap;background:none;border:0;padding:0;cursor:pointer;text-align:left}"
-+".brand b{font-weight:800}"
-+".hd-live{display:inline-flex;align-items:center;gap:7px;padding:1px 2px;font-size:12px;color:var(--mut);white-space:nowrap}"
-+".hd-live i{width:9px;height:9px;border-radius:50%;background:#1d9e57;flex:none}"
-+".hd-tabs{display:flex;align-items:stretch;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;width:100%;justify-content:flex-start;margin:0;padding:0}"
-+".hd-tabs::-webkit-scrollbar{display:none}"
-+".hd-tabs button{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:33px;padding:2px 10px;font:inherit;font-size:16px;font-weight:600;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;cursor:pointer}"
-+".hd-tabs button.on{color:var(--tx);font-weight:800;border-bottom-color:var(--tx)}"
-+"@media(min-width:1024px){.hd-tabs button{font-size:16.5px}}"
-+"@media(max-width:720px){.hd{padding-left:16px;padding-right:16px}.hd-tabs button{min-height:40px;padding:7px 16px;border-bottom:0;border-radius:999px;font-size:14px;font-weight:700;margin-bottom:0}.hd-tabs button.on{background:#16c784;color:#04160d;border-bottom-color:transparent;box-shadow:0 4px 14px rgba(22,199,132,.25)}}"
-+".wrap{max-width:1400px;margin:0 auto;padding:18px 24px 44px}"
-+"@media(max-width:720px){.wrap{padding:14px 16px 32px}}"
-+"h1{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.25;margin:0 0 16px}"
-+".pair{display:inline-flex;gap:2px;background:var(--sf2);border:1px solid var(--bd);border-radius:999px;padding:3px;margin:0}"
-+".pair button{min-height:36px;padding:7px 16px;border:0;background:transparent;color:var(--mut);border-radius:999px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}"
-+".pair button[aria-pressed=\"true\"]{background:var(--tx);color:var(--bg);font-weight:700}"
-+".dv-sec{padding:20px 0 10px;border-top:1px solid var(--bd);margin-top:20px}"
-+".dv-sec-hd{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}"
-+".dv-sec-t{font-size:15px;font-weight:800;color:var(--tx)}"
-+".dv-sec-v{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--tx)}"
-+".dv-sec-c{font-size:13px;font-weight:800;white-space:nowrap}"
-+".dv-sec-c.up{color:var(--up)}.dv-sec-c.dn{color:var(--dn)}"
-+".dv-chart{position:relative;min-height:320px}"
-+"@media(max-width:720px){.dv-chart{min-height:220px}}"
-+".dv-chart svg{display:block;width:100%;height:auto}"
-+".dv-ln{fill:none;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}"
-+".dv-ln1{stroke:var(--dv1)}.dv-ln2{stroke:var(--dv2)}.dv-ln3{stroke:var(--dv3)}"
-+".dv-area{opacity:.09}.dv-ar1{fill:var(--dv1)}.dv-ar2{fill:var(--dv2)}.dv-ar3{fill:var(--dv3)}"
-+".dv-grid-l{stroke:var(--bd);stroke-width:1}"
-+".dv-dot{stroke:var(--sf);stroke-width:1.5}.dv-dt1{fill:var(--dv1)}.dv-dt2{fill:var(--dv2)}.dv-dt3{fill:var(--dv3)}"
-+".dv-tip{position:absolute;pointer-events:none;background:var(--tx);color:var(--bg);font-size:13px;font-weight:600;line-height:1.5;padding:7px 10px;border-radius:8px;white-space:nowrap;z-index:5;transform:translate(-50%,-112%)}"
-+".dv-tip[hidden]{display:none}"
-+".dv-load{padding:120px 0;text-align:center;color:var(--mut);font-size:14px}"
-+".dv-src{font-size:12px;color:var(--mut);margin:14px 0 0;text-align:right}";
-}
-function popSkeleton(c,t,en){
-return '<!DOCTYPE html><html lang="'+(en?"en":"ko")+'"><head><meta charset="utf-8">'
-+'<meta name="viewport" content="width=device-width, initial-scale=1">'
-+"<title>"+t.title+"</title><style>"+popCSS(c)+"</style></head><body>"
-+'<header class="hd"><div class="hd-in"><div class="hd-t"><button type="button" class="brand" data-dvnav="0">kimp<b>won</b></button><span class="hd-live"><i></i>'+t.live+'</span></div><nav class="hd-tabs" aria-label="'+t.navLabel+'"><button type="button" data-dvnav="0">'+t.nav[0]+'</button><button type="button" data-dvnav="1" class="on" aria-current="page">'+t.nav[1]+'</button><button type="button" data-dvnav="2">'+t.nav[2]+'</button><button type="button" data-dvnav="3">'+t.nav[3]+'</button><button type="button" data-dvnav="4">'+t.nav[4]+'</button><button type="button" data-dvnav="5">'+t.nav[5]+'</button></nav></div></header>'
-+'<main class="wrap"><h1>'+t.title+"</h1>"
-+'<div class="pair" role="group" aria-label="'+t.period+'">'
-+'<button type="button" data-dvdays="30" aria-pressed="false">'+t.d30+'</button>'
-+'<button type="button" data-dvdays="90" aria-pressed="true">'+t.d90+'</button>'
-+'<button type="button" data-dvdays="180" aria-pressed="false">'+t.d180+'</button>'
-+'<button type="button" data-dvdays="365" aria-pressed="false">'+t.d365+'</button></div>'
-+'<div class="dv-sec"><div class="dv-sec-hd"><span class="dv-sec-t">BTC DVOL</span><b class="dv-sec-v" id="dvc-btc-v">—</b><span class="dv-sec-c" id="dvc-btc-c"></span></div><div class="dv-chart" id="dvc-btc"></div></div>'
-+'<div class="dv-sec"><div class="dv-sec-hd"><span class="dv-sec-t">ETH DVOL</span><b class="dv-sec-v" id="dvc-eth-v">—</b><span class="dv-sec-c" id="dvc-eth-c"></span></div><div class="dv-chart" id="dvc-eth"></div></div>'
-+'<div class="dv-sec"><div class="dv-sec-hd"><span class="dv-sec-t">'+t.cvi+'</span><b class="dv-sec-v" id="dvc-cvi-v">—</b><span class="dv-sec-c" id="dvc-cvi-c"></span></div><div class="dv-chart" id="dvc-cvi"></div></div>'
-+'<p class="dv-src">'+t.src+"</p></main></body></html>";
-}
-var noteEl=null,noteT=null;
-function showBlockNote(en){
-if(!noteEl){
-noteEl=document.createElement("span");
-noteEl.style.cssText="flex-basis:100%;font-size:11.5px;font-weight:600;color:#d98a16;white-space:normal;line-height:1.45";
-var box=document.getElementById("dvbox");
-var hd=box?box.querySelector(".pabox-hd"):null;
-if(hd)hd.appendChild(noteEl);else if(openBtn.parentNode)openBtn.parentNode.appendChild(noteEl);
-}
-noteEl.textContent=en?"The new window was blocked. Please allow pop-ups for this site, then press again.":"새 창이 차단됐어요. 이 사이트의 팝업을 허용한 뒤 다시 눌러 주세요.";
-if(noteT)clearTimeout(noteT);
-noteT=setTimeout(function(){if(noteEl)noteEl.textContent=""},5000);
-}
-function openWin(){
-if(pop&&pop.win&&!pop.win.closed){
-try{pop.win.focus()}catch(e){}
+function showDv(push){
+dvOpen=true;
+if(strip)strip.hidden=true;
+if(split)split.hidden=true;
+if(pa)pa.querySelectorAll("[data-cxview]").forEach(function(v){v.hidden=true});
+cats.forEach(function(b){b.setAttribute("aria-pressed","false")});
+view.hidden=false;
+if(push){try{history.pushState(null,"","#/crypto?cx=dvol")}catch(e){}}
+window.scrollTo(0,0);
+renderAll();
 if(!loaded||Date.now()-lastFetch>5*60000){loaded=true;load()}
-return;
 }
-var en=false;
-try{en=localStorage.getItem("hlkrx_lang")==="en"||document.documentElement.getAttribute("lang")==="en"}catch(e){}
-var t=en?{title:"Volatility Index Charts",period:"Select period",d30:"30D",d90:"90D",d180:"180D",d365:"1Y",cvi:"CVI · Combined",src:"Source: Deribit · CVI is a BTC·ETH market-cap weighted composite",loading:"Loading…",live:"Live",navLabel:"Site menu",nav:["Home","Crypto","KR Stocks","US Stocks","Domestic Indices","Global Indices"]}
-:{title:"변동성지수 전체 차트",period:"기간 선택",d30:"30일",d90:"90일",d180:"180일",d365:"1년",cvi:"CVI · 종합",src:"출처: Deribit · CVI는 BTC·ETH 시총 가중 종합값",loading:"불러오는 중…",live:"실시간",navLabel:"사이트 메뉴",nav:["홈","암호화폐","국내주식","미국주식","국내지표","해외지표"]};
-var w=null;
-try{w=window.open("","_blank")}catch(e){}
-if(!w){showBlockNote(en);return}
-try{
-w.document.open();
-w.document.write(popSkeleton(popTheme(),t,en));
-w.document.close();
-}catch(e){showBlockNote(en);return}
-pop={win:w,doc:w.document,days:90,cur:{},en:en,t:t};
-var btns=pop.doc.querySelectorAll("[data-dvdays]");
-for(var i=0;i<btns.length;i++)(function(b){
+function hideDv(){
+dvOpen=false;
+view.hidden=true;
+}
+function closeDv(push){
+hideDv();
+if(typeof window.__cxReset==="function")window.__cxReset();
+if(push){try{history.pushState(null,"","#/crypto")}catch(e){}}
+window.scrollTo(0,0);
+}
+openBtn.addEventListener("click",function(){showDv(true)});
+var backBtn=document.getElementById("dv-back");
+if(backBtn)backBtn.addEventListener("click",function(){closeDv(true)});
+view.querySelectorAll("[data-dvdays]").forEach(function(b){
 b.addEventListener("click",function(){
-if(!pop)return;
-pop.days=+b.getAttribute("data-dvdays");
-var ys=pop.doc.querySelectorAll("[data-dvdays]");
-for(var j=0;j<ys.length;j++)ys[j].setAttribute("aria-pressed",String(ys[j]===b));
+days=+b.getAttribute("data-dvdays");
+view.querySelectorAll("[data-dvdays]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});
 renderAll();
 });
-})(btns[i]);
-/* 새 창 헤더의 로고·탭 버튼: 누르면 본 페이지(이 창을 연 원래 창)가 그 탭으로
-   이동하고 차트 창은 닫힌다. 이동은 본 페이지 헤더 탭 링크를 그대로 눌러
-   처리하므로 주소·제목·강조 동기화까지 본 페이지 동작과 똑같이 따라간다 */
-var NAVKEY=["home","crypto","krstock","usstock","kridx","usidx"];
-var NAVHASH={home:"#/",crypto:"#/crypto",krstock:"#/kr",usstock:"#/us",kridx:"#/korea",usidx:"#/usa"};
-var nbs=pop.doc.querySelectorAll("[data-dvnav]");
-for(var n=0;n<nbs.length;n++)(function(b){
-b.addEventListener("click",function(){
-var key=NAVKEY[+b.getAttribute("data-dvnav")]||"home";
-var a=document.querySelector('#tabs [data-nav="'+key+'"]');
-if(a)a.click();
-else{try{location.hash=NAVHASH[key]}catch(e){}}
-try{window.focus()}catch(e){}
-try{w.close()}catch(e){}
 });
-})(nbs[n]);
-["btc","eth","cvi"].forEach(bindTip);
-pop.doc.addEventListener("keydown",function(e){if(e.key==="Escape")w.close()});
+/* 주소·뒤로가기 동기화: 카테고리 화면 스크립트와 같은 방식 —
+   #/crypto?cx=dvol 이면 차트 화면, 아니면 원래 암호화폐 화면이다 */
+function fromHash(){return /[?&]cx=dvol/.test(location.hash||"")}
+function syncFromHash(){
+if(!pa||pa.hidden)return;
+if(fromHash()){if(!dvOpen)showDv(false)}
+else if(dvOpen)hideDv();
+}
+window.addEventListener("hashchange",function(){setTimeout(syncFromHash,0)});
+window.addEventListener("popstate",function(){setTimeout(syncFromHash,0)});
+if(window.MutationObserver&&pa)new MutationObserver(function(){syncFromHash()}).observe(pa,{attributes:true,attributeFilter:["hidden"]});
+/* 상단 '암호화폐' 탭을 누르면 차트 화면에서 원래 암호화폐 화면으로 돌아온다 */
+var navCx=document.querySelector('#tabs [data-nav="crypto"]');
+if(navCx)navCx.addEventListener("click",function(){hideDv()});
 var rzT=null;
-w.addEventListener("resize",function(){if(rzT)return;rzT=setTimeout(function(){rzT=null;renderAll()},200)});
-renderAll();
-if(!loaded||Date.now()-lastFetch>5*60000){loaded=true;load()}
-try{w.focus()}catch(e){}
-}
-openBtn.addEventListener("click",openWin);
+window.addEventListener("resize",function(){if(!dvOpen)return;if(rzT)return;rzT=setTimeout(function(){rzT=null;renderAll()},200)});
+syncFromHash();
 })();
 </script>
 <style>
