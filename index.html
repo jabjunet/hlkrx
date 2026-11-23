@@ -4770,7 +4770,14 @@ if(d.type==="hline"){hx=W/2;hy=yOf(p.p)}else if(d.type==="vline"){hx=xOf(p.t);hy
 else{hx=xOf(p.t);hy=yOf(p.p)}
 if(hx!=null&&hy!=null&&Math.hypot(x-hx,y-hy)<=10)return i}
 return -1}
-function pushUndo(){var u=undoSt[S.sym];u.push(JSON.stringify(drawings()));if(u.length>50)u.shift();redoSt[S.sym]=[];syncUndoBtns()}
+/* 실행취소 기록은 그리기 목록과 측정 도형을 함께 스냅샷으로 남긴다 —
+   측정도 되돌리기/다시실행 대상에 포함된다 */
+function snapState(){return JSON.stringify({d:drawings(),m:measureD||null})}
+function applySnap(j){var o;try{o=JSON.parse(j)}catch(e){return}
+if(Array.isArray(o)){store[S.sym]=o;measureD=null}
+else{store[S.sym]=o.d||[];measureD=o.m||null}
+selId=null;scheduleDraw();syncUndoBtns()}
+function pushUndo(){var u=undoSt[S.sym];u.push(snapState());if(u.length>50)u.shift();redoSt[S.sym]=[];syncUndoBtns()}
 function syncUndoBtns(){var u=gel("tv-undo"),r=gel("tv-redo");
 if(u)u.disabled=!undoSt[S.sym].length;if(r)r.disabled=!redoSt[S.sym].length}
 function setInteractionLock(on){
@@ -4811,7 +4818,6 @@ selId=d.id;pushUndo();
 var hi=handleAt(d,pos.x,pos.y);
 dragging={d:d,handle:hi,sx:pos.x,sy:pos.y,orig:JSON.parse(JSON.stringify(d.pts)),moved:false};
 setInteractionLock(true);
-try{wrap.setPointerCapture(e.pointerId)}catch(err){}
 scheduleDraw();return}
 if(S.tool==="cross")return;
 e.stopPropagation();e.preventDefault();
@@ -4822,9 +4828,8 @@ if(S.tool==="hline"||S.tool==="vline"){pushUndo();
 var nd={id:++drawSeq,type:S.tool,pts:[{t:t,p:p}]};drawings().push(nd);selId=nd.id;setTool("cursor");scheduleDraw();return}
 if(S.tool==="text"){startText({t:t,p:p},null,pos.x,pos.y);setTool("cursor");return}
 creating={id:-1,type:S.tool,pts:[{t:t,p:p},{t:t,p:p}]};
-try{wrap.setPointerCapture(e.pointerId)}catch(err){}
-scheduleDraw()},true);
-wrap.addEventListener("pointermove",function(e){
+scheduleDraw()});
+function onWrapMove(e){
 var pos=evPos(e);
 if(creating){var t=timeAt(pos.x),p=priceAt(pos.y);if(t==null||p==null)return;
 creating.pts[1]={t:t,p:snap(p,t)};scheduleDraw();return}
@@ -4841,12 +4846,17 @@ d.pts=dragging.orig.map(function(o){return{t:o.t+dt,p:o.p+dp}})}
 scheduleDraw();return}
 if(S.tool==="cursor"&&chart&&bars.length){
 if(hoverRaf)return;hoverRaf=requestAnimationFrame(function(){hoverRaf=0;
-chartEl.style.cursor=hitTest(pos.x,pos.y)?"move":""})}});
+chartEl.style.cursor=hitTest(pos.x,pos.y)?"move":""})}}
+wrap.addEventListener("pointermove",onWrapMove);
+/* 그리는 동안 포인터가 래퍼 밖으로 나가도 움직임이 끊기지 않게 window에서도 받는다.
+   포인터 캡처로 래퍼에 가두지 않으므로 차트 위젯은 mousemove·wheel을 그대로 받아
+   도구 선택 중에도 십자선과 휠 확대/축소가 동작한다(트레이딩뷰와 같은 방식) */
+window.addEventListener("pointermove",function(e){if((creating||dragging)&&!wrap.contains(e.target))onWrapMove(e)});
 function endPointer(){
 if(creating){var c=creating;creating=null;
 var x1=xOf(c.pts[0].t),x2=xOf(c.pts[1].t),y1=yOf(c.pts[0].p),y2=yOf(c.pts[1].p);
 var ok=c.type==="measure"||(x1!=null&&x2!=null&&y1!=null&&y2!=null&&(Math.abs(x2-x1)>4||Math.abs(y2-y1)>4));
-if(ok){if(c.type==="measure"){measureD=c}
+if(ok){if(c.type==="measure"){pushUndo();measureD=c}
 else{pushUndo();c.id=++drawSeq;drawings().push(c);selId=c.id}}
 setTool("cursor");scheduleDraw();return}
 if(dragging){if(!dragging.moved){undoSt[S.sym].pop()}
@@ -4868,9 +4878,9 @@ else if(e.key==="Escape"){selId=null;creating=null;measureD=null;textbox.hidden=
 else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="z"&&!e.shiftKey){e.preventDefault();doUndo()}
 else if((e.ctrlKey||e.metaKey)&&(e.key.toLowerCase()==="y"||(e.key.toLowerCase()==="z"&&e.shiftKey))){e.preventDefault();doRedo()}});
 function doUndo(){var u=undoSt[S.sym];if(!u.length)return;
-redoSt[S.sym].push(JSON.stringify(drawings()));store[S.sym]=JSON.parse(u.pop());selId=null;scheduleDraw();syncUndoBtns()}
+redoSt[S.sym].push(snapState());applySnap(u.pop())}
 function doRedo(){var r=redoSt[S.sym];if(!r.length)return;
-undoSt[S.sym].push(JSON.stringify(drawings()));store[S.sym]=JSON.parse(r.pop());selId=null;scheduleDraw();syncUndoBtns()}
+undoSt[S.sym].push(snapState());applySnap(r.pop())}
 /* ---------- UI 배선 ---------- */
 function closePanels(except){
 [["tv-ctype-panel","tv-ctype-btn"],["tv-ind-panel","tv-ind-btn"],["tv-set-panel","tv-set-btn"]].forEach(function(pr){
@@ -6924,7 +6934,9 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden){fxF
    국내지표·해외지표 상단 타일과 같은 모양으로, 주요 코인 8종(비트코인·이더리움·테더·
    유에스디코인·비앤비·엑스알피·솔라나·트론)의 달러 가격과 등락을 보여준다.
    값은 TradingView 크립토 스캐너(scanner.tradingview.com/crypto/scan, Binance 기준)로
-   한 번에 조회해 1분마다 갱신한다. 테더는 USDT 페어가 없어 USDT/USD로 조회한다 */
+   한 번에 조회해 1분마다 갱신한다. 테더는 USDT 페어가 없어 USDT/USD로 조회한다.
+   스캐너가 막히거나 일부 종목이 비면 Binance REST(data-api.binance.vision →
+   api.binance.com 순)로 빈 타일만 채워, 한 경로가 막혀도 '—'로 남지 않는다 */
 (function(){
 function gel(id){return document.getElementById(id)}
 /* [id, 이름, 스캐너 티커, 소수 자리] */
@@ -6949,13 +6961,34 @@ else if(d.c<0){ce.textContent=Math.abs(d.c).toFixed(2)+"%";ce.className="ixc dn"
 else{ce.textContent="0.00%";ce.className="ixc"}
 });
 }
+function cxMissing(){
+return CXT.filter(function(t){var d=CXS[t[0]];return !d||!(d.v>0)}).map(function(t){return t[0]})}
+/* 폴백: Binance REST 24시간 티커 — data-api.binance.vision을 먼저 쓰고,
+   막히면(지역 제한 451 등) api.binance.com으로 넘어간다 */
+function cxBnFetch(need){
+var SYM={btc:"BTCUSDT",eth:"ETHUSDT",usdt:"USDTUSD",usdc:"USDCUSDT",bnb:"BNBUSDT",xrp:"XRPUSDT",sol:"SOLUSDT",trx:"TRXUSDT"};
+var syms=need.map(function(k){return SYM[k]}).filter(Boolean);
+if(!syms.length)return;
+var path="/api/v3/ticker/24hr?symbols="+encodeURIComponent(JSON.stringify(syms));
+function go(hosts){
+return fetch(hosts[0]+path).then(function(r){if(!r.ok)throw new Error("bn "+r.status);return r.json()}).catch(function(e){if(hosts.length>1)return go(hosts.slice(1));throw e})}
+go(["https://data-api.binance.vision","https://api.binance.com"]).then(function(j){
+var m={};(j||[]).forEach(function(x){if(x&&x.symbol)m[x.symbol]=x});
+need.forEach(function(k){var x=m[SYM[k]];if(!x)return;var v=parseFloat(x.lastPrice);if(!(v>0))return;
+if(!CXS[k])CXS[k]={v:null,c:null};CXS[k].v=v;var c=parseFloat(x.priceChangePercent);if(!isNaN(c))CXS[k].c=c});
+cxDraw();
+}).catch(function(){});
+}
 function cxFetch(){
 var ticks=CXT.map(function(t){return t[2]});
 fetch("https://scanner.tradingview.com/crypto/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:ticks},columns:["close","change"]})}).then(function(r){if(!r.ok)throw new Error("tv "+r.status);return r.json()}).then(function(j){
 var m={};(j.data||[]).forEach(function(x){if(x&&x.d)m[x.s]=x.d});
 CXT.forEach(function(t){var d=m[t[2]];if(!d||!(d[0]>0))return;if(!CXS[t[0]])CXS[t[0]]={v:null,c:null};CXS[t[0]].v=d[0];if(!isNaN(d[1]))CXS[t[0]].c=d[1]});
 cxDraw();
-}).catch(function(){});
+var miss=cxMissing();if(miss.length)cxBnFetch(miss);
+}).catch(function(){
+var miss=cxMissing();if(miss.length)cxBnFetch(miss);
+});
 }
 cxDraw();cxFetch();
 setInterval(function(){if(!document.hidden)cxFetch()},60000);
