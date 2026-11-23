@@ -2314,6 +2314,25 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    사이트의 등락 색(상승 빨강·하락 파랑)과 별개로 전용 변수를 둔다 */
 #pa .cxrightcol .scbox .sc-sum{margin-bottom:0}
 #pa .cxrightcol .sc-sub{white-space:normal;overflow:visible;text-overflow:clip}
+/* 요약 칸 크기를 왼쪽 변동성지수 칸(.dvwrap)과 똑같이 맞춘다 (사용자 지시):
+   안쪽 회색 박스(.sc-sum-it 배경·여백)를 없애고, DVOL 칸과 같은 3열 나란히
+   배치·구분선·글자 크기(라벨 11px·값 21px·아랫줄 11px)로 바꿔 두 칸의
+   높이와 인상이 같아지게 한다. 폰에서도 DVOL처럼 3열을 유지한다 */
+#pa .cxrightcol .scbox .pabox-ti{font-size:13px}
+#pa .cxrightcol .scbox .sc-sum{gap:6px 12px}
+#pa .cxrightcol .scbox .sc-sum-it{background:transparent;border-radius:0;padding:0}
+#pa .cxrightcol .scbox .sc-sum-it+.sc-sum-it{border-left:1px solid var(--bd);padding-left:12px}
+#pa .cxrightcol .scbox .sc-sum-it small{font-size:11px;font-weight:700;margin-bottom:0}
+#pa .cxrightcol .scbox .sc-cur{font-size:21px;line-height:1.2}
+#pa .cxrightcol .scbox .sc-chgrow{font-size:11px;margin-top:1px;flex-wrap:nowrap}
+#pa .cxrightcol .scbox .sc-chg{font-size:12px}
+#pa .cxrightcol .scbox .sc-sub{font-size:11px;margin-top:1px}
+@media(max-width:720px){
+#pa .cxrightcol .scbox .sc-sum{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 8px}
+#pa .cxrightcol .scbox .sc-sum-it.sc-total{grid-column:auto}
+#pa .cxrightcol .scbox .sc-sum-it+.sc-sum-it{padding-left:8px}
+#pa .cxrightcol .scbox .sc-cur{font-size:18px}
+}
 #pa .scview .pair button{min-height:36px;padding:7px 16px;font-size:14px}
 #pa .scbox{--scpos:#12994a;--scneg:#d92d20}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #pa .scbox{--scpos:#2fbf71;--scneg:#ff6b5e}}
