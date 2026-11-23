@@ -2462,32 +2462,52 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pa .dv-src{font-size:12px;color:var(--mut);margin:14px 0 0;text-align:right}
 </style>
 <style>
-/* ===== 차트 탭: 코인 차트 (트레이딩뷰 방식 · 시범 BTC·ETH) =====
+/* ===== 차트 탭: 코인 차트 (트레이딩뷰 방식 · BTC·ETH) =====
    헤더 탭 줄에서 해외지표 오른쪽 '차트' 탭이 여는 전용 페이지(#p-chart).
-   구조는 트레이딩뷰와 같다: 위쪽 바에 종목·봉 간격·지표 토글, 왼쪽
-   세로 막대에 그리기 도구(커서·추세선·수평선·피보나치·지우기), 차트
-   왼쪽 위에 시고저종 범례, 차트 아래쪽에 거래량, RSI는 차트 아래
-   별도 창에 따로 그린다 */
+   구조를 트레이딩뷰와 맞췄다: 차트 칸 맨 위에 종목·봉 간격·차트 종류·
+   지표 버튼이 한 줄 바에 붙고, 왼쪽 세로 막대에 그리기 도구(커서·십자·
+   추세선·광선·수평선·수직선·피보나치·사각형·측정·텍스트·지우개)와
+   자석·실행취소·다시실행·휴지통, 차트 왼쪽 위에 시고저종+지표값 범례,
+   아래쪽에 기간 선택 바(1일~전체)와 가격축 방식(기본·%·로그),
+   RSI·MACD·스토캐스틱은 차트 아래 별도 창에 따로 그린다 */
 #p-chart .tv-up{color:var(--up)}
 #p-chart .tv-dn{color:var(--dn)}
-#p-chart .pair button{min-height:36px;padding:7px 14px;font-size:13.5px}
-#p-chart .tv-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+#p-chart .tv-stage{display:flex;flex-direction:column;border:1px solid var(--bd);border-radius:12px;background:var(--sf);overflow:hidden}
+#p-chart .tv-stage:fullscreen{border-radius:0;border:0}
+#p-chart .tv-bar{position:relative;display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 8px;border-bottom:1px solid var(--bd)}
+#p-chart .tv-bar .pair button{min-height:30px;padding:4px 10px;font-size:12.5px}
+#p-chart .tv-sep{width:1px;align-self:stretch;background:var(--bd);margin:2px 1px;flex:none}
+#p-chart .tv-barbtn{min-height:30px;padding:4px 12px;font-size:12.5px;font-weight:700;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:8px;cursor:pointer}
+#p-chart .tv-barbtn[aria-pressed="true"]{background:var(--ac);color:var(--acx);border-color:transparent}
+#p-chart .tv-iconbtn{width:32px;height:30px;display:inline-flex;align-items:center;justify-content:center;border:1px solid transparent;background:transparent;color:var(--mut);border-radius:8px;cursor:pointer;padding:0}
+#p-chart .tv-iconbtn:hover{color:var(--tx);background:var(--sf2)}
+#p-chart .tv-iconbtn[disabled]{opacity:.35;cursor:default}
+#p-chart .tv-iconbtn[disabled]:hover{color:var(--mut);background:transparent}
+#p-chart .tv-lp{display:inline-flex;align-items:baseline;gap:7px;margin-left:2px;white-space:nowrap}
+#p-chart .tv-lp b{font-size:14px;font-weight:800;letter-spacing:-.02em}
+#p-chart .tv-lp span{font-size:12px;font-weight:800}
 #p-chart .tv-live{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--mut);white-space:nowrap}
 #p-chart .tv-dot{width:8px;height:8px;border-radius:50%;background:#2fbf71;flex:none}
-#p-chart .tv-price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}
-#p-chart .tv-symnm{font-size:13px;font-weight:700;color:var(--mut)}
-#p-chart .tv-price b{font-size:24px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
-#p-chart .tv-price .tv-pc{font-size:14px;font-weight:800}
-#p-chart .tv-hl{font-size:12px;color:var(--mut);font-weight:600}
-#p-chart .tv-stage{display:flex;align-items:stretch;border:1px solid var(--bd);border-radius:12px;background:var(--sf);overflow:hidden}
+#p-chart .tv-panel{position:absolute;top:calc(100% + 4px);left:8px;z-index:8;width:250px;max-height:340px;overflow-y:auto;background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:6px;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+#p-chart .tv-panel[hidden]{display:none}
+#p-chart .tv-panel h3{font-size:11px;font-weight:800;color:var(--mut);margin:6px 8px 4px;letter-spacing:.02em}
+#p-chart .tv-prow{display:flex;align-items:center;gap:8px;width:100%;min-height:32px;padding:4px 8px;border:0;background:transparent;color:var(--tx);font:inherit;font-size:13px;font-weight:600;border-radius:7px;cursor:pointer;text-align:left}
+#p-chart .tv-prow:hover{background:var(--sf2)}
+#p-chart .tv-prow .tv-eye{margin-left:auto;font-size:11px;font-weight:800;color:var(--mut)}
+#p-chart .tv-prow[aria-pressed="true"] .tv-eye{color:var(--ac)}
+#p-chart .tv-body{display:flex;align-items:stretch;min-height:0}
 #p-chart .tv-tools{display:flex;flex-direction:column;gap:2px;padding:6px 4px;border-right:1px solid var(--bd);flex:none}
 #p-chart .tv-tool{width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;border:0;background:transparent;color:var(--mut);border-radius:8px;cursor:pointer;padding:0}
 #p-chart .tv-tool:hover{color:var(--tx);background:var(--sf2)}
 #p-chart .tv-tool.on{background:var(--ac);color:var(--acx)}
+#p-chart .tv-tool[disabled]{opacity:.35;cursor:default}
+#p-chart .tv-tool[disabled]:hover{color:var(--mut);background:transparent}
 #p-chart .tv-tsep{height:1px;background:var(--bd);margin:5px 4px}
 #p-chart .tv-main{flex:1;min-width:0;display:flex;flex-direction:column}
 #p-chart .tv-wrap{position:relative;min-width:0}
 #p-chart .tv-chart{height:430px}
+#p-chart .tv-stage:fullscreen .tv-chart{height:calc(100vh - 190px)}
+#p-chart .tv-wrap.tv-cross{cursor:crosshair}
 #p-chart .tv-draw{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;display:block}
 #p-chart .tv-wrap.tv-drawing .tv-draw{pointer-events:auto;cursor:crosshair;touch-action:none}
 #p-chart .tv-ln{stroke:var(--dn);stroke-width:1.6}
@@ -2497,26 +2517,39 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #p-chart .tv-hd{fill:#f0a832;stroke:var(--sf);stroke-width:1.5}
 #p-chart .tv-fibb{fill:var(--dn);opacity:.05}
 #p-chart .tv-fibb2{fill:var(--dn);opacity:.11}
+#p-chart .tv-rect{fill:var(--dn);opacity:.09}
+#p-chart .tv-rectln{stroke:var(--dn);stroke-width:1.2;fill:none}
+#p-chart .tv-meas{fill:#4a7dd4;opacity:.12}
+#p-chart .tv-measln{stroke:#4a7dd4;stroke-width:1.2;fill:none}
 #p-chart .tv-lb{fill:var(--tx);font-size:11px;font-weight:700;paint-order:stroke;stroke:var(--sf);stroke-width:3px}
 #p-chart .tv-lg{position:absolute;top:8px;left:10px;z-index:3;font-size:12px;font-weight:600;color:var(--mut);pointer-events:none;line-height:1.5;max-width:calc(100% - 76px)}
 #p-chart .tv-lg b{color:var(--tx);font-weight:800}
 #p-chart .tv-lg .tv-up,#p-chart .tv-lg .tv-dn{font-weight:800}
+#p-chart .tv-lg .tv-iv{display:inline-block;margin-left:7px;font-weight:700}
 #p-chart .tv-msg{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;background:var(--sf);background:color-mix(in srgb,var(--sf) 88%,transparent);color:var(--mut);font-size:13.5px;font-weight:600;text-align:center;padding:20px}
 #p-chart .tv-msg[hidden]{display:none}
 #p-chart .tv-msg button{border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:999px;padding:7px 16px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
-#p-chart .tv-rsiwrap{position:relative;border-top:1px solid var(--bd)}
-#p-chart .tv-rsiwrap[hidden]{display:none}
-#p-chart .tv-rsi{height:92px}
-#p-chart .tv-rsi-lb{position:absolute;top:6px;left:10px;z-index:3;font-size:11px;font-weight:700;color:var(--mut);pointer-events:none}
+#p-chart .tv-textbox{position:absolute;z-index:6;display:flex;gap:6px;align-items:center;background:var(--sf);border:1px solid var(--bd);border-radius:9px;padding:6px;box-shadow:0 8px 22px rgba(0,0,0,.3)}
+#p-chart .tv-textbox[hidden]{display:none}
+#p-chart .tv-textbox input{width:150px;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:7px;padding:6px 8px;font:inherit;font-size:13px}
+#p-chart .tv-textbox button{border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:7px;padding:6px 10px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+#p-chart .tv-pane{position:relative;border-top:1px solid var(--bd)}
+#p-chart .tv-pane[hidden]{display:none}
+#p-chart .tv-pane .tv-pchart{height:92px}
+#p-chart .tv-pane-lb{position:absolute;top:6px;left:10px;z-index:3;font-size:11px;font-weight:700;color:var(--mut);pointer-events:none}
+#p-chart .tv-pane-lb b{color:var(--tx)}
+#p-chart .tv-botbar{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:5px 8px;border-top:1px solid var(--bd)}
+#p-chart .tv-botbar .pair button{min-height:26px;padding:2px 9px;font-size:12px}
+#p-chart .tv-clock{margin-left:auto;font-size:12px;font-weight:600;color:var(--mut);white-space:nowrap}
 #p-chart .tv-hint{font-size:12px;color:var(--mut);margin:8px 0 0;line-height:1.55}
 #p-chart .tv-src{font-size:12px;color:var(--mut);margin:14px 0 0;text-align:right}
 @media(max-width:720px){
 #p-chart .tv-chart{height:300px}
-#p-chart .tv-stage{flex-direction:column}
-#p-chart .tv-tools{flex-direction:row;border-right:0;border-bottom:1px solid var(--bd);padding:4px 6px}
+#p-chart .tv-body{flex-direction:column}
+#p-chart .tv-tools{flex-direction:row;flex-wrap:wrap;border-right:0;border-bottom:1px solid var(--bd);padding:4px 6px}
 #p-chart .tv-tsep{width:1px;height:auto;margin:4px 5px}
-#p-chart .tv-price b{font-size:20px}
-#p-chart .tv-live{margin-left:0}
+#p-chart .tv-live{display:none}
+#p-chart .tv-panel{left:4px;right:4px;width:auto}
 }
 </style>
 </head>
@@ -2913,7 +2946,79 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 <div class="cxview dvview" id="dvview" hidden><div class="dvpage"><button type="button" class="dv-back" id="dv-back"><span aria-hidden="true">←</span><span>암호화폐</span></button><h2 class="dvpage-ti">변동성지수 전체 차트</h2><div class="pair" role="group" aria-label="기간 선택"><button type="button" data-dvdays="1" aria-pressed="false">1일</button><button type="button" data-dvdays="7" aria-pressed="false">7일</button><button type="button" data-dvdays="30" aria-pressed="false">30일</button><button type="button" data-dvdays="90" aria-pressed="true">90일</button><button type="button" data-dvdays="180" aria-pressed="false">180일</button><button type="button" data-dvdays="365" aria-pressed="false">1년</button><button type="button" data-dvdays="0" aria-pressed="false">전체</button></div><div class="dv-legend" role="group" aria-label="차트 켜기·끄기"><button type="button" class="dv-lg" data-dvkey="btc" aria-pressed="true"><span class="dv-sw dv-sw1" aria-hidden="true"></span><span class="dv-lg-t">BTC DVOL</span><b class="dv-lg-v" id="dvc-btc-v">—</b><span class="dv-lg-c" id="dvc-btc-c"></span></button><button type="button" class="dv-lg" data-dvkey="eth" aria-pressed="true"><span class="dv-sw dv-sw2" aria-hidden="true"></span><span class="dv-lg-t">ETH DVOL</span><b class="dv-lg-v" id="dvc-eth-v">—</b><span class="dv-lg-c" id="dvc-eth-c"></span></button><button type="button" class="dv-lg" data-dvkey="cvi" aria-pressed="true"><span class="dv-sw dv-sw3" aria-hidden="true"></span><span class="dv-lg-t">CVI · 종합</span><b class="dv-lg-v" id="dvc-cvi-v">—</b><span class="dv-lg-c" id="dvc-cvi-c"></span></button></div><div class="dv-chart" id="dvc-all"></div><p class="dv-src"><span>출처: Deribit</span> · <span>CVI는 BTC·ETH 시총 가중 종합값</span></p></div></div>
 <div class="cxview scview" id="scview" hidden><div class="dvpage"><button type="button" class="dv-back" id="sc-back"><span aria-hidden="true">←</span><span>암호화폐</span></button><h2 class="dvpage-ti">스테이블코인 전체 차트</h2><div class="scbox"><div class="sc-ctl"><div class="pair" role="group" aria-label="코인 선택"><button type="button" data-scs="total" aria-pressed="true">합계</button><button type="button" data-scs="usdt" aria-pressed="false">USDT</button><button type="button" data-scs="usdc" aria-pressed="false">USDC</button></div><div class="pair sc-days" id="sc-days" role="group" aria-label="기간 선택"><button type="button" data-scd="0" data-scall aria-pressed="false" aria-expanded="false">전체<span class="sc-arr" aria-hidden="true">▾</span></button><button type="button" data-scd="7" aria-pressed="false" hidden>7일</button><button type="button" data-scd="30" aria-pressed="true" hidden>30일</button><button type="button" data-scd="90" aria-pressed="false" hidden>90일</button><button type="button" data-scd="180" aria-pressed="false" hidden>180일</button><button type="button" data-scd="365" aria-pressed="false" hidden>1년</button></div><div class="pair sc-mode" role="group" aria-label="차트 종류"><button type="button" data-scm="chg" aria-pressed="true">순증감</button><button type="button" data-scm="sup" aria-pressed="false">공급량</button></div></div><p class="sc-leg" id="sc-leg-bar"><b class="sc-pos">+ 순발행(자금 유입)</b> · <b class="sc-neg">− 순상환(자금 유출)</b></p><p class="sc-leg" id="sc-leg-line" hidden><span>공급량이 늘면 자금 유입</span> · <span>줄면 자금 유출</span></p><p class="sc-pchg" id="sc-pchg" hidden></p><div class="sc-chart" id="sc-chart"><div class="sc-load2">불러오는 중…</div><div class="sc-tip" id="sc-tip" hidden></div></div><p class="sc-agg" id="sc-agg" hidden>1년은 주별 합산 · 전체는 월별 합산</p><p class="sc-src">출처: DefiLlama<span id="sc-src-base"> · 2026-11-19 기준</span></p></div></div></div>
 </section>
-<section id="p-chart" hidden><div class="tv-top"><div class="pair" role="group" aria-label="종목 선택"><button type="button" data-tvsym="BTC" aria-pressed="true">비트코인</button><button type="button" data-tvsym="ETH" aria-pressed="false">이더리움</button></div><div class="pair" role="group" aria-label="봉 간격"><button type="button" data-tvint="1m" aria-pressed="false">1분</button><button type="button" data-tvint="5m" aria-pressed="false">5분</button><button type="button" data-tvint="15m" aria-pressed="true">15분</button><button type="button" data-tvint="1h" aria-pressed="false">1시간</button><button type="button" data-tvint="4h" aria-pressed="false">4시간</button><button type="button" data-tvint="1d" aria-pressed="false">일봉</button></div><div class="pair" role="group" aria-label="지표"><button type="button" data-tvma="5" aria-pressed="false">MA5</button><button type="button" data-tvma="20" aria-pressed="true">MA20</button><button type="button" data-tvma="60" aria-pressed="false">MA60</button><button type="button" data-tvbb aria-pressed="false">볼린저</button><button type="button" data-tvrsi aria-pressed="false">RSI</button><button type="button" data-tvvol aria-pressed="true">거래량</button></div><span class="tv-live"><span class="tv-dot" aria-hidden="true"></span>실시간 · Binance 현물</span></div><div class="tv-price"><span class="tv-symnm" id="tv-symnm">비트코인 · BTC/USDT</span><b id="tv-p">—</b><span class="tv-pc" id="tv-c"></span><span class="tv-hl" id="tv-hl"></span></div><div class="tv-stage"><div class="tv-tools" role="group" aria-label="그리기 도구"><button type="button" class="tv-tool on" data-tvtool="cursor" aria-pressed="true" title="이동·선택" aria-label="이동·선택"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 3.5 18.5 12 11.8 13.4 9.3 20.5Z" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></button><button type="button" class="tv-tool" data-tvtool="trend" aria-pressed="false" title="추세선" aria-label="추세선"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="5" cy="19" r="2.4" fill="currentColor"/><circle cx="19" cy="5" r="2.4" fill="currentColor"/></svg></button><button type="button" class="tv-tool" data-tvtool="hline" aria-pressed="false" title="수평선" aria-label="수평선"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 5v3M12 16v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button><button type="button" class="tv-tool" data-tvtool="fib" aria-pressed="false" title="피보나치 되돌림" aria-label="피보나치 되돌림"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16M4 9.3h16M4 14.6h16M4 20h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5 19 19 5" stroke="currentColor" stroke-width="1.3" stroke-dasharray="3 2.4" stroke-linecap="round"/></svg></button><span class="tv-tsep" aria-hidden="true"></span><button type="button" class="tv-tool" id="tv-del" title="그린 선 지우기" aria-label="그린 선 지우기"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6.5h16M9.5 6V4.5A1.5 1.5 0 0 1 11 3h2a1.5 1.5 0 0 1 1.5 1.5V6M6.5 6.5 7.4 19a1.5 1.5 0 0 0 1.5 1.4h6.2A1.5 1.5 0 0 0 16.6 19L17.5 6.5M10 10.5v6M14 10.5v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="tv-main"><div class="tv-wrap" id="tv-wrap"><div class="tv-chart" id="tv-chart"></div><svg class="tv-draw" id="tv-draw" aria-hidden="true"></svg><div class="tv-lg" id="tv-lg"></div><div class="tv-msg" id="tv-msg" hidden></div></div><div class="tv-rsiwrap" id="tv-rsiwrap" hidden><span class="tv-rsi-lb">RSI · 14</span><div class="tv-rsi" id="tv-rsi"></div></div></div></div><p class="tv-hint" id="tv-hint"></p><p class="tv-src">출처: Binance 현물 · 실시간 웹소켓 — 시범 버전이라 비트코인·이더리움만 있어요</p></section>
+<section id="p-chart" hidden>
+<div class="tv-stage" id="tv-stage">
+<div class="tv-bar">
+<div class="pair" role="group" aria-label="종목 선택"><button type="button" data-tvsym="BTC" aria-pressed="true">비트코인</button><button type="button" data-tvsym="ETH" aria-pressed="false">이더리움</button></div>
+<span class="tv-sep" aria-hidden="true"></span>
+<div class="pair" role="group" aria-label="봉 간격"><button type="button" data-tvint="1m" aria-pressed="false">1분</button><button type="button" data-tvint="5m" aria-pressed="false">5분</button><button type="button" data-tvint="15m" aria-pressed="true">15분</button><button type="button" data-tvint="30m" aria-pressed="false">30분</button><button type="button" data-tvint="1h" aria-pressed="false">1시간</button><button type="button" data-tvint="4h" aria-pressed="false">4시간</button><button type="button" data-tvint="1d" aria-pressed="false">일봉</button><button type="button" data-tvint="1w" aria-pressed="false">주봉</button></div>
+<span class="tv-sep" aria-hidden="true"></span>
+<div class="pair" role="group" aria-label="차트 종류"><button type="button" data-tvct="candle" aria-pressed="true">캔들</button><button type="button" data-tvct="bar" aria-pressed="false">바</button><button type="button" data-tvct="line" aria-pressed="false">선</button><button type="button" data-tvct="area" aria-pressed="false">영역</button><button type="button" data-tvct="ha" aria-pressed="false">하이킨아시</button></div>
+<span class="tv-sep" aria-hidden="true"></span>
+<button type="button" class="tv-barbtn" id="tv-indbtn" aria-pressed="false" aria-haspopup="true">지표</button>
+<button type="button" class="tv-barbtn" id="tv-setbtn" aria-pressed="false" aria-haspopup="true">설정</button>
+<span class="tv-lp"><b id="tv-tp">—</b><span id="tv-tc"></span></span>
+<span class="tv-live"><span class="tv-dot" aria-hidden="true"></span>실시간 · Binance 현물</span>
+<button type="button" class="tv-iconbtn" id="tv-fsbtn" title="전체 화면" aria-label="전체 화면"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<div class="tv-panel" id="tv-indpanel" hidden>
+<h3>가격 지표</h3>
+<button type="button" class="tv-prow" data-ind="ma5" aria-pressed="false">이동평균 5<span class="tv-eye">숨김</span></button>
+<button type="button" class="tv-prow" data-ind="ma20" aria-pressed="true">이동평균 20<span class="tv-eye">표시 중</span></button>
+<button type="button" class="tv-prow" data-ind="ma60" aria-pressed="false">이동평균 60<span class="tv-eye">숨김</span></button>
+<button type="button" class="tv-prow" data-ind="ema20" aria-pressed="false">지수이동평균 20<span class="tv-eye">숨김</span></button>
+<button type="button" class="tv-prow" data-ind="bb" aria-pressed="false">볼린저밴드 (20, 2)<span class="tv-eye">숨김</span></button>
+<button type="button" class="tv-prow" data-ind="vwap" aria-pressed="false">VWAP (당일)<span class="tv-eye">숨김</span></button>
+<h3>보조 지표 창</h3>
+<button type="button" class="tv-prow" data-ind="rsi" aria-pressed="false">RSI (14)<span class="tv-eye">숨김</span></button>
+<button type="button" class="tv-prow" data-ind="macd" aria-pressed="false">MACD (12, 26, 9)<span class="tv-eye">숨김</span></button>
+<button type="button" class="tv-prow" data-ind="stoch" aria-pressed="false">스토캐스틱 (14, 3)<span class="tv-eye">숨김</span></button>
+<h3>기타</h3>
+<button type="button" class="tv-prow" data-ind="vol" aria-pressed="true">거래량<span class="tv-eye">표시 중</span></button>
+</div>
+<div class="tv-panel" id="tv-setpanel" hidden>
+<h3>차트 설정</h3>
+<button type="button" class="tv-prow" data-set="grid" aria-pressed="true">격자<span class="tv-eye">표시 중</span></button>
+<button type="button" class="tv-prow" data-set="pline" aria-pressed="true">현재가 선<span class="tv-eye">표시 중</span></button>
+<button type="button" class="tv-prow" data-set="magnet" aria-pressed="false">자석 모드 (선 긋기 시 시고저종에 붙음)<span class="tv-eye">숨김</span></button>
+</div>
+</div>
+<div class="tv-body">
+<div class="tv-tools" role="group" aria-label="그리기 도구">
+<button type="button" class="tv-tool on" data-tvtool="cursor" aria-pressed="true" title="커서 (이동·선택)" aria-label="커서"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 3.5 18.5 12 11.8 13.4 9.3 20.5Z" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></button>
+<button type="button" class="tv-tool" data-tvtool="cross" aria-pressed="false" title="십자 커서" aria-label="십자 커서"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.5"/></svg></button>
+<span class="tv-tsep" aria-hidden="true"></span>
+<button type="button" class="tv-tool" data-tvtool="trend" aria-pressed="false" title="추세선" aria-label="추세선"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="5" cy="19" r="2.4" fill="currentColor"/><circle cx="19" cy="5" r="2.4" fill="currentColor"/></svg></button>
+<button type="button" class="tv-tool" data-tvtool="ray" aria-pressed="false" title="광선 (추세선 연장)" aria-label="광선"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M14.5 4h5.5v5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5" cy="19" r="2.4" fill="currentColor"/></svg></button>
+<button type="button" class="tv-tool" data-tvtool="hline" aria-pressed="false" title="수평선" aria-label="수평선"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 5v3M12 16v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<button type="button" class="tv-tool" data-tvtool="vline" aria-pressed="false" title="수직선" aria-label="수직선"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 12h3M16 12h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<button type="button" class="tv-tool" data-tvtool="fib" aria-pressed="false" title="피보나치 되돌림" aria-label="피보나치 되돌림"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16M4 9.3h16M4 14.6h16M4 20h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5 19 19 5" stroke="currentColor" stroke-width="1.3" stroke-dasharray="3 2.4" stroke-linecap="round"/></svg></button>
+<button type="button" class="tv-tool" data-tvtool="rect" aria-pressed="false" title="사각형" aria-label="사각형"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="6" width="16" height="12" stroke="currentColor" stroke-width="1.7"/></svg></button>
+<button type="button" class="tv-tool" data-tvtool="measure" aria-pressed="false" title="측정 (거리·등락률)" aria-label="측정"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 17 17 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M7 13.5 9 15.5M10.5 10 12.5 12M14 6.5 16 8.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="4" cy="17" r="2.2" fill="currentColor"/><circle cx="17" cy="4" r="2.2" fill="currentColor"/></svg></button>
+<button type="button" class="tv-tool" data-tvtool="text" aria-pressed="false" title="텍스트" aria-label="텍스트"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 5.5h14M12 5.5V19" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+<button type="button" class="tv-tool" data-tvtool="eraser" aria-pressed="false" title="지우개 (눌러서 선 하나 지우기)" aria-label="지우개"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.5 19.5h12M5 15.5 14.8 5.7a1.8 1.8 0 0 1 2.5 0l1.6 1.6a1.8 1.8 0 0 1 0 2.5L11 17.7a2 2 0 0 1-1.4.6H7.2a2 2 0 0 1-1.4-.6L5 16.9a1.7 1.7 0 0 1 0-1.4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+<span class="tv-tsep" aria-hidden="true"></span>
+<button type="button" class="tv-tool" id="tv-magnet" aria-pressed="false" title="자석 모드" aria-label="자석 모드"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 4v7a6 6 0 0 0 12 0V4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6 4h4v4H6zM14 4h4v4h-4z" fill="currentColor"/></svg></button>
+<button type="button" class="tv-tool" id="tv-undo" title="실행 취소 (Ctrl+Z)" aria-label="실행 취소" disabled><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.5 6 4.5 10l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 10H14a5.5 5.5 0 0 1 0 11h-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<button type="button" class="tv-tool" id="tv-redo" title="다시 실행 (Ctrl+Shift+Z)" aria-label="다시 실행" disabled><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15.5 6 4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M19.5 10H10a5.5 5.5 0 0 0 0 11h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<span class="tv-tsep" aria-hidden="true"></span>
+<button type="button" class="tv-tool" id="tv-del" title="선택한 선 지우기 · 두 번 누르면 전부 지우기" aria-label="그린 선 지우기"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6.5h16M9.5 6V4.5A1.5 1.5 0 0 1 11 3h2a1.5 1.5 0 0 1 1.5 1.5V6M6.5 6.5 7.4 19a1.5 1.5 0 0 0 1.5 1.4h6.2A1.5 1.5 0 0 0 16.6 19L17.5 6.5M10 10.5v6M14 10.5v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+</div>
+<div class="tv-main">
+<div class="tv-wrap" id="tv-wrap"><div class="tv-chart" id="tv-chart"></div><svg class="tv-draw" id="tv-draw" aria-hidden="true"></svg><div class="tv-lg" id="tv-lg"></div><div class="tv-msg" id="tv-msg" hidden></div><div class="tv-textbox" id="tv-textbox" hidden><input type="text" id="tv-textin" maxlength="40" placeholder="텍스트 입력" aria-label="차트에 넣을 텍스트"><button type="button" id="tv-textok">넣기</button><button type="button" id="tv-textno">취소</button></div></div>
+<div class="tv-pane" id="tv-pane-rsi" hidden><span class="tv-pane-lb">RSI · 14 · <b id="tv-rsi-v">—</b></span><div class="tv-pchart" id="tv-rsi"></div></div>
+<div class="tv-pane" id="tv-pane-macd" hidden><span class="tv-pane-lb">MACD · 12 · 26 · 9 · <b id="tv-macd-v">—</b></span><div class="tv-pchart" id="tv-macd"></div></div>
+<div class="tv-pane" id="tv-pane-stoch" hidden><span class="tv-pane-lb">스토캐스틱 · 14 · 3 · <b id="tv-stoch-v">—</b></span><div class="tv-pchart" id="tv-stoch"></div></div>
+<div class="tv-botbar">
+<div class="pair" role="group" aria-label="기간"><button type="button" data-tvr="86400">1일</button><button type="button" data-tvr="432000">5일</button><button type="button" data-tvr="2592000">1개월</button><button type="button" data-tvr="7776000">3개월</button><button type="button" data-tvr="15552000">6개월</button><button type="button" data-tvr="31536000">1년</button><button type="button" data-tvr="all">전체</button></div>
+<span class="tv-clock" id="tv-clock"></span>
+<div class="pair" role="group" aria-label="가격축 방식"><button type="button" data-tvscale="0" aria-pressed="true">기본</button><button type="button" data-tvscale="2" aria-pressed="false">%</button><button type="button" data-tvscale="1" aria-pressed="false">로그</button></div>
+</div>
+</div>
+</div>
+</div>
+<p class="tv-hint" id="tv-hint"></p>
+<p class="tv-src">출처: Binance 현물 · 실시간 웹소켓 — 시범 버전이라 비트코인·이더리움만 있어요</p>
+</section>
 <script>
 /* ===== 암호화폐 카테고리 화면 전환 (사용자 지시) =====
    상단 작은 칸(국내거래소·주식·에어드랍·밈·DEX·LP)을 누르면 코인 타일 띠와
@@ -4210,49 +4315,59 @@ syncFromHash();
 <script>
 /* ===== 차트 탭: 코인 차트 (트레이딩뷰 방식 · 시범: 비트코인·이더리움) =====
    헤더 탭 줄 해외지표 오른쪽 '차트' 탭이 여는 전용 페이지(#p-chart,
-   주소 #/chart). 구조는 트레이딩뷰와 같다: 위쪽 바에 종목·봉 간격·
-   지표 토글, 왼쪽 세로 막대에 그리기 도구, 차트 왼쪽 위에 시고저종
-   범례, 차트 아래 거래량, RSI는 아래 별도 창. 차트 엔진은 비교 탭과
-   같은 TradingView Lightweight Charts(공개 라이브러리)를 쓰고, 캔들은
-   바이낸스 현물 공개 API(키 없음)로 받아 웹소켓으로 실시간 갱신한다
-   (막히면 몇 초 간격 조회로 대체). 지표는 캔들로 직접 계산한다 —
-   이동평균(5·20·60), 볼린저밴드(20, 2σ), RSI(14, Wilder), 거래량.
-   그리기: 추세선·피보나치는 두 점, 수평선은 한 점을 눌러 긋는다.
-   선은 시간·가격 좌표로 기억해 확대·이동해도 자리를 지키고, 종목별로
-   따로 남는다(이 시범에서는 페이지를 떠나면 사라진다).
-   페이지가 열릴 때만 차트를 만들고 실시간 연결을 붙이고, 다른 탭으로
-   나가면 연결을 끊는다 */
+   주소 #/chart). 구조와 기능을 트레이딩뷰에 맞췄다: 차트 칸 맨 위 한 줄
+   바에 종목·봉 간격·차트 종류(캔들·바·선·영역·하이킨아시)·지표 패널·
+   설정·전체화면, 왼쪽 세로 막대에 그리기 도구(커서·십자·추세선·광선·
+   수평선·수직선·피보나치·사각형·측정·텍스트·지우개)와 자석·실행취소·
+   다시실행·휴지통, 차트 왼쪽 위에 시고저종+지표값 범례, 아래쪽 기간
+   바(1일~전체)와 가격축 방식(기본·%·로그), RSI·MACD·스토캐스틱은
+   아래 별도 창. 왼쪽 끝까지 스크롤하면 옛 캔들을 더 불러온다.
+   그리기 도구는 한 번 그으면 자동으로 커서(화살표) 도구로 돌아간다 —
+   트레이딩뷰와 같은 동작이다.
+   렉 방지: 실시간 틱은 0.18초에 한 번으로 모아 반영하고, 지표는 전체를
+   다시 그리지 않고 마지막 점만 갱신(update)한다. 선 다시그리기와
+   범례 갱신도 화면 프레임 단위로 합쳐서 처리한다.
+   차트 엔진은 TradingView Lightweight Charts(공개 라이브러리), 캔들은
+   바이낸스 현물 공개 API(키 없음) + 웹소켓 실시간(막히면 조회로 대체).
+   선은 시간·가격 좌표로 기억해 확대·이동해도 자리를 지키고 종목별로
+   따로 남는다(이 시범에서는 페이지를 떠나면 사라진다) */
 (function(){
 var sec=document.getElementById("p-chart");if(!sec)return;
 var SYMS={BTC:{pair:"BTCUSDT",nm:"비트코인"},ETH:{pair:"ETHUSDT",nm:"이더리움"}};
-var IVS={"1m":60,"5m":300,"15m":900,"1h":3600,"4h":14400,"1d":86400};
-var IVL={"1m":"1분","5m":"5분","15m":"15분","1h":"1시간","4h":"4시간","1d":"일봉"};
+var IVS={"1m":60,"5m":300,"15m":900,"30m":1800,"1h":3600,"4h":14400,"1d":86400,"1w":604800};
+var IVL={"1m":"1분","5m":"5분","15m":"15분","30m":"30분","1h":"1시간","4h":"4시간","1d":"일봉","1w":"주봉"};
 var HOSTS=["https://data-api.binance.vision","https://api.binance.com"];
 var WSH=["wss://data-stream.binance.vision","wss://stream.binance.com:9443"];
 var FIBL=[0,0.236,0.382,0.5,0.618,0.786,1];
-var sym="BTC",intv="15m",tool="cursor",tvOpen=false;
-var chart=null,rsiChart=null,cSer=null,vSer=null,rsiSer=null,maSer={},bbSer=null;
-var data=[],dayStat={},loadTok=0,ws=null,wsTry=0,pollT=null,reconT=null,lastIndUpd=0;
-var ind={ma:{5:false,20:true,60:false},bb:false,rsi:false,vol:true};
-var draws={BTC:[],ETH:[]},sel=-1,pend=null,mouseP=null;
+var sym="BTC",intv="15m",tool="cursor",ctype="candle",tvOpen=false,magnet=false;
+var chart=null,cSer=null,barSer=null,lineSer=null,areaSer=null,haSer=null,vSer=null,maSer={},emaSer=null,bbSer=null,vwapSer=null;
+var panes={},paneSync=false;
+var data=[],dayStat={},loadTok=0,ws=null,wsTry=0,pollT=null,reconT=null,noMore=false,loadingMore=false;
+var ind={ma5:false,ma20:true,ma60:false,ema20:false,bb:false,vwap:false,rsi:false,macd:false,stoch:false,vol:true};
+var setOpt={grid:true,pline:true};
+var cache={ma:{},ema:null,bb:null,vwap:null,rsi:null,macd:null,stoch:null,ha:null};
+var draws={BTC:[],ETH:[]},sel=-1,pend=null,mouseP=null,undoSt=[],redoSt=[];
+var pendBar=null,flushT=null,drawRaf=0,lgRaf=0,lgParam=null,clockT=null,textPend=null;
 function G(id){return document.getElementById(id)}
-var wrap=G("tv-wrap"),chartEl=G("tv-chart"),svg=G("tv-draw"),lgEl=G("tv-lg"),msgEl=G("tv-msg"),hintEl=G("tv-hint");
+var wrap=G("tv-wrap"),chartEl=G("tv-chart"),svg=G("tv-draw"),lgEl=G("tv-lg"),msgEl=G("tv-msg"),hintEl=G("tv-hint"),stageEl=G("tv-stage");
 function th(){var cs=getComputedStyle(document.documentElement);function v(n){return cs.getPropertyValue(n).trim()}return{bg:v("--bg")||"#0b0d10",sf:v("--sf"),mut:v("--mut"),bd:v("--bd"),up:v("--up")||"#d02a38",dn:v("--dn")||"#1668c4",tx:v("--tx")}}
 function hexA(hex,a){var m=/^#([0-9a-f]{6})$/i.exec(hex||"");if(!m)return hex;var n=parseInt(m[1],16);return "rgba("+((n>>16)&255)+","+((n>>8)&255)+","+(n&255)+","+a+")"}
 function fmtP(v){if(v==null||!isFinite(v))return "—";return "$"+Number(v).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
 function fmtCh(v){if(v==null||!isFinite(v))return"";return (v>=0?"+":"")+v.toFixed(2)+"%"}
+function fmtT(t){var d=new Date(t*1000);function z(n){return (n<10?"0":"")+n}return (d.getMonth()+1)+"월 "+d.getDate()+"일 "+z(d.getHours())+":"+z(d.getMinutes())}
 function loadLwc2(cb){
 if(window.LightweightCharts){cb(true);return}
 if(typeof window.loadLwc==="function"){window.loadLwc(cb);return}
 var s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/dist/lightweight-charts.standalone.production.js";s.async=true;
 s.onload=function(){cb(!!window.LightweightCharts)};s.onerror=function(){cb(false)};document.head.appendChild(s);
 }
-function addSer(ch,type,opts){if(typeof ch.addSeries==="function"&&window.LightweightCharts[type])return ch.addSeries(window.LightweightCharts[type],opts);var m={CandlestickSeries:"addCandlestickSeries",LineSeries:"addLineSeries",HistogramSeries:"addHistogramSeries"}[type];return ch[m](opts)}
-function fetchK(pair,iv,limit,hi){
-return fetch(HOSTS[hi]+"/api/v3/klines?symbol="+pair+"&interval="+iv+"&limit="+limit).then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
-if(!Array.isArray(j)||!j.length)throw new Error("empty");
+function addSer(ch,type,opts){if(typeof ch.addSeries==="function"&&window.LightweightCharts[type])return ch.addSeries(window.LightweightCharts[type],opts);var m={CandlestickSeries:"addCandlestickSeries",BarSeries:"addBarSeries",LineSeries:"addLineSeries",AreaSeries:"addAreaSeries",HistogramSeries:"addHistogramSeries"}[type];return ch[m](opts)}
+function fetchK(pair,iv,limit,hi,endTime){
+var u=HOSTS[hi]+"/api/v3/klines?symbol="+pair+"&interval="+iv+"&limit="+limit+(endTime?"&endTime="+endTime:"");
+return fetch(u).then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){
+if(!Array.isArray(j))throw new Error("bad");
 return j.map(function(k){return{time:Math.floor(+k[0]/1000),open:+k[1],high:+k[2],low:+k[3],close:+k[4],vol:+k[5]}});
-}).catch(function(e){if(hi+1<HOSTS.length)return fetchK(pair,iv,limit,hi+1);throw e});
+}).catch(function(e){if(hi+1<HOSTS.length)return fetchK(pair,iv,limit,hi+1,endTime);throw e});
 }
 function msg(txt,retry){
 if(!msgEl)return;
@@ -4262,64 +4377,164 @@ msgEl.hidden=false;
 }
 if(msgEl)msgEl.addEventListener("click",function(e){if(e.target&&e.target.className==="tv-retry"){if(chart)loadData();else boot()}});
 /* ---------- 차트 만들기 ---------- */
+function baseOpts(t){return{autoSize:true,layout:{background:{type:"solid",color:t.bg},textColor:t.mut,fontSize:11},grid:{vertLines:{color:t.bd,visible:setOpt.grid},horzLines:{color:t.bd,visible:setOpt.grid}},rightPriceScale:{borderColor:t.bd},crosshair:{vertLine:{labelBackgroundColor:t.mut},horzLine:{labelBackgroundColor:t.mut}},handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:true},handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:{time:true,price:true},axisDoubleClickReset:{time:true,price:true}},kineticScroll:{touch:true,mouse:false}}}
 function buildCharts(){
 var t=th();
-function baseOpts(){return{autoSize:true,layout:{background:{type:"solid",color:t.bg},textColor:t.mut,fontSize:11},grid:{vertLines:{color:t.bd},horzLines:{color:t.bd}},rightPriceScale:{borderColor:t.bd},crosshair:{vertLine:{labelBackgroundColor:t.mut},horzLine:{labelBackgroundColor:t.mut}},handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:true},handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:{time:true,price:true},axisDoubleClickReset:{time:true,price:true}},kineticScroll:{touch:true,mouse:false}}}
-var o1=baseOpts();o1.timeScale={borderColor:t.bd,timeVisible:intv!=="1d",secondsVisible:false};
+var o1=baseOpts(t);o1.timeScale={borderColor:t.bd,timeVisible:intv!=="1d"&&intv!=="1w",secondsVisible:false};
 chart=LightweightCharts.createChart(chartEl,o1);
-cSer=addSer(chart,"CandlestickSeries",{upColor:t.up,downColor:t.dn,borderUpColor:t.up,borderDownColor:t.dn,wickUpColor:t.up,wickDownColor:t.dn,priceFormat:{type:"price",precision:2,minMove:0.01}});
+var pf={type:"price",precision:2,minMove:0.01};
+cSer=addSer(chart,"CandlestickSeries",{upColor:t.up,downColor:t.dn,borderUpColor:t.up,borderDownColor:t.dn,wickUpColor:t.up,wickDownColor:t.dn,priceFormat:pf});
+barSer=addSer(chart,"BarSeries",{upColor:t.up,downColor:t.dn,priceFormat:pf,visible:false});
+lineSer=addSer(chart,"LineSeries",{color:"#4a7dd4",lineWidth:2,priceFormat:pf,visible:false});
+areaSer=addSer(chart,"AreaSeries",{lineColor:"#4a7dd4",lineWidth:2,topColor:hexA("#4a7dd4",0.28),bottomColor:hexA("#4a7dd4",0.02),priceFormat:pf,visible:false});
+haSer=addSer(chart,"CandlestickSeries",{upColor:t.up,downColor:t.dn,borderUpColor:t.up,borderDownColor:t.dn,wickUpColor:t.up,wickDownColor:t.dn,priceFormat:pf,visible:false});
 vSer=addSer(chart,"HistogramSeries",{priceScaleId:"tvvol",priceFormat:{type:"volume"},lastValueVisible:false,priceLineVisible:false});
-chart.priceScale("tvvol").applyOptions({scaleMargins:{top:0.84,bottom:0}});
-chart.priceScale("right").applyOptions({scaleMargins:{top:0.06,bottom:0.18}});
+applyVolScale();
 var maC={5:"#e8a33d",20:"#4a7dd4",60:"#2fbf71"};
-[5,20,60].forEach(function(n){maSer[n]=addSer(chart,"LineSeries",{color:maC[n],lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false,visible:ind.ma[n]})});
+[5,20,60].forEach(function(n){maSer[n]=addSer(chart,"LineSeries",{color:maC[n],lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false,visible:ind["ma"+n]})});
+emaSer=addSer(chart,"LineSeries",{color:"#b06ac8",lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false,visible:false});
+vwapSer=addSer(chart,"LineSeries",{color:"#d4b13c",lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false,visible:false});
 var bbC=hexA(t.dn,0.55);
 bbSer={u:addSer(chart,"LineSeries",{color:bbC,lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false,visible:false}),
 m:addSer(chart,"LineSeries",{color:bbC,lineWidth:1,lineStyle:window.LightweightCharts.LineStyle?window.LightweightCharts.LineStyle.Dashed:0,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false,visible:false}),
 l:addSer(chart,"LineSeries",{color:bbC,lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false,visible:false})};
-var o2=baseOpts();o2.timeScale={visible:false};
-rsiChart=LightweightCharts.createChart(G("tv-rsi"),o2);
-rsiSer=addSer(rsiChart,"LineSeries",{color:"#8067c5",lineWidth:1,priceLineVisible:false,lastValueVisible:true,crosshairMarkerVisible:true});
-[70,50,30].forEach(function(p){try{rsiSer.createPriceLine({price:p,color:t.mut,lineWidth:1,lineStyle:window.LightweightCharts.LineStyle?window.LightweightCharts.LineStyle.Dashed:2,axisLabelVisible:true,title:""})}catch(e){}});
-var syncing=false;
-chart.timeScale().subscribeVisibleLogicalRangeChange(function(r){if(r&&rsiChart&&!syncing){syncing=true;try{rsiChart.timeScale().setVisibleLogicalRange(r)}catch(e){}syncing=false}drawLines()});
-rsiChart.timeScale().subscribeVisibleLogicalRangeChange(function(r){if(r&&chart&&!syncing){syncing=true;try{chart.timeScale().setVisibleLogicalRange(r)}catch(e){}syncing=false}drawLines()});
+chart.timeScale().subscribeVisibleLogicalRangeChange(onRange);
 chart.subscribeCrosshairMove(onCross);
 chart.subscribeClick(onChartClick);
-if(window.ResizeObserver&&wrap)new ResizeObserver(function(){drawLines()}).observe(wrap);
+if(window.ResizeObserver&&wrap)new ResizeObserver(function(){scheduleDraw()}).observe(wrap);
 }
-/* ---------- 지표 계산 ---------- */
-function smaArr(n){var out=[],sum=0;for(var i=0;i<data.length;i++){sum+=data[i].close;if(i>=n)sum-=data[i-n].close;if(i>=n-1)out.push({time:data[i].time,value:sum/n})}return out}
-function bbArr(){var u=[],m=[],l=[],n=20;for(var i=n-1;i<data.length;i++){var s=0,j;for(j=i-n+1;j<=i;j++)s+=data[j].close;var mean=s/n,sd=0;for(j=i-n+1;j<=i;j++){var d=data[j].close-mean;sd+=d*d}sd=Math.sqrt(sd/n);u.push({time:data[i].time,value:mean+2*sd});m.push({time:data[i].time,value:mean});l.push({time:data[i].time,value:mean-2*sd})}return{u:u,m:m,l:l}}
-function rsiArr(){var out=[],n=14;if(data.length<=n)return out;var g=0,l=0,i;for(i=1;i<=n;i++){var ch=data[i].close-data[i-1].close;if(ch>0)g+=ch;else l-=ch}g/=n;l/=n;out.push({time:data[n].time,value:l===0?100:100-100/(1+g/l)});for(i=n+1;i<data.length;i++){var ch2=data[i].close-data[i-1].close;g=(g*(n-1)+Math.max(ch2,0))/n;l=(l*(n-1)+Math.max(-ch2,0))/n;out.push({time:data[i].time,value:l===0?100:100-100/(1+g/l)})}return out}
-function paintIndicators(){
+function applyVolScale(){
 if(!chart)return;
-[5,20,60].forEach(function(n){if(!maSer[n])return;maSer[n].applyOptions({visible:ind.ma[n]});if(ind.ma[n])maSer[n].setData(smaArr(n))});
-if(bbSer){["u","m","l"].forEach(function(k){bbSer[k].applyOptions({visible:ind.bb})});if(ind.bb){var bb=bbArr();bbSer.u.setData(bb.u);bbSer.m.setData(bb.m);bbSer.l.setData(bb.l)}}
-if(rsiSer)rsiSer.setData(rsiArr());
+chart.priceScale("tvvol").applyOptions({scaleMargins:{top:0.84,bottom:0}});
+chart.priceScale("right").applyOptions({scaleMargins:ind.vol?{top:0.06,bottom:0.18}:{top:0.06,bottom:0.02}});
+if(vSer)vSer.applyOptions({visible:ind.vol});
 }
-/* ---------- 데이터·실시간 ---------- */
+function mainSeries(){return ctype==="bar"?barSer:ctype==="line"?lineSer:ctype==="area"?areaSer:ctype==="ha"?haSer:cSer}
+function setMainData(){
+if(!chart)return;
+cSer.setData(data.map(toC));
+if(ctype==="bar")barSer.setData(data.map(toC));
+if(ctype==="line"||ctype==="area"){var ld=data.map(function(b){return{time:b.time,value:b.close}});(ctype==="line"?lineSer:areaSer).setData(ld)}
+if(ctype==="ha"&&cache.ha)haSer.setData(cache.ha);
+applyPline();
+}
+function applyPline(){var s=mainSeries();if(!s)return;[cSer,barSer,lineSer,areaSer,haSer].forEach(function(x){if(x)x.applyOptions({priceLineVisible:x===s&&setOpt.pline,lastValueVisible:x===s})})}
+function setChartType(ct){
+ctype=ct;
+sec.querySelectorAll("[data-tvct]").forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-tvct")===ct))});
+if(!chart)return;
+cSer.applyOptions({visible:ct==="candle"});barSer.applyOptions({visible:ct==="bar"});lineSer.applyOptions({visible:ct==="line"});areaSer.applyOptions({visible:ct==="area"});haSer.applyOptions({visible:ct==="ha"});
+setMainData();scheduleDraw();
+}
+sec.querySelectorAll("[data-tvct]").forEach(function(b){b.addEventListener("click",function(){if(b.getAttribute("data-tvct")!==ctype)setChartType(b.getAttribute("data-tvct"))})});
+/* ---------- 보조 지표 창 (RSI·MACD·스토캐스틱) ---------- */
+function ensurePane(key){
+if(panes[key]||!chart)return panes[key];
+var t=th();
+var el=G(key==="rsi"?"tv-rsi":key==="macd"?"tv-macd":"tv-stoch");
+var o=baseOpts(t);o.timeScale={visible:false};
+var ch=LightweightCharts.createChart(el,o);
+var P={chart:ch};
+if(key==="rsi"){
+P.a=addSer(ch,"LineSeries",{color:"#8067c5",lineWidth:1,priceLineVisible:false,lastValueVisible:true,crosshairMarkerVisible:true});
+[70,50,30].forEach(function(p){try{P.a.createPriceLine({price:p,color:t.mut,lineWidth:1,lineStyle:window.LightweightCharts.LineStyle?window.LightweightCharts.LineStyle.Dashed:2,axisLabelVisible:true,title:""})}catch(e){}});
+}else if(key==="macd"){
+P.h=addSer(ch,"HistogramSeries",{priceFormat:{type:"price",precision:2,minMove:0.01},lastValueVisible:false,priceLineVisible:false});
+P.a=addSer(ch,"LineSeries",{color:"#4a7dd4",lineWidth:1,priceLineVisible:false,lastValueVisible:true,crosshairMarkerVisible:false});
+P.b=addSer(ch,"LineSeries",{color:"#e8a33d",lineWidth:1,priceLineVisible:false,lastValueVisible:true,crosshairMarkerVisible:false});
+}else{
+P.a=addSer(ch,"LineSeries",{color:"#4a7dd4",lineWidth:1,priceLineVisible:false,lastValueVisible:true,crosshairMarkerVisible:true});
+P.b=addSer(ch,"LineSeries",{color:"#e8a33d",lineWidth:1,priceLineVisible:false,lastValueVisible:true,crosshairMarkerVisible:false});
+[80,20].forEach(function(p){try{P.a.createPriceLine({price:p,color:t.mut,lineWidth:1,lineStyle:window.LightweightCharts.LineStyle?window.LightweightCharts.LineStyle.Dashed:2,axisLabelVisible:true,title:""})}catch(e){}});
+}
+ch.timeScale().subscribeVisibleLogicalRangeChange(function(r){
+if(!r||paneSync)return;paneSync=true;
+try{chart.timeScale().setVisibleLogicalRange(r)}catch(e){}
+paneSync=false;
+});
+panes[key]=P;
+return P;
+}
+function syncPanes(r){
+if(paneSync||!r)return;paneSync=true;
+["rsi","macd","stoch"].forEach(function(k){var P=panes[k];if(P&&ind[k]){try{P.chart.timeScale().setVisibleLogicalRange(r)}catch(e){}}});
+paneSync=false;
+}
+function paintPane(key,full){
+var P=panes[key];if(!P||!ind[key])return;
+var t=th();
+try{
+if(key==="rsi"&&cache.rsi){if(full)P.a.setData(cache.rsi);else if(cache.rsi.length)P.a.update(cache.rsi[cache.rsi.length-1]);var lv=cache.rsi[cache.rsi.length-1];var e=G("tv-rsi-v");if(e&&lv)e.textContent=lv.value.toFixed(1)}
+if(key==="macd"&&cache.macd){if(full){P.a.setData(cache.macd.m);P.b.setData(cache.macd.s);P.h.setData(cache.macd.h.map(function(x){return{time:x.time,value:x.value,color:hexA(x.value>=0?t.up:t.dn,0.45)}}))}else{var n=cache.macd.m.length;if(n){P.a.update(cache.macd.m[n-1]);P.b.update(cache.macd.s[n-1]);var hx=cache.macd.h[n-1];P.h.update({time:hx.time,value:hx.value,color:hexA(hx.value>=0?t.up:t.dn,0.45)})}}var lm=cache.macd.m[cache.macd.m.length-1];var e2=G("tv-macd-v");if(e2&&lm)e2.textContent=lm.value.toFixed(2)}
+if(key==="stoch"&&cache.stoch){if(full){P.a.setData(cache.stoch.k);P.b.setData(cache.stoch.d)}else{var n2=cache.stoch.k.length;if(n2){P.a.update(cache.stoch.k[n2-1]);P.b.update(cache.stoch.d[n2-1])}}var lk=cache.stoch.k[cache.stoch.k.length-1];var e3=G("tv-stoch-v");if(e3&&lk)e3.textContent=lk.value.toFixed(1)}
+}catch(e){}
+}
+/* ---------- 지표 계산 (전체 계산은 로드 때만, 실시간은 마지막 점만 반영) ---------- */
+function smaArr(n){var out=[],sum=0;for(var i=0;i<data.length;i++){sum+=data[i].close;if(i>=n)sum-=data[i-n].close;if(i>=n-1)out.push({time:data[i].time,value:sum/n})}return out}
+function emaArr(n){var out=[],k=2/(n+1),e=null;for(var i=0;i<data.length;i++){e=e==null?data[i].close:data[i].close*k+e*(1-k);if(i>=n-1)out.push({time:data[i].time,value:e})}return out}
+function bbArr(){var u=[],m=[],l=[],n=20;for(var i=n-1;i<data.length;i++){var s=0,j;for(j=i-n+1;j<=i;j++)s+=data[j].close;var mean=s/n,sd=0;for(j=i-n+1;j<=i;j++){var d=data[j].close-mean;sd+=d*d}sd=Math.sqrt(sd/n);u.push({time:data[i].time,value:mean+2*sd});m.push({time:data[i].time,value:mean});l.push({time:data[i].time,value:mean-2*sd})}return{u:u,m:m,l:l}}
+function vwapArr(){var out=[],cv=0,cp=0,day=-1;for(var i=0;i<data.length;i++){var d=new Date(data[i].time*1000),dk=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();if(dk!==day){day=dk;cv=0;cp=0}var tp=(data[i].high+data[i].low+data[i].close)/3;cv+=data[i].vol;cp+=tp*data[i].vol;if(cv>0)out.push({time:data[i].time,value:cp/cv})}return out}
+function rsiArr(){var out=[],n=14;if(data.length<=n)return out;var g=0,l=0,i;for(i=1;i<=n;i++){var ch=data[i].close-data[i-1].close;if(ch>0)g+=ch;else l-=ch}g/=n;l/=n;out.push({time:data[n].time,value:l===0?100:100-100/(1+g/l)});for(i=n+1;i<data.length;i++){var ch2=data[i].close-data[i-1].close;g=(g*(n-1)+Math.max(ch2,0))/n;l=(l*(n-1)+Math.max(-ch2,0))/n;out.push({time:data[i].time,value:l===0?100:100-100/(1+g/l)})}return out}
+function emaFull(n,src){var out=[],k=2/(n+1),e=null;for(var i=0;i<src.length;i++){e=e==null?src[i]:src[i]*k+e*(1-k);out.push(e)}return out}
+function macdArr(){if(data.length<35)return{m:[],s:[],h:[]};var cl=data.map(function(b){return b.close});var e12=emaFull(12,cl),e26=emaFull(26,cl),ml=cl.map(function(_,i){return e12[i]-e26[i]});var sg=emaFull(9,ml);var m=[],s=[],h=[];for(var i=33;i<data.length;i++){m.push({time:data[i].time,value:ml[i]});s.push({time:data[i].time,value:sg[i]});h.push({time:data[i].time,value:ml[i]-sg[i]})}return{m:m,s:s,h:h}}
+function stochArr(){var kA=[],out={k:[],d:[]},n=14;for(var i=0;i<data.length;i++){if(i<n-1){kA.push(null);continue}var hi=-Infinity,lo=Infinity;for(var j=i-n+1;j<=i;j++){if(data[j].high>hi)hi=data[j].high;if(data[j].low<lo)lo=data[j].low}kA.push(hi===lo?50:(data[i].close-lo)/(hi-lo)*100)}for(var i2=0;i2<data.length;i2++){if(kA[i2]==null)continue;out.k.push({time:data[i2].time,value:kA[i2]});if(i2>=2&&kA[i2-1]!=null&&kA[i2-2]!=null)out.d.push({time:data[i2].time,value:(kA[i2]+kA[i2-1]+kA[i2-2])/3})}return out}
+function haArr(){var out=[];for(var i=0;i<data.length;i++){var b=data[i],c=(b.open+b.high+b.low+b.close)/4,o=i===0?(b.open+b.close)/2:(out[i-1].open+out[i-1].close)/2;out.push({time:b.time,open:o,high:Math.max(b.high,o,c),low:Math.min(b.low,o,c),close:c})}return out}
+function computeCache(){
+cache.ma[5]=ind.ma5?smaArr(5):cache.ma[5];cache.ma[20]=ind.ma20?smaArr(20):cache.ma[20];cache.ma[60]=ind.ma60?smaArr(60):cache.ma[60];
+if(ind.ema20)cache.ema=emaArr(20);
+if(ind.bb)cache.bb=bbArr();
+if(ind.vwap)cache.vwap=vwapArr();
+if(ind.rsi)cache.rsi=rsiArr();
+if(ind.macd)cache.macd=macdArr();
+if(ind.stoch)cache.stoch=stochArr();
+cache.ha=haArr();
+}
+function paintIndicators(full){
+if(!chart)return;
+[5,20,60].forEach(function(n){if(!maSer[n])return;var on=ind["ma"+n];maSer[n].applyOptions({visible:on});if(on&&cache.ma[n]){if(full)maSer[n].setData(cache.ma[n]);else if(cache.ma[n].length)maSer[n].update(cache.ma[n][cache.ma[n].length-1])}});
+if(emaSer){emaSer.applyOptions({visible:ind.ema20});if(ind.ema20&&cache.ema){if(full)emaSer.setData(cache.ema);else if(cache.ema.length)emaSer.update(cache.ema[cache.ema.length-1])}}
+if(vwapSer){vwapSer.applyOptions({visible:ind.vwap});if(ind.vwap&&cache.vwap){if(full)vwapSer.setData(cache.vwap);else if(cache.vwap.length)vwapSer.update(cache.vwap[cache.vwap.length-1])}}
+if(bbSer){["u","m","l"].forEach(function(k){bbSer[k].applyOptions({visible:ind.bb})});if(ind.bb&&cache.bb){if(full){bbSer.u.setData(cache.bb.u);bbSer.m.setData(cache.bb.m);bbSer.l.setData(cache.bb.l)}else if(cache.bb.u.length){bbSer.u.update(cache.bb.u[cache.bb.u.length-1]);bbSer.m.update(cache.bb.m[cache.bb.m.length-1]);bbSer.l.update(cache.bb.l[cache.bb.l.length-1])}}}
+["rsi","macd","stoch"].forEach(function(k){if(ind[k]){ensurePane(k);paintPane(k,full)}});
+}
+/* ---------- 데이터·실시간 (틱은 모아 반영해 렉을 줄인다) ---------- */
 function toC(b){return{time:b.time,open:b.open,high:b.high,low:b.low,close:b.close}}
 function toV(b){var t=th();return{time:b.time,value:b.vol,color:hexA(b.close>=b.open?t.up:t.dn,0.38)}}
 function loadData(){
 var tok=++loadTok;
 msg("불러오는 중…");
-stopLive();
+stopLive();noMore=false;
 fetchK(SYMS[sym].pair,intv,500,0).then(function(rows){
 if(tok!==loadTok)return;
 data=rows;
-cSer.setData(data.map(toC));
+computeCache();
+setMainData();
 vSer.setData(data.map(toV));
-paintIndicators();
+paintIndicators(true);
 var n=data.length;
-try{chart.timeScale().setVisibleLogicalRange({from:Math.max(0,n-120),to:n+6})}catch(e){}
+try{chart.timeScale().setVisibleLogicalRange({from:Math.max(0,n-110),to:n+6})}catch(e){}
 msg(null);
 legend(null);
 updHead();
-drawLines();
+scheduleDraw();
 startLive(tok);
 }).catch(function(){if(tok!==loadTok)return;msg("차트를 불러오지 못했어요. 연결 문제일 수 있어요.",true)});
 loadDayStat(tok);
+}
+function loadMore(){
+if(loadingMore||noMore||!data.length)return Promise.resolve(0);
+loadingMore=true;
+var first=data[0].time;
+return fetchK(SYMS[sym].pair,intv,500,0,first*1000-1).then(function(rows){
+var older=rows.filter(function(b){return b.time<first});
+if(!older.length){noMore=true;return 0}
+data=older.concat(data);
+computeCache();
+setMainData();
+vSer.setData(data.map(toV));
+paintIndicators(true);
+return older.length;
+}).catch(function(){return 0}).then(function(added){loadingMore=false;return added});
 }
 function loadDayStat(tok){
 var s2=sym;
@@ -4329,30 +4544,40 @@ if(s2===sym)updHead();
 }).catch(function(){});
 }
 function updHead(price){
-var pEl=G("tv-p"),cEl=G("tv-c"),hEl=G("tv-hl");if(!pEl)return;
+var pEl=G("tv-tp"),cEl=G("tv-tc");if(!pEl)return;
 var last=data[data.length-1];
 var cur=(price!=null)?price:(last?last.close:null);
 if(cur==null){pEl.textContent="—";return}
 pEl.textContent=fmtP(cur);
 var ds=dayStat[sym];
-if(ds&&ds.pc){
-var ch=(cur/ds.pc-1)*100;
-cEl.textContent=fmtCh(ch);cEl.className="tv-pc "+(ch>=0?"tv-up":"tv-dn");
-var hi=Math.max(ds.hi,cur),lo=Math.min(ds.lo,cur);
-hEl.textContent="오늘 고 "+fmtP(hi)+" · 저 "+fmtP(lo)+" · 전일 종가 대비";
-}else{cEl.textContent="";hEl.textContent=""}
+if(ds&&ds.pc){var ch=(cur/ds.pc-1)*100;cEl.textContent=fmtCh(ch);cEl.className=ch>=0?"tv-up":"tv-dn"}
+else cEl.textContent="";
 }
 function applyBar(b){
 if(!data.length||!cSer)return;
-var last=data[data.length-1];
-if(b.time>last.time)data.push(b);
+var last=data[data.length-1],isNew=b.time>last.time;
+if(isNew)data.push(b);
 else if(b.time===last.time)data[data.length-1]=b;
 else return;
-try{cSer.update(toC(b));vSer.update(toV(b))}catch(e){}
+try{
+var s=mainSeries();
+if(ctype==="ha"){cache.ha=haArr();s.update(cache.ha[cache.ha.length-1])}
+else if(ctype==="line"||ctype==="area")s.update({time:b.time,value:b.close});
+else s.update(toC(b));
+vSer.update(toV(b));
+}catch(e){}
+computeCache();
+paintIndicators(false);
 updHead(b.close);
-var now=Date.now();
-if(now-lastIndUpd>400){lastIndUpd=now;paintIndicators()}
-drawLines();
+scheduleDraw();
+}
+function flushPend(){
+flushT=null;
+if(pendBar){var b=pendBar;pendBar=null;applyBar(b)}
+}
+function queueBar(b){
+pendBar=b;
+if(!flushT)flushT=setTimeout(flushPend,180);
 }
 function startLive(tok){stopLive();wsTry=0;wsConnect(tok)}
 function wsConnect(tok){
@@ -4365,7 +4590,7 @@ sock.onopen=function(){opened=true;stopPoll()};
 sock.onmessage=function(ev){
 if(tok!==loadTok)return;
 try{var j=JSON.parse(ev.data),k=j&&j.k;if(!k)return;
-applyBar({time:Math.floor(k.t/1000),open:+k.o,high:+k.h,low:+k.l,close:+k.c,vol:+k.v})}catch(e){}
+queueBar({time:Math.floor(k.t/1000),open:+k.o,high:+k.h,low:+k.l,close:+k.c,vol:+k.v})}catch(e){}
 };
 sock.onerror=function(){try{sock.close()}catch(e){}};
 sock.onclose=function(){
@@ -4381,25 +4606,48 @@ function startPoll(tok){
 if(pollT)return;
 pollT=setInterval(function(){
 if(tok!==loadTok||!tvOpen){stopPoll();return}
-fetchK(SYMS[sym].pair,intv,3,0).then(function(rows){rows.forEach(applyBar)}).catch(function(){});
+fetchK(SYMS[sym].pair,intv,3,0).then(function(rows){rows.forEach(queueBar)}).catch(function(){});
 },5000);
 }
 function stopPoll(){if(pollT){clearInterval(pollT);pollT=null}}
-function stopLive(){if(ws){try{ws.close()}catch(e){}ws=null}stopPoll();if(reconT){clearTimeout(reconT);reconT=null}}
-/* ---------- 범례(시고저종) ---------- */
+function stopLive(){if(ws){try{ws.close()}catch(e){}ws=null}stopPoll();if(reconT){clearTimeout(reconT);reconT=null}if(flushT){clearTimeout(flushT);flushT=null}pendBar=null}
+/* ---------- 범례(시고저종 + 지표값) ---------- */
 function idxOfTime(t){var lo=0,hi=data.length-1;while(lo<=hi){var mid=(lo+hi)>>1;if(data[mid].time===t)return mid;if(data[mid].time<t)lo=mid+1;else hi=mid-1}return -1}
-function legend(bar,pc){
+function valAt(arr,t){if(!arr||!arr.length)return null;var lo=0,hi=arr.length-1,ans=null;while(lo<=hi){var mid=(lo+hi)>>1;if(arr[mid].time===t)return arr[mid].value;if(arr[mid].time<t){ans=arr[mid].value;lo=mid+1}else hi=mid-1}return ans}
+function legend(bar,idx){
 if(!lgEl)return;
-if(!bar){if(!data.length){lgEl.textContent="";return}bar=data[data.length-1];pc=data.length>1?data[data.length-2].close:bar.open}
+if(!bar){if(!data.length){lgEl.textContent="";return}bar=data[data.length-1];idx=data.length-1}
+var pc=idx>0?data[idx-1].close:bar.open;
 var ch=(bar.close/pc-1)*100;
-lgEl.innerHTML="<b>"+SYMS[sym].nm+" · "+IVL[intv]+" · Binance</b> 시 "+fmtP(bar.open)+" · 고 "+fmtP(bar.high)+" · 저 "+fmtP(bar.low)+" · 종 "+fmtP(bar.close)+' <span class="'+(ch>=0?"tv-up":"tv-dn")+'">'+fmtCh(ch)+"</span>";
+var h="<b>"+SYMS[sym].nm+" · "+IVL[intv]+" · Binance</b> 시 "+fmtP(bar.open)+" · 고 "+fmtP(bar.high)+" · 저 "+fmtP(bar.low)+" · 종 "+fmtP(bar.close)+' <span class="'+(ch>=0?"tv-up":"tv-dn")+'">'+fmtCh(ch)+"</span>";
+function iv(txt,val,col){if(val!=null&&isFinite(val))h+='<span class="tv-iv" style="color:'+col+'">'+txt+" "+val.toFixed(Math.abs(val)<10?2:val<200&&txt==="RSI"?1:2)+"</span>"}
+if(ind.ma20)iv("MA20",valAt(cache.ma[20],bar.time),"#4a7dd4");
+if(ind.ma5)iv("MA5",valAt(cache.ma[5],bar.time),"#e8a33d");
+if(ind.ma60)iv("MA60",valAt(cache.ma[60],bar.time),"#2fbf71");
+if(ind.ema20)iv("EMA20",valAt(cache.ema,bar.time),"#b06ac8");
+if(ind.rsi)iv("RSI",valAt(cache.rsi,bar.time),"#8067c5");
+lgEl.innerHTML=h;
 }
 function onCross(param){
-if(!param||param.time==null||!param.seriesData){legend(null);return}
-var bar=param.seriesData.get(cSer);
-if(!bar){legend(null);return}
-var i=idxOfTime(param.time);
-legend(bar,i>0?data[i-1].close:bar.open);
+lgParam=param;
+if(lgRaf)return;
+lgRaf=requestAnimationFrame(function(){
+lgRaf=0;var p=lgParam;lgParam=null;
+if(!p||p.time==null||!p.seriesData){legend(null);return}
+var bar=p.seriesData.get(cSer);
+var idx=idxOfTime(p.time);
+if((!bar||bar.open==null)&&idx>=0)bar=data[idx];
+if(!bar||bar.open==null){legend(null);return}
+legend(bar,idx);
+});
+}
+function onRange(r){
+if(!r)return;
+syncPanes(r);
+scheduleDraw();
+if(r.from<12&&!loadingMore&&!noMore)loadMore().then(function(added){
+if(added>0){try{chart.timeScale().setVisibleLogicalRange({from:r.from+added,to:r.to+added})}catch(e){}}
+});
 }
 /* ---------- 그리기 ---------- */
 function t2log(t){
@@ -4418,14 +4666,27 @@ var i=Math.floor(l),f=l-i;
 return data[i].time+f*(data[i+1].time-data[i].time);
 }
 function t2x(t){if(!chart)return null;var x=chart.timeScale().logicalToCoordinate(t2log(t));return x==null?null:+x}
-function x2t(x){if(!chart)return null;var l=chart.timeScale().coordinateToLogical(x);return l==null?null:log2t(+l)}
 function p2y(p){if(!cSer)return null;var y=cSer.priceToCoordinate(p);return y==null?null:+y}
 function y2p(y){if(!cSer)return null;var p=cSer.coordinateToPrice(y);return p==null?null:+p}
 function segDist(px,py,x1,y1,x2,y2){var dx=x2-x1,dy=y2-y1,L=dx*dx+dy*dy;var t=L?((px-x1)*dx+(py-y1)*dy)/L:0;t=Math.max(0,Math.min(1,t));var cx=x1+t*dx,cy=y1+t*dy;return Math.sqrt((px-cx)*(px-cx)+(py-cy)*(py-cy))}
+function rayEnd(d,pw,ph){
+var x1=t2x(d.t1),y1=p2y(d.p1),x2=t2x(d.t2),y2=p2y(d.p2);
+if(x1==null||y1==null||x2==null||y2==null)return null;
+var dx=x2-x1,dy=y2-y1;if(dx===0&&dy===0)return{x:x2,y:y2};
+var t=1e9;
+if(dx>0)t=Math.min(t,(pw-x1)/dx);else if(dx<0)t=Math.min(t,(0-x1)/dx);
+if(dy>0)t=Math.min(t,(ph-y1)/dy);else if(dy<0)t=Math.min(t,(0-y1)/dy);
+if(!isFinite(t)||t<1)t=1;
+return{x:x1+dx*t,y:y1+dy*t};
+}
 function distTo(d,x,y){
 if(d.k==="hline"){var yy=p2y(d.p);return yy==null?null:Math.abs(y-yy)}
+if(d.k==="vline"){var xx=t2x(d.t);return xx==null?null:Math.abs(x-xx)}
 if(d.k==="trend"){var x1=t2x(d.t1),y1=p2y(d.p1),x2=t2x(d.t2),y2=p2y(d.p2);if(x1==null||y1==null||x2==null||y2==null)return null;return segDist(x,y,x1,y1,x2,y2)}
+if(d.k==="ray"){if(!chart)return null;var e=rayEnd(d,chart.timeScale().width(),chartEl.clientHeight);if(!e)return null;var x1=t2x(d.t1),y1=p2y(d.p1);if(x1==null||y1==null)return null;return segDist(x,y,x1,y1,e.x,e.y)}
 if(d.k==="fib"){if(!chart)return null;var pw=chart.timeScale().width();var xa=t2x(d.t1),xb=t2x(d.t2);if(xa==null||xb==null)return null;var xl=Math.min(xa,xb);if(x<xl||x>pw)return null;var m=null;FIBL.forEach(function(l){var yy=p2y(d.p1+(d.p2-d.p1)*l);if(yy==null)return;var dd=Math.abs(y-yy);if(m==null||dd<m)m=dd});return m}
+if(d.k==="rect"||d.k==="measure"){var ax=t2x(d.t1),ay=p2y(d.p1),bx=t2x(d.t2),by=p2y(d.p2);if(ax==null||ay==null||bx==null||by==null)return null;if(x>=Math.min(ax,bx)&&x<=Math.max(ax,bx)&&y>=Math.min(ay,by)&&y<=Math.max(ay,by))return 0;return Math.min(segDist(x,y,ax,ay,bx,ay),segDist(x,y,bx,ay,bx,by),segDist(x,y,bx,by,ax,by),segDist(x,y,ax,by,ax,ay))}
+if(d.k==="text"){var tx=t2x(d.t),ty=p2y(d.p);if(tx==null||ty==null)return null;return Math.sqrt((x-tx)*(x-tx)+(y-ty)*(y-ty))}
 return null;
 }
 function fibSvg(d,on,pw){
@@ -4442,24 +4703,51 @@ s+='<text class="tv-lb" x="'+(xl+5).toFixed(1)+'" y="'+(y-5).toFixed(1)+'">'+(l*
 if(on){var y1=p2y(d.p1),y2=p2y(d.p2);if(y1!=null)s+='<circle class="tv-hd" cx="'+x1.toFixed(1)+'" cy="'+y1.toFixed(1)+'" r="4"/>';if(y2!=null)s+='<circle class="tv-hd" cx="'+x2.toFixed(1)+'" cy="'+y2.toFixed(1)+'" r="4"/>'}
 return s;
 }
-function drawLines(){
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function drawLinesNow(){
 if(!svg)return;
-if(!chart||!data.length){svg.innerHTML="";return}
+if(!chart||!data.length){if(svg.innerHTML)svg.innerHTML="";return}
+var list=draws[sym];
+if(!list.length&&!pend){if(svg.innerHTML)svg.innerHTML="";return}
 var W=wrap.clientWidth,H=chartEl.clientHeight;
 svg.setAttribute("viewBox","0 0 "+W+" "+H);
 var pw=chart.timeScale().width(),s="";
-draws[sym].forEach(function(d,i){
+list.forEach(function(d,i){
 var on=i===sel;
 if(d.k==="hline"){
 var y=p2y(d.p);if(y==null)return;
 s+='<line class="tv-ln'+(on?" tv-sel":"")+'" x1="0" y1="'+y.toFixed(1)+'" x2="'+pw.toFixed(1)+'" y2="'+y.toFixed(1)+'"/>';
 s+='<text class="tv-lb" x="6" y="'+(y-5).toFixed(1)+'">'+fmtP(d.p)+"</text>";
+}else if(d.k==="vline"){
+var x=t2x(d.t);if(x==null)return;
+s+='<line class="tv-ln'+(on?" tv-sel":"")+'" x1="'+x.toFixed(1)+'" y1="0" x2="'+x.toFixed(1)+'" y2="'+H.toFixed(1)+'"/>';
+s+='<text class="tv-lb" x="'+(x+5).toFixed(1)+'" y="14">'+fmtT(d.t)+"</text>";
 }else if(d.k==="trend"){
 var x1=t2x(d.t1),y1=p2y(d.p1),x2=t2x(d.t2),y2=p2y(d.p2);
 if(x1==null||y1==null||x2==null||y2==null)return;
 s+='<line class="tv-ln'+(on?" tv-sel":"")+'" x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'"/>';
 if(on)s+='<circle class="tv-hd" cx="'+x1.toFixed(1)+'" cy="'+y1.toFixed(1)+'" r="4"/><circle class="tv-hd" cx="'+x2.toFixed(1)+'" cy="'+y2.toFixed(1)+'" r="4"/>';
+}else if(d.k==="ray"){
+var e=rayEnd(d,pw,H);var x1=t2x(d.t1),y1=p2y(d.p1);
+if(!e||x1==null||y1==null)return;
+s+='<line class="tv-ln'+(on?" tv-sel":"")+'" x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+e.x.toFixed(1)+'" y2="'+e.y.toFixed(1)+'"/>';
+if(on)s+='<circle class="tv-hd" cx="'+x1.toFixed(1)+'" cy="'+y1.toFixed(1)+'" r="4"/>';
 }else if(d.k==="fib"){s+=fibSvg(d,on,pw)}
+else if(d.k==="rect"||d.k==="measure"){
+var ax=t2x(d.t1),ay=p2y(d.p1),bx=t2x(d.t2),by=p2y(d.p2);
+if(ax==null||ay==null||bx==null||by==null)return;
+var rx=Math.min(ax,bx),ry=Math.min(ay,by),rw=Math.abs(bx-ax),rh=Math.abs(by-ay);
+s+='<rect class="'+(d.k==="measure"?"tv-meas":"tv-rect")+'" x="'+rx.toFixed(1)+'" y="'+ry.toFixed(1)+'" width="'+rw.toFixed(1)+'" height="'+rh.toFixed(1)+'"/>';
+s+='<rect class="'+(d.k==="measure"?"tv-measln":"tv-rectln")+(on?" tv-sel":"")+'" x="'+rx.toFixed(1)+'" y="'+ry.toFixed(1)+'" width="'+rw.toFixed(1)+'" height="'+rh.toFixed(1)+'"/>';
+if(d.k==="measure"){
+var dp=d.p2-d.p1,pc2=d.p1?(dp/d.p1*100):0,nb=Math.abs(Math.round(t2log(d.t2)-t2log(d.t1)));
+s+='<text class="tv-lb" x="'+(rx+rw/2).toFixed(1)+'" y="'+(ry+rh/2).toFixed(1)+'" text-anchor="middle">'+(dp>=0?"+":"")+dp.toFixed(2)+" ("+pc2.toFixed(2)+"%) · "+nb+"봉</text>";
+}
+if(on)s+='<circle class="tv-hd" cx="'+ax.toFixed(1)+'" cy="'+ay.toFixed(1)+'" r="4"/><circle class="tv-hd" cx="'+bx.toFixed(1)+'" cy="'+by.toFixed(1)+'" r="4"/>';
+}else if(d.k==="text"){
+var tx=t2x(d.t),ty=p2y(d.p);if(tx==null||ty==null)return;
+s+='<text class="tv-lb'+(on?" tv-sel":"")+'" x="'+tx.toFixed(1)+'" y="'+ty.toFixed(1)+'">'+esc(d.text)+"</text>";
+}
 });
 if(pend){
 var px=t2x(pend.t),py=p2y(pend.p);
@@ -4470,116 +4758,260 @@ if(mouseP){var mx=t2x(mouseP.t),my=p2y(mouseP.p);if(mx!=null&&my!=null)s+='<line
 }
 svg.innerHTML=s;
 }
-function snapT(x){
-var l=chart.timeScale().coordinateToLogical(x);if(l==null)return null;
-var i=Math.round(+l);i=Math.max(0,Math.min(data.length-1,i));
-return data[i].time;
+function scheduleDraw(){
+if(drawRaf)return;
+drawRaf=requestAnimationFrame(function(){drawRaf=0;drawLinesNow()});
+}
+function snapIdx(x){
+var l=chart.timeScale().coordinateToLogical(x);if(l==null)return -1;
+var i=Math.round(+l);return Math.max(0,Math.min(data.length-1,i));
+}
+function snapPoint(x,y){
+var i=snapIdx(x);if(i<0)return null;
+var p=y2p(y);if(p==null)return null;
+if(magnet){var b=data[i],cands=[b.open,b.high,b.low,b.close],best=cands[0],bd=Infinity;cands.forEach(function(c){var dd=Math.abs(c-p);if(dd<bd){bd=dd;best=c}});p=best}
+return{t:data[i].time,p:p};
+}
+function pushUndo(){
+undoSt.push(JSON.stringify(draws[sym]));
+if(undoSt.length>60)undoSt.shift();
+redoSt=[];
+updUndoBtns();
+}
+function updUndoBtns(){
+var u=G("tv-undo"),r=G("tv-redo");
+if(u)u.disabled=!undoSt.length;
+if(r)r.disabled=!redoSt.length;
+}
+function doUndo(){
+if(!undoSt.length)return;
+redoSt.push(JSON.stringify(draws[sym]));
+draws[sym]=JSON.parse(undoSt.pop());
+sel=-1;pend=null;scheduleDraw();updUndoBtns();updHint();
+}
+function doRedo(){
+if(!redoSt.length)return;
+undoSt.push(JSON.stringify(draws[sym]));
+draws[sym]=JSON.parse(redoSt.pop());
+sel=-1;pend=null;scheduleDraw();updUndoBtns();updHint();
+}
+var undoBtn=G("tv-undo"),redoBtn=G("tv-redo");
+if(undoBtn)undoBtn.addEventListener("click",doUndo);
+if(redoBtn)redoBtn.addEventListener("click",doRedo);
+function finishDraw(){
+/* 한 번 그으면 트레이딩뷰처럼 자동으로 커서(화살표) 도구로 돌아간다 */
+sel=draws[sym].length-1;pend=null;mouseP=null;
+scheduleDraw();
+setTool("cursor");
 }
 if(svg){
 svg.addEventListener("pointerdown",function(e){
-if(!tvOpen||tool==="cursor"||!data.length||!chart)return;
+if(!tvOpen||tool==="cursor"||tool==="cross"||!data.length||!chart)return;
 var r=svg.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
-var t=snapT(x),p=y2p(y);
-if(t==null||p==null)return;
-if(tool==="hline"){draws[sym].push({k:"hline",p:p});sel=draws[sym].length-1;drawLines();updHint();return}
-if(!pend){pend={t:t,p:p};drawLines();updHint()}
-else{draws[sym].push({k:tool==="fib"?"fib":"trend",t1:pend.t,p1:pend.p,t2:t,p2:p});sel=draws[sym].length-1;pend=null;mouseP=null;drawLines();updHint()}
+var pt=snapPoint(x,y);
+if(!pt)return;
+if(tool==="eraser"){
+var best=-1,bd=9;
+draws[sym].forEach(function(d,i){var dd=distTo(d,x,y);if(dd!=null&&dd<bd){bd=dd;best=i}});
+if(best>=0){pushUndo();draws[sym].splice(best,1);sel=-1}
+scheduleDraw();setTool("cursor");return;
+}
+if(tool==="text"){
+textPend={t:pt.t,p:pt.p};
+var box=G("tv-textbox"),inp=G("tv-textin");
+if(box){box.hidden=false;box.style.left=Math.min(x,Math.max(0,wrap.clientWidth-240))+"px";box.style.top=Math.min(y,Math.max(0,chartEl.clientHeight-52))+"px"}
+if(inp){inp.value="";setTimeout(function(){try{inp.focus()}catch(e2){}},30)}
+return;
+}
+if(tool==="hline"){pushUndo();draws[sym].push({k:"hline",p:pt.p});finishDraw();return}
+if(tool==="vline"){pushUndo();draws[sym].push({k:"vline",t:pt.t});finishDraw();return}
+if(!pend){pend=pt;scheduleDraw();updHint()}
+else{pushUndo();draws[sym].push({k:tool,t1:pend.t,p1:pend.p,t2:pt.t,p2:pt.p});finishDraw()}
 });
 svg.addEventListener("pointermove",function(e){
 if(!pend)return;
 var r=svg.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
-var t=snapT(x),p=y2p(y);
-if(t==null||p==null)return;
-mouseP={t:t,p:p};drawLines();
+var pt=snapPoint(x,y);
+if(!pt)return;
+mouseP=pt;scheduleDraw();
 });
-svg.addEventListener("pointerleave",function(){mouseP=null;if(pend)drawLines()});
+svg.addEventListener("pointerleave",function(){mouseP=null;if(pend)scheduleDraw()});
 }
+function confirmText(){
+var inp=G("tv-textin"),box=G("tv-textbox");
+var v=inp?inp.value.trim():"";
+if(textPend&&v){pushUndo();draws[sym].push({k:"text",t:textPend.t,p:textPend.p,text:v});sel=draws[sym].length-1}
+textPend=null;
+if(box)box.hidden=true;
+scheduleDraw();
+setTool("cursor");
+}
+var tokBtn=G("tv-textok"),tnoBtn=G("tv-textno"),tinEl=G("tv-textin");
+if(tokBtn)tokBtn.addEventListener("click",confirmText);
+if(tnoBtn)tnoBtn.addEventListener("click",function(){textPend=null;var box=G("tv-textbox");if(box)box.hidden=true;setTool("cursor")});
+if(tinEl)tinEl.addEventListener("keydown",function(e){if(e.key==="Enter")confirmText();if(e.key==="Escape"){textPend=null;var box=G("tv-textbox");if(box)box.hidden=true;setTool("cursor")}e.stopPropagation()});
 function onChartClick(param){
 if(tool!=="cursor"||!param||!param.point||!data.length)return;
-var x=param.point.x,y=param.point.y,best=-1,bd=7;
+var x=param.point.x,y=param.point.y,best=-1,bd=8;
 draws[sym].forEach(function(d,i){var dd=distTo(d,x,y);if(dd!=null&&dd<bd){bd=dd;best=i}});
-if(best!==sel){sel=best;drawLines();updHint()}
+if(best!==sel){sel=best;scheduleDraw();updHint()}
 }
 function updHint(){
 if(!hintEl)return;
+var two={trend:"추세선",ray:"광선",fib:"피보나치 되돌림",rect:"사각형",measure:"측정"};
 var h="";
-if(tool==="trend")h=pend?"두 번째 점을 누르면 추세선이 완성돼요.":"차트에서 시작점과 끝점, 두 곳을 차례로 눌러 추세선을 그어요.";
-else if(tool==="hline")h="차트를 누른 가격 높이에 수평선이 그어져요.";
-else if(tool==="fib")h=pend?"두 번째 점을 누르면 피보나치 되돌림이 완성돼요.":"고점과 저점, 두 곳을 차례로 눌러 피보나치 되돌림(0·23.6·38.2·50·61.8·78.6·100%)을 그어요.";
-else h=sel>=0?"선택한 선은 왼쪽 휴지통 버튼으로 지울 수 있어요.":"차트를 드래그해 이동하고, 휠·핀치로 확대·축소해요. 그어 둔 선을 누르면 선택돼요.";
+if(two[tool])h=pend?"두 번째 점을 누르면 "+two[tool]+"이(가) 완성되고 커서로 돌아가요.":"차트에서 시작점과 끝점, 두 곳을 차례로 눌러 "+two[tool]+"을(를) 그어요.";
+else if(tool==="hline")h="차트를 누른 가격 높이에 수평선이 그어지고 커서로 돌아가요.";
+else if(tool==="vline")h="차트를 누른 시점에 수직선이 그어지고 커서로 돌아가요.";
+else if(tool==="text")h="차트에서 텍스트를 넣을 자리를 누르세요.";
+else if(tool==="eraser")h="지울 선을 누르세요. 누르면 지워지고 커서로 돌아가요.";
+else if(tool==="cross")h="십자 커서 모드예요. 차트를 드래그해 이동하고, 휠·핀치로 확대·축소해요.";
+else h=sel>=0?"선택한 선은 왼쪽 휴지통 버튼이나 Delete 키로 지울 수 있어요.":"차트를 드래그해 이동하고, 휠·핀치로 확대·축소해요. 왼쪽으로 끝까지 밀면 옛 캔들을 더 불러와요. 그어 둔 선을 누르면 선택돼요.";
 hintEl.textContent=h;
 }
 function setTool(t2){
 tool=t2;pend=null;mouseP=null;
 if(t2!=="cursor")sel=-1;
 sec.querySelectorAll("[data-tvtool]").forEach(function(b){var on=b.getAttribute("data-tvtool")===t2;b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on))});
-if(wrap)wrap.classList.toggle("tv-drawing",t2!=="cursor");
-var dis=t2!=="cursor";
+if(wrap){wrap.classList.toggle("tv-drawing",t2!=="cursor"&&t2!=="cross");wrap.classList.toggle("tv-cross",t2==="cross")}
+var dis=t2!=="cursor"&&t2!=="cross";
 var hs={mouseWheel:!dis,pressedMouseMove:!dis,horzTouchDrag:!dis,vertTouchDrag:!dis};
 var hc={mouseWheel:!dis,pinch:!dis,axisPressedMouseMove:{time:!dis,price:!dis},axisDoubleClickReset:{time:true,price:true}};
-if(chart){chart.applyOptions({handleScroll:hs,handleScale:hc});if(rsiChart)rsiChart.applyOptions({handleScroll:hs,handleScale:hc})}
-drawLines();updHint();
+if(chart){chart.applyOptions({handleScroll:hs,handleScale:hc});Object.keys(panes).forEach(function(k){panes[k].chart.applyOptions({handleScroll:hs,handleScale:hc})})}
+scheduleDraw();updHint();
 }
 sec.querySelectorAll("[data-tvtool]").forEach(function(b){b.addEventListener("click",function(){setTool(b.getAttribute("data-tvtool"))})});
-var delBtn=G("tv-del");
+function setMagnet(on){
+magnet=on;
+var b=G("tv-magnet");if(b)b.setAttribute("aria-pressed",String(on));
+var row=sec.querySelector('[data-set="magnet"]');if(row){row.setAttribute("aria-pressed",String(on));var e=row.querySelector(".tv-eye");if(e)e.textContent=on?"표시 중":"숨김"}
+}
+var magBtn=G("tv-magnet");
+if(magBtn)magBtn.addEventListener("click",function(){setMagnet(!magnet)});
+var delBtn=G("tv-del"),delLast=0;
 if(delBtn)delBtn.addEventListener("click",function(){
-var list=draws[sym];
-if(sel>=0&&list[sel]){list.splice(sel,1);sel=-1}
-else draws[sym]=[];
-pend=null;drawLines();updHint();
+var now=Date.now(),list=draws[sym];
+if(sel>=0&&list[sel]){pushUndo();list.splice(sel,1);sel=-1}
+else if(now-delLast<600&&list.length){pushUndo();draws[sym]=[];sel=-1}
+delLast=now;
+pend=null;scheduleDraw();updHint();
 });
 document.addEventListener("keydown",function(e){
 if(!tvOpen)return;
-if(e.key==="Escape"){if(pend){pend=null;mouseP=null;drawLines();updHint()}else if(tool!=="cursor")setTool("cursor")}
-if((e.key==="Delete"||e.key==="Backspace")&&sel>=0){draws[sym].splice(sel,1);sel=-1;drawLines();updHint()}
+var tag=e.target&&e.target.tagName;
+if(tag==="INPUT"||tag==="TEXTAREA")return;
+if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="z"){e.preventDefault();if(e.shiftKey)doRedo();else doUndo();return}
+if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="y"){e.preventDefault();doRedo();return}
+if(e.key==="Escape"){if(pend){pend=null;mouseP=null;scheduleDraw();updHint()}else if(tool!=="cursor")setTool("cursor")}
+if((e.key==="Delete"||e.key==="Backspace")&&sel>=0){pushUndo();draws[sym].splice(sel,1);sel=-1;scheduleDraw();updHint()}
 });
-/* ---------- 위쪽 바: 종목·간격·지표 ---------- */
+/* ---------- 위쪽 바: 종목·간격·지표·설정·전체화면 ---------- */
 sec.querySelectorAll("[data-tvsym]").forEach(function(b){b.addEventListener("click",function(){
 var s2=b.getAttribute("data-tvsym");
 if(!SYMS[s2]||(s2===sym&&data.length))return;
-sym=s2;sel=-1;pend=null;mouseP=null;
+sym=s2;sel=-1;pend=null;mouseP=null;undoSt=[];redoSt=[];updUndoBtns();
 sec.querySelectorAll("[data-tvsym]").forEach(function(x){x.setAttribute("aria-pressed",String(x.getAttribute("data-tvsym")===sym))});
-var nm=G("tv-symnm");if(nm)nm.textContent=SYMS[sym].nm+" · "+SYMS[sym].pair.replace("USDT","/USDT");
-if(chart)loadData();drawLines();
+if(chart)loadData();scheduleDraw();
 })});
 sec.querySelectorAll("[data-tvint]").forEach(function(b){b.addEventListener("click",function(){
 var v=b.getAttribute("data-tvint");
 if(v===intv)return;
 intv=v;pend=null;mouseP=null;
 sec.querySelectorAll("[data-tvint]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});
-if(chart){chart.applyOptions({timeScale:{borderColor:th().bd,timeVisible:intv!=="1d",secondsVisible:false}});loadData()}
+if(chart){chart.applyOptions({timeScale:{borderColor:th().bd,timeVisible:intv!=="1d"&&intv!=="1w",secondsVisible:false}});loadData()}
 })});
-sec.querySelectorAll("[data-tvma]").forEach(function(b){b.addEventListener("click",function(){
-var n=+b.getAttribute("data-tvma");
-ind.ma[n]=!ind.ma[n];
-b.setAttribute("aria-pressed",String(ind.ma[n]));
-paintIndicators();
+function syncIndBtn(key){
+var b=sec.querySelector('[data-ind="'+key+'"]');
+if(!b)return;
+b.setAttribute("aria-pressed",String(!!ind[key]));
+var e=b.querySelector(".tv-eye");if(e)e.textContent=ind[key]?"표시 중":"숨김";
+}
+function toggleInd(key){
+ind[key]=!ind[key];
+syncIndBtn(key);
+computeCache();
+if(key==="vol"){applyVolScale()}
+if(key==="rsi"||key==="macd"||key==="stoch"){
+var w=G("tv-pane-"+key);if(w)w.hidden=!ind[key];
+if(ind[key]){ensurePane(key);paintPane(key,true);if(chart){var r=chart.timeScale().getVisibleLogicalRange();if(r)syncPanes(r)}}
+}
+paintIndicators(true);
+scheduleDraw();
+}
+sec.querySelectorAll("[data-ind]").forEach(function(b){b.addEventListener("click",function(){toggleInd(b.getAttribute("data-ind"))})});
+function closePanels(){["tv-indpanel","tv-setpanel"].forEach(function(id){var p=G(id);if(p)p.hidden=true});var a=G("tv-indbtn"),c=G("tv-setbtn");if(a)a.setAttribute("aria-pressed","false");if(c)c.setAttribute("aria-pressed","false")}
+function wirePanel(btnId,panelId){
+var btn=G(btnId),panel=G(panelId);if(!btn||!panel)return;
+btn.addEventListener("click",function(e){
+e.stopPropagation();
+var willOpen=panel.hidden;
+closePanels();
+panel.hidden=!willOpen;
+btn.setAttribute("aria-pressed",String(willOpen));
+});
+panel.addEventListener("click",function(e){e.stopPropagation()});
+}
+wirePanel("tv-indbtn","tv-indpanel");
+wirePanel("tv-setbtn","tv-setpanel");
+document.addEventListener("click",function(){if(tvOpen)closePanels()});
+sec.querySelectorAll("[data-set]").forEach(function(b){b.addEventListener("click",function(){
+var k=b.getAttribute("data-set");
+if(k==="magnet"){setMagnet(!magnet);return}
+setOpt[k]=!setOpt[k];
+b.setAttribute("aria-pressed",String(setOpt[k]));
+var e=b.querySelector(".tv-eye");if(e)e.textContent=setOpt[k]?"표시 중":"숨김";
+if(!chart)return;
+var t=th();
+if(k==="grid"){[chart].concat(Object.keys(panes).map(function(x){return panes[x].chart})).forEach(function(c){c.applyOptions({grid:{vertLines:{color:t.bd,visible:setOpt.grid},horzLines:{color:t.bd,visible:setOpt.grid}}})})}
+if(k==="pline")applyPline();
 })});
-var bbBtn=sec.querySelector("[data-tvbb]");
-if(bbBtn)bbBtn.addEventListener("click",function(){ind.bb=!ind.bb;bbBtn.setAttribute("aria-pressed",String(ind.bb));paintIndicators()});
-var rsiBtn=sec.querySelector("[data-tvrsi]");
-if(rsiBtn)rsiBtn.addEventListener("click",function(){
-ind.rsi=!ind.rsi;
-rsiBtn.setAttribute("aria-pressed",String(ind.rsi));
-var w=G("tv-rsiwrap");if(w)w.hidden=!ind.rsi;
-if(ind.rsi&&chart&&rsiChart){paintIndicators();var r=chart.timeScale().getVisibleLogicalRange();if(r)try{rsiChart.timeScale().setVisibleLogicalRange(r)}catch(e){}}
-drawLines();
+var fsBtn=G("tv-fsbtn");
+if(fsBtn)fsBtn.addEventListener("click",function(){
+try{
+if(document.fullscreenElement)document.exitFullscreen();
+else if(stageEl&&stageEl.requestFullscreen)stageEl.requestFullscreen();
+}catch(e){}
+setTimeout(scheduleDraw,350);
 });
-var volBtn=sec.querySelector("[data-tvvol]");
-if(volBtn)volBtn.addEventListener("click",function(){
-ind.vol=!ind.vol;
-volBtn.setAttribute("aria-pressed",String(ind.vol));
-if(vSer)vSer.applyOptions({visible:ind.vol});
-if(chart)chart.priceScale("right").applyOptions({scaleMargins:ind.vol?{top:0.06,bottom:0.18}:{top:0.06,bottom:0.02}});
-drawLines();
-});
+document.addEventListener("fullscreenchange",function(){setTimeout(scheduleDraw,120)});
+/* ---------- 아래쪽 바: 기간·가격축 ---------- */
+sec.querySelectorAll("[data-tvr]").forEach(function(b){b.addEventListener("click",function(){
+if(!chart||!data.length)return;
+var v=b.getAttribute("data-tvr"),n=data.length;
+function applyRange(bars){
+try{chart.timeScale().setVisibleLogicalRange({from:Math.max(0,n-Math.round(bars)),to:n+6})}catch(e){}
+}
+if(v==="all"){try{chart.timeScale().setVisibleLogicalRange({from:0,to:n+6})}catch(e){}return}
+var bars=+v/IVS[intv];
+if(bars<=n)applyRange(bars);
+else{
+var need=Math.min(bars,5000),tries=0;
+(function step(){
+if(data.length>=need||noMore||tries>=6){n=data.length;applyRange(bars);return}
+tries++;
+loadMore().then(step);
+})();
+}
+})});
+sec.querySelectorAll("[data-tvscale]").forEach(function(b){b.addEventListener("click",function(){
+var m=+b.getAttribute("data-tvscale");
+sec.querySelectorAll("[data-tvscale]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});
+if(chart)chart.priceScale("right").applyOptions({mode:m});
+scheduleDraw();
+})});
 /* ---------- 페이지 열림·닫힘 ---------- */
+function tickClock(){
+var e=G("tv-clock");if(!e)return;
+try{e.textContent=new Date().toLocaleTimeString("ko-KR",{timeZone:"Asia/Seoul",hour12:false})+" (한국 시간)"}catch(err){e.textContent=""}
+}
 function boot(){
 msg("불러오는 중…");
 loadLwc2(function(ok){
 if(!ok){msg("차트 라이브러리를 불러오지 못했어요. 연결 문제일 수 있어요.",true);return}
 buildCharts();
 setTool(tool);
+setChartType(ctype);
+["ma5","ma20","ma60","ema20","bb","vwap","rsi","macd","stoch","vol"].forEach(syncIndBtn);
 loadData();
 });
 }
@@ -4588,31 +5020,37 @@ tvOpen=true;
 updHint();
 if(!chart)boot();
 else if(!data.length)loadData();
-else{startLive(loadTok);drawLines();legend(null);updHead()}
+else{startLive(loadTok);scheduleDraw();legend(null);updHead()}
+tickClock();
+if(clockT)clearInterval(clockT);
+clockT=setInterval(tickClock,1000);
 }
 function deactivate(){
 tvOpen=false;
 stopLive();
+closePanels();
+if(clockT){clearInterval(clockT);clockT=null}
 }
 if(window.MutationObserver)new MutationObserver(function(){
 if(!sec.hidden){if(!tvOpen)activate()}
 else if(tvOpen)deactivate();
 }).observe(sec,{attributes:true,attributeFilter:["hidden"]});
-/* 테마가 바뀌면 차트 색을 새 테마로 다시 맞춘다 */
 if(window.MutationObserver)new MutationObserver(function(){
 if(!chart)return;
 var t=th();
 var lay={background:{type:"solid",color:t.bg},textColor:t.mut};
-var gr={vertLines:{color:t.bd},horzLines:{color:t.bd}};
-chart.applyOptions({layout:lay,grid:gr,rightPriceScale:{borderColor:t.bd},timeScale:{borderColor:t.bd,timeVisible:intv!=="1d",secondsVisible:false}});
+var gr={vertLines:{color:t.bd,visible:setOpt.grid},horzLines:{color:t.bd,visible:setOpt.grid}};
+chart.applyOptions({layout:lay,grid:gr,rightPriceScale:{borderColor:t.bd},timeScale:{borderColor:t.bd,timeVisible:intv!=="1d"&&intv!=="1w",secondsVisible:false}});
 cSer.applyOptions({upColor:t.up,downColor:t.dn,borderUpColor:t.up,borderDownColor:t.dn,wickUpColor:t.up,wickDownColor:t.dn});
-if(rsiChart)rsiChart.applyOptions({layout:lay,grid:gr,rightPriceScale:{borderColor:t.bd}});
+barSer.applyOptions({upColor:t.up,downColor:t.dn});
+haSer.applyOptions({upColor:t.up,downColor:t.dn,borderUpColor:t.up,borderDownColor:t.dn,wickUpColor:t.up,wickDownColor:t.dn});
+Object.keys(panes).forEach(function(k){panes[k].chart.applyOptions({layout:lay,grid:gr,rightPriceScale:{borderColor:t.bd}})});
 if(vSer&&data.length)vSer.setData(data.map(toV));
 if(bbSer){var c=hexA(t.dn,0.55);["u","m","l"].forEach(function(k){bbSer[k].applyOptions({color:c})})}
-drawLines();
+scheduleDraw();
 }).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
 var rzT=null;
-window.addEventListener("resize",function(){if(!tvOpen)return;if(rzT)return;rzT=setTimeout(function(){rzT=null;drawLines()},200)});
+window.addEventListener("resize",function(){if(!tvOpen)return;if(rzT)return;rzT=setTimeout(function(){rzT=null;scheduleDraw()},200)});
 updHint();
 if(!sec.hidden)activate();
 })();
