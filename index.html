@@ -2469,7 +2469,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    추세선·광선·수평선·수직선·피보나치·사각형·측정·텍스트·지우개)와
    자석·실행취소·다시실행·휴지통, 차트 왼쪽 위에 시고저종+지표값 범례,
    아래쪽에 기간 선택 바(1일~전체)와 가격축 방식(기본·%·로그),
-   RSI·MACD·스토캐스틱은 차트 아래 별도 창에 따로 그린다 */
+   RSI·MACD·스토캐스틱은 같은 차트 안의 아래 창(pane)에 따로 그린다 */
 #p-chart .tv-up{color:var(--up)}
 #p-chart .tv-dn{color:var(--dn)}
 #p-chart .tv-stage{display:flex;flex-direction:column;border:1px solid var(--bd);border-radius:12px;background:var(--sf);overflow:hidden}
@@ -2509,7 +2509,11 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #p-chart .tv-stage:fullscreen .tv-chart{height:calc(100vh - 190px)}
 #p-chart .tv-wrap.tv-cross{cursor:crosshair}
 #p-chart .tv-draw{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;display:block}
-#p-chart .tv-wrap.tv-drawing .tv-draw{pointer-events:auto;cursor:crosshair;touch-action:none}
+#p-chart .tv-wrap.tv-drawing{cursor:crosshair}
+#p-chart .tv-plabels{position:absolute;inset:0;z-index:2;pointer-events:none}
+#p-chart .tv-plb{position:absolute;left:10px;font-size:11px;font-weight:700;color:var(--mut);line-height:1.4}
+#p-chart .tv-plb[hidden]{display:none}
+#p-chart .tv-plb b{color:var(--tx)}
 #p-chart .tv-ln{stroke:var(--dn);stroke-width:1.6}
 #p-chart .tv-ln.tv-fib{stroke-width:1.1;opacity:.8}
 #p-chart .tv-ln.tv-dash{stroke-dasharray:5 4;opacity:.65}
@@ -2533,11 +2537,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #p-chart .tv-textbox[hidden]{display:none}
 #p-chart .tv-textbox input{width:150px;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:7px;padding:6px 8px;font:inherit;font-size:13px}
 #p-chart .tv-textbox button{border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:7px;padding:6px 10px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
-#p-chart .tv-pane{position:relative;border-top:1px solid var(--bd)}
-#p-chart .tv-pane[hidden]{display:none}
-#p-chart .tv-pane .tv-pchart{height:92px}
-#p-chart .tv-pane-lb{position:absolute;top:6px;left:10px;z-index:3;font-size:11px;font-weight:700;color:var(--mut);pointer-events:none}
-#p-chart .tv-pane-lb b{color:var(--tx)}
+
 #p-chart .tv-botbar{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:5px 8px;border-top:1px solid var(--bd)}
 #p-chart .tv-botbar .pair button{min-height:26px;padding:2px 9px;font-size:12px}
 #p-chart .tv-clock{margin-left:auto;font-size:12px;font-weight:600;color:var(--mut);white-space:nowrap}
@@ -3015,13 +3015,11 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 <div class="tv-chart" id="tv-chart"></div>
 <svg class="tv-draw" id="tv-draw" aria-hidden="true"></svg>
 <div class="tv-lg" id="tv-lg"></div>
+<div class="tv-plabels" aria-hidden="true"><span class="tv-plb" id="tv-plb-rsi" hidden>RSI 14 · <b id="tv-rsi-v">—</b></span><span class="tv-plb" id="tv-plb-macd" hidden>MACD 12 · 26 · 9 · <b id="tv-macd-v">—</b></span><span class="tv-plb" id="tv-plb-stoch" hidden>스토캐스틱 14 · 3 · <b id="tv-stoch-v">—</b></span></div>
 <div class="tv-selbar" id="tv-selbar" hidden><span>그리기 선택됨</span><button type="button" id="tv-sel-del">삭제</button></div>
 <div class="tv-textbox" id="tv-textbox" hidden><input type="text" id="tv-text-in" placeholder="텍스트 입력" maxlength="40"><button type="button" id="tv-text-ok">확인</button><button type="button" id="tv-text-cancel">취소</button></div>
 <div class="tv-msg" id="tv-msg"><span>차트를 불러오는 중이에요…</span><button type="button" id="tv-retry" hidden>다시 시도</button></div>
 </div>
-<div class="tv-pane" id="tv-pane-rsi" hidden><div class="tv-pchart" id="tv-chart-rsi"></div><span class="tv-pane-lb">RSI 14 · <b id="tv-rsi-v">—</b></span></div>
-<div class="tv-pane" id="tv-pane-macd" hidden><div class="tv-pchart" id="tv-chart-macd"></div><span class="tv-pane-lb">MACD 12 · 26 · 9 · <b id="tv-macd-v">—</b></span></div>
-<div class="tv-pane" id="tv-pane-stoch" hidden><div class="tv-pchart" id="tv-chart-stoch"></div><span class="tv-pane-lb">스토캐스틱 14 · 3 · <b id="tv-stoch-v">—</b></span></div>
 <div class="tv-botbar">
 <div class="pair" role="group" aria-label="기간"><button type="button" data-range="1d" aria-pressed="false">1일</button><button type="button" data-range="7d" aria-pressed="false">1주</button><button type="button" data-range="1M" aria-pressed="false">1개월</button><button type="button" data-range="3M" aria-pressed="false">3개월</button><button type="button" data-range="6M" aria-pressed="false">6개월</button><button type="button" data-range="1Y" aria-pressed="false">1년</button><button type="button" data-range="all" aria-pressed="false">전체</button></div>
 <span class="tv-clock" id="tv-clock"></span>
@@ -4353,12 +4351,14 @@ var SYMNM={"BTCUSDT":"비트코인","ETHUSDT":"이더리움"};
 var SHIFT=32400; /* LWC는 UTC로 그리므로 +9h를 더해 한국 시간 벽시계로 보이게 한다 (사이트 기존 차트와 같은 방식) */
 var S={sym:"BTCUSDT",iv:"15m",ctype:"candle",scale:0,tool:"cursor",magnet:false,
 ind:{ma:false,ema:false,bb:false,vwap:false,vol:true,rsi:false,macd:false,stoch:false},
-started:false,dead:false};
+started:false,dead:false,baseH:0};
 var bars=[],disp=[],idxOf=new Map(),haState=[];
-var chart=null,priceS=null,volS=null,indS={},paneC={},paneS={};
+var chart=null,priceS=null,volS=null,indS={},paneS={},paneIdx={rsi:-1,macd:-1,stoch:-1},paneCount=0;
+var PANEKEYS=["rsi","macd","stoch"];
+function paneH(){return (S.baseH&&S.baseH<400)?76:92}
 var ws=null,wsRetry=0,pendBar=null,pendTimer=0,loadTok=0,loadingMore=false,hasMore=true;
 var store={BTCUSDT:[],ETHUSDT:[]},undoSt={BTCUSDT:[],ETHUSDT:[]},redoSt={BTCUSDT:[],ETHUSDT:[]};
-var selId=null,drawSeq=0,creating=null,dragging=null,measureD=null,textCtx=null,syncing=false,hoverRaf=0;
+var selId=null,drawSeq=0,creating=null,dragging=null,measureD=null,textCtx=null,hoverRaf=0;
 var FIBLEV=[0,0.236,0.382,0.5,0.618,0.786,1];
 var COL={ma:"#f0a832",ema:"#42a5f5",bb:"#26a69a",vwap:"#ec407a",rsi:"#8e6cc8",macd:"#42a5f5",sig:"#ff7043",stk:"#42a5f5",std:"#ff7043"};
 function theme(){var cs=getComputedStyle(document.documentElement);function v(n){return cs.getPropertyValue(n).trim()}
@@ -4414,7 +4414,7 @@ else bars[bars.length-1]=b;
 idxOf.set(b.time,bars.length-1);
 rebuildDispTail(isNew);
 var db=disp[disp.length-1];
-if(priceS)priceS.update(db);
+if(priceS)priceS.update(pricePoint(db));
 if(volS&&S.ind.vol)volS.update(volPoint(db));
 indUpdateLast();
 headUpdate();legendLast();scheduleDraw()}
@@ -4471,7 +4471,7 @@ for(var i2=0;i2<n;i2++){if(raw[i2]==null||i2<15)kk[i2]=null;if(i2<17)dd[i2]=null
 IND.stoch={k:kk,d:dd,raw:raw}})()}
 function pts(arr){var out=[];for(var i=0;i<disp.length;i++)if(arr[i]!=null)out.push({time:disp[i].time,value:arr[i]});return out}
 function indSetData(){
-if(!chart)return;
+if(!chart||!IND||!IND.ma||!IND.bb)return;
 if(indS.ma)indS.ma.setData(S.ind.ma?pts(IND.ma.arr):[]);
 if(indS.ema)indS.ema.setData(S.ind.ema?pts(IND.ema.arr):[]);
 if(indS.bbU){var on=S.ind.bb;indS.bbU.setData(on?pts(IND.bb.up):[]);indS.bbM.setData(on?pts(IND.bb.mid):[]);indS.bbL.setData(on?pts(IND.bb.lo):[])}
@@ -4520,7 +4520,7 @@ function chartOpts(extra){var th=theme();
 var o={autoSize:true,layout:{background:{type:"solid",color:th.bg},textColor:th.mut,fontSize:11,fontFamily:"inherit"},
 grid:{vertLines:{color:th.bd},horzLines:{color:th.bd}},
 rightPriceScale:{borderColor:th.bd},timeScale:{borderColor:th.bd,timeVisible:IVS[S.iv]<86400,secondsVisible:false},
-crosshair:{mode:1,vertLine:{labelBackgroundColor:th.mut},horzLine:{labelBackgroundColor:th.mut}},
+crosshair:{mode:0,vertLine:{labelBackgroundColor:th.mut},horzLine:{labelBackgroundColor:th.mut}},
 localization:{locale:"ko-KR"}};
 if(extra)for(var k in extra)o[k]=extra[k];return o}
 function addPriceSeries(){
@@ -4531,12 +4531,16 @@ if(S.ctype==="bar")priceS=chart.addSeries(L.BarSeries,Object.assign({upColor:th.
 else if(S.ctype==="line")priceS=chart.addSeries(L.LineSeries,Object.assign({color:th.dn,lineWidth:2,priceLineVisible:true},pf));
 else if(S.ctype==="area")priceS=chart.addSeries(L.AreaSeries,Object.assign({lineColor:th.dn,topColor:rgba(th.dn==="#5ea0ff"?"#5ea0ff":th.dn,0.30),bottomColor:rgba(th.dn==="#5ea0ff"?"#5ea0ff":th.dn,0.02),lineWidth:2},pf));
 else priceS=chart.addSeries(L.CandlestickSeries,Object.assign({upColor:th.up,downColor:th.dn,borderUpColor:th.up,borderDownColor:th.dn,wickUpColor:th.up,wickDownColor:th.dn},pf));
-priceS.setData(disp.map(function(b){return{time:b.time,open:b.open,high:b.high,low:b.low,close:b.close}}))}
+priceS.setData(disp.map(pricePoint))}
+function pricePoint(b){
+if(S.ctype==="line"||S.ctype==="area")return{time:b.time,value:b.close};
+return{time:b.time,open:b.open,high:b.high,low:b.low,close:b.close}}
 function buildCharts(){
 var th=theme(),L=window.LightweightCharts;
 if(chart){try{chart.remove()}catch(e){}chart=null}
-Object.keys(paneC).forEach(function(k){try{paneC[k].remove()}catch(e){}});paneC={};paneS={};indS={};
-chartEl.innerHTML="";
+paneS={};paneIdx={rsi:-1,macd:-1,stoch:-1};paneCount=0;indS={};
+if(!S.baseH){var bh=chartEl.getBoundingClientRect().height;if(bh>50)S.baseH=bh}
+chartEl.innerHTML="";chartEl.style.height="";
 chart=L.createChart(chartEl,chartOpts({timeScale:{borderColor:th.bd,timeVisible:IVS[S.iv]<86400,secondsVisible:false,rightOffset:6,barSpacing:9}}));
 addPriceSeries();
 volS=chart.addSeries(L.HistogramSeries,{priceScaleId:"",lastValueVisible:false,priceLineVisible:false});
@@ -4548,62 +4552,51 @@ indS.bbM=chart.addSeries(L.LineSeries,{color:COL.bb,lineWidth:1,lineStyle:2,last
 indS.bbL=chart.addSeries(L.LineSeries,{color:COL.bb,lineWidth:1,lastValueVisible:false,priceLineVisible:false,crosshairMarkerVisible:false});
 indS.vwap=chart.addSeries(L.LineSeries,{color:COL.vwap,lineWidth:1,lastValueVisible:false,priceLineVisible:false,crosshairMarkerVisible:false});
 chart.timeScale().subscribeVisibleLogicalRangeChange(onRange);
-chart.subscribeCrosshairMove(function(p){syncCross(chart,p)});
-mkPane("rsi",gel("tv-chart-rsi"));mkPane("macd",gel("tv-chart-macd"));mkPane("stoch",gel("tv-chart-stoch"));
-applyScaleMode();syncTimeAxis()}
-function mkPane(key,el){
-if(!el)return;var L=window.LightweightCharts,th=theme();
-var c=L.createChart(el,chartOpts({timeScale:{visible:false}}));
-paneC[key]=c;
-var base={lastValueVisible:true,priceLineVisible:false};
-if(key==="rsi"){paneS.rsi=c.addSeries(L.LineSeries,Object.assign({color:COL.rsi,lineWidth:1},base));
+chart.subscribeCrosshairMove(onCross);
+if(S.magnet)chart.applyOptions({crosshair:{mode:1}});
+layoutPanes();
+applyScaleMode()}
+/* 지표 창은 별도 차트가 아니라 이 차트 안의 창(pane)으로 붙인다 — 트레이딩뷰·거래소와
+   같은 구조라 시간축·십자선이 원래 하나로 움직이고, 창끼리 범위를 맞추는 동기화
+   코드(예전 방식에서 렌더 에러와 마우스 끊김을 만들던 부분)가 아예 필요 없다 */
+function layoutPanes(){
+if(!chart)return;
+for(var i=paneCount;i>=1;i--){try{chart.removePane(i)}catch(e){}}
+paneCount=0;paneS={};paneIdx={rsi:-1,macd:-1,stoch:-1};
+var L=window.LightweightCharts,th=theme(),base={lastValueVisible:true,priceLineVisible:false};
+PANEKEYS.forEach(function(key){
+if(!S.ind[key])return;
+var pa=null;try{pa=chart.addPane()}catch(e){}
+paneCount++;var idx=paneCount;paneIdx[key]=idx;
+if(pa&&pa.setHeight)try{pa.setHeight(paneH())}catch(e){}
+if(key==="rsi"){paneS.rsi=chart.addSeries(L.LineSeries,Object.assign({color:COL.rsi,lineWidth:1},base),idx);
 paneS.rsi.createPriceLine({price:70,color:th.mut,lineWidth:1,lineStyle:2,title:""});
 paneS.rsi.createPriceLine({price:30,color:th.mut,lineWidth:1,lineStyle:2,title:""})}
-if(key==="macd"){paneS.macdH=c.addSeries(L.HistogramSeries,{lastValueVisible:false,priceLineVisible:false});
-paneS.macdL=c.addSeries(L.LineSeries,Object.assign({color:COL.macd,lineWidth:1},base));
-paneS.macdS=c.addSeries(L.LineSeries,Object.assign({color:COL.sig,lineWidth:1},base))}
-if(key==="stoch"){paneS.stochK=c.addSeries(L.LineSeries,Object.assign({color:COL.stk,lineWidth:1},base));
-paneS.stochD=c.addSeries(L.LineSeries,Object.assign({color:COL.std,lineWidth:1},base));
+else if(key==="macd"){paneS.macdH=chart.addSeries(L.HistogramSeries,{lastValueVisible:false,priceLineVisible:false},idx);
+paneS.macdL=chart.addSeries(L.LineSeries,Object.assign({color:COL.macd,lineWidth:1},base),idx);
+paneS.macdS=chart.addSeries(L.LineSeries,Object.assign({color:COL.sig,lineWidth:1},base),idx)}
+else if(key==="stoch"){paneS.stochK=chart.addSeries(L.LineSeries,Object.assign({color:COL.stk,lineWidth:1},base),idx);
+paneS.stochD=chart.addSeries(L.LineSeries,Object.assign({color:COL.std,lineWidth:1},base),idx);
 paneS.stochK.createPriceLine({price:80,color:th.mut,lineWidth:1,lineStyle:2,title:""});
-paneS.stochK.createPriceLine({price:20,color:th.mut,lineWidth:1,lineStyle:2,title:""})}
-c.timeScale().subscribeVisibleLogicalRangeChange(function(r){syncRange(c,r)});
-c.subscribeCrosshairMove(function(p){syncCross(c,p)})}
-function syncRange(src,r){
-if(syncing||!r)return;syncing=true;
-var all=[chart].concat(Object.keys(paneC).map(function(k){return paneC[k]}));
-all.forEach(function(c){if(c&&c!==src){try{c.timeScale().setVisibleLogicalRange(r)}catch(e){}}});
-scheduleDraw();
-requestAnimationFrame(function(){syncing=false})}
-function onRange(r){syncRange(chart,r);if(r&&r.from<15)loadMore()}
-function onRangeFx(){scheduleDraw()}
-function syncCross(src,p){
-if(syncing)return;
-var targets=[{c:chart,s:priceS}];
-if(paneS.rsi)targets.push({c:paneC.rsi,s:paneS.rsi});
-if(paneS.macdL)targets.push({c:paneC.macd,s:paneS.macdL});
-if(paneS.stochK)targets.push({c:paneC.stoch,s:paneS.stochK});
-syncing=true;
-targets.forEach(function(t){if(!t.c||t.c===src||!t.s)return;
-try{if(p&&p.time!=null){if(t.c===chart){var b=disp[idxOf.get(p.time)];t.c.setCrosshairPosition(b?b.close:0,p.time,t.s)}
-else{var vv=crossVal(t,p.time);if(vv!=null)t.c.setCrosshairPosition(vv,p.time,t.s)}}
-else t.c.clearCrosshairPosition()}catch(e){}});
-requestAnimationFrame(function(){syncing=false});
-if(src===chart)onCross(p)}
-function crossVal(t,time){
-var i=idxOf.get(time);if(i==null)return null;
-if(t.s===paneS.rsi)return IND.rsi?IND.rsi.arr[i]:null;
-if(t.s===paneS.macdL)return IND.macd?IND.macd.mac[i]:null;
-if(t.s===paneS.stochK)return IND.stoch?IND.stoch.k[i]:null;
-return null}
-function syncTimeAxis(){
-var any=S.ind.rsi||S.ind.macd||S.ind.stoch;
-gel("tv-pane-rsi").hidden=!S.ind.rsi;gel("tv-pane-macd").hidden=!S.ind.macd;gel("tv-pane-stoch").hidden=!S.ind.stoch;
-if(chart)chart.applyOptions({timeScale:{visible:!any}});
-var order=["rsi","macd","stoch"].filter(function(k){return S.ind[k]});
-Object.keys(paneC).forEach(function(k){paneC[k].applyOptions({timeScale:{visible:order[order.length-1]===k}})});
-if(chart&&order.length){var r=chart.timeScale().getVisibleLogicalRange();
-if(r)Object.keys(paneC).forEach(function(k){try{paneC[k].timeScale().setVisibleLogicalRange(r)}catch(e){}})}
-scheduleDraw()}
+paneS.stochK.createPriceLine({price:20,color:th.mut,lineWidth:1,lineStyle:2,title:""})}});
+sizeChartEl();indSetData();positionPaneLabels();
+requestAnimationFrame(positionPaneLabels);setTimeout(positionPaneLabels,160);scheduleDraw()}
+function sizeChartEl(){
+if(!chartEl)return;
+if(document.fullscreenElement){chartEl.style.height="";return}
+var base=S.baseH||430;
+chartEl.style.height=(base+paneCount*paneH())+"px"}
+function positionPaneLabels(){
+if(!chart)return;
+var panes=[];try{panes=chart.panes()}catch(e){}
+var map={rsi:"tv-plb-rsi",macd:"tv-plb-macd",stoch:"tv-plb-stoch"};
+PANEKEYS.forEach(function(k){
+var el=gel(map[k]);if(!el)return;
+var idx=paneIdx[k];
+if(!S.ind[k]||idx<1||!panes[idx]){el.hidden=true;return}
+var y=0;for(var i=0;i<idx;i++){try{y+=panes[i].getHeight()}catch(e){}}
+el.hidden=false;el.style.top=(y+6)+"px"})}
+function onRange(r){scheduleDraw();if(r&&r.from<15)loadMore()}
 function applyScaleMode(){
 if(!chart)return;
 chart.priceScale("right").applyOptions({mode:S.scale});
@@ -4618,7 +4611,7 @@ var pc=i?haState[i-1]:null,hc=(b.open+b.high+b.low+b.close)/4,ho=pc?(pc.o+pc.c)/
 var d={time:b.time,open:ho,high:Math.max(b.high,ho,hc),low:Math.min(b.low,ho,hc),close:hc,volume:b.volume};
 haState.push({o:ho,c:hc});return d})}
 else disp=bars;
-if(priceS)priceS.setData(disp.map(function(b){return{time:b.time,open:b.open,high:b.high,low:b.low,close:b.close}}));
+if(priceS)priceS.setData(disp.map(pricePoint));
 if(volS)volS.setData(S.ind.vol?disp.map(volPoint):[]);
 indCompute();indSetData();headUpdate();legendLast();scheduleDraw()}
 function showLast(){
@@ -4727,7 +4720,7 @@ FIBLEV.forEach(function(L){var pr=a.p+(b.p-a.p)*L,y=yOf(pr);if(y==null)return;
 s+=lineEl(xa,y,xb,y,"tv-ln tv-fib"+(sel?" tv-sel":""));
 s+='<text x="'+(xa+4).toFixed(1)+'" y="'+(y-4).toFixed(1)+'" class="tv-lb">'+L+" ("+fmt(pr)+")</text>"})}
 else if(d.type==="measure"){
-var ia=idxOf.get(a.t),ib=idxOf.get(b.t),pc=a.p?(b.p-a.p)/a.p*100:0,db=(ia!=null&&ib!=null)?Math.abs(ib-ia):0;
+var pc=a.p?(b.p-a.p)/a.p*100:0,db=Math.round(Math.abs(b.t-a.t)/IVS[S.iv]);
 s='<rect x="'+Math.min(x1,x2b).toFixed(1)+'" y="'+Math.min(y1,y2).toFixed(1)+'" width="'+Math.abs(x2b-x1).toFixed(1)+'" height="'+Math.abs(y2-y1).toFixed(1)+'" class="tv-meas"/><rect x="'+Math.min(x1,x2b).toFixed(1)+'" y="'+Math.min(y1,y2).toFixed(1)+'" width="'+Math.abs(x2b-x1).toFixed(1)+'" height="'+Math.abs(y2-y1).toFixed(1)+'" class="tv-measln"/>';
 s+='<text x="'+((x1+x2b)/2).toFixed(1)+'" y="'+(Math.min(y1,y2)-8).toFixed(1)+'" text-anchor="middle" class="tv-lb">'+(pc>0?"+":"")+pc.toFixed(2)+"% · "+fmtSign(b.p-a.p)+" · "+db+"봉</text>"}}
 if(sel&&d.type!=="measure"){
@@ -4782,14 +4775,15 @@ function syncUndoBtns(){var u=gel("tv-undo"),r=gel("tv-redo");
 if(u)u.disabled=!undoSt[S.sym].length;if(r)r.disabled=!redoSt[S.sym].length}
 function setInteractionLock(on){
 if(!chart)return;
-chart.applyOptions({handleScroll:{pressedMouseMove:!on,horzTouchDrag:!on,vertTouchDrag:!on,mouseWheel:true},
-handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:{time:!on,price:!on}}})}
+chart.applyOptions({handleScroll:{mouseWheel:true,pressedMouseMove:!on,horzTouchDrag:!on,vertTouchDrag:!on},
+handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:{time:!on,price:!on},axisDoubleClickReset:{time:true,price:true}},
+kineticScroll:{touch:true,mouse:false}})}
 function setTool(t){
 S.tool=t;
 sec.querySelectorAll("[data-tool]").forEach(function(b){var k=b.getAttribute("data-tool");
 b.classList.toggle("on",k===t||(k==="magnet"&&S.magnet))});
 wrap.classList.toggle("tv-drawing",t!=="cursor"&&t!=="cross");
-wrap.classList.toggle("tv-cross",t==="cross"||t!=="cursor");
+wrap.classList.toggle("tv-cross",t!=="cursor");
 chartEl.style.cursor=(t==="cursor")?"":(t==="cross"?"crosshair":"crosshair");
 setInteractionLock(t!=="cursor"&&t!=="cross");
 scheduleDraw()}
@@ -4848,7 +4842,7 @@ scheduleDraw();return}
 if(S.tool==="cursor"&&chart&&bars.length){
 if(hoverRaf)return;hoverRaf=requestAnimationFrame(function(){hoverRaf=0;
 chartEl.style.cursor=hitTest(pos.x,pos.y)?"move":""})}});
-wrap.addEventListener("pointerup",function(e){
+function endPointer(){
 if(creating){var c=creating;creating=null;
 var x1=xOf(c.pts[0].t),x2=xOf(c.pts[1].t),y1=yOf(c.pts[0].p),y2=yOf(c.pts[1].p);
 var ok=c.type==="measure"||(x1!=null&&x2!=null&&y1!=null&&y2!=null&&(Math.abs(x2-x1)>4||Math.abs(y2-y1)>4));
@@ -4856,7 +4850,11 @@ if(ok){if(c.type==="measure"){measureD=c}
 else{pushUndo();c.id=++drawSeq;drawings().push(c);selId=c.id}}
 setTool("cursor");scheduleDraw();return}
 if(dragging){if(!dragging.moved){undoSt[S.sym].pop()}
-dragging=null;setInteractionLock(S.tool!=="cursor"&&S.tool!=="cross");syncUndoBtns();scheduleDraw()}});
+dragging=null;setInteractionLock(S.tool!=="cursor"&&S.tool!=="cross");syncUndoBtns();scheduleDraw()}}
+wrap.addEventListener("pointerup",endPointer);
+wrap.addEventListener("pointercancel",endPointer);
+window.addEventListener("pointerup",function(){if(creating||dragging)endPointer()});
+window.addEventListener("pointercancel",function(){if(creating||dragging)endPointer()});
 wrap.addEventListener("dblclick",function(e){
 var pos=evPos(e),d=hitTest(pos.x,pos.y);
 if(d&&d.type==="text"){selId=d.id;startText(null,d,pos.x,pos.y);scheduleDraw()}});
@@ -4910,13 +4908,15 @@ var k=b.getAttribute("data-ind");S.ind[k]=!S.ind[k];
 b.setAttribute("aria-pressed",String(S.ind[k]));
 var e2=b.querySelector(".tv-eye");if(e2)e2.textContent=S.ind[k]?"표시":"";
 if(k==="vol"&&volS)volS.setData(S.ind.vol?disp.map(volPoint):[]);
-if(k==="rsi"||k==="macd"||k==="stoch")syncTimeAxis();
-indSetData();legendLast()})});
+if(k==="rsi"||k==="macd"||k==="stoch")layoutPanes();
+else indSetData();
+legendLast()})});
 sec.querySelectorAll("[data-scale]").forEach(function(b){b.addEventListener("click",function(){
 S.scale=+b.getAttribute("data-scale");applyScaleMode();closePanels(null)})});
 sec.querySelectorAll("[data-tool]").forEach(function(b){b.addEventListener("click",function(){
 var k=b.getAttribute("data-tool");
-if(k==="magnet"){S.magnet=!S.magnet;b.classList.toggle("on",S.magnet);return}
+if(k==="magnet"){S.magnet=!S.magnet;b.classList.toggle("on",S.magnet);
+if(chart)chart.applyOptions({crosshair:{mode:S.magnet?1:0}});return}
 setTool(k)})});
 gel("tv-undo").addEventListener("click",doUndo);
 gel("tv-redo").addEventListener("click",doRedo);
@@ -4931,7 +4931,7 @@ retryBtn.addEventListener("click",function(){loadData()});
 gel("tv-fs-btn").addEventListener("click",function(){
 try{if(document.fullscreenElement)document.exitFullscreen();
 else if(stage.requestFullscreen)stage.requestFullscreen()}catch(e){}});
-document.addEventListener("fullscreenchange",function(){setTimeout(scheduleDraw,60)});
+document.addEventListener("fullscreenchange",function(){setTimeout(function(){sizeChartEl();positionPaneLabels();scheduleDraw()},60)});
 sec.querySelectorAll("[data-range]").forEach(function(b){b.addEventListener("click",function(){
 sec.querySelectorAll("[data-range]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});
 if(!chart||!bars.length)return;
@@ -4944,7 +4944,7 @@ var d=new Date(Date.now()+SHIFT*1000);function p2(z){return (z<10?"0":"")+z}
 clockEl.textContent=p2(d.getUTCHours())+":"+p2(d.getUTCMinutes())+":"+p2(d.getUTCSeconds())+" (UTC+9)"}
 setInterval(tickClock,1000);tickClock();
 /* ---------- 생명주기 ---------- */
-if(window.ResizeObserver)new ResizeObserver(function(){scheduleDraw()}).observe(wrap);
+if(window.ResizeObserver)new ResizeObserver(function(){positionPaneLabels();scheduleDraw()}).observe(wrap);
 if(window.MutationObserver){
 new MutationObserver(function(){
 if(!sec.hidden){if(!S.started){S.started=true;loadData()}
