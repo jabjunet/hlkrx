@@ -2633,7 +2633,7 @@ var D={
 "금":"Gold","은":"Silver","구리":"Copper","유가":"Oil","차트보기":"Show Chart","차트접기":"Hide Chart",
 "금 (GOLD)":"Gold (GOLD)","은 (SILVER)":"Silver (SILVER)","구리 (COPPER)":"Copper (COPPER)","유가 (WTI 원유)":"Oil (WTI Crude)",
 "국제 현물 · 트로이온스(oz) 기준 · gold-api.com":"Intl spot · per troy ounce (oz) · gold-api.com","국제 현물 · 파운드(lb) 기준 · gold-api.com":"Intl spot · per pound (lb) · gold-api.com","국제 선물 · 배럴(bbl) 기준 · NYMEX WTI":"Intl futures · per barrel (bbl) · NYMEX WTI",
-"국내시세 출처: 한국금거래소 고시 · 2026-11-18":"Domestic prices: Korea Gold Exchange notice · 2026-11-18","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 9월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Sep 2026 (monthly notice)",
+"국내시세 출처: 한국금거래소 고시 · 2026-11-21":"Domestic prices: Korea Gold Exchange notice · 2026-11-21","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 9월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Sep 2026 (monthly notice)",
 "유가는 국내 고시 가격이 없어 김프를 표시하지 않습니다. 국제 시세(WTI) 기준입니다.":"Oil has no domestic posted price, so no Kimchi Premium is shown. Based on international (WTI) prices.","국내 고시 기준 · 하루 1회 갱신":"Domestic official price · updated daily","국제 실시간 시세":"Global live price",
 "김프 (국내 vs 국제 환산)":"Kimchi Prem. (Domestic vs Intl)","국내 유통가 (1kg)":"Domestic price (1kg)","국제 환산가 (1kg)":"Intl converted price (1kg)","국내 살 때 (1돈)":"Domestic buy (1 don)","국내 팔 때 (1돈)":"Domestic sell (1 don)","국제 원화 환산 (1배럴)":"Intl conversion (1 barrel)","당일 고가 (1배럴)":"Day high (1 barrel)","당일 저가 (1배럴)":"Day low (1 barrel)","국내 · 1kg":"Domestic · 1kg","국제 환산 · 1kg":"Intl conv. · 1kg","국내 · 팔 때 1돈":"Domestic · Sell 1 don","국제 환산 · 1돈":"Intl conv. · 1 don",
 "김프 = (국내 가격 ÷ 국제 환산가 − 1) × 100":"Kimchi Prem. = (Domestic price ÷ Intl converted price − 1) × 100","+면 국내가 더 비싸고, −면 국내가 더 쌉니다.":"Positive means the domestic price is higher; negative means it is cheaper.",
@@ -2804,13 +2804,19 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <div class="hewbox" id="hew-box"><div id="he-list"><div class="hmvempty">불러오는 중…</div></div></div>
 <span class="heupd" id="he-upd"></span>
 <div class="hecbox" id="hec-box"><div id="hec-list">
-<div class="heghd">발표 예정 <b>6</b></div>
-<div class="herow"><div class="he1"><b>소비자신뢰지수</b><span class="heen">Consumer Confidence</span><span class="hedt">11월 25일 (수)</span><span class="hetm">00:00</span></div><span class="he2">예상 <b>92.5</b> · 이전 91.7</span></div>
-<div class="herow"><div class="he1"><b>국내총생산</b><span class="heen">GDP</span><span class="hedt">11월 25일 (수)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>3.4%</b> · 이전 1.5%</span></div>
+<div class="heghd">최근 발표 <b>3</b></div>
+<div class="herow"><div class="he1"><b>종합 PMI</b><span class="heen">Composite PMI</span><span class="hedt">11월 23일 (월)</span><span class="hetm">23:45</span></div><span class="he2">실제 <b>54.6</b> · 예상 55.6 · 이전 55.9</span></div>
+<div class="herow"><div class="he1"><b>제조업 PMI</b><span class="heen">Manufacturing PMI</span><span class="hedt">11월 23일 (월)</span><span class="hetm">23:45</span></div><span class="he2">실제 <b>54.5</b> · 예상 54.5 · 이전 54.9</span></div>
+<div class="herow"><div class="he1"><b>서비스업 PMI</b><span class="heen">Services PMI</span><span class="hedt">11월 23일 (월)</span><span class="hetm">23:45</span></div><span class="he2">실제 <b>54.7</b> · 예상 55.6 · 이전 56.1</span></div>
+<div class="heghd">발표 예정 <b>8</b></div>
+<div class="herow"><div class="he1"><b>소비자신뢰지수</b><span class="heen">Consumer Confidence</span><span class="hedt">11월 25일 (수)</span><span class="hetm">00:00</span></div><span class="he2">예상 <b>92.2</b> · 이전 91.7</span></div>
+<div class="herow"><div class="he1"><b>국내총생산</b><span class="heen">GDP</span><span class="hedt">11월 25일 (수)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>3.6%</b> · 이전 3.4%</span></div>
 <div class="herow"><div class="he1"><b>근원 PCE 물가지수 (전월비)</b><span class="heen">Core PCE</span><span class="hedt">11월 25일 (수)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>0.3%</b> · 이전 0.3%</span></div>
-<div class="herow"><div class="he1"><b>내구재 주문 (전월비)</b><span class="heen">Durable Goods</span><span class="hedt">11월 25일 (수)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>0.4%</b> · 이전 1.8%</span></div>
+<div class="herow"><div class="he1"><b>내구재 주문 (전월비)</b><span class="heen">Durable Goods</span><span class="hedt">11월 25일 (수)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>1.1%</b> · 이전 1.8%</span></div>
 <div class="herow"><div class="he1"><b>신규 실업수당 청구</b><span class="heen">Jobless Claims</span><span class="hedt">11월 25일 (수)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>20.0만</b> · 이전 20.3만</span></div>
-<div class="herow"><div class="he1"><b>신규주택판매</b><span class="heen">New Home Sales</span><span class="hedt">11월 26일 (목)</span><span class="hetm">00:00</span></div><span class="he2">예상 <b>65만</b> · 이전 67.6만</span></div>
+<div class="herow"><div class="he1"><b>신규주택판매</b><span class="heen">New Home Sales</span><span class="hedt">11월 26일 (목)</span><span class="hetm">00:00</span></div><span class="he2">예상 <b>64.5만</b> · 이전 67.6만</span></div>
+<div class="herow"><div class="he1"><b>무역수지</b><span class="heen">Trade Balance</span><span class="hedt">11월 27일 (금)</span><span class="hetm">22:30</span></div><span class="he2">예상 <b>-1310억달러</b> · 이전 -1351억달러</span></div>
+<div class="herow"><div class="he1"><b>JOLTS 구인</b><span class="heen">JOLTS</span><span class="hedt">12월 2일 (수)</span><span class="hetm">00:00</span></div><span class="he2">예상 <b>703.9만</b> · 이전 752.3만</span></div>
 </div></div>
 <span class="heupd" id="hec-upd"></span>
 </div>
@@ -5477,11 +5483,6 @@ if(!sec.hidden&&!S.started){S.started=true;loadData()}
 </div>
 <p class="fxnote">출처: 연방준비제도 이사회 Open Market Operations (목표금리 변경표) · 세인트루이스 연준 FRED DFEDTAR·DFEDTARU·DFEDTARL, 2026년 11월 15일 조회. 날짜는 FOMC 성명 발표일(결정일) 기준이고, 새 범위는 다음 날부터 시행돼요. 2008년 12월 16일 이전은 범위가 아닌 단일 목표금리예요. 긴급회의 결정(2001년 9월 17일, 2008년 1월 22일, 2020년 3월 3일·15일 등)도 포함했어요.</p>
 </div>
-<div class="ocsec" style="margin-top:18px">
-<div class="fxhd"><h2>김프원 자체 지표 차트</h2><span class="fxnext">1998년~현재 · 월평균</span></div>
-<iframe id="ocFrame" title="FOMC 금리 · 나스닥 · 하이일드 스프레드 비교 차트" data-src="https://kimpwon.com/chart-fomc-nasdaq-hy.html" style="width:100%;border:0;display:block;height:1080px" loading="lazy"></iframe>
-</div>
-<script>(function(){var sec=document.getElementById("p-usidx"),fr=document.getElementById("ocFrame"),done=false;function curTheme(){var t=document.documentElement.getAttribute("data-theme");return t==="light"?"light":"dark";}function fit(){try{var d=fr.contentDocument;if(!d||!d.body)return;var h=Math.max(d.body.scrollHeight,d.documentElement?d.documentElement.scrollHeight:0);if(h&&Math.abs(h-(parseInt(fr.style.height)||0))>2)fr.style.height=h+"px";}catch(e){}}function load(){if(done)return;done=true;fr.addEventListener("load",function(){fit();var n=0;var iv=setInterval(function(){fit();if(++n>20)clearInterval(iv);},500);});fr.src=fr.getAttribute("data-src")+"?theme="+curTheme();}if(window.MutationObserver&&sec){new MutationObserver(function(){if(!sec.hidden)load();}).observe(sec,{attributes:true,attributeFilter:["hidden"]});}if(window.MutationObserver){new MutationObserver(function(){if(done)fr.src=fr.getAttribute("data-src")+"?theme="+curTheme();}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});}window.addEventListener("resize",fit);if(sec&&!sec.hidden)load();})();</script>
 </section>
 <section id="p-market" hidden></section>
 <section id="p-kospi" hidden></section>
@@ -5523,7 +5524,7 @@ if(!sec.hidden&&!S.started){S.started=true;loadData()}
 <p class="cat-err" id="cat-err" role="alert" hidden></p>
 <div class="cat-row2"><button type="button" class="cm-cancel" id="cat-close">닫기</button></div>
 </div></div>
-<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-18), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-20 조회, KRX는 11/20 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
+<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-21), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-20 조회, KRX는 11/20 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
 <footer class="sitefoot">
 <nav aria-label="약관 및 방침"><a href="/privacy.html">개인정보처리방침</a><i aria-hidden="true">·</i><a href="/terms.html">이용약관</a><i aria-hidden="true">·</i><button type="button" id="legal-contact-open">문의</button><i aria-hidden="true">·</i><a href="guide.html">가이드</a></nav>
 <p>© 2026 kimpwon</p>
@@ -6719,10 +6720,10 @@ window.addEventListener("resize",function(){clearTimeout(ncRzT);ncRzT=setTimeout
 function gd2(n){return f(n,n<10?3:2)}
 function tvtheme(){var t=document.documentElement.getAttribute("data-theme");if(t)return t;return "dark"}
 var MT={
-au:{sym:"XAU",dec:2,usd:3906.07,buy:719000,sell:627000,tv:"TVC:GOLD",live:false,
+au:{sym:"XAU",dec:2,usd:3906.07,buy:672000,sell:582000,tv:"TVC:GOLD",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
-ag:{sym:"XAG",dec:3,usd:50.075,buy:8400,sell:7180,tv:"TVC:SILVER",live:false,
+ag:{sym:"XAG",dec:3,usd:50.075,buy:7460,sell:6370,tv:"TVC:SILVER",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
 cu:{sym:"HG",dec:4,usd:6.1885,dom:21700,tv:"TVC:COPPER",live:false,
@@ -9892,7 +9893,7 @@ setInterval(function(){if(!document.hidden)load()},3600000);
    행에 heen이 빠져 있어도 아래 HEC_ABBR 표에 있는 지표면 로드 시 자동으로 채워 넣으므로,
    데이터를 교체할 때 약어를 빠뜨려도 표에 있는 지표는 같은 방식으로 표시된다. */
 (function(){
-var HEC_BAKED_AT="2026-11-23 08:00";
+var HEC_BAKED_AT="2026-11-24 08:00";
 var e=document.getElementById("hec-upd");
 if(e){var p=HEC_BAKED_AT.split(/[- :]/);e.textContent=(+p[3])+":"+p[4]+" 갱신"}
 var HEC_ABBR=[
