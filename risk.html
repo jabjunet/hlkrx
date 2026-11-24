@@ -36,6 +36,11 @@ main{max-width:1200px;margin:0 auto;padding:18px 16px 60px}
 .cnt span{font-size:11.5px;color:var(--mut)}
 .st0{color:var(--ok)}.st1{color:var(--warn)}.st2{color:var(--org)}.st3{color:var(--up)}
 .bd0{border-left-color:var(--ok)!important}.bd1{border-left-color:var(--warn)!important}.bd2{border-left-color:var(--org)!important}.bd3{border-left-color:var(--up)!important}.bd4{border-left-color:var(--up)!important}
+.regimes{margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.rg{background:var(--sf);border-radius:14px;box-shadow:var(--shadow);padding:12px 14px}
+.rg small{display:block;color:var(--mut);font-size:11.5px;margin-bottom:4px}
+.rg b{font-size:16.5px;font-weight:800;letter-spacing:-.01em}
+.rg span{display:block;color:var(--mut);font-size:11.5px;line-height:1.45;margin-top:4px}
 .alerts{margin-top:14px;border-radius:16px;background:var(--sf);box-shadow:var(--shadow);padding:16px 20px}
 .alerts h2{font-size:16px;font-weight:800;margin-bottom:10px}
 .alerts .none{color:var(--mut);font-size:13.5px}
@@ -112,6 +117,16 @@ table.rates{min-width:0}
 <div class="cnt"><b class="st1" id="c1">–</b><span>주의</span></div>
 <div class="cnt"><b class="st0" id="c0">–</b><span>정상</span></div>
 </div>
+</div>
+
+<div class="regimes" id="regimes">
+<div class="rg"><small>신용 상태</small><b id="rg-credit">—</b><span id="rg-credit-n"></span></div>
+<div class="rg"><small>통화정책</small><b id="rg-policy">—</b><span id="rg-policy-n"></span></div>
+<div class="rg"><small>연준 대차대조표</small><b id="rg-bs">—</b><span id="rg-bs-n"></span></div>
+<div class="rg"><small>달러 유동성</small><b id="rg-liq">—</b><span id="rg-liq-n"></span></div>
+<div class="rg"><small>경기 판정</small><b id="rg-cycle">—</b><span id="rg-cycle-n"></span></div>
+<div class="rg"><small>인플레이션</small><b id="rg-infl">—</b><span id="rg-infl-n"></span></div>
+<div class="rg"><small>시장 심리</small><b id="rg-sent">—</b><span id="rg-sent-n"></span></div>
 </div>
 
 <div class="alerts" id="alertsBox">
@@ -365,6 +380,73 @@ var DEFS=[
  get:function(){ if(!GOLD||GOLD.pm==null) return null; return {v:GOLD.pm, d:"실시간"}; },
  st:function(v){return v>=-4?0:v>=-10?1:v>=-16?2:3;}, cond:"월간 −16% 시 강제매도형 하락 (유동성 경색 서명)", prox:function(v){return clamp01(-v/16);}}
 ];
+function sahmRule(){
+  var a=S["UNRATE"]; if(!a||a.length<15) return null;
+  var avgs=[]; for(var i=2;i<a.length;i++){ avgs.push((a[i].v+a[i-1].v+a[i-2].v)/3); }
+  var cur=avgs[avgs.length-1];
+  var look=avgs.slice(Math.max(0,avgs.length-13), avgs.length-1);
+  if(!look.length) return null;
+  return cur-Math.min.apply(null, look);
+}
+function cpi3mAnn(){
+  var a=S["CPIAUCSL"]; if(!a||a.length<4) return null;
+  var l=a[a.length-1].v, q=a[a.length-4].v; if(!q) return null;
+  return (Math.pow(l/q,4)-1)*100;
+}
+function walclChg(){ var a=S["WALCL"]; if(!a||a.length<13) return null; return a[a.length-1].v-a[a.length-13].v; }
+function ffChg(){ var l=last("FEDFUNDS"), q=atAgo("FEDFUNDS",90); if(!l||!q) return null; return l.v-q.v; }
+function renderRegimes(res){
+  var K={}; res.forEach(function(r){ K[r.def.key]=r; });
+  function V(k){ var r=K[k]; return (r&&r.ok)?r.v:null; }
+  function set(id, label, sev, note){ var b=gel(id), n=gel(id+"-n"); if(b){ b.textContent=label; b.className="st"+sev; } if(n) n.textContent=note||""; }
+  var hy=V("hy"), ccc=V("ccc"), nfci=V("nfci");
+  if(hy!=null){
+    if(hy>=8||(nfci!=null&&nfci>0.5)) set("rg-credit","신용경색",3,"HY "+hy.toFixed(2)+"% — 신용 공급 자체가 막히는 구간");
+    else if(hy>=5||(ccc!=null&&ccc>=14)) set("rg-credit","신용 위축",2,"HY "+hy.toFixed(2)+"%는 평온권이나 CCC "+(ccc!=null?ccc.toFixed(2):"—")+"% — 부실 꼬리부터 조여드는 중");
+    else if(hy>=3.25) set("rg-credit","신용 긴장",1,"HY "+hy.toFixed(2)+"% — 경계 구간 진입");
+    else set("rg-credit","신용 평온",0,"HY "+hy.toFixed(2)+"% — 신용 공급 원활");
+  }
+  var dff=ffChg(), ffl=last("FEDFUNDS");
+  if(dff!=null){
+    if(dff>=0.15) set("rg-policy","금리 인상 국면",1,"실효금리 3개월 +"+dff.toFixed(2)+"%p — 긴축 진행 중");
+    else if(dff<=-0.15) set("rg-policy","금리 인하 국면",0,"실효금리 3개월 "+dff.toFixed(2)+"%p — 완화 진행 중");
+    else set("rg-policy","금리 동결",1,"실효금리 "+(ffl?ffl.v.toFixed(2):"—")+"% — 방향 대기 (12월 FOMC가 분기점)");
+  }
+  var dw=walclChg();
+  if(dw!=null){
+    var dwB=dw/1000;
+    if(dwB<=-30) set("rg-bs","양적긴축 (QT)",1,"총자산 13주 "+dwB.toFixed(0)+"B — 잔고 축소 중");
+    else if(dwB>=30) set("rg-bs","양적완화 (QE)",0,"총자산 13주 +"+dwB.toFixed(0)+"B — 잔고 확대 중");
+    else set("rg-bs","잔고 유지",0,"총자산 13주 "+(dwB>0?"+":"")+dwB.toFixed(0)+"B — 증감 미미");
+  }
+  var ss=V("sofrspr"), rrp=V("rrp");
+  if(ss!=null){
+    if(ss>=10) set("rg-liq","유동성 경색",3,"SOFR−IORB +"+ss.toFixed(0)+"bp — 자금 조달 압박");
+    else if(ss>0||(rrp!=null&&rrp<10)) set("rg-liq","다소 타이트",1,"SOFR가 IORB 위 +"+ss.toFixed(0)+"bp · 역레포 완충 소진");
+    else set("rg-liq","유동성 원활",0,"SOFR−IORB "+ss.toFixed(0)+"bp — 자금시장 안정");
+  }
+  var sh=sahmRule(), ur=V("unrate");
+  if(sh!=null){
+    if(sh>=0.5) set("rg-cycle","경기침체 신호",3,"Sahm 룰 "+sh.toFixed(2)+"%p 발동 — 과거 모든 발동이 침체와 겹쳤습니다");
+    else if(sh>=0.3||(ur!=null&&ur>=4.5)) set("rg-cycle","침체 경계",1,"Sahm 룰 "+sh.toFixed(2)+"%p · 실업률 "+(ur!=null?ur.toFixed(1):"—")+"%");
+    else set("rg-cycle","침체 아님",0,"Sahm 룰 "+sh.toFixed(2)+"%p · 실업률 "+(ur!=null?ur.toFixed(1):"—")+"% — 고용이 아직 버티는 중");
+  }
+  var cy=V("cpi"), c3=cpi3mAnn();
+  if(cy!=null){
+    if(c3!=null&&c3>=4.5) set("rg-infl","인플레 재가속",2,"전년비 "+cy.toFixed(1)+"% · 최근 3개월 연율 +"+c3.toFixed(1)+"%");
+    else if(cy>=3.5) set("rg-infl","인플레 고착",2,"전년비 "+cy.toFixed(1)+"% — 목표(2%)의 두 배권");
+    else if(cy>=2.5) set("rg-infl","둔화 중 (목표 상회)",1,"전년비 "+cy.toFixed(1)+"%");
+    else set("rg-infl","물가 안정",0,"전년비 "+cy.toFixed(1)+"%");
+  }
+  var vx=V("vix");
+  if(vx!=null){
+    if(vx>=40) set("rg-sent","패닉",3,"VIX "+vx.toFixed(1));
+    else if(vx>=30) set("rg-sent","공포",2,"VIX "+vx.toFixed(1)+" — 헤지 수요 급증 구간");
+    else if(vx>=20) set("rg-sent","불안",1,"VIX "+vx.toFixed(1));
+    else if(vx>=15) set("rg-sent","평온",0,"VIX "+vx.toFixed(1));
+    else set("rg-sent","과열·안일",1,"VIX "+vx.toFixed(1)+" — 변동성 과소평가 구간");
+  }
+}
 var GRADES=[["AAA","BAMLC0A1CAAA"],["AA","BAMLC0A2CAA"],["A","BAMLC0A3CA"],["BBB","BAMLC0A4CBBB"],["BB","BAMLH0A1HYBB"],["B","BAMLH0A2HYB"],["CCC 이하","BAMLH0A3HYC"],["하이일드 전체","BAMLH0A0HYM2"]];
 var GRADE_ST={ "AAA":DEFS[5].st, "BBB":DEFS[4].st, "BB":DEFS[3].st, "B":DEFS[2].st, "CCC 이하":DEFS[1].st, "하이일드 전체":DEFS[0].st,
  "AA":function(v){return v<=0.85?0:v<=1.2?1:v<=1.7?2:3;}, "A":function(v){return v<=1.0?0:v<=1.5?1:v<=2.2?2:3;} };
@@ -423,6 +505,7 @@ function render(res){
     return '<tr><td>'+g[0]+'</td><td class="v">'+l.v.toFixed(2)+'%</td><td>'+l.d+'</td><td>'+(m?m.v.toFixed(2)+'%':"—")+'</td><td>'+(y?y.v.toFixed(2)+'%':"—")+'</td><td>'+badge(st)+'</td></tr>';
   }).join("");
   renderCards(res);
+  renderRegimes(res);
 }
 function cardHTML(name, valTxt, dateTxt, st, note){
   return '<div class="card"><small>'+name+'</small><b>'+valTxt+'</b>'+(dateTxt?'<span class="dt">'+dateTxt+'</span>':"")+(st!=null?'<span style="display:block;margin-top:6px">'+badge(st)+'</span>':"")+(note?'<span class="nt">'+note+'</span>':"")+'</div>';
