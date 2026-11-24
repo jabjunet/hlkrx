@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>위기관리신호 | 김프원</title>
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f7f8fa;--sf:#fff;--sf2:#eef1f4;--tx:#191f28;--mut:#6b7684;--bd:#e5e8eb;--up:#f04438;--dn:#1261e8;--ok:#1d9e57;--warn:#d98a06;--org:#e05e1f;--shadow:0 1px 3px rgba(20,30,50,.06)}
+html[data-theme="dark"]{--bg:#0b0d10;--sf:#14171b;--sf2:#1d2126;--tx:#eceff3;--mut:#8f99a6;--bd:#262b31;--ok:#2fbf71;--warn:#e8a33d;--org:#f07f4a;--shadow:none}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+header.top{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--bd)}
+header.top .in{max-width:1200px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;letter-spacing:-.02em}
+.logo img{width:26px;height:26px;border-radius:7px}
+.logo .won{color:var(--up)}
+.modes{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.modes a{padding:7px 11px;border-radius:9px;font-size:13.5px;font-weight:600;color:var(--mut)}
+.modes a.on{background:var(--tx);color:var(--bg)}
+main{max-width:1200px;margin:0 auto;padding:18px 16px 60px}
+.ptitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.ptitle h1{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.ptitle .sub{color:var(--mut);font-size:13px}
+.ptitle .sp{flex:1}
+.rfbtn{border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:9px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer}
+.verdict{margin-top:14px;border-radius:16px;padding:18px 20px;background:var(--sf);box-shadow:var(--shadow);border-left:6px solid var(--ok);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.verdict .big{font-size:30px;font-weight:800;letter-spacing:-.02em}
+.verdict .desc{color:var(--mut);font-size:13.5px;line-height:1.55;max-width:640px}
+.verdict .counts{display:flex;gap:8px;margin-left:auto}
+.cnt{border-radius:11px;padding:8px 12px;text-align:center;background:var(--sf2);min-width:64px}
+.cnt b{display:block;font-size:17px;font-variant-numeric:tabular-nums}
+.cnt span{font-size:11.5px;color:var(--mut)}
+.st0{color:var(--ok)}.st1{color:var(--warn)}.st2{color:var(--org)}.st3{color:var(--up)}
+.bd0{border-left-color:var(--ok)!important}.bd1{border-left-color:var(--warn)!important}.bd2{border-left-color:var(--org)!important}.bd3{border-left-color:var(--up)!important}.bd4{border-left-color:var(--up)!important}
+.alerts{margin-top:14px;border-radius:16px;background:var(--sf);box-shadow:var(--shadow);padding:16px 20px}
+.alerts h2{font-size:16px;font-weight:800;margin-bottom:10px}
+.alerts .none{color:var(--mut);font-size:13.5px}
+.alrow{display:flex;gap:10px;align-items:baseline;padding:7px 0;border-top:1px solid var(--bd);font-size:13.5px;flex-wrap:wrap}
+.alrow:first-of-type{border-top:0}
+.alrow b{font-variant-numeric:tabular-nums}
+.alrow .why{color:var(--mut)}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11.5px;font-weight:700;color:#fff;white-space:nowrap}
+.bg0{background:var(--ok)}.bg1{background:var(--warn)}.bg2{background:var(--org)}.bg3{background:var(--up)}
+section.blk{margin-top:26px}
+section.blk>h2{font-size:18px;font-weight:800;letter-spacing:-.01em;margin-bottom:4px}
+section.blk>.note{color:var(--mut);font-size:12.5px;margin-bottom:12px;line-height:1.5}
+.twrap{overflow-x:auto;background:var(--sf);border-radius:14px;box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:13.5px}
+th,td{padding:10px 14px;text-align:left;border-top:1px solid var(--bd);white-space:nowrap;font-variant-numeric:tabular-nums}
+thead th{border-top:0;color:var(--mut);font-size:12px;font-weight:600}
+td.v{font-weight:700}
+td.cond{color:var(--mut);white-space:normal;min-width:220px}
+.bar{width:110px;height:6px;border-radius:3px;background:var(--sf2);overflow:hidden;display:inline-block;vertical-align:middle}
+.bar i{display:block;height:100%;border-radius:3px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.card{background:var(--sf);border-radius:14px;box-shadow:var(--shadow);padding:13px 15px}
+.card small{display:block;color:var(--mut);font-size:12px;margin-bottom:5px}
+.card b{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums}
+.card .dt{display:block;color:var(--mut);font-size:11.5px;margin-top:4px}
+.card .nt{display:block;font-size:12px;margin-top:6px;line-height:1.45;color:var(--mut)}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chartbox{background:var(--sf);border-radius:14px;box-shadow:var(--shadow);padding:14px 16px}
+.chartbox h3{font-size:14px;font-weight:700;margin-bottom:8px}
+.chartbox .cw{position:relative;height:230px}
+.snap{background:var(--sf);border-radius:14px;box-shadow:var(--shadow);padding:16px 20px;font-size:13.5px;line-height:1.65}
+.snap h3{font-size:15px;font-weight:800;margin-bottom:8px}
+.snap ul{padding-left:18px}
+.snap li{margin:3px 0}
+.snap .asof{color:var(--mut);font-size:12px;margin-top:10px}
+table.rates{min-width:0}
+.foot{margin-top:30px;color:var(--mut);font-size:12px;line-height:1.6}
+@media(max-width:760px){
+  .charts{grid-template-columns:1fr}
+  .verdict .big{font-size:24px}
+  .verdict .counts{margin-left:0}
+  header.top .in{padding:9px 12px}
+  .modes a{padding:6px 8px;font-size:12.5px}
+  main{padding:14px 12px 50px}
+  .ptitle h1{font-size:21px}
+  .chartbox .cw{height:210px}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+<a class="logo" href="index.html"><img src="icon-192.png" alt="">김프<span class="won">원</span></a>
+<nav class="modes">
+<a href="index.html">홈</a><a href="kr.html">국내주식</a><a href="us.html">미국주식</a><a href="posts.html">커뮤니티</a><a href="risk.html" class="on">위기관리신호</a>
+</nav>
+</div></header>
+<main>
+<div class="ptitle">
+<h1>위기관리신호</h1>
+<span class="sub">신용·유동성·금리·에너지·환율을 한 화면에서 — 임계값을 넘으면 신호가 자동으로 켜집니다</span>
+<span class="sp"></span>
+<span class="sub" id="upd">불러오는 중…</span>
+<button class="rfbtn" id="rfbtn" type="button">새로고침</button>
+</div>
+
+<div class="verdict bd0" id="verdict">
+<div>
+<div class="big" id="vBig">집계 중…</div>
+<div class="desc" id="vDesc">지표를 불러와 신호를 판정하고 있습니다.</div>
+</div>
+<div class="counts">
+<div class="cnt"><b class="st3" id="c3">–</b><span>위험</span></div>
+<div class="cnt"><b class="st2" id="c2">–</b><span>경고</span></div>
+<div class="cnt"><b class="st1" id="c1">–</b><span>주의</span></div>
+<div class="cnt"><b class="st0" id="c0">–</b><span>정상</span></div>
+</div>
+</div>
+
+<div class="alerts" id="alertsBox">
+<h2>🚨 발동 중인 신호 (경고 이상)</h2>
+<div id="alerts"><p class="none">집계 중…</p></div>
+</div>
+
+<section class="blk">
+<h2>트리거 감시 목록</h2>
+<p class="note">각 지표가 위험 단계로 넘어가는 조건과 현재 위치입니다. 막대는 위험 임계값 대비 현재값의 근접도입니다. 수치는 FRED(세인트루이스 연은) 최신 공시 기준이며, 지표마다 공시 시차가 있습니다.</p>
+<div class="twrap"><table>
+<thead><tr><th>지표</th><th>현재값</th><th>기준일</th><th>위험 진입 조건</th><th>근접도</th><th>상태</th></tr></thead>
+<tbody id="trigBody"><tr><td colspan="6" style="color:var(--mut)">불러오는 중…</td></tr></tbody>
+</table></div>
+</section>
+
+<section class="blk">
+<h2>달러 유동성 · 자금시장</h2>
+<p class="note">레포·역레포(ON RRP)·지급준비금·SOFR — 달러 유동성이 마르는지는 여기서 가장 먼저 드러납니다. 순유동성 = 연준 총자산 − 재무부 TGA − 역레포 잔액 (자체 계산).</p>
+<div class="cards" id="liqCards"></div>
+</section>
+
+<section class="blk">
+<h2>신용 스프레드 (등급별 OAS)</h2>
+<p class="note">ICE BofA 옵션조정스프레드. 우량 등급이 평온한데 최하위 등급만 벌어지는 '분화'는 사이클 후반의 전형적인 전조입니다. (FRED 공시 정책상 최근 약 3년 구간만 제공됩니다)</p>
+<div class="twrap"><table>
+<thead><tr><th>등급</th><th>스프레드</th><th>기준일</th><th>1개월 전</th><th>1년 전</th><th>상태</th></tr></thead>
+<tbody id="credBody"><tr><td colspan="6" style="color:var(--mut)">불러오는 중…</td></tr></tbody>
+</table></div>
+</section>
+
+<section class="blk">
+<h2>차트</h2>
+<div class="charts">
+<div class="chartbox"><h3>하이일드 OAS 추이 (%, 점선 = 위험 진입 4.5%)</h3><div class="cw"><canvas id="chHy"></canvas></div></div>
+<div class="chartbox"><h3>순유동성 추이 (조 달러)</h3><div class="cw"><canvas id="chNl"></canvas></div></div>
+<div class="chartbox"><h3>SOFR − IORB (bp, 0 위로 벌어지면 자금 압박)</h3><div class="cw"><canvas id="chSofr"></canvas></div></div>
+<div class="chartbox"><h3>등급별 스프레드 (현재값, %)</h3><div class="cw"><canvas id="chGrade"></canvas></div></div>
+</div>
+</section>
+
+<section class="blk">
+<h2>금리 · 물가 · 실물</h2>
+<div class="cards" id="rateCards"></div>
+</section>
+
+<section class="blk">
+<h2>에너지 · 환율 · 금</h2>
+<div class="cards" id="fxCards"></div>
+</section>
+
+<section class="blk">
+<h2>기업 CDS 위험군 (스냅샷)</h2>
+<div class="snap">
+<ul>
+<li><b>AI 신용 복합체</b> — Barclays 추적 AI 10개 기업 바스켓의 CDS 프리미엄이 CDX IG 대비 <b>+76bp</b> (6개월 전 +10bp). AI 기업의 CDS–채권 베이시스가 양(+)으로 전환 — 현물보다 CDS로 먼저 헤지하는 수요가 몰리고 있다는 뜻입니다.</li>
+<li><b>오라클</b> 5년 CDS <b>327.9bp</b> (1년 전 80bp 미만) · <b>코어위브</b>는 5년 내 부도확률 65% 이상을 가격에 반영 (upfront 15.5pt) · <b>인텔</b> 123.5bp · <b>브로드컴</b> 175.4bp — 반도체 CDS 바스켓은 8월 이후 두 배.</li>
+<li><b>공급 압력</b> — 하이퍼스케일러 등 채권 발행: 2024년 약 $200억 → 2026년 현재 $2,560억.</li>
+<li>아직 전염은 아닙니다 — 같은 기간 Ford·GM 등 전통 기업의 CDS는 오히려 축소됐습니다. 감시 포인트는 AI군에 갇힌 스트레스가 지수 전체로 번지는지입니다.</li>
+</ul>
+<p class="asof">기준: 2026-11-24 진단 (Barclays·Goldman Sachs 집계 보도). CDS는 무료 실시간 공개 소스가 없어 스냅샷으로 표시합니다. <span class="badge bg2">경고</span></p>
+</div>
+</section>
+
+<section class="blk">
+<h2>각국 정책금리 · 국가신용 (스냅샷)</h2>
+<div class="twrap"><table class="rates">
+<thead><tr><th>중앙은행</th><th>정책금리</th><th>최근 결정</th><th>방향</th></tr></thead>
+<tbody>
+<tr><td>미국 연준</td><td class="v">3.75–4.00%</td><td>10월 동결 (반대 2표는 인상 선호)</td><td>12월 인상 시사</td></tr>
+<tr><td>유럽 ECB (예금금리)</td><td class="v">2.50%</td><td>10월 동결</td><td>12월 인상 컨센서스</td></tr>
+<tr><td>영국 영란은행</td><td class="v">4.00%</td><td>11/5 인상</td><td>긴축</td></tr>
+<tr><td>일본은행</td><td class="v">1.25%</td><td>10월 동결</td><td>12월 1.50% 인상 전망 우세</td></tr>
+<tr><td>캐나다은행</td><td class="v">2.50%</td><td>10월 인상</td><td>긴축</td></tr>
+<tr><td>호주 RBA</td><td class="v">4.85%</td><td>11월 인상 (12개월 +125bp)</td><td>긴축</td></tr>
+<tr><td>한국은행</td><td class="v">3.00%</td><td>10월 동결</td><td>11/26 결정</td></tr>
+<tr><td>중국 인민은행 (1년 LPR)</td><td class="v">3.00%</td><td>동결 지속</td><td>완화 편향 (유일)</td></tr>
+</tbody></table></div>
+<div class="snap" style="margin-top:12px">
+<ul>
+<li><b>국가신용</b> — 미국은 S&amp;P AA+ · Fitch AA+ · Moody's Aa1으로 3사 모두 최고등급 상실이 고착 (전망은 안정적). S&amp;P 기준 AAA 클럽은 11개국. 프랑스는 Fitch·S&amp;P에서 A+로 강등, Moody's 전망 부정적. 무디스의 2026년 글로벌 국가신용 전망은 '부정적'.</li>
+<li><b>부동산</b> — 미국은 모기지 7%대에서 가격이 조정되지 않은 채 거래만 얼어붙은 동결형 침체. 중국은 6년차 구조 침체 (부동산 개발 투자 2026년 1–9월 −20%, Vanke 구조조정, 상장 개발사 43곳 디폴트).</li>
+</ul>
+<p class="asof">기준: 2026-11-23~24 (BIS 집계·각국 중앙은행·신용평가사 발표). <span class="badge bg1">주의</span></p>
+</div>
+</section>
+
+<section class="blk">
+<h2>오늘의 종합 해석</h2>
+<div class="snap">
+<p><b>레벨은 평온하고, 꼬리와 속도가 위험하다.</b> 하이일드 전체 스프레드는 장기 중앙값 아래에 있고 고용은 아직 버티지만, CCC 스프레드의 22개월 연속 악화, AI 신용군의 CDS 기록적 확대, 중국을 제외한 전 세계 동시 긴축과 미국 장기금리 5%대, 인플레 재가속이 겹친 국면입니다. 2020년과 결정적으로 다른 점은 인플레이션 때문에 위기 시 중앙은행의 구제 여력이 얇다는 것입니다 — '연준 풋'의 행사가격이 과거보다 훨씬 낮아졌습니다.</p>
+<p class="asof">이 해석은 2026-11-24 종합 진단 기준입니다. 위 실시간 지표들이 임계값을 넘으면 상단 판정과 발동 신호가 자동으로 바뀝니다.</p>
+</div>
+</section>
+
+<p class="foot">데이터 출처: FRED (세인트루이스 연은 — ICE BofA OAS 등급별, 국채·모기지 금리, 환율, CPI, 실업률, NFCI, Case-Shiller, SOFR, IORB, ON RRP, 지급준비금, 연준 대차대조표), TradingView 스캐너 (금 현물). 상태 판정은 김프원이 정한 임계값 기준이며, 투자 권유가 아닙니다. 지표별 공시 시차로 기준일이 서로 다를 수 있습니다.</p>
+</main>
+<script>
+(function(){var q=new URLSearchParams(location.search).get("theme");var t=q||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);})();
+/* ---------- 프록시 경주 fetch (본 사이트와 같은 방식) ---------- */
+function fetchTO(url, ms){
+  return new Promise(function(res, rej){
+    var ctl = ("AbortController" in window) ? new AbortController() : null;
+    var to = setTimeout(function(){ if(ctl) ctl.abort(); rej(new Error("timeout")); }, ms||8000);
+    fetch(url, ctl?{signal:ctl.signal}:{}).then(function(r){ clearTimeout(to); if(!r.ok) throw new Error("http "+r.status); return r.text(); }).then(res).catch(function(e){ clearTimeout(to); rej(e); });
+  });
+}
+function raceText(url, ms){
+  var routes = [
+    function(u){ return "https://api.cors.lol/?url="+encodeURIComponent(u); },
+    function(u){ return "https://api.allorigins.win/raw?url="+encodeURIComponent(u); },
+    function(u){ return "https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(u); },
+    function(u){ return "https://corsproxy.io/?url="+encodeURIComponent(u); },
+    function(u){ return u; }
+  ];
+  return new Promise(function(res, rej){
+    var left = routes.length, done = false;
+    routes.forEach(function(mk){
+      fetchTO(mk(url), ms||9000).then(function(t){ if(!done){ done=true; res(t); } })
+      .catch(function(){ if(--left===0 && !done) rej(new Error("all routes failed")); });
+    });
+  });
+}
+/* ---------- FRED 데이터 ---------- */
+var S = {};
+var DAILY = ["BAMLH0A0HYM2","BAMLC0A1CAAA","BAMLC0A2CAA","BAMLC0A3CA","BAMLC0A4CBBB","BAMLH0A1HYBB","BAMLH0A2HYB","BAMLH0A3HYC","SOFR","IORB","RRPONTSYD","DGS2","DGS10","DGS30","T10Y2Y","VIXCLS","DCOILBRICO","DCOILWTICO","DJFUELUSGULF","DTWEXBGS","DEXUSEU","DEXJPUS","DEXCHUS"];
+var WEEKLY = ["WRESBAL","WALCL","WTREGEN","NFCI","MORTGAGE30US"];
+var MONTHLY = [["FEDFUNDS","2024-06-01"],["CPIAUCSL","2022-06-01"],["UNRATE","2024-06-01"],["CSUSHPISA","2023-06-01"]];
+function parseCsv(t){
+  var out=[], lines=t.split(/\r?\n/);
+  for(var i=1;i<lines.length;i++){
+    var p=lines[i].split(","); if(p.length<2) continue;
+    var v=parseFloat(p[1]); if(isNaN(v)) continue;
+    out.push({d:p[0], v:v});
+  }
+  return out;
+}
+function loadSeries(id, cosd){
+  var url="https://fred.stlouisfed.org/graph/fredgraph.csv?id="+id+"&cosd="+cosd;
+  return raceText(url, 12000).then(function(t){ S[id]=parseCsv(t); }).catch(function(){ S[id]=[]; });
+}
+function last(id){ var a=S[id]; return (a&&a.length)?a[a.length-1]:null; }
+function atAgo(id, days){
+  var a=S[id]; if(!a||!a.length) return null;
+  var tgt=new Date(a[a.length-1].d+"T00:00:00"); tgt.setDate(tgt.getDate()-days);
+  var out=null;
+  for(var i=0;i<a.length;i++){ if(new Date(a[i].d+"T00:00:00")<=tgt) out=a[i]; else break; }
+  return out;
+}
+function lastLe(id, dateStr){
+  var a=S[id]; if(!a||!a.length) return null;
+  var out=null;
+  for(var i=0;i<a.length;i++){ if(a[i].d<=dateStr) out=a[i]; else break; }
+  return out;
+}
+/* ---------- 파생 지표 ---------- */
+function yoy(id){ var l=last(id), p=atAgo(id,365); if(!l||!p||!p.v) return null; return {v:(l.v/p.v-1)*100, d:l.d}; }
+function sofrSpread(){
+  var a=S["SOFR"], b=S["IORB"]; if(!a||!b) return null;
+  var map={}; b.forEach(function(o){ map[o.d]=o.v; });
+  var rows=[];
+  a.forEach(function(o){ if(map[o.d]!=null) rows.push({d:o.d, v:(o.v-map[o.d])*100}); });
+  return rows.length?rows:null;
+}
+function netLiq(){
+  var w=S["WALCL"]; if(!w||!w.length) return null;
+  var rows=[];
+  w.forEach(function(o){
+    var tg=lastLe("WTREGEN", o.d), rp=lastLe("RRPONTSYD", o.d);
+    if(tg&&rp) rows.push({d:o.d, v:o.v/1000 - tg.v/1000 - rp.v});
+  });
+  return rows.length?rows:null;
+}
+var GOLD = null;
+function loadGold(){
+  return fetch("https://scanner.tradingview.com/global/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:["TVC:GOLD"]},columns:["close","change","Perf.W","Perf.1M"]})})
+  .then(function(r){ return r.json(); }).then(function(j){
+    var d=(j.data||[])[0]; if(!d||!d.d) return;
+    GOLD={close:d.d[0], chg:d.d[1], pw:d.d[2], pm:d.d[3]};
+  }).catch(function(){});
+}
+</script>
+<script>
+/* ---------- 신호 판정 ---------- */
+var STN=["정상","주의","경고","위험"];
+function fPct(v){ return v.toFixed(2)+"%"; }
+function fP1(v){ return v.toFixed(1)+"%"; }
+function fUSD(v){ return "$"+v.toFixed(2); }
+function clamp01(x){ return x<0?0:(x>1?1:x); }
+function fredGet(id){ return function(){ var l=last(id); return l?{v:l.v,d:l.d}:null; }; }
+
+var DEFS=[
+/* 신용 */
+{key:"hy", grp:"credit", name:"하이일드 OAS", fmt:fPct, get:fredGet("BAMLH0A0HYM2"),
+ st:function(v){return v<=3.25?0:v<=4?1:v<=5?2:3;}, cond:"4.50% 돌파 시 위험 단계 진입 (5.0%는 위기권)", prox:function(v){return clamp01(v/5);}},
+{key:"ccc", grp:"credit", name:"CCC 스프레드", fmt:fPct, get:fredGet("BAMLH0A3HYC"),
+ st:function(v){return v<=8?0:v<=11?1:v<=14?2:3;}, cond:"14% 상회는 이미 위험 구간 — 16%면 부실 연쇄 단계", prox:function(v){return clamp01(v/14);}},
+{key:"b", grp:"credit", name:"B등급 스프레드", fmt:fPct, get:fredGet("BAMLH0A2HYB"),
+ st:function(v){return v<=3?0:v<=4?1:v<=5.5?2:3;}, cond:"5.5% 상회 시 위험 구간", prox:function(v){return clamp01(v/5.5);}},
+{key:"bb", grp:"credit", name:"BB 스프레드", fmt:fPct, get:fredGet("BAMLH0A1HYBB"),
+ st:function(v){return v<=1.75?0:v<=2.5?1:v<=3.5?2:3;}, cond:"3.5% 상회 시 위험 구간", prox:function(v){return clamp01(v/3.5);}},
+{key:"bbb", grp:"credit", name:"BBB 스프레드", fmt:fPct, get:fredGet("BAMLC0A4CBBB"),
+ st:function(v){return v<=1.25?0:v<=1.75?1:v<=2.5?2:3;}, cond:"2.5% 상회 시 투자등급까지 확산", prox:function(v){return clamp01(v/2.5);}},
+{key:"aaa", grp:"credit", name:"AAA 스프레드", fmt:fPct, get:fredGet("BAMLC0A1CAAA"),
+ st:function(v){return v<=0.6?0:v<=0.9?1:v<=1.3?2:3;}, cond:"1.3% 상회 시 우량 신용 붕괴 (위기 확정 신호)", prox:function(v){return clamp01(v/1.3);}},
+/* 유동성 */
+{key:"sofrspr", grp:"liq", name:"SOFR − IORB", fmt:function(v){return (v>0?"+":"")+v.toFixed(0)+"bp";},
+ get:function(){ var r=sofrSpread(); if(!r) return null; var l=r[r.length-1]; return {v:l.v,d:l.d}; },
+ st:function(v){return v<=0?0:v<=5?1:v<=10?2:3;}, cond:"+10bp 상회 시 자금시장 스트레스 (분기말 일시 급등 제외)", prox:function(v){return clamp01(v/10);}},
+{key:"rrp", grp:"liq", name:"역레포(ON RRP) 잔액", fmt:function(v){return "$"+(v<10?v.toFixed(1):v.toFixed(0))+"B";}, get:fredGet("RRPONTSYD"),
+ st:function(v){return v>=100?0:1;}, cond:"완충이 소진되면 QT·TGA 변동이 지급준비금을 직접 침식", prox:function(v){return clamp01(1-v/300);}},
+{key:"resv", grp:"liq", name:"지급준비금", fmt:function(v){return "$"+(v/1e6).toFixed(2)+"T";}, get:fredGet("WRESBAL"),
+ st:function(v){var t=v/1e6; return t>=3.1?0:t>=2.9?1:t>=2.7?2:3;}, cond:"$2.9조 하회 시 유동성 경계 구간", prox:function(v){return clamp01((3.4-v/1e6)/0.7);}},
+{key:"netliq", grp:"liq", name:"순유동성 13주 변화", fmt:function(v){return (v>0?"+":"−")+"$"+Math.abs(v).toFixed(0)+"B";},
+ get:function(){ var r=netLiq(); if(!r||r.length<13) return null; var l=r[r.length-1], p=r[r.length-13]; return {v:(l.v-p.v), d:l.d}; },
+ st:function(v){return v>=-50?0:v>=-150?1:v>=-300?2:3;}, cond:"13주 −$3,000억 이상 감소 시 유동성 축소 경보", prox:function(v){return clamp01(-v/300);}},
+/* 금리·물가·실물 */
+{key:"us10y", grp:"rate", name:"미국 10년물 금리", fmt:fPct, get:fredGet("DGS10"),
+ st:function(v){return v<=4.5?0:v<=5?1:v<=5.31?2:3;}, cond:"10월 고점 5.31% 재돌파 시 위험 단계", prox:function(v){return clamp01(v/5.31);}},
+{key:"curve", grp:"rate", name:"장단기 금리차 (10Y−2Y)", fmt:function(v){return (v>0?"+":"")+Math.round(v*100)+"bp";}, get:fredGet("T10Y2Y"),
+ st:function(v){return v>=0.5?0:v>=0?1:v>=-0.25?2:3;}, cond:"재역전 시 경기침체 신호", prox:function(v){return clamp01((0.75-v)/1.0);}},
+{key:"mtg", grp:"rate", name:"모기지 30년 금리", fmt:fPct, get:fredGet("MORTGAGE30US"),
+ st:function(v){return v<=6.5?0:v<=7?1:v<=7.5?2:3;}, cond:"7.5% 상회 시 주택 시장 경색", prox:function(v){return clamp01(v/7.5);}},
+{key:"cpi", grp:"rate", name:"CPI (전년비)", fmt:fP1,
+ get:function(){ return yoy("CPIAUCSL"); },
+ st:function(v){return v<=2.5?0:v<=3.5?1:v<=4.5?2:3;}, cond:"4.5% 상회 시 인플레 재폭발 — 구제 여력 소멸", prox:function(v){return clamp01(v/4.5);}},
+{key:"vix", grp:"rate", name:"VIX", fmt:function(v){return v.toFixed(1);}, get:fredGet("VIXCLS"),
+ st:function(v){return v<=20?0:v<=30?1:v<=40?2:3;}, cond:"40 상회 시 패닉 구간", prox:function(v){return clamp01(v/40);}},
+{key:"unrate", grp:"rate", name:"실업률", fmt:fP1, get:fredGet("UNRATE"),
+ st:function(v){return v<=4.3?0:v<=4.7?1:v<=5.2?2:3;}, cond:"4.5% 재돌파 또는 Sahm 룰 발동 시 실물 전염 확인", prox:function(v){return clamp01(v/5.2);}},
+{key:"nfci", grp:"rate", name:"금융여건지수 (NFCI)", fmt:function(v){return v.toFixed(2);}, get:fredGet("NFCI"),
+ st:function(v){return v<=-0.2?0:v<=0?1:v<=0.3?2:3;}, cond:"0 상회 시 금융여건 긴축 전환", prox:function(v){return clamp01((v+0.7)/1.0);}},
+/* 에너지·환율·금 */
+{key:"brent", grp:"fx", name:"브렌트유", fmt:fUSD, get:fredGet("DCOILBRICO"),
+ st:function(v){return v>110?2:v>100?1:v<50?2:v<60?1:0;}, cond:"$110 재돌파(인플레 충격) 또는 $70 붕괴(수요 붕괴)", prox:function(v){ if(v>100)return clamp01(0.6+(v-100)/25); if(v<70)return clamp01(0.6+(70-v)/50); return clamp01(v/110*0.6); }},
+{key:"bwti", grp:"fx", name:"브렌트 − WTI 스프레드", fmt:function(v){return "$"+v.toFixed(1);},
+ get:function(){ var b=last("DCOILBRICO"), w=last("DCOILWTICO"); if(!b||!w) return null; return {v:b.v-w.v, d:b.d}; },
+ st:function(v){return v<=5?0:v<=7.5?1:v<=10?2:3;}, cond:"$10 상회 시 수급·지정학 괴리 심화 (평시 $3~5)", prox:function(v){return clamp01(v/10);}},
+{key:"jet", grp:"fx", name:"항공유 (전년비)", fmt:function(v){return (v>0?"+":"")+v.toFixed(0)+"%";},
+ get:function(){ return yoy("DJFUELUSGULF"); },
+ st:function(v){return v<=15?0:v<=35?1:v<=70?2:3;}, cond:"전년비 +70% 상회 시 운송·물류 비용 충격", prox:function(v){return clamp01(v/70);}},
+{key:"dxy", grp:"fx", name:"달러 광역지수", fmt:function(v){return v.toFixed(1);}, get:fredGet("DTWEXBGS"),
+ st:function(v){return v<=120?0:v<=125?1:v<=130?2:3;}, cond:"125 상회 시 달러 강세 경보 (신흥국 압박)", prox:function(v){return clamp01(v/125);}},
+{key:"eur", grp:"fx", name:"유로 (EUR/USD)", fmt:function(v){return v.toFixed(3);}, get:fredGet("DEXUSEU"),
+ st:function(v){return v>=1.05?0:v>=1.0?1:v>=0.95?2:3;}, cond:"패리티(1.00) 붕괴 시 유로존 스트레스", prox:function(v){return clamp01((1.2-v)/0.25);}},
+{key:"jpy", grp:"fx", name:"엔 (USD/JPY)", fmt:function(v){return v.toFixed(1);}, get:fredGet("DEXJPUS"),
+ st:function(v){return v<=150?0:v<=160?1:v<=165?2:3;}, cond:"165 돌파 시 개입·캐리 청산 위험", prox:function(v){return clamp01(v/165);}},
+{key:"cny", grp:"fx", name:"위안 (USD/CNY)", fmt:function(v){return v.toFixed(2);}, get:fredGet("DEXCHUS"),
+ st:function(v){return v<=7.2?0:v<=7.35?1:v<=7.5?2:3;}, cond:"7.35 상회 시 위안 약세 경보", prox:function(v){return clamp01(v/7.35);}},
+{key:"gold", grp:"fx", name:"금 (월간 변동)", fmt:function(v){return (v>0?"+":"")+v.toFixed(1)+"%";},
+ get:function(){ if(!GOLD||GOLD.pm==null) return null; return {v:GOLD.pm, d:"실시간"}; },
+ st:function(v){return v>=-4?0:v>=-10?1:v>=-16?2:3;}, cond:"월간 −16% 시 강제매도형 하락 (유동성 경색 서명)", prox:function(v){return clamp01(-v/16);}}
+];
+var GRADES=[["AAA","BAMLC0A1CAAA"],["AA","BAMLC0A2CAA"],["A","BAMLC0A3CA"],["BBB","BAMLC0A4CBBB"],["BB","BAMLH0A1HYBB"],["B","BAMLH0A2HYB"],["CCC 이하","BAMLH0A3HYC"],["하이일드 전체","BAMLH0A0HYM2"]];
+var GRADE_ST={ "AAA":DEFS[5].st, "BBB":DEFS[4].st, "BB":DEFS[3].st, "B":DEFS[2].st, "CCC 이하":DEFS[1].st, "하이일드 전체":DEFS[0].st,
+ "AA":function(v){return v<=0.85?0:v<=1.2?1:v<=1.7?2:3;}, "A":function(v){return v<=1.0?0:v<=1.5?1:v<=2.2?2:3;} };
+function badge(st){ return '<span class="badge bg'+st+'">'+STN[st]+'</span>'; }
+function gel(id){ return document.getElementById(id); }
+function evalAll(){
+  var res=[];
+  DEFS.forEach(function(df){
+    var g=null; try{ g=df.get(); }catch(e){}
+    if(!g||g.v==null||isNaN(g.v)){ res.push({def:df, ok:false}); return; }
+    res.push({def:df, ok:true, v:g.v, d:g.d, st:df.st(g.v), prox:df.prox?df.prox(g.v):0});
+  });
+  return res;
+}
+var VDESC=[
+ "주요 지표가 모두 안정 구간에 있습니다.",
+ "일부 지표에 초기 변화가 보입니다. 추세를 지켜볼 단계입니다.",
+ "여러 지표가 주의 구간에 들어와 있습니다. 임계값에 접근하는 속도를 확인할 단계입니다.",
+ "위험의 꼬리가 먼저 무너지고 우량 지표가 뒤따라 흔들릴 수 있는 국면입니다. 트리거 중 첫 번째로 깨지는 항목이 국면 전환 신호입니다.",
+ "복수 지표가 위험 구간에 진입했습니다. 과거 위기 국면과 겹치는 신호가 다수 켜진 상태입니다."
+];
+function render(res){
+  var cnt=[0,0,0,0];
+  res.forEach(function(r){ if(r.ok) cnt[r.st]++; });
+  var stage = (cnt[3]>=3||(cnt[3]>=2&&cnt[2]>=2))?4 : (cnt[3]>=1||cnt[2]>=3)?3 : (cnt[2]>=1||cnt[1]>=4)?2 : (cnt[1]>=1)?1 : 0;
+  var cidx=[0,1,1,2,3][stage]; /* 5단계 판정 → 4색 (정상·관심/주의·경고·위험) */
+  gel("verdict").className="verdict bd"+cidx;
+  gel("vBig").textContent="종합 판정: "+["정상","관심","주의","경고","위험"][stage];
+  gel("vBig").className="big st"+cidx;
+  gel("vDesc").textContent=VDESC[stage];
+  gel("c0").textContent=cnt[0]; gel("c1").textContent=cnt[1]; gel("c2").textContent=cnt[2]; gel("c3").textContent=cnt[3];
+  /* 발동 신호 */
+  var hot=res.filter(function(r){ return r.ok&&r.st>=2; }).sort(function(a,b){ return b.st-a.st||b.prox-a.prox; });
+  if(!hot.length){ gel("alerts").innerHTML='<p class="none">현재 발동 중인 경고 이상 신호가 없습니다.</p>'; }
+  else{
+    gel("alerts").innerHTML=hot.map(function(r){
+      return '<div class="alrow">'+badge(r.st)+'<b>'+r.def.name+' '+r.def.fmt(r.v)+'</b><span class="why">'+r.def.cond+'</span></div>';
+    }).join("");
+  }
+  /* 트리거 표 */
+  var sorted=res.slice().sort(function(a,b){
+    if(a.ok!==b.ok) return a.ok?-1:1;
+    if(!a.ok||!b.ok) return 0;
+    return b.st-a.st||b.prox-a.prox;
+  });
+  gel("trigBody").innerHTML=sorted.map(function(r){
+    if(!r.ok) return '<tr><td>'+r.def.name+'</td><td class="v">—</td><td>—</td><td class="cond">'+r.def.cond+'</td><td></td><td><span class="badge" style="background:var(--mut)">확인불가</span></td></tr>';
+    var col=["var(--ok)","var(--warn)","var(--org)","var(--up)"][r.st];
+    return '<tr><td>'+r.def.name+'</td><td class="v">'+r.def.fmt(r.v)+'</td><td>'+r.d+'</td><td class="cond">'+r.def.cond+'</td><td><span class="bar"><i style="width:'+Math.round(r.prox*100)+'%;background:'+col+'"></i></span></td><td>'+badge(r.st)+'</td></tr>';
+  }).join("");
+  /* 신용 등급 표 */
+  gel("credBody").innerHTML=GRADES.map(function(g){
+    var l=last(g[1]), m=atAgo(g[1],30), y=atAgo(g[1],365);
+    if(!l) return '<tr><td>'+g[0]+'</td><td colspan="5" style="color:var(--mut)">—</td></tr>';
+    var stf=GRADE_ST[g[0]]; var st=stf?stf(l.v):0;
+    return '<tr><td>'+g[0]+'</td><td class="v">'+l.v.toFixed(2)+'%</td><td>'+l.d+'</td><td>'+(m?m.v.toFixed(2)+'%':"—")+'</td><td>'+(y?y.v.toFixed(2)+'%':"—")+'</td><td>'+badge(st)+'</td></tr>';
+  }).join("");
+  renderCards(res);
+}
+function cardHTML(name, valTxt, dateTxt, st, note){
+  return '<div class="card"><small>'+name+'</small><b>'+valTxt+'</b>'+(dateTxt?'<span class="dt">'+dateTxt+'</span>':"")+(st!=null?'<span style="display:block;margin-top:6px">'+badge(st)+'</span>':"")+(note?'<span class="nt">'+note+'</span>':"")+'</div>';
+}
+function renderCards(res){
+  var byKey={}; res.forEach(function(r){ byKey[r.def.key]=r; });
+  function fromDef(key, note){
+    var r=byKey[key]; if(!r) return "";
+    if(!r.ok) return cardHTML(r.def.name,"—","",null,note);
+    return cardHTML(r.def.name, r.def.fmt(r.v), r.d, r.st, note);
+  }
+  function plain(name, id, fmt, note){
+    var l=last(id); if(!l) return cardHTML(name,"—","",null,note);
+    return cardHTML(name, fmt(l.v), l.d, null, note);
+  }
+  var nl=netLiq(), nlLast=nl?nl[nl.length-1]:null;
+  gel("liqCards").innerHTML =
+    plain("SOFR (담보부 익일물)", "SOFR", fPct, "레포 시장의 기준 금리") +
+    plain("IORB (지준 부리율)", "IORB", fPct, "연준이 지급준비금에 주는 이자") +
+    fromDef("sofrspr","SOFR가 IORB 위로 벌어지면 자금 압박") +
+    fromDef("rrp","연준 역레포 잔액 — 유동성 완충") +
+    fromDef("resv","은행 지급준비금 잔액") +
+    plain("연준 총자산", "WALCL", function(v){return "$"+(v/1e6).toFixed(2)+"T";}, "대차대조표 규모 (QT 진행 중)") +
+    plain("재무부 TGA", "WTREGEN", function(v){return "$"+(v/1e3).toFixed(0)+"B";}, "정부 당좌 잔액 — 늘면 유동성 흡수") +
+    (nlLast?cardHTML("순유동성", "$"+(nlLast.v/1000).toFixed(2)+"T", nlLast.d, null, "총자산 − TGA − 역레포 (자체 계산)"):"");
+  var csY=yoy("CSUSHPISA");
+  gel("rateCards").innerHTML =
+    plain("기준금리 (실효)", "FEDFUNDS", fPct, "연방기금금리 월평균") +
+    plain("미국 2년물", "DGS2", fPct, "") +
+    fromDef("us10y","") + fromDef("curve","") + fromDef("mtg","2001년 이후 최고권") +
+    fromDef("cpi","최근 3개월 연율로는 이보다 높게 가속 중") +
+    fromDef("vix","") + fromDef("unrate","후행 지표 — 아직 실물 전염 미확인") + fromDef("nfci","0 아래면 평균보다 완화적") +
+    (csY?cardHTML("주택가격 Case-Shiller (전년비)", (csY.v>0?"+":"")+csY.v.toFixed(1)+"%", csY.d, null, "가격은 신고가 — 거래 동결형 침체"):"");
+  gel("fxCards").innerHTML =
+    fromDef("brent","") +
+    plain("WTI", "DCOILWTICO", fUSD, "") +
+    fromDef("bwti","평시 $3~5") +
+    (function(){ var l=last("DJFUELUSGULF"); var y=yoy("DJFUELUSGULF"); var r=byKey["jet"];
+      return cardHTML("항공유", l?("$"+l.v.toFixed(2)+"/gal"):"—", l?l.d:"", r&&r.ok?r.st:null, y?("전년비 "+(y.v>0?"+":"")+y.v.toFixed(0)+"% — 크랙 스프레드 확대"):""); })() +
+    fromDef("dxy","광역 무역가중 달러") + fromDef("eur","") + fromDef("jpy","개입 경계권 근접") + fromDef("cny","위안은 오히려 강세 — 디플레 수출과 대조") +
+    (GOLD?cardHTML("금 (TradingView 현물)", "$"+GOLD.close.toLocaleString("en-US",{maximumFractionDigits:0}), "실시간", byKey["gold"]&&byKey["gold"].ok?byKey["gold"].st:null, "주간 "+(GOLD.pw>0?"+":"")+GOLD.pw.toFixed(1)+"% · 월간 "+(GOLD.pm>0?"+":"")+GOLD.pm.toFixed(1)+"%"):"");
+}
+/* ---------- 차트 ---------- */
+var charts=[];
+function themeColors(){
+  var cs=getComputedStyle(document.documentElement);
+  return {tx:cs.getPropertyValue("--tx").trim(), mut:cs.getPropertyValue("--mut").trim(), bd:cs.getPropertyValue("--bd").trim(), up:cs.getPropertyValue("--up").trim(), dn:cs.getPropertyValue("--dn").trim(), ok:cs.getPropertyValue("--ok").trim(), warn:cs.getPropertyValue("--warn").trim(), org:cs.getPropertyValue("--org").trim()};
+}
+function mkChart(id, cfg){ var el=gel(id); if(!el||typeof Chart==="undefined") return; var c=new Chart(el.getContext("2d"), cfg); charts.push(c); }
+function buildCharts(){
+  charts.forEach(function(c){ c.destroy(); }); charts=[];
+  if(typeof Chart==="undefined") return;
+  var C=themeColors();
+  Chart.defaults.color=C.mut; Chart.defaults.borderColor=C.bd; Chart.defaults.font.family="Pretendard, sans-serif";
+  var hy=S["BAMLH0A0HYM2"]||[];
+  mkChart("chHy",{type:"line",data:{labels:hy.map(function(o){return o.d;}),datasets:[
+    {label:"HY OAS",data:hy.map(function(o){return o.v;}),borderColor:C.up,borderWidth:1.4,pointRadius:0,tension:.15},
+    {label:"위험 진입 4.5%",data:hy.map(function(){return 4.5;}),borderColor:C.mut,borderWidth:1,borderDash:[5,4],pointRadius:0}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},scales:{x:{ticks:{maxTicksLimit:6}},y:{ticks:{callback:function(v){return v+"%";}}}},plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}}}});
+  var nl=netLiq()||[];
+  mkChart("chNl",{type:"line",data:{labels:nl.map(function(o){return o.d;}),datasets:[
+    {label:"순유동성",data:nl.map(function(o){return o.v/1000;}),borderColor:C.dn,backgroundColor:C.dn+"22",fill:true,borderWidth:1.4,pointRadius:0,tension:.15}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},scales:{x:{ticks:{maxTicksLimit:6}},y:{ticks:{callback:function(v){return "$"+v.toFixed(1)+"T";}}}},plugins:{legend:{display:false}}}});
+  var ss=sofrSpread()||[]; var ss2=ss.slice(-260);
+  mkChart("chSofr",{type:"line",data:{labels:ss2.map(function(o){return o.d;}),datasets:[
+    {label:"SOFR−IORB (bp)",data:ss2.map(function(o){return Math.round(o.v);}),borderColor:C.org,borderWidth:1.4,pointRadius:0,tension:.15},
+    {label:"0",data:ss2.map(function(){return 0;}),borderColor:C.mut,borderWidth:1,borderDash:[5,4],pointRadius:0}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},scales:{x:{ticks:{maxTicksLimit:6}}},plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}}}});
+  var gl=GRADES.slice(0,7).map(function(g){ var l=last(g[1]); return {n:g[0], v:l?l.v:null, st:(GRADE_ST[g[0]]&&l)?GRADE_ST[g[0]](l.v):0}; }).filter(function(x){return x.v!=null;});
+  var cols=[C.ok,C.warn,C.org,C.up];
+  mkChart("chGrade",{type:"bar",data:{labels:gl.map(function(x){return x.n;}),datasets:[
+    {label:"OAS (%)",data:gl.map(function(x){return x.v;}),backgroundColor:gl.map(function(x){return cols[x.st];}),borderRadius:5}
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{type:"logarithmic",ticks:{callback:function(v){return v+"%";}}}},plugins:{legend:{display:false}}}});
+}
+/* ---------- 실행 ---------- */
+var loading=false;
+function loadAll(){
+  if(loading) return; loading=true;
+  gel("upd").textContent="불러오는 중…";
+  var jobs=[];
+  DAILY.forEach(function(id){ jobs.push(loadSeries(id,"2024-06-01")); });
+  WEEKLY.forEach(function(id){ jobs.push(loadSeries(id,"2024-06-01")); });
+  MONTHLY.forEach(function(m){ jobs.push(loadSeries(m[0],m[1])); });
+  jobs.push(loadGold());
+  Promise.all(jobs).then(function(){
+    var res=evalAll();
+    render(res); buildCharts();
+    var now=new Date();
+    gel("upd").textContent="마지막 갱신 "+now.toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+    loading=false;
+  }).catch(function(){ gel("upd").textContent="일부 지표를 불러오지 못했습니다"; loading=false; });
+}
+gel("rfbtn").addEventListener("click", loadAll);
+setInterval(function(){ if(!document.hidden) loadAll(); }, 300000);
+if(window.MutationObserver){ new MutationObserver(function(){ buildCharts(); }).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]}); }
+loadAll();
+</script>
+</body>
+</html>
