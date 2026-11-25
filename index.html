@@ -2116,6 +2116,38 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pa .ixt b{font-size:24px;font-weight:800}
 #pa .ixt .ixc{margin-top:9px;padding:4px 10px;font-size:13px;font-weight:800}
 }
+/* 밈 화면 아래 작은 칸 (사용자 지시): 작은 코인 칸 5개(봉크·퍼지펭귄·플로키·
+   도그위프햇·파트코인)는 전부 지우고, 그 줄에는 작은 덱스스크리너 칸 하나만
+   남겨 부스트 상위 10개 토큰을 실시간으로 보여준다 */
+#cxv-meme .mm2row{display:flex;gap:6px;align-items:stretch}
+#cxv-meme .dexbox{flex:1 1 auto;min-width:0;background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;box-sizing:border-box}
+#cxv-meme .dexhd{display:flex;align-items:baseline;gap:8px;min-width:0}
+#cxv-meme .dexti{font-size:13px;font-weight:800;color:var(--tx);white-space:nowrap}
+#cxv-meme .dexsub{font-size:11px;color:var(--mut);white-space:nowrap}
+#cxv-meme .dexgo{margin-left:auto;flex:none;font-size:11px;font-weight:700;color:var(--mut);text-decoration:none;white-space:nowrap}
+#cxv-meme .dexgo:hover{color:var(--tx)}
+#cxv-meme .dexlist{margin-top:4px;max-height:226px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#cxv-meme .dexlist::-webkit-scrollbar{display:none}
+#cxv-meme .dexrow{display:flex;align-items:center;gap:8px;padding:5px 2px;border-top:1px solid var(--bd);text-decoration:none;color:var(--tx);min-width:0}
+#cxv-meme .dexrow:hover{background:var(--sf2)}
+#cxv-meme .dexrk{flex:none;width:16px;font-size:11.5px;font-weight:700;color:var(--mut);text-align:center}
+#cxv-meme .dexwho{flex:1 1 auto;min-width:0;display:flex;align-items:baseline;gap:6px}
+#cxv-meme .dexsym{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+#cxv-meme .dexchain{flex:none;font-size:10px;color:var(--mut);white-space:nowrap}
+#cxv-meme .dexpr{flex:none;font-size:12px;font-weight:600;white-space:nowrap}
+#cxv-meme .dexch{flex:none;min-width:58px;text-align:right;font-size:11.5px;font-weight:700;white-space:nowrap}
+#cxv-meme .dexch.up{color:var(--up)}
+#cxv-meme .dexch.dn{color:var(--dn)}
+#cxv-meme .dexempty{padding:8px 2px;font-size:12px;color:var(--mut);border-top:1px solid var(--bd)}
+#cxv-meme .dexretry{margin-left:6px;min-height:28px;padding:3px 10px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:7px;font:inherit;font-size:11.5px;font-weight:600;cursor:pointer}
+#cxv-meme .dexft{margin-top:5px;font-size:10.5px;color:var(--mut);line-height:1.4}
+@media(max-width:720px){#cxv-meme .dexbox{flex:1 1 100%}}
+/* 덱스스크리너 칸 가로 폭 (사용자 지시): 데스크톱에서는 위 헤더 타일 줄의
+   두 번째 타일(시바 SHIB) 오른쪽 끝선까지만 쓴다. 타일 줄(.cxstrip)의 안쪽
+   여백 16px·타일 간격 8px을 계산하면 그 끝선은 전체 폭 절반에서 4px 모자란
+   지점이라 calc(50% - 4px)로 맞춘다. 헤더 타일 줄 자체는 크기·폭 그대로 둔다.
+   폰에서는 헤더 타일이 가로 슬라이드라 끝선이 없으므로 기존 전체 폭을 유지한다 */
+@media(min-width:721px){#cxv-meme .dexbox{flex:0 0 calc(50% - 4px);max-width:calc(50% - 4px)}}
 </style>
 <style>
 /* ===== 암호화폐 탭 두 칸 축소·왼쪽 정렬 (2026-11-17 사용자 지시) =====
@@ -2980,7 +3012,7 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 </div>
 <div class="pathird pabox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">전체 종목</span><span class="pabox-n" id="aball-n"></span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="전체 종목 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="pabox-bd"><div class="absec" id="absec-kr"><div class="abpair"><div class="abcell"><span class="abbox-t">기준 거래소</span><span class="xselw absw"><button type="button" class="xsel" id="absel-b-kr" aria-haspopup="listbox" aria-expanded="false" aria-label="전체 종목 기준 거래소"><span class="xnm" id="abnm-b-kr">Hyperliquid</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="ab-base-kr" role="listbox" aria-label="전체 종목 기준 거래소" hidden><button type="button" role="option" data-abx="us" aria-selected="false">나스닥</button><button type="button" role="option" data-abx="hl" aria-selected="true">Hyperliquid</button><button type="button" role="option" data-abx="bn" aria-selected="false">Binance</button><button type="button" role="option" data-abx="okx" aria-selected="false">OKX</button><button type="button" role="option" data-abx="by" aria-selected="false">Bybit</button></div></span></div><div class="abcell"><span class="abbox-t">비교 거래소</span><span class="xselw absw"><button type="button" class="xsel" id="absel-c-kr" aria-haspopup="listbox" aria-expanded="false" aria-label="전체 종목 비교 거래소"><span class="xnm" id="abnm-c-kr">Binance</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="ab-cmp-kr" role="listbox" aria-label="전체 종목 비교 거래소" hidden><button type="button" role="option" data-abx="bn" aria-selected="true">Binance</button><button type="button" role="option" data-abx="hl" aria-selected="false">Hyperliquid</button><button type="button" role="option" data-abx="okx" aria-selected="false">OKX</button><button type="button" role="option" data-abx="by" aria-selected="false">Bybit</button><button type="button" role="option" data-abx="us" aria-selected="false">나스닥</button></div></span></div></div><div class="wrap"><table class="kp kp4"><thead><tr><th>이름</th><th>김프</th><th>변동</th></tr></thead><tbody id="ab3kr"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div></div></div></div>
 <div class="cxview" id="cxv-airdrop" data-cxview="airdrop" hidden><div class="cxview-body" id="cxbody-airdrop"></div></div>
-<div class="cxview" id="cxv-meme" data-cxview="meme" hidden><div class="cxview-body" id="cxbody-meme"></div></div>
+<div class="cxview" id="cxv-meme" data-cxview="meme" hidden><div class="cxview-body" id="cxbody-meme"><div class="cxstrip"><div class="cxtiles" id="memetiles" aria-label="주요 밈코인"></div></div><div class="mm2row"><div class="dexbox" id="dexbox"><div class="dexhd"><span class="dexti">덱스스크리너</span><span class="dexsub">부스트 상위 10</span><a class="dexgo" href="https://dexscreener.com" target="_blank" rel="noopener">dexscreener.com ↗</a></div><div class="dexlist" id="dexlist"><div class="dexempty">불러오는 중…</div></div><div class="dexft">덱스스크리너 부스트 순 · 60초마다 갱신 · 행을 누르면 덱스스크리너에서 열립니다</div></div></div></div></div>
 <div class="cxview" id="cxv-dex" data-cxview="dex" hidden><div class="cxview-body" id="cxbody-dex"></div></div>
 <div class="cxview" id="cxv-lp" data-cxview="lp" hidden><div class="cxview-body" id="cxbody-lp"></div></div>
 <div class="cxview dvview" id="dvview" hidden><div class="dvpage"><button type="button" class="dv-back" id="dv-back"><span aria-hidden="true">←</span><span>암호화폐</span></button><h2 class="dvpage-ti">변동성지수 전체 차트</h2><div class="pair" role="group" aria-label="기간 선택"><button type="button" data-dvdays="1" aria-pressed="false">1일</button><button type="button" data-dvdays="7" aria-pressed="false">7일</button><button type="button" data-dvdays="30" aria-pressed="false">30일</button><button type="button" data-dvdays="90" aria-pressed="true">90일</button><button type="button" data-dvdays="180" aria-pressed="false">180일</button><button type="button" data-dvdays="365" aria-pressed="false">1년</button><button type="button" data-dvdays="0" aria-pressed="false">전체</button></div><div class="dv-legend" role="group" aria-label="차트 켜기·끄기"><button type="button" class="dv-lg" data-dvkey="btc" aria-pressed="true"><span class="dv-sw dv-sw1" aria-hidden="true"></span><span class="dv-lg-t">BTC DVOL</span><b class="dv-lg-v" id="dvc-btc-v">—</b><span class="dv-lg-c" id="dvc-btc-c"></span></button><button type="button" class="dv-lg" data-dvkey="eth" aria-pressed="true"><span class="dv-sw dv-sw2" aria-hidden="true"></span><span class="dv-lg-t">ETH DVOL</span><b class="dv-lg-v" id="dvc-eth-v">—</b><span class="dv-lg-c" id="dvc-eth-c"></span></button><button type="button" class="dv-lg" data-dvkey="cvi" aria-pressed="true"><span class="dv-sw dv-sw3" aria-hidden="true"></span><span class="dv-lg-t">CVI · 종합</span><b class="dv-lg-v" id="dvc-cvi-v">—</b><span class="dv-lg-c" id="dvc-cvi-c"></span></button></div><div class="dv-chart" id="dvc-all"></div><p class="dv-src"><span>출처: Deribit</span> · <span>CVI는 BTC·ETH 시총 가중 종합값</span></p></div></div>
@@ -7199,6 +7231,153 @@ var miss=cxMissing();if(miss.length)cxBnFetch(miss);
 cxDraw();cxFetch();
 setInterval(function(){if(!document.hidden)cxFetch()},60000);
 document.addEventListener("visibilitychange",function(){if(!document.hidden)cxFetch()});
+})();
+</script>
+<script>
+/* ===== 밈 화면 상단 헤더 타일 (사용자 지시) =====
+   밈 카테고리 화면 맨 위에 대표 밈코인 4종(도지·시바·페페·트럼프) 타일을
+   메인 코인 타일 띠와 같은 모양으로 넣는다. 값은 메인 타일과 같은 방식 —
+   TradingView 크립토 스캐너(Binance 기준 달러 가격·등락)로 한 번에 조회해
+   1분마다 갱신하고, 스캐너가 막히거나 일부 종목이 비면 Binance REST
+   (data-api.binance.vision → api.binance.com 순)로 빈 타일만 채운다.
+   시바·페페는 가격이 아주 작아 소수 8자리까지 표시한다 */
+(function(){
+function gel(id){return document.getElementById(id)}
+/* [id, 이름, 스캐너 티커, 소수 자리] */
+var MMT=[["doge","도지 DOGE","BINANCE:DOGEUSDT",4],["shib","시바 SHIB","BINANCE:SHIBUSDT",8],["pepe","페페 PEPE","BINANCE:PEPEUSDT",8],["trump","트럼프 TRUMP","BINANCE:TRUMPUSDT",4]];
+var MMS={};
+var tbox=gel("memetiles");
+if(tbox){MMT.forEach(function(t){
+var d=document.createElement("div");d.className="ixt";
+var sm=document.createElement("small");sm.textContent=t[1];d.appendChild(sm);
+var b=document.createElement("b");b.id="mm-"+t[0]+"-v";b.textContent="—";d.appendChild(b);
+var s=document.createElement("span");s.className="ixc na";s.id="mm-"+t[0]+"-c";s.textContent="—";d.appendChild(s);
+tbox.appendChild(d);
+})}
+function mmDraw(){
+MMT.forEach(function(t){
+var ve=gel("mm-"+t[0]+"-v"),ce=gel("mm-"+t[0]+"-c");if(!ve||!ce)return;
+var d=MMS[t[0]]||{v:null,c:null};
+ve.textContent=(d.v==null||!(d.v>0))?"—":"$"+f(d.v,t[3]);
+if(d.c==null||isNaN(d.c)){ce.textContent="—";ce.className="ixc na"}
+else if(d.c>0){ce.textContent=Math.abs(d.c).toFixed(2)+"%";ce.className="ixc up"}
+else if(d.c<0){ce.textContent=Math.abs(d.c).toFixed(2)+"%";ce.className="ixc dn"}
+else{ce.textContent="0.00%";ce.className="ixc"}
+});
+}
+function mmMissing(){
+return MMT.filter(function(t){var d=MMS[t[0]];return !d||!(d.v>0)}).map(function(t){return t[0]})}
+function mmBnFetch(need){
+var SYM={doge:"DOGEUSDT",shib:"SHIBUSDT",pepe:"PEPEUSDT",trump:"TRUMPUSDT"};
+var syms=need.map(function(k){return SYM[k]}).filter(Boolean);
+if(!syms.length)return;
+var path="/api/v3/ticker/24hr?symbols="+encodeURIComponent(JSON.stringify(syms));
+function go(hosts){
+return fetch(hosts[0]+path).then(function(r){if(!r.ok)throw new Error("bn "+r.status);return r.json()}).catch(function(e){if(hosts.length>1)return go(hosts.slice(1));throw e})}
+go(["https://data-api.binance.vision","https://api.binance.com"]).then(function(j){
+var m={};(j||[]).forEach(function(x){if(x&&x.symbol)m[x.symbol]=x});
+need.forEach(function(k){var x=m[SYM[k]];if(!x)return;var v=parseFloat(x.lastPrice);if(!(v>0))return;
+if(!MMS[k])MMS[k]={v:null,c:null};MMS[k].v=v;var c=parseFloat(x.priceChangePercent);if(!isNaN(c))MMS[k].c=c});
+mmDraw();
+}).catch(function(){});
+}
+function mmFetch(){
+var ticks=MMT.map(function(t){return t[2]});
+fetch("https://scanner.tradingview.com/crypto/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:ticks},columns:["close","change"]})}).then(function(r){if(!r.ok)throw new Error("tv "+r.status);return r.json()}).then(function(j){
+var m={};(j.data||[]).forEach(function(x){if(x&&x.d)m[x.s]=x.d});
+MMT.forEach(function(t){var d=m[t[2]];if(!d||!(d[0]>0))return;if(!MMS[t[0]])MMS[t[0]]={v:null,c:null};MMS[t[0]].v=d[0];if(!isNaN(d[1]))MMS[t[0]].c=d[1]});
+mmDraw();
+var miss=mmMissing();if(miss.length)mmBnFetch(miss);
+}).catch(function(){
+var miss=mmMissing();if(miss.length)mmBnFetch(miss);
+});
+}
+mmDraw();mmFetch();
+setInterval(function(){if(!document.hidden)mmFetch()},60000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)mmFetch()});
+})();
+</script>
+<script>
+/* ===== 밈 화면 덱스스크리너 작은 칸 (사용자 지시) =====
+   헤더 타일 아래 줄에 작은 칸 하나로 덱스스크리너 부스트 상위 10개 토큰을 실시간으로 보여준다.
+   1) 공개 API token-boosts/top/v1 로 부스트 순 상위 목록(체인·토큰 주소)을 받고,
+   2) 체인별로 tokens/v1/{chain}/{주소들} 를 조회해 그 토큰의 대표 페어
+      (유동성 가장 큰 페어)의 심볼·달러 가격·24h 변동을 붙인다.
+   순서는 부스트 순 그대로 유지하고, 행을 누르면 덱스스크리너 페어 페이지로
+   새 탭에서 이동한다. 60초마다 갱신한다. 조회가 실패하면 빈 칸 문구와
+   다시 시도 버튼을 보여준다 */
+(function(){
+function gel(id){return document.getElementById(id)}
+var listEl=gel("dexlist");if(!listEl)return;
+function dexPrice(v){
+if(v==null||isNaN(v)||!(v>0))return "—";
+var d=v>=1?4:(v>=0.01?6:8);
+return "$"+v.toLocaleString("en-US",{minimumFractionDigits:0,maximumFractionDigits:d});
+}
+function dexDraw(rows){
+listEl.innerHTML="";
+if(!rows||!rows.length){
+var e=document.createElement("div");e.className="dexempty";e.textContent="표시할 토큰이 없어요";listEl.appendChild(e);return;
+}
+rows.forEach(function(r,i){
+var a=document.createElement("a");a.className="dexrow";a.href=r.url||"https://dexscreener.com";a.target="_blank";a.rel="noopener";
+var rk=document.createElement("span");rk.className="dexrk";rk.textContent=String(i+1);a.appendChild(rk);
+var who=document.createElement("span");who.className="dexwho";
+var sy=document.createElement("span");sy.className="dexsym";sy.textContent=r.symbol||"?";who.appendChild(sy);
+if(r.chain){var ch=document.createElement("span");ch.className="dexchain";ch.textContent=r.chain;who.appendChild(ch)}
+a.appendChild(who);
+var pr=document.createElement("span");pr.className="dexpr";pr.textContent=dexPrice(r.price);a.appendChild(pr);
+var cg=document.createElement("span");
+if(r.chg==null||isNaN(r.chg)){cg.className="dexch";cg.textContent="—"}
+else if(r.chg>0){cg.className="dexch up";cg.textContent="+"+r.chg.toFixed(2)+"%"}
+else if(r.chg<0){cg.className="dexch dn";cg.textContent=r.chg.toFixed(2)+"%"}
+else{cg.className="dexch";cg.textContent="0.00%"}
+a.appendChild(cg);
+listEl.appendChild(a);
+});
+}
+function dexFail(){
+listEl.innerHTML="";
+var e=document.createElement("div");e.className="dexempty";e.textContent="불러오지 못했어요";
+var btn=document.createElement("button");btn.type="button";btn.className="dexretry";btn.textContent="다시 시도";
+btn.addEventListener("click",function(){listEl.innerHTML="";var l=document.createElement("div");l.className="dexempty";l.textContent="불러오는 중…";listEl.appendChild(l);dexFetch()});
+e.appendChild(btn);listEl.appendChild(e);
+}
+function dexFetch(){
+fetch("https://api.dexscreener.com/token-boosts/top/v1").then(function(r){if(!r.ok)throw new Error("dex "+r.status);return r.json()}).then(function(j){
+var top=(Array.isArray(j)?j:[]).slice(0,10);
+if(!top.length){dexDraw([]);return}
+var rows=top.map(function(t){return{chainId:t.chainId,addr:t.tokenAddress,url:t.url,symbol:null,chain:t.chainId,price:null,chg:null}});
+var byChain={};
+rows.forEach(function(rw){if(!byChain[rw.chainId])byChain[rw.chainId]=[];byChain[rw.chainId].push(rw.addr)});
+var chains=Object.keys(byChain);
+var done=0;
+function finish(){done++;if(done>=chains.length)dexDraw(rows)}
+chains.forEach(function(chain){
+var addrs=byChain[chain].slice(0,30);
+fetch("https://api.dexscreener.com/tokens/v1/"+encodeURIComponent(chain)+"/"+addrs.join(",")).then(function(r){if(!r.ok)throw new Error("dex "+r.status);return r.json()}).then(function(pairs){
+var best={};
+(Array.isArray(pairs)?pairs:[]).forEach(function(p){
+if(!p||!p.baseToken||!p.baseToken.address)return;
+var key=p.baseToken.address.toLowerCase();
+var liq=(p.liquidity&&p.liquidity.usd)||0;
+if(!best[key]||liq>best[key]._liq){p._liq=liq;best[key]=p}
+});
+rows.forEach(function(rw){
+if(rw.chainId!==chain)return;
+var p=best[String(rw.addr).toLowerCase()];if(!p)return;
+rw.symbol=(p.baseToken&&p.baseToken.symbol)||null;
+var pv=parseFloat(p.priceUsd);if(!isNaN(pv))rw.price=pv;
+if(p.priceChange&&p.priceChange.h24!=null&&!isNaN(p.priceChange.h24))rw.chg=Number(p.priceChange.h24);
+if(p.url)rw.url=p.url;
+});
+}).catch(function(){}).then(finish);
+});
+}).catch(function(){dexFail()});
+}
+dexFetch();
+setInterval(function(){if(!document.hidden)dexFetch()},60000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)dexFetch()});
 })();
 </script>
 <script>
