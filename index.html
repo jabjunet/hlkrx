@@ -2285,10 +2285,12 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    각 칸 안 목록은 칸 안에서만 스크롤한다 — 세 칸 목록과 같은 방식 */
 #pa .cxexgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
 @media(max-width:720px){#pa .cxexgrid{grid-template-columns:1fr}}
-/* 메인 코인 행 왼쪽 열: 바이낸스 칸 아래에 합친 변동성지수 칸을 붙이는 세로 묶음.
-   폰에서는 그리드가 한 열로 쌓이며 바이낸스 → 변동성지수 → 하이퍼리퀴드 순이 된다 */
-#pa .cxleftcol{display:flex;flex-direction:column;gap:14px;min-width:0}
-/* 메인 코인 행 오른쪽 열: 하이퍼리퀴드 칸 아래에 스테이블코인 요약 칸을 붙이는 세로 묶음 */
+/* 메인 코인 행 (사용자 지시): 합친 거래소 칸이 예전 두 칸을 합친 폭으로
+   전체를 채워 맨 위에 오고, 그 아래 줄에 변동성지수 칸(왼쪽)과
+   스테이블코인 요약 칸(오른쪽)이 나란히 온다.
+   폰에서는 그리드가 한 열로 쌓이며 거래소 칸 → 변동성지수 → 스테이블코인 순이 된다 */
+#pa .cxcoinrow>#cxxbox{grid-column:1/-1}
+/* 메인 코인 행 아래 줄 오른쪽 칸: 스테이블코인 요약 칸을 감싸는 열 묶음 */
 #pa .cxrightcol{display:flex;flex-direction:column;gap:14px;min-width:0}
 #pa .cxexbox{border:1px solid var(--bd);border-radius:12px;background:var(--sf);padding:10px;min-width:0}
 #pa .cxexhd{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
@@ -2299,16 +2301,45 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pa .cxtab td b{display:block;font-size:13.5px}
 #pa .cxtab td small{display:block;color:var(--mut);font-size:11px}
 #pa .cxtab tr.cxmore td{color:var(--mut);font-size:11.5px;text-align:center;padding:10px 8px}
-/* 메인 화면 바이낸스·하이퍼리퀴드 코인 칸 묶음: 메인 칸 묶음(.pasplit) 안에서
+/* 국내거래소 화면 소식 칸 (사용자 지시): 각 열(.cxexcol)은 소식 칸과 표 칸을
+   세로로 묶는다 — 폰에서 그리드가 한 열로 쌓여도 소식 칸이 자기 거래소 표
+   바로 위에 붙어 있게 하기 위해서다. 소식 칸은 표 칸과 같은 테두리·배경을
+   쓰고(.cxexbox를 함께 붙인다), 제목은 작게, 공지 행은 한 줄 말줄임으로
+   짧게 유지해 전체 높이를 작게 잡는다 */
+#pa .cxexcol{display:flex;flex-direction:column;gap:14px;min-width:0}
+#pa .cxnewsbox{padding:9px 10px}
+#pa .cxnewshd{display:flex;align-items:baseline;gap:6px;margin-bottom:4px}
+#pa .cxnewsti{font-size:12.5px;font-weight:800;color:var(--tx)}
+#pa .cxnewsit{display:flex;align-items:baseline;gap:8px;padding:3.5px 0;color:var(--tx);text-decoration:none;font-size:12.5px;line-height:1.35}
+#pa .cxnewsit+.cxnewsit{border-top:1px solid var(--bd)}
+#pa .cxnewsit:hover .cxnewstt{text-decoration:underline}
+#pa .cxnewstt{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#pa .cxnewsdt{flex:none;color:var(--mut);font-size:11px}
+#pa .cxnewsmsg{color:var(--mut);font-size:12px;padding:3px 0}
+/* 메인 화면 합친 거래소 코인 칸 묶음: 메인 칸 묶음(.pasplit) 안에서
    전체 폭 한 줄을 차지하고, 안에서는 국내거래소 화면과 같은 두 칸 나란히
-   배치(.cxexgrid)를 쓴다 — 스테이블코인 칸 바로 위에 온다 */
+   배치(.cxexgrid)를 쓴다 — 합친 거래소 칸이 두 열을 모두 채워 전체 폭으로
+   오고, 그 아래 줄에 변동성지수·스테이블코인 칸이 나란히 온다 */
 #pa .pasplit>.cxcoinrow{grid-column:1/-1;width:100%;min-width:0}
+/* 합친 거래소 칸(사용자 지시): 거래소·섹터 선택은 평소에는 고른 것 하나만
+   보이는 작은 칩으로 두고, 누르면 목록이 펼쳐졌다가 고르면 다시 접힌다 —
+   스테이블코인 기간 선택(.sc-days)과 같은 방식. 펼쳐진 칩 줄이 칸보다
+   넓어지면 줄 안에서만 가로로 밀어 볼 수 있게 한다 */
+#pa .cxcoinrow .cxexhd{align-items:center}
+#pa .cxpick{flex:none;max-width:100%;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch}
+#pa .cxpick::-webkit-scrollbar{display:none;width:0;height:0}
+#pa .cxpick button[hidden]{display:none}
+#pa .cxpick .sc-arr{display:inline-block;font-size:10px;line-height:1;margin-left:4px;opacity:.75}
+@media (prefers-reduced-motion:no-preference){#pa .cxpick .sc-arr{transition:transform .16s ease}}
+#pa .cxpick.cxopen .sc-arr{transform:rotate(180deg)}
+#pa .cxsecrow{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+#pa .cxseclbl{flex:none;font-size:11px;font-weight:700;color:var(--mut)}
 </style>
 <style>
 /* ===== 암호화폐 탭: 스테이블코인 공급량 증감 =====
-   요약 칸(USDT·USDC 현재 공급량·합계 최근 30일 증감)은 변동성지수 칸
-   오른쪽 빈자리 — 코인 칸 묶음(.cxcoinrow) 오른쪽 열의 하이퍼리퀴드 칸
-   아래 — 에 들어가고, 차트는 변동성지수와 같은 방식으로 제목 줄의
+   요약 칸(USDT·USDC 현재 공급량·합계 최근 30일 증감)은 합친 거래소 칸
+   아래 줄에서 변동성지수 칸 오른쪽에 나란히 들어가고, 차트는
+   변동성지수와 같은 방식으로 제목 줄의
    '전체 차트' 버튼을 눌러 여는 전용 화면(#scview)에서 크게 보여준다.
    순증(발행)은 초록, 순감(상환)은 빨강으로 표시한다 — 이 칸 전용 색이라
    사이트의 등락 색(상승 빨강·하락 파랑)과 별개로 전용 변수를 둔다 */
@@ -2390,10 +2421,10 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 </style>
 <style>
 /* ===== 암호화폐 탭: 변동성지수 한 칸 (DVOL BTC·ETH + CVI) =====
-   왼쪽 열의 바이낸스 칸 바로 아래에 왼쪽 절반 폭으로 붙는 한 칸.
+   합친 거래소 칸 아래 줄 왼쪽 절반 폭으로 붙는 한 칸.
    칸 안에서 BTC DVOL·ETH DVOL·CVI 세 값을 작은 글자로 나란히 보여준다
-   (폰에서는 바이낸스 칸 바로 아래에 같은 한 줄 배치로 온다).
-   그 아래 스테이블코인 칸은 전체 폭 그대로다.
+   (폰에서는 거래소 칸 바로 아래에 같은 한 줄 배치로 온다).
+   오른쪽 칸에는 스테이블코인 요약 칸이 같은 크기로 나란히 붙는다.
    CVI는 BTC·ETH DVOL을 시가총액 비중으로 가중한 종합값이다. */
 #pa .dvwrap{min-width:0;width:100%}
 #pa .dvwrap .pabox-ti{font-size:13px}
@@ -2559,7 +2590,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 </style>
 </head>
 <body>
-<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="gsearch"><input id="gq" type="text" placeholder="검색" aria-label="사이트 검색" autocomplete="off"><div class="gsres" id="gsres" hidden></div></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><a href="#/" data-nav="home" data-page="" aria-pressed="true">홈</a><a href="#/crypto" data-nav="crypto" data-page="crypto" aria-pressed="false">암호화폐</a><a href="#/kr" data-nav="krstock" data-page="kr" aria-pressed="false">국내주식</a><a href="#/us" data-nav="usstock" data-page="us" aria-pressed="false">미국주식</a><a href="#/korea" data-nav="kridx" data-page="korea" aria-pressed="false">국내지표</a><a href="#/usa" data-nav="usidx" data-page="usa" aria-pressed="false">해외지표</a><a href="#/risk" data-nav="risk" data-page="risk" aria-pressed="false">위기관리신호</a><a href="#/chart" data-nav="chart" data-page="chart" aria-pressed="false">차트</a><button data-t="ph" class="tabsec" aria-pressed="true">홈</button><button data-t="pa" class="tabsec" aria-pressed="false">암호화폐</button><button data-t="pb" class="tabsec" aria-pressed="false">해외</button><button data-t="pg" class="tabsec" aria-pressed="false">원자재</button><button data-t="pf" class="tabsec" aria-pressed="false">펀딩비</button><button data-t="pc" class="tabsec" aria-pressed="false">비교</button><button data-t="pi" class="tabsec" aria-pressed="false">지표</button><button data-t="pk" class="tabsec" aria-pressed="false">커뮤니티</button><button data-t="p-kridx" class="tabsec" aria-pressed="false">국내지표</button><button data-t="p-usidx" class="tabsec" aria-pressed="false">해외지표</button><button data-t="p-risk" class="tabsec" aria-pressed="false">위기관리신호</button><button data-t="p-chart" class="tabsec" aria-pressed="false">차트</button><button data-t="p-market" class="tabsec" aria-pressed="false">시장</button><button data-t="p-kospi" class="tabsec" aria-pressed="false">코스피</button><button data-t="p-kosdaq" class="tabsec" aria-pressed="false">코스닥</button><button data-t="p-kr" class="tabsec" aria-pressed="false">국내주식</button><button data-t="p-usstock" class="tabsec" aria-pressed="false">미국주식</button><button data-t="p-nasdaq" class="tabsec" aria-pressed="false">나스닥</button><button data-t="p-spx" class="tabsec" aria-pressed="false">S&P</button><button data-t="p-etf" class="tabsec" aria-pressed="false">ETF</button><button data-t="p-calc" class="tabsec" aria-pressed="false">계산기</button></div></div>
+<div class="hd"><div class="hd-t"><div class="hd-l"><a class="brand" href="coin.html" aria-label="코인 페이지로 이동" title="코인"><span class="brand-txt">kimp<span class="brand-won">won</span></span><span class="brand-tip" aria-hidden="true">코인</span></a><div class="gsearch"><input id="gq" type="text" placeholder="검색" aria-label="사이트 검색" autocomplete="off"><div class="gsres" id="gsres" hidden></div></div></div><div class="hd-r"><div class="hd-ctl"><button type="button" class="thbtn" id="th-btn" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="lgbtn" id="lang-btn" aria-label="Switch to English" title="Switch to English">EN</button></div><div class="acct"><p class="hd-online" id="site-online" hidden>접속자 <b id="site-online-n">0</b>명</p><button type="button" class="lgb" id="lg-open">로그인</button><button type="button" class="who" id="lg-who" hidden title="프로필 설정"><span class="wnick" id="lg-who-nick"></span></button></div></div></div><div class="tabs" id="tabs"><a href="#/" data-nav="home" data-page="" aria-pressed="true">홈</a><a href="#/crypto" data-nav="crypto" data-page="crypto" aria-pressed="false">암호화폐</a><a href="#/kr" data-nav="krstock" data-page="kr" aria-pressed="false">국내주식</a><a href="#/us" data-nav="usstock" data-page="us" aria-pressed="false">미국주식</a><a href="#/korea" data-nav="kridx" data-page="korea" aria-pressed="false">국내지표</a><a href="#/usa" data-nav="usidx" data-page="usa" aria-pressed="false">해외지표</a><a href="#/chart" data-nav="chart" data-page="chart" aria-pressed="false">차트</a><button data-t="ph" class="tabsec" aria-pressed="true">홈</button><button data-t="pa" class="tabsec" aria-pressed="false">암호화폐</button><button data-t="pb" class="tabsec" aria-pressed="false">해외</button><button data-t="pg" class="tabsec" aria-pressed="false">원자재</button><button data-t="pf" class="tabsec" aria-pressed="false">펀딩비</button><button data-t="pc" class="tabsec" aria-pressed="false">비교</button><button data-t="pi" class="tabsec" aria-pressed="false">지표</button><button data-t="pk" class="tabsec" aria-pressed="false">커뮤니티</button><button data-t="p-kridx" class="tabsec" aria-pressed="false">국내지표</button><button data-t="p-usidx" class="tabsec" aria-pressed="false">해외지표</button><button data-t="p-chart" class="tabsec" aria-pressed="false">차트</button><button data-t="p-market" class="tabsec" aria-pressed="false">시장</button><button data-t="p-kospi" class="tabsec" aria-pressed="false">코스피</button><button data-t="p-kosdaq" class="tabsec" aria-pressed="false">코스닥</button><button data-t="p-kr" class="tabsec" aria-pressed="false">국내주식</button><button data-t="p-usstock" class="tabsec" aria-pressed="false">미국주식</button><button data-t="p-nasdaq" class="tabsec" aria-pressed="false">나스닥</button><button data-t="p-spx" class="tabsec" aria-pressed="false">S&P</button><button data-t="p-etf" class="tabsec" aria-pressed="false">ETF</button><button data-t="p-calc" class="tabsec" aria-pressed="false">계산기</button></div></div>
 <main>
 
 <script>
@@ -2605,7 +2636,7 @@ var nl=p.lang==="en"?"en":"ko";if(nl!==LANG){LANG=nl;try{localStorage.setItem("h
 applyLang()};
 if(window.matchMedia){var mm=window.matchMedia("(prefers-color-scheme: dark)");if(mm.addEventListener)mm.addEventListener("change",syncThBtn)}
 var D={
-"홈":"Home","김프":"Kimchi Prem.","암호화폐":"Crypto","이더리움":"Ethereum","테더":"Tether","유에스디코인":"USD Coin","엑스알피(리플)":"XRP (Ripple)","솔라나":"Solana","트론":"TRON","비앤비":"BNB","주요 코인":"Major Coins","해외":"Global","원자재":"Commodities","펀딩비":"Funding","비교":"Compare","지표":"Indicators","커뮤니티":"Community","게시물":"Posts","국내지표":"Domestic Indices","해외지표":"Global Indices","위기관리신호":"Crisis Signals","미국주식":"US Stocks","국내거래소":"Korean Exchanges","에어드랍":"Airdrop","밈":"Meme Coins","아직 등록된 내용이 없어요.":"No content has been added yet.","시장":"Market","코스피 종목만 보는 중":"Showing KOSPI stocks only","코스닥 종목만 보는 중":"Showing KOSDAQ stocks only","전체 보기":"Show all","코스닥 종목은 현재 암호화폐 탭에 없어요":"No KOSDAQ stocks in the Crypto tab yet",
+"홈":"Home","김프":"Kimchi Prem.","암호화폐":"Crypto","이더리움":"Ethereum","테더":"Tether","유에스디코인":"USD Coin","엑스알피(리플)":"XRP (Ripple)","솔라나":"Solana","트론":"TRON","비앤비":"BNB","주요 코인":"Major Coins","해외":"Global","원자재":"Commodities","펀딩비":"Funding","비교":"Compare","지표":"Indicators","커뮤니티":"Community","게시물":"Posts","국내지표":"Domestic Indices","해외지표":"Global Indices","미국주식":"US Stocks","국내거래소":"Korean Exchanges","에어드랍":"Airdrop","밈":"Meme Coins","아직 등록된 내용이 없어요.":"No content has been added yet.","시장":"Market","코스피 종목만 보는 중":"Showing KOSPI stocks only","코스닥 종목만 보는 중":"Showing KOSDAQ stocks only","전체 보기":"Show all","코스닥 종목은 현재 암호화폐 탭에 없어요":"No KOSDAQ stocks in the Crypto tab yet",
 "주요":"Major","아시아":"Asia","유럽":"Europe","검색":"Search","사이트 검색":"Search the site","지수 카테고리":"Index Categories",
 "실시간":"Live","연결 중…":"Connecting…","로그인":"Log in","접속자":"Online","명":"","프로필 설정":"Profile settings",
 "코스피":"KOSPI","코스닥":"KOSDAQ","나스닥":"NASDAQ","다우":"Dow","달러/원":"USD/KRW","원유":"Crude Oil",
@@ -2633,7 +2664,7 @@ var D={
 "금":"Gold","은":"Silver","구리":"Copper","유가":"Oil","차트보기":"Show Chart","차트접기":"Hide Chart",
 "금 (GOLD)":"Gold (GOLD)","은 (SILVER)":"Silver (SILVER)","구리 (COPPER)":"Copper (COPPER)","유가 (WTI 원유)":"Oil (WTI Crude)",
 "국제 현물 · 트로이온스(oz) 기준 · gold-api.com":"Intl spot · per troy ounce (oz) · gold-api.com","국제 현물 · 파운드(lb) 기준 · gold-api.com":"Intl spot · per pound (lb) · gold-api.com","국제 선물 · 배럴(bbl) 기준 · NYMEX WTI":"Intl futures · per barrel (bbl) · NYMEX WTI",
-"국내시세 출처: 한국금거래소 고시 · 2026-11-21":"Domestic prices: Korea Gold Exchange notice · 2026-11-21","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 9월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Sep 2026 (monthly notice)",
+"국내시세 출처: 한국금거래소 고시 · 2026-11-24":"Domestic prices: Korea Gold Exchange notice · 2026-11-24","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 11월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Nov 2026 (monthly notice)",
 "유가는 국내 고시 가격이 없어 김프를 표시하지 않습니다. 국제 시세(WTI) 기준입니다.":"Oil has no domestic posted price, so no Kimchi Premium is shown. Based on international (WTI) prices.","국내 고시 기준 · 하루 1회 갱신":"Domestic official price · updated daily","국제 실시간 시세":"Global live price",
 "김프 (국내 vs 국제 환산)":"Kimchi Prem. (Domestic vs Intl)","국내 유통가 (1kg)":"Domestic price (1kg)","국제 환산가 (1kg)":"Intl converted price (1kg)","국내 살 때 (1돈)":"Domestic buy (1 don)","국내 팔 때 (1돈)":"Domestic sell (1 don)","국제 원화 환산 (1배럴)":"Intl conversion (1 barrel)","당일 고가 (1배럴)":"Day high (1 barrel)","당일 저가 (1배럴)":"Day low (1 barrel)","국내 · 1kg":"Domestic · 1kg","국제 환산 · 1kg":"Intl conv. · 1kg","국내 · 팔 때 1돈":"Domestic · Sell 1 don","국제 환산 · 1돈":"Intl conv. · 1 don",
 "김프 = (국내 가격 ÷ 국제 환산가 − 1) × 100":"Kimchi Prem. = (Domestic price ÷ Intl converted price − 1) × 100","+면 국내가 더 비싸고, −면 국내가 더 쌉니다.":"Positive means the domestic price is higher; negative means it is cheaper.",
@@ -2641,7 +2672,7 @@ var D={
 "종목별 펀딩비를 거래소 4곳 나란히 비교합니다. 거래소마다 부과 주기가 달라 값 뒤에 주기를 함께 표시합니다. (하이퍼리퀴드 1시간, 나머지는 보통 8시간)":"Compare funding rates for each symbol across 4 exchanges side by side. Funding intervals differ by exchange, so the interval is shown next to each value. (Hyperliquid: 1 hour; others usually 8 hours)",
 "연환산은 단순 계산 기준 (복리 아님)":"Annualized figures use simple interest (not compounded)",
 "펀딩비는 각 거래소가 공시하는 펀딩 금리입니다. 양수면 롱 포지션이 숏 포지션에게, 음수면 숏이 롱에게 비용을 지급하는 구조입니다. OKX는 종목별 조회라 거래량 상위 40개 위주로 불러오며, 나머지와 미상장 종목은 —로 표시됩니다.":"Funding rates are the rates published by each exchange. When positive, longs pay shorts; when negative, shorts pay longs. OKX is loaded per symbol, focusing on the top 40 by volume; the rest and unlisted symbols are shown as —.",
-"비트코인":"Bitcoin","WTI 원유":"WTI Crude Oil","GOLD · 국제 금":"GOLD · Intl Gold","다른 주식과 비교":"Compare Other Stocks","첫 번째 종목 검색":"Search first stock","두 번째 종목 검색":"Search second stock","바이낸스":"Binance",
+"비트코인":"Bitcoin","WTI 원유":"WTI Crude Oil","GOLD · 국제 금":"GOLD · Intl Gold","다른 주식과 비교":"Compare Other Stocks","첫 번째 종목 검색":"Search first stock","두 번째 종목 검색":"Search second stock","바이낸스":"Binance","바이비트":"Bybit","거래소 선택":"Select Exchange","섹터":"Sector","섹터 선택":"Select Sector","레이어1":"Layer 1","레이어2":"Layer 2","디파이":"DeFi","게임·NFT":"Gaming · NFT","스테이블":"Stablecoins",
 "시장 심리 지표":"Market Sentiment","평균 펀딩비":"Avg Funding Rate",
 "주식 시장의 공포·탐욕과 자금 쏠림처럼, 시장 분위기를 한눈에 보는 지표입니다.":"Gauges of market mood at a glance, like fear and greed and fund flows in the stock market.",
 "주식 공포·탐욕 지수 · CNN":"Stock Fear & Greed Index · CNN","극단적 공포":"Extreme Fear","공포":"Fear","중립":"Neutral","탐욕":"Greed","극단적 탐욕":"Extreme Greed","0 · 극단적 공포":"0 · Extreme Fear","100 · 극단적 탐욕":"100 · Extreme Greed",
@@ -2872,9 +2903,9 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 <div class="cxcats" role="group" aria-label="암호화폐 카테고리"><button type="button" class="cxcat" data-cx="krex" aria-pressed="false">국내거래소</button><button type="button" class="cxcat" data-cx="stock" aria-pressed="false">주식</button><button type="button" class="cxcat" data-cx="airdrop" aria-pressed="false">에어드랍</button><button type="button" class="cxcat" data-cx="meme" aria-pressed="false">밈</button><button type="button" class="cxcat" data-cx="dex" aria-pressed="false">DEX</button><button type="button" class="cxcat" data-cx="lp" aria-pressed="false">LP</button></div>
 <div class="cxstrip"><div class="cxtiles" id="cxtiles" aria-label="주요 코인"></div></div>
 <div class="pasplit">
-<div class="cxexgrid cxcoinrow"><div class="cxleftcol"><div class="cxexbox"><div class="cxexhd"><span class="cxexti">바이낸스</span><span class="cxexn" id="cxbn-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxbn-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div><div class="pabox dvwrap" id="dvbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">변동성지수 · DVOL · CVI</span><button type="button" class="dv-allbtn" id="dv-all-btn">전체 차트</button><span class="dv-note">CVI는 BTC·ETH 시총 가중</span></div><div class="dv-grid"><div class="dv-it"><span class="dv-sym">BTC DVOL</span><b class="dv-big" id="dv-btc-v">—</b><span class="dv-chg" id="dv-btc-c"></span></div><div class="dv-it"><span class="dv-sym">ETH DVOL</span><b class="dv-big" id="dv-eth-v">—</b><span class="dv-chg" id="dv-eth-c"></span></div><div class="dv-it"><span class="dv-sym">CVI · 종합</span><b class="dv-big" id="dv-cvi-v">—</b><span class="dv-chg" id="dv-cvi-c"></span></div></div></div></div><div class="cxrightcol"><div class="cxexbox"><div class="cxexhd"><span class="cxexti">하이퍼리퀴드</span><span class="cxexn" id="cxhl-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxhl-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div><div class="pabox scbox" id="scbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">스테이블코인 공급량 증감</span><button type="button" class="dv-allbtn" id="sc-all-btn">전체 차트</button></div><div class="sc-sum"><div class="sc-sum-it" id="sc-sum-usdt"><span class="sc-loadtx">불러오는 중…</span></div><div class="sc-sum-it" id="sc-sum-usdc"><span class="sc-loadtx">불러오는 중…</span></div><div class="sc-sum-it sc-total" id="sc-sum-total"><span class="sc-loadtx">불러오는 중…</span></div></div></div></div></div>
+<div class="cxexgrid cxcoinrow"><div class="cxexbox" id="cxxbox"><div class="cxexhd"><div class="pair cxpick" id="cxx-expick" role="group" aria-label="거래소 선택"><button type="button" data-cxex="bn" aria-pressed="true">바이낸스</button><button type="button" data-cxex="hl" aria-pressed="false" hidden>하이퍼리퀴드</button><button type="button" data-cxex="okx" aria-pressed="false" hidden>OKX</button><button type="button" data-cxex="by" aria-pressed="false" hidden>바이비트</button></div><span class="cxexn" id="cxx-n"></span></div><div class="cxsecrow"><span class="cxseclbl">섹터</span><div class="pair cxpick" id="cxx-secpick" role="group" aria-label="섹터 선택"><button type="button" data-cxsec="all" aria-pressed="true">전체</button><button type="button" data-cxsec="l1" aria-pressed="false" hidden>레이어1</button><button type="button" data-cxsec="l2" aria-pressed="false" hidden>레이어2</button><button type="button" data-cxsec="defi" aria-pressed="false" hidden>디파이</button><button type="button" data-cxsec="meme" aria-pressed="false" hidden>밈</button><button type="button" data-cxsec="ai" aria-pressed="false" hidden>AI</button><button type="button" data-cxsec="game" aria-pressed="false" hidden>게임·NFT</button><button type="button" data-cxsec="stable" aria-pressed="false" hidden>스테이블</button><button type="button" data-cxsec="etc" aria-pressed="false" hidden>기타</button></div></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxx-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div><div class="pabox dvwrap" id="dvbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">변동성지수 · DVOL · CVI</span><button type="button" class="dv-allbtn" id="dv-all-btn">전체 차트</button><span class="dv-note">CVI는 BTC·ETH 시총 가중</span></div><div class="dv-grid"><div class="dv-it"><span class="dv-sym">BTC DVOL</span><b class="dv-big" id="dv-btc-v">—</b><span class="dv-chg" id="dv-btc-c"></span></div><div class="dv-it"><span class="dv-sym">ETH DVOL</span><b class="dv-big" id="dv-eth-v">—</b><span class="dv-chg" id="dv-eth-c"></span></div><div class="dv-it"><span class="dv-sym">CVI · 종합</span><b class="dv-big" id="dv-cvi-v">—</b><span class="dv-chg" id="dv-cvi-c"></span></div></div></div><div class="cxrightcol"><div class="pabox scbox" id="scbox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">스테이블코인 공급량 증감</span><button type="button" class="dv-allbtn" id="sc-all-btn">전체 차트</button></div><div class="sc-sum"><div class="sc-sum-it" id="sc-sum-usdt"><span class="sc-loadtx">불러오는 중…</span></div><div class="sc-sum-it" id="sc-sum-usdc"><span class="sc-loadtx">불러오는 중…</span></div><div class="sc-sum-it sc-total" id="sc-sum-total"><span class="sc-loadtx">불러오는 중…</span></div></div></div></div></div>
 </div>
-<div class="cxview" id="cxv-krex" data-cxview="krex" hidden><div class="cxview-body" id="cxbody-krex"><div class="cxexgrid"><div class="cxexbox"><div class="cxexhd"><span class="cxexti">업비트</span><span class="cxexn" id="cxup-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxup-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div><div class="cxexbox"><div class="cxexhd"><span class="cxexti">빗썸</span><span class="cxexn" id="cxbt-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxbt-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div></div>
+<div class="cxview" id="cxv-krex" data-cxview="krex" hidden><div class="cxview-body" id="cxbody-krex"><div class="cxexgrid"><div class="cxexcol"><div class="cxexbox cxnewsbox"><div class="cxnewshd"><span class="cxnewsti">업비트 소식</span></div><div class="cxnewslist" id="cxup-news"><div class="cxnewsmsg">불러오는 중…</div></div></div><div class="cxexbox"><div class="cxexhd"><span class="cxexti">업비트</span><span class="cxexn" id="cxup-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxup-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div><div class="cxexcol"><div class="cxexbox cxnewsbox"><div class="cxnewshd"><span class="cxnewsti">빗썸 소식</span></div><div class="cxnewslist" id="cxbt-news"><div class="cxnewsmsg">불러오는 중…</div></div></div><div class="cxexbox"><div class="cxexhd"><span class="cxexti">빗썸</span><span class="cxexn" id="cxbt-n"></span></div><div class="cxexwrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxbt-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div></div></div>
 <div class="cxview" id="cxv-stock" data-cxview="stock" hidden><div class="cxview-body" id="cxbody-stock"><div class="pasplit"><div class="paleft pabox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">한국 주식</span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="한국 주식 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="segrow"><div class="pair" id="mk"><button data-m="kr" aria-pressed="true">한국 주식</button></div><span class="xselw xcsw"><button type="button" class="xsel" id="xcsel" aria-haspopup="listbox" aria-expanded="false" aria-label="비교 거래소"><span class="xnm" id="xcnm">Hyperliquid</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="xcmenu" role="listbox" aria-label="비교 거래소" hidden><button type="button" role="option" data-x="hl" aria-selected="true">Hyperliquid</button><button type="button" role="option" data-x="bn" aria-selected="false">Binance</button><button type="button" role="option" data-x="okx" aria-selected="false">OKX</button><button type="button" role="option" data-x="by" aria-selected="false">Bybit</button></div></span></div>
 <input id="fx" type="hidden" value="1,354.84">
 <input type="hidden" id="qk">
@@ -3255,55 +3286,170 @@ if(pa&&!pa.hidden)upPrefetchMarkets();
 })();
 </script>
 <script>
-/* ===== 메인 화면 바이낸스·하이퍼리퀴드 코인 칸 (사용자 지시) =====
-   스테이블코인 칸 바로 위에 바이낸스 칸과 하이퍼리퀴드 칸을 따로 나란히
-   둔다(폰에서는 위아래로 쌓인다). 바이낸스는 현물 USDT 페어 전체를
-   거래대금 순으로, 하이퍼리퀴드는 무기한 선물 전체 종목을 거래대금
-   순으로 보여준다. 값은 달러 가격과 24시간 변동률이고, 암호화폐 탭이
-   열려 있는 동안 60초마다 다시 읽는다. 목록은 국내거래소 화면과 같이
-   50개씩 그리고 칸 안을 아래로 내리면 이어 붙인다. 실패하면 다시
-   시도 버튼을 보여준다 */
+/* ===== 국내거래소 화면 소식 칸: 업비트·빗썸 공식 공지 (사용자 지시) =====
+   각 열의 표 칸 바로 위에 붙는 작은 칸에 거래소 공식 공지 최신 4건을
+   제목+날짜로 보여주고, 누르면 원문 공지가 새 탭으로 열린다. 업비트는
+   공식 공지 API(api-manager.upbit.com/api/v1/announcements, 키 없음)를
+   쓰되 그 API가 업비트 사이트 밖 출처의 읽기를 CORS로 막고 있어, 막히면
+   이 페이지가 뉴스 피드에 이미 쓰는 공개 프록시를 차례로 거친다. 빗썸은
+   공식 공지 API(feed-api.bithumb.com/v1/notices, CORS 허용·키 없음)를
+   직접 읽는다. 어느 경로로도 못 가져오면 지어내지 않고 빈 상태 문구만
+   보여준다. 화면이 열릴 때 불러오고 표와 같은 60초 간격으로 다시 읽어
+   새 공지가 올라오면 새로고침 없이 목록이 바로 교체된다. 타이머는
+   국내거래소 화면을 보고 있을 때만 돌고, 다른 화면으로 나가면 정리한다 */
+(function(){
+var view=document.getElementById("cxv-krex");if(!view)return;
+var pa=document.getElementById("pa");
+var upBox=document.getElementById("cxup-news"),btBox=document.getElementById("cxbt-news");
+if(!upBox||!btBox)return;
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function md(ds){var m=/(\d{4})-(\d{2})-(\d{2})/.exec(ds||"");return m?(Number(m[2])+"/"+Number(m[3])):""}
+function render(box,items){
+box.innerHTML=items.slice(0,4).map(function(it){
+return '<a class="cxnewsit" href="'+esc(it.url)+'" target="_blank" rel="noopener"><span class="cxnewstt">'+esc(it.title)+"</span>"+(it.date?'<span class="cxnewsdt">'+esc(it.date)+"</span>":"")+"</a>";
+}).join("");
+}
+function fail(box){box.innerHTML='<div class="cxnewsmsg">소식을 불러오지 못했어요</div>'}
+function fetchJson(url){
+return new Promise(function(res,rej){
+var done=false;
+var c=("AbortController" in window)?new AbortController():null;
+var t=setTimeout(function(){if(c)c.abort();if(!done){done=true;rej(new Error("timeout"))}},12000);
+/* 빗썸 공지 API는 Cache-Control max-age=14400(4시간)으로 응답해 브라우저 캐시에
+   막히면 60초 타이머가 돌아도 낡은 목록이 유지될 수 있다. 모든 소식 경로
+   (빗썸 직접·업비트 프록시 포함)에 cache:"no-store"를 걸고 URL에도 매번
+   다른 타임스탬프를 붙여 매 갱신마다 새 응답을 받는다 */
+var bustUrl=url+(url.indexOf("?")>=0?"&":"?")+"_t="+Date.now();
+var opts={cache:"no-store"};if(c)opts.signal=c.signal;
+fetch(bustUrl,opts).then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){if(!done){done=true;clearTimeout(t);res(j)}}).catch(function(e){if(!done){done=true;clearTimeout(t);rej(e)}});
+});
+}
+/* 경로 목록을 차례로 시도해 처음 성공한 응답으로 그린다. 전부 실패하면
+   빈 상태만 보여준다 — 공지를 지어내는 일은 없다 */
+function chain(urls,parse,box){
+var i=0;
+function next(){
+if(i>=urls.length){fail(box);return}
+var u=urls[i];i++;
+fetchJson(u).then(function(j){var items=parse(j);if(items&&items.length)render(box,items);else next()}).catch(next);
+}
+next();
+}
+var UP_API="https://api-manager.upbit.com/api/v1/announcements?os=web&page=1&per_page=4&category=all";
+function parseUp(j){
+var list=j&&j.data&&j.data.notices;if(!list||!list.length)return null;
+var out=[];
+for(var i=0;i<list.length;i++){var n=list[i];if(!n||!n.title)continue;out.push({title:n.title,date:md(n.listed_at||n.first_listed_at),url:"https://upbit.com/service_center/notice?id="+encodeURIComponent(n.id)})}
+return out.length?out:null;
+}
+function loadUpNews(){
+chain([UP_API,
+"https://api.allorigins.win/raw?url="+encodeURIComponent(UP_API),
+"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(UP_API),
+"https://api.cors.lol/?url="+encodeURIComponent(UP_API)],parseUp,upBox);
+}
+var BT_API="https://feed-api.bithumb.com/v1/notices?count=4";
+function parseBt(j){
+if(!j||!j.length)return null;
+var out=[];
+for(var i=0;i<j.length;i++){var n=j[i];if(!n||!n.title)continue;out.push({title:n.title,date:md(n.published_at),url:n.pc_url||"https://feed.bithumb.com/notice"})}
+return out.length?out:null;
+}
+function loadBtNews(){
+chain([BT_API,"https://api.bithumb.com/v1/notices?count=4",
+"https://api.allorigins.win/raw?url="+encodeURIComponent(BT_API)],parseBt,btBox);
+}
+function loadAll(){loadUpNews();loadBtNews()}
+/* 실시간 갱신: 국내거래소 화면이 실제로 보일 때만 60초 타이머를 걸고,
+   화면에서 나가면(카테고리 전환·탭 전환) 타이머를 정리한다. 다시 들어
+   오면 그 자리에서 한 번 불러오고 타이머를 다시 건다 */
+var timer=null;
+function visible(){return !view.hidden&&!(pa&&pa.hidden)}
+function syncTimer(){
+if(visible()){
+if(!timer){loadAll();timer=setInterval(function(){if(visible()&&!document.hidden)loadAll()},60000)}
+}else if(timer){clearInterval(timer);timer=null}
+}
+if(window.MutationObserver){
+new MutationObserver(syncTimer).observe(view,{attributes:true,attributeFilter:["hidden"]});
+if(pa)new MutationObserver(syncTimer).observe(pa,{attributes:true,attributeFilter:["hidden"]});
+}
+syncTimer();
+})();
+</script>
+<script>
+/* ===== 메인 화면 합친 거래소 코인 칸 (사용자 지시) =====
+   바이낸스·하이퍼리퀴드 두 칸을 한 칸으로 합치고, 칸 안에서 거래소를
+   고를 수 있게 한다 — 거래소는 바이낸스·하이퍼리퀴드·OKX·바이비트 네 곳.
+   거래소·섹터 선택은 평소에는 고른 것 하나만 보이는 작은 칩으로 두고,
+   누르면 목록이 펼쳐졌다가 고르면 다시 접힌다(스테이블코인 기간 선택과
+   같은 방식). 섹터 필터(전체·레이어1·레이어2·디파이·밈·AI·게임·NFT·
+   스테이블·기타)를 두어 고른 섹터의 코인만 보이게 하고, 분류표에 없는
+   코인은 '기타'로 본다. 바이낸스·OKX·바이비트는 현물 USDT 페어 전체를,
+   하이퍼리퀴드는 무기한 선물 전체 종목을 거래대금 순으로 보여준다.
+   값은 달러 가격과 24시간 변동률이고, 암호화폐 탭이 열려 있는 동안
+   한 번이라도 불러온 거래소는 60초마다 다시 읽는다. 목록은 50개씩
+   그리고 칸 안을 아래로 내리면 이어 붙인다. 갱신에 실패하면 마지막으로
+   본 목록을 그대로 두고, 처음부터 불러오지 못했을 때만 다시 시도
+   버튼을 보여준다 */
 (function(){
 var pa=document.getElementById("pa");if(!pa)return;
-var bnB=document.getElementById("cxbn-b"),hlB=document.getElementById("cxhl-b");
-var bnN=document.getElementById("cxbn-n"),hlN=document.getElementById("cxhl-n");
-if(!bnB||!hlB)return;
+var tb=document.getElementById("cxx-b"),nEl=document.getElementById("cxx-n");
+var exPick=document.getElementById("cxx-expick"),secPick=document.getElementById("cxx-secpick");
+if(!tb||!exPick||!secPick)return;
+var wrap=tb.closest(".cxexwrap");
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function fp(v){v=Number(v);if(!isFinite(v)||!(v>0))return "—";var d=v>=1?2:(v>=0.01?4:8);return "$"+v.toLocaleString("en-US",{maximumFractionDigits:d})}
 function fc(r){r=Number(r);if(!isFinite(r))return '<span class="na">—</span>';var cls=r>0?"up":r<0?"dn":"";return '<span class="'+cls+'">'+(r>0?"+":"")+r.toFixed(2)+"%</span>"}
-function rowHtml(sym,price,chg){return "<tr><td><b>"+esc(sym)+"</b></td><td>"+fp(price)+"</td><td>"+fc(chg)+"</td></tr>"}
 var CH=50;
-var st={bn:{rows:null,shown:0},hl:{rows:null,shown:0}};
-function tbOf(w){return w==="bn"?bnB:hlB}
-function append(w){
-var s=st[w];if(!s.rows)return;var tb=tbOf(w);
+/* 섹터 분류표: 잘 알려진 코인만 넣고, 여기에 없는 코인은 '기타'로 본다 */
+var SECDEF={
+l1:"BTC ETH SOL XRP BNB ADA TRX TON AVAX XLM SUI HBAR BCH NEAR LTC DOT ICP ETC ATOM XMR KAS APT SEI INJ STX ALGO VET EOS XTZ EGLD NEO IOTA ZEC DASH KAIA KLAY CRO QTUM ZIL WAVES BSV ONT KSM CFX KAVA TIA CELO MOVE THETA FLOW XDC FLR ICX ONE ROSE MINA LUNA FTM ZETA S",
+l2:"ARB OP POL MATIC IMX MNT STRK ZK LINEA SCR TAIKO METIS LRC SKL MANTA OMG BOBA",
+defi:"UNI AAVE LINK LDO SKY MKR SNX COMP CRV SUSHI CAKE DYDX GMX PENDLE ENA ETHFI JUP RAY ORCA 1INCH YFI BAL CVX FXS LQTY MORPHO EUL SYRUP AERO PYTH API3 BAND SUN JST JTO ONDO ZRX WOO STG AEVO DRIFT KMNO COW SSV RPL FLUID KNC SPK LIT MET ASTER AVNT WLFI",
+meme:"DOGE SHIB PEPE WIF BONK FLOKI PENGU TRUMP SPX FARTCOIN POPCAT MOODENG BOME NEIRO TURBO BRETT MOG PNUT GOAT ACT DOGS MEW GIGA TOSHI PUMP MELANIA PURR FWOG CAT PIPPIN kPEPE kSHIB kBONK",
+ai:"FET RENDER TAO WLD ARKM VIRTUAL IO GRASS AIXBT ZEREBRO GRIFFAIN ARC KAITO VVV AI16Z PHA RLC JASMY OCEAN NMR FIL AR GRT LPT HNT AKT ATH COOKIE SAHARA KITE 0G",
+game:"AXS SAND MANA GALA APE BLUR ILV PIXEL RON BEAM PRIME PORTAL XAI NOT HMSTR CATI MAGIC GMT SUPER YGG ENJ CHZ WAXP ALICE TLM DAR VOXEL HIGH PYR BIGTIME MOCA ANIME ME TNSR CHR NXPC OAS MYRIA WEMIX",
+stable:"USDT USDC DAI FDUSD TUSD USDE USD1 RLUSD PYUSD FRAX LUSD EURC USDG USDS GHO USD0 EURI USDP BFUSD SUSD USDD GUSD CRVUSD"
+};
+var SECMAP={};
+for(var sk in SECDEF)SECDEF[sk].split(" ").forEach(function(s){SECMAP[s]=sk});
+function secOf(sym){return SECMAP[sym]||"etc"}
+var EXS=["bn","hl","okx","by"];
+var st={};EXS.forEach(function(x){st[x]={rows:null,shown:0,busy:false,err:false}});
+var cur="bn",sec="all",exOpen=false,secOpen=false,view=null;
+function append(){
+if(!view)return;var s=st[cur];
 var hint=tb.querySelector("tr.cxmore");if(hint)hint.parentNode.removeChild(hint);
-if(s.shown>=s.rows.length)return;
-var end=Math.min(s.rows.length,s.shown+CH);
-tb.insertAdjacentHTML("beforeend",s.rows.slice(s.shown,end).join(""));
+if(s.shown>=view.length)return;
+var end=Math.min(view.length,s.shown+CH),html="";
+for(var i=s.shown;i<end;i++){var r=view[i];html+="<tr><td><b>"+esc(r.s)+"</b></td><td>"+fp(r.p)+"</td><td>"+fc(r.c)+"</td></tr>"}
+tb.insertAdjacentHTML("beforeend",html);
 s.shown=end;
-if(s.shown<s.rows.length)tb.insertAdjacentHTML("beforeend",'<tr class="cxmore"><td colspan="3">스크롤하면 더 불러옵니다</td></tr>');
+if(s.shown<view.length)tb.insertAdjacentHTML("beforeend",'<tr class="cxmore"><td colspan="3">스크롤하면 더 불러옵니다</td></tr>');
 }
-function setRows(w,rows){
-var s=st[w];var tb=tbOf(w);var wrap=tb.closest(".cxexwrap");
+function paint(){
+var s=st[cur];
+if(!s.rows){
+if(s.err)tb.innerHTML='<tr><td colspan="3">불러오지 못했어요 <button type="button" class="abretry" data-cxretry="1">다시 시도</button></td></tr>';
+else tb.innerHTML='<tr><td colspan="3">불러오는 중…</td></tr>';
+if(nEl)nEl.textContent="";view=null;return}
+view=sec==="all"?s.rows:s.rows.filter(function(r){return r.k===sec});
+if(nEl)nEl.textContent=view.length+"개";
 var keep=Math.max(CH,s.shown),top=wrap?wrap.scrollTop:0;
-s.rows=rows;s.shown=0;
-if(!rows.length){tb.innerHTML='<tr><td colspan="3">표시할 종목이 없어요</td></tr>';return}
-tb.innerHTML="";
-while(s.shown<Math.min(keep,rows.length))append(w);
-while(wrap&&wrap.clientHeight>0&&s.shown<rows.length&&wrap.scrollHeight<=wrap.clientHeight+2)append(w);
+s.shown=0;tb.innerHTML="";
+if(!view.length){tb.innerHTML='<tr><td colspan="3">표시할 종목이 없어요</td></tr>';return}
+while(s.shown<Math.min(keep,view.length))append();
+while(wrap&&wrap.clientHeight>0&&s.shown<view.length&&wrap.scrollHeight<=wrap.clientHeight+2)append();
 if(wrap&&top)wrap.scrollTop=Math.min(top,Math.max(0,wrap.scrollHeight-wrap.clientHeight));
 }
-function fail(w){st[w].rows=null;st[w].shown=0;tbOf(w).innerHTML='<tr><td colspan="3">불러오지 못했어요 <button type="button" class="abretry" data-cxretry2="'+w+'">다시 시도</button></td></tr>'}
-[["bn",bnB],["hl",hlB]].forEach(function(pair){
-var wrap=pair[1].closest(".cxexwrap");if(!wrap)return;
-wrap.addEventListener("scroll",function(){
-if(wrap.scrollTop+wrap.clientHeight>=wrap.scrollHeight-260)append(pair[0]);
+if(wrap)wrap.addEventListener("scroll",function(){
+if(wrap.scrollTop+wrap.clientHeight>=wrap.scrollHeight-260)append();
 },{passive:true});
-});
-var bnBusy=false;
+function done(x,rows){var s=st[x];s.rows=rows;s.err=false;s.busy=false;if(x===cur)paint()}
+function failed(x){var s=st[x];s.busy=false;s.err=true;if(x===cur)paint()}
 function loadBn(){
-if(bnBusy)return;bnBusy=true;
+var s=st.bn;if(s.busy)return;s.busy=true;
 function go(urls){
 return fetch(urls[0]).then(function(r){if(!r.ok)throw new Error("bn "+r.status);return r.json()}).catch(function(e){if(urls.length>1)return go(urls.slice(1));throw e});
 }
@@ -3315,32 +3461,93 @@ var base=x.symbol.slice(0,-4);
 var lev=base.match(/(UP|DOWN|BULL|BEAR)$/);
 if(lev&&base.length-lev[0].length>=2)return;
 var p=parseFloat(x.lastPrice);if(!(p>0))return;
-rows.push({s:base,p:p,c:parseFloat(x.priceChangePercent),v:parseFloat(x.quoteVolume)||0});
+rows.push({s:base,p:p,c:parseFloat(x.priceChangePercent),v:parseFloat(x.quoteVolume)||0,k:secOf(base)});
 });
 rows.sort(function(a,b){return b.v-a.v});
-if(bnN)bnN.textContent=rows.length+"개";
-setRows("bn",rows.map(function(x){return rowHtml(x.s,x.p,x.c)}));
-}).catch(function(){fail("bn")}).then(function(){bnBusy=false});
+done("bn",rows);
+}).catch(function(){failed("bn")});
 }
-var hlBusy=false;
 function loadHl(){
-if(hlBusy)return;hlBusy=true;
+var s=st.hl;if(s.busy)return;s.busy=true;
 fetch("https://api.hyperliquid.xyz/info",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"metaAndAssetCtxs"})}).then(function(r){if(!r.ok)throw new Error("hl "+r.status);return r.json()}).then(function(j){
 var u=(j&&j[0]&&j[0].universe)||[],c=(j&&j[1])||[],rows=[];
 for(var i=0;i<u.length;i++){
 if(!u[i]||u[i].isDelisted)continue;var a=c[i];if(!a)continue;
 var p=parseFloat(a.markPx)||parseFloat(a.midPx);if(!(p>0))continue;
 var pv=parseFloat(a.prevDayPx);
-rows.push({s:u[i].name,p:p,c:pv>0?(p/pv-1)*100:NaN,v:parseFloat(a.dayNtlVlm)||0});
+rows.push({s:u[i].name,p:p,c:pv>0?(p/pv-1)*100:NaN,v:parseFloat(a.dayNtlVlm)||0,k:secOf(u[i].name)});
 }
 rows.sort(function(a,b){return b.v-a.v});
-if(hlN)hlN.textContent=rows.length+"개";
-setRows("hl",rows.map(function(x){return rowHtml(x.s,x.p,x.c)}));
-}).catch(function(){fail("hl")}).then(function(){hlBusy=false});
+done("hl",rows);
+}).catch(function(){failed("hl")});
 }
-[bnB,hlB].forEach(function(tb){tb.addEventListener("click",function(e){var b=e.target.closest("[data-cxretry2]");if(!b)return;if(b.getAttribute("data-cxretry2")==="bn")loadBn();else loadHl()})});
+function loadOkx(){
+var s=st.okx;if(s.busy)return;s.busy=true;
+fetch("https://www.okx.com/api/v5/market/tickers?instType=SPOT").then(function(r){if(!r.ok)throw new Error("okx "+r.status);return r.json()}).then(function(j){
+var rows=[];
+((j&&j.data)||[]).forEach(function(x){
+if(!x||!x.instId||x.instId.slice(-5)!=="-USDT")return;
+var base=x.instId.slice(0,-5);
+if(/\d+(L|S)$/.test(base))return;
+var p=parseFloat(x.last),o=parseFloat(x.open24h);if(!(p>0))return;
+rows.push({s:base,p:p,c:o>0?(p/o-1)*100:NaN,v:parseFloat(x.volCcy24h)||0,k:secOf(base)});
+});
+rows.sort(function(a,b){return b.v-a.v});
+done("okx",rows);
+}).catch(function(){failed("okx")});
+}
+function loadBy(){
+var s=st.by;if(s.busy)return;s.busy=true;
+function go(host){
+return fetch("https://"+host+"/v5/market/tickers?category=spot").then(function(r){if(!r.ok)throw new Error("by "+r.status);return r.json()});
+}
+go("api.bybit.com").catch(function(){return go("api.bytick.com")}).then(function(j){
+var list=(j&&j.result&&j.result.list)||[],rows=[];
+list.forEach(function(x){
+if(!x||!x.symbol||x.symbol.slice(-4)!=="USDT")return;
+var base=x.symbol.slice(0,-4);
+if(/\d+(L|S)$/.test(base))return;
+var p=parseFloat(x.lastPrice);if(!(p>0))return;
+rows.push({s:base,p:p,c:parseFloat(x.price24hPcnt)*100,v:parseFloat(x.turnover24h)||0,k:secOf(base)});
+});
+rows.sort(function(a,b){return b.v-a.v});
+done("by",rows);
+}).catch(function(){failed("by")});
+}
+var LOAD={bn:loadBn,hl:loadHl,okx:loadOkx,by:loadBy};
+function load(x){LOAD[x]()}
+/* 선택 칩 동기화: 닫혀 있을 때는 고른 버튼만 보이고 그 버튼에 화살표가
+   붙는다. 열려 있을 때는 전부 보인다 */
+function syncPick(pick,open,attr,val){
+pick.classList.toggle("cxopen",open);
+pick.querySelectorAll("button").forEach(function(b){
+var sel=b.getAttribute(attr)===val,ar=b.querySelector(".sc-arr");
+b.setAttribute("aria-pressed",String(sel));
+b.hidden=!open&&!sel;
+if(sel){b.setAttribute("aria-expanded",String(open));if(!ar)b.insertAdjacentHTML("beforeend",'<span class="sc-arr" aria-hidden="true">▾</span>')}
+else{b.removeAttribute("aria-expanded");if(ar)ar.parentNode.removeChild(ar)}
+});
+}
+function syncPicks(){syncPick(exPick,exOpen,"data-cxex",cur);syncPick(secPick,secOpen,"data-cxsec",sec)}
+exPick.addEventListener("click",function(e){
+var b=e.target.closest("[data-cxex]");if(!b)return;
+if(!exOpen){exOpen=true;secOpen=false;syncPicks();return}
+var v=b.getAttribute("data-cxex");exOpen=false;
+if(v!==cur){cur=v;syncPicks();paint();load(cur)}else syncPicks();
+});
+secPick.addEventListener("click",function(e){
+var b=e.target.closest("[data-cxsec]");if(!b)return;
+if(!secOpen){secOpen=true;exOpen=false;syncPicks();return}
+var v=b.getAttribute("data-cxsec");secOpen=false;
+if(v!==sec){sec=v;syncPicks();paint()}else syncPicks();
+});
+tb.addEventListener("click",function(e){
+var b=e.target.closest("[data-cxretry]");if(!b)return;
+st[cur].err=false;paint();load(cur);
+});
+syncPicks();paint();
 var started=false;
-function start(){if(started)return;started=true;loadBn();loadHl();setInterval(function(){if(!pa.hidden&&!document.hidden){loadBn();loadHl()}},60000)}
+function start(){if(started)return;started=true;load(cur);setInterval(function(){if(!pa.hidden&&!document.hidden){EXS.forEach(function(x){if(st[x].rows||x===cur)load(x)})}},60000)}
 if(window.MutationObserver)new MutationObserver(function(){if(!pa.hidden)start()}).observe(pa,{attributes:true,attributeFilter:["hidden"]});
 if(!pa.hidden)start();
 })();
@@ -5492,8 +5699,6 @@ if(!sec.hidden&&!S.started){S.started=true;loadData()}
 <script>(function(){var sec=document.getElementById("p-kr"),fr=document.getElementById("krFrame"),ld=document.getElementById("krLoading"),done=false,preHidden=false,revealed=false;function curTheme(){var t=document.documentElement.getAttribute("data-theme");return t==="light"?"light":"dark";}function fit(){try{var d=fr.contentDocument;if(!d||!d.body)return;var h=Math.max(d.body.scrollHeight,d.documentElement?d.documentElement.scrollHeight:0);if(h&&Math.abs(h-(parseInt(fr.style.height)||0))>2)fr.style.height=h+"px";}catch(e){}}function tidy(){try{var d=fr.contentDocument;if(!d)return;var m=d.querySelector("header.top .modes"),l=d.querySelector("header.top .logo");if(m)m.style.display="none";if(l)l.style.display="none";}catch(e){}}function reChart(){try{var d=fr.contentDocument,w=fr.contentWindow;if(!d||!w||typeof w.showChart!=="function")return;var cs=d.getElementById("chartSym");w.showChart(cs&&cs.textContent?cs.textContent:"KRX:005930");}catch(e){}}function onLoad(){if(ld)ld.style.display="none";tidy();fit();var n=0;var iv=setInterval(function(){tidy();fit();if(++n>40)clearInterval(iv);},500);}function load(){if(done)return;done=true;if(sec&&sec.hidden)preHidden=true;fr.addEventListener("load",onLoad);fr.src=fr.getAttribute("data-src")+"?theme="+curTheme();}function applyTheme(){if(!done)return;var t=curTheme();try{var d=fr.contentDocument;if(d&&d.documentElement){d.documentElement.setAttribute("data-theme",t);reChart();tidy();fit();return;}}catch(e){}fr.src=fr.getAttribute("data-src")+"?theme="+t;}window.addEventListener("resize",fit);document.querySelectorAll('[data-nav="krstock"],[data-t="p-kr"]').forEach(function(b){b.addEventListener("pointerenter",load);b.addEventListener("touchstart",load,{passive:true});});if(window.MutationObserver&&sec){new MutationObserver(function(){if(!sec.hidden){if(!done)load();else if(preHidden&&!revealed){revealed=true;setTimeout(function(){reChart();fit();},300);}}}).observe(sec,{attributes:true,attributeFilter:["hidden"]});}if(window.MutationObserver){new MutationObserver(function(){applyTheme();}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});}if(sec&&!sec.hidden)load();})();</script>
 <section id="p-usstock" hidden><div id="usLoading" style="padding:36px 16px;text-align:center;color:var(--mut);font-size:14px">미국주식 불러오는 중…</div><iframe id="usFrame" title="미국주식" data-src="https://kimpwon.com/us.html" style="width:100%;border:0;display:block;height:82vh"></iframe></section>
 <script>(function(){var sec=document.getElementById("p-usstock"),fr=document.getElementById("usFrame"),ld=document.getElementById("usLoading"),done=false,preHidden=false,revealed=false;function curTheme(){var t=document.documentElement.getAttribute("data-theme");return t==="light"?"light":"dark";}function fit(){try{var d=fr.contentDocument;if(!d||!d.body)return;var h=Math.max(d.body.scrollHeight,d.documentElement?d.documentElement.scrollHeight:0);if(h&&Math.abs(h-(parseInt(fr.style.height)||0))>2)fr.style.height=h+"px";}catch(e){}}function tidy(){try{var d=fr.contentDocument;if(!d)return;var m=d.querySelector("header.top .modes"),l=d.querySelector("header.top .logo");if(m)m.style.display="none";if(l)l.style.display="none";}catch(e){}}function reChart(){try{var d=fr.contentDocument,w=fr.contentWindow;if(!d||!w||typeof w.showChart!=="function")return;var cs=d.getElementById("chartSym");w.showChart(cs&&cs.textContent?cs.textContent:"NVDA");}catch(e){}}function onLoad(){if(ld)ld.style.display="none";tidy();fit();var n=0;var iv=setInterval(function(){tidy();fit();if(++n>40)clearInterval(iv);},500);}function load(){if(done)return;done=true;if(sec&&sec.hidden)preHidden=true;fr.addEventListener("load",onLoad);fr.src=fr.getAttribute("data-src")+"?theme="+curTheme();}function applyTheme(){if(!done)return;var t=curTheme();try{var d=fr.contentDocument;if(d&&d.documentElement){d.documentElement.setAttribute("data-theme",t);reChart();tidy();fit();return;}}catch(e){}fr.src=fr.getAttribute("data-src")+"?theme="+t;}window.addEventListener("resize",fit);document.querySelectorAll('[data-nav="usstock"],[data-t="p-usstock"]').forEach(function(b){b.addEventListener("pointerenter",load);b.addEventListener("touchstart",load,{passive:true});});if(window.MutationObserver&&sec){new MutationObserver(function(){if(!sec.hidden){if(!done)load();else if(preHidden&&!revealed){revealed=true;setTimeout(function(){reChart();fit();},300);}}}).observe(sec,{attributes:true,attributeFilter:["hidden"]});}if(window.MutationObserver){new MutationObserver(function(){applyTheme();}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});}window.addEventListener("load",function(){setTimeout(load,2500);});if(sec&&!sec.hidden)load();})();</script>
-<section id="p-risk" hidden><div id="riskLoading" style="padding:36px 16px;text-align:center;color:var(--mut);font-size:14px">위기관리신호 불러오는 중…</div><iframe id="riskFrame" title="위기관리신호" data-src="https://kimpwon.com/risk.html" style="width:100%;border:0;display:block;height:82vh"></iframe></section>
-<script>(function(){var sec=document.getElementById("p-risk"),fr=document.getElementById("riskFrame"),ld=document.getElementById("riskLoading"),done=false;function curTheme(){var t=document.documentElement.getAttribute("data-theme");return t==="light"?"light":"dark";}function fit(){try{var d=fr.contentDocument;if(!d||!d.body)return;var h=Math.max(d.body.scrollHeight,d.documentElement?d.documentElement.scrollHeight:0);if(h&&Math.abs(h-(parseInt(fr.style.height)||0))>2)fr.style.height=h+"px";}catch(e){}}function tidy(){try{var d=fr.contentDocument;if(!d)return;var m=d.querySelector("header.top .modes"),l=d.querySelector("header.top .logo");if(m)m.style.display="none";if(l)l.style.display="none";}catch(e){}}function onLoad(){if(ld)ld.style.display="none";tidy();fit();var n=0;var iv=setInterval(function(){tidy();fit();if(++n>40)clearInterval(iv);},500);}function load(){if(done)return;done=true;fr.addEventListener("load",onLoad);fr.src=fr.getAttribute("data-src")+"?theme="+curTheme();}function applyTheme(){if(!done)return;var t=curTheme();try{var d=fr.contentDocument;if(d&&d.documentElement){d.documentElement.setAttribute("data-theme",t);tidy();fit();return;}}catch(e){}fr.src=fr.getAttribute("data-src")+"?theme="+t;}window.addEventListener("resize",fit);document.querySelectorAll('[data-nav="risk"],[data-t="p-risk"]').forEach(function(b){b.addEventListener("pointerenter",load);b.addEventListener("touchstart",load,{passive:true});});if(window.MutationObserver&&sec){new MutationObserver(function(){if(!sec.hidden&&!done)load();}).observe(sec,{attributes:true,attributeFilter:["hidden"]});}if(window.MutationObserver){new MutationObserver(function(){applyTheme();}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});}if(sec&&!sec.hidden)load();})();</script>
 <section id="p-nasdaq" hidden></section>
 <section id="p-spx" hidden></section>
 <section id="p-etf" hidden></section>
@@ -5524,7 +5729,7 @@ if(!sec.hidden&&!S.started){S.started=true;loadData()}
 <p class="cat-err" id="cat-err" role="alert" hidden></p>
 <div class="cat-row2"><button type="button" class="cm-cancel" id="cat-close">닫기</button></div>
 </div></div>
-<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-21), 구리 국내 유통가는 한국물가정보 고시(2026년 9월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-25 조회, KRX는 11/25 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
+<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-24), 구리 국내 유통가는 한국물가정보 고시(2026년 11월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-25 조회, KRX는 11/25 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
 <footer class="sitefoot">
 <nav aria-label="약관 및 방침"><a href="/privacy.html">개인정보처리방침</a><i aria-hidden="true">·</i><a href="/terms.html">이용약관</a><i aria-hidden="true">·</i><button type="button" id="legal-contact-open">문의</button><i aria-hidden="true">·</i><a href="guide.html">가이드</a></nav>
 <p>© 2026 kimpwon</p>
@@ -6720,13 +6925,13 @@ window.addEventListener("resize",function(){clearTimeout(ncRzT);ncRzT=setTimeout
 function gd2(n){return f(n,n<10?3:2)}
 function tvtheme(){var t=document.documentElement.getAttribute("data-theme");if(t)return t;return "dark"}
 var MT={
-au:{sym:"XAU",dec:2,usd:3906.07,buy:672000,sell:582000,tv:"TVC:GOLD",live:false,
+au:{sym:"XAU",dec:2,usd:3906.07,buy:694000,sell:598000,tv:"TVC:GOLD",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
-ag:{sym:"XAG",dec:3,usd:50.075,buy:7460,sell:6370,tv:"TVC:SILVER",live:false,
+ag:{sym:"XAG",dec:3,usd:50.075,buy:7900,sell:6750,tv:"TVC:SILVER",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
-cu:{sym:"HG",dec:4,usd:6.1885,dom:21700,tv:"TVC:COPPER",live:false,
+cu:{sym:"HG",dec:4,usd:6.1885,dom:20800,tv:"TVC:COPPER",live:false,
  conv:function(usd,fx){return usd*fx*2.20462},
  krw:function(usd,fx){return "국제 원화 환산 1kg 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1lb 약 "+f(Math.round(usd*fx))+"원"}},
 oil:{sym:"CL",dec:2,usd:88.48,tv:"TVC:USOIL",live:false,hi:0,lo:0,
@@ -6848,7 +7053,7 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden)mfet
    달러/원 타일은 아래 fxFetch(환율 입력칸 동기화)가 우선 갱신하고, 스트립 조회도 함께 채운다 */
 var IXCATS=[
 {k:"main",label:"주요",items:[
-["ks","코스피","KRX:KOSPI",2,""],["kq","코스닥","KRX:KOSDAQ",2,""],["fx","원/달러","FX:USDKRW",2,""],["vix","VIX (공포지수)","TVC:VIX",2,""],["spx","S&P 500","SP:SPX",2,""],["ixic","나스닥 종합","NASDAQ:IXIC",2,""],["ndx","나스닥 100","NASDAQ:NDX",2,""],["dji","다우존스","DJ:DJI",2,""],["sox","필라델피아 반도체","NASDAQ:SOX",2,""],["n225","닛케이 225","TVC:NI225",2,""]]},
+["ks","코스피","KRX:KOSPI",2,""],["kq","코스닥","KRX:KOSDAQ",2,""],["fx","원/달러","FX:USDKRW",2,""],["vix","VIX (공포지수)","TVC:VIX",2,""],["spx","S&P 500","SP:SPX",2,""],["ixic","나스닥 종합","NASDAQ:IXIC",2,""],["ndx","나스닥 100","NASDAQ:NDX",2,""],["gold","금","TVC:GOLD",2,"$"],["btc","비트코인","BINANCE:BTCUSDT",0,"$"],["n225","닛케이 225","TVC:NI225",2,""]]},
 {k:"kr",label:"국내",items:[
 ["ks","코스피","KRX:KOSPI",2,""],["kq","코스닥","KRX:KOSDAQ",2,""],["ks200","코스피 200","KRX:KOSPI200",2,""],["kq150","코스닥 150","KRX:KOSDAQ150",2,""],["fx","원/달러","FX:USDKRW",2,""]]},
 {k:"us",label:"미국",items:[
@@ -7035,7 +7240,6 @@ var PAGES=[
 ["코인","페이지","코인 가상화폐 비트코인 이더리움",function(){location.href="coin.html"}],
 ["국내 지표","탭","국내지표 코스피 코스닥 코스피200",tabAct("p-kridx")],
 ["해외 지표","탭","해외지표 미국지수 나스닥 다우",tabAct("p-usidx")],
-["위기관리 신호","탭","위기관리신호 리스크 신용 유동성 하이일드 스프레드",tabAct("p-risk")],
 ["코스피","탭","코스피 KOSPI 국내주식 한국주식",tabAct("p-kospi")],
 ["코스닥","탭","코스닥 KOSDAQ 국내주식 한국주식",tabAct("p-kosdaq")],
 ["국내주식","탭","국내주식 한국주식 코스피 코스닥 토스",tabAct("p-kr")],
@@ -9894,7 +10098,7 @@ setInterval(function(){if(!document.hidden)load()},3600000);
    행에 heen이 빠져 있어도 아래 HEC_ABBR 표에 있는 지표면 로드 시 자동으로 채워 넣으므로,
    데이터를 교체할 때 약어를 빠뜨려도 표에 있는 지표는 같은 방식으로 표시된다. */
 (function(){
-var HEC_BAKED_AT="2026-11-25 07:54";
+var HEC_BAKED_AT="2026-11-25 19:00";
 var e=document.getElementById("hec-upd");
 if(e){var p=HEC_BAKED_AT.split(/[- :]/);e.textContent=(+p[3])+":"+p[4]+" 갱신"}
 var HEC_ABBR=[
@@ -10550,9 +10754,9 @@ function pmClick(mode){var pm=el2("pmode");if(!pm)return;var b=pm.querySelector(
    주소는 #/페이지 형태이고, 메뉴를 누르면 히스토리에 쌓여 뒤로가기가 동작하며,
    주소로 바로 들어오거나 뒤로·앞으로 이동해도 해당 페이지가 열린다.
    페이지마다 문서 제목도 따로 붙는다 */
-var NAV2PAGE={home:"",crypto:"crypto",krstock:"kr",usstock:"us",kridx:"korea",usidx:"usa",chart:"chart",risk:"risk"};
-var PAGE2NAV={crypto:"crypto",kr:"krstock",us:"usstock",korea:"kridx",usa:"usidx",chart:"chart",risk:"risk"};
-var NAVTITLE={home:"김프원",crypto:"암호화폐 | 김프원",krstock:"국내주식 | 김프원",usstock:"미국주식 | 김프원",kridx:"국내지표 | 김프원",usidx:"해외지표 | 김프원",chart:"차트 | 김프원",risk:"위기관리신호 | 김프원"};
+var NAV2PAGE={home:"",crypto:"crypto",krstock:"kr",usstock:"us",kridx:"korea",usidx:"usa",chart:"chart"};
+var PAGE2NAV={crypto:"crypto",kr:"krstock",us:"usstock",korea:"kridx",usa:"usidx",chart:"chart"};
+var NAVTITLE={home:"김프원",crypto:"암호화폐 | 김프원",krstock:"국내주식 | 김프원",usstock:"미국주식 | 김프원",kridx:"국내지표 | 김프원",usidx:"해외지표 | 김프원",chart:"차트 | 김프원"};
 function pageHash(key){var p=NAV2PAGE[key];return p?"#/"+p:"#/"}
 function curSlug(){var h=(location.hash||"").replace(/^#\/?/,"").split(/[?&#]/)[0];if(h)return h;try{var q=new URLSearchParams(location.search).get("page");if(q)return q}catch(e){}return ""}
 function syncPage(key,push){
@@ -10569,7 +10773,6 @@ else if(k==="crypto"){window.__paRight=null;goSec("pa");if(window.__cxReset)wind
 else if(k==="kridx"){goSec("p-kridx")}
 else if(k==="usidx"){goSec("p-usidx")}
 else if(k==="chart"){goSec("p-chart")}
-else if(k==="risk"){goSec("p-risk")}
 else if(k==="market"){goSec("p-market")}
 else if(k==="kospi"){goSec("p-kospi")}
 else if(k==="kosdaq"){goSec("p-kosdaq")}
@@ -10600,7 +10803,6 @@ else if(vis("p-spx"))key="spx";
 else if(vis("p-etf"))key="etf";
 else if(vis("p-calc"))key="calc";
 else if(vis("p-chart"))key="chart";
-else if(vis("p-risk"))key="risk";
 else if(vis("ph"))key="home";
 else if(vis("pa"))key="crypto";
 tabs.querySelectorAll("[data-nav]").forEach(function(x){x.setAttribute("aria-pressed",String(x.dataset.nav===key))});
@@ -10618,7 +10820,7 @@ window.scrollTo(0,0);
 });
 /* 메뉴 밖에서 일어난 이동(검색 바로가기·지수 칩·주식/ETF 전환·게시물 전체보기 등)에도
    강조를 실제 화면에 맞춘다: 섹션 hidden 변화를 감시하고, 칩·모드 클릭은 뒤따라 동기화한다 */
-if(window.MutationObserver){var mo=new MutationObserver(function(){syncNav()});["ph","pa","pb","pg","pf","pc","pi","pk","p-kridx","p-usidx","p-market","p-kospi","p-kosdaq","p-kr","p-usstock","p-nasdaq","p-spx","p-etf","p-calc","p-chart","p-risk"].forEach(function(id){var s=el2(id);if(s)mo.observe(s,{attributes:true,attributeFilter:["hidden"]})})}
+if(window.MutationObserver){var mo=new MutationObserver(function(){syncNav()});["ph","pa","pb","pg","pf","pc","pi","pk","p-kridx","p-usidx","p-market","p-kospi","p-kosdaq","p-kr","p-usstock","p-nasdaq","p-spx","p-etf","p-calc","p-chart"].forEach(function(id){var s=el2(id);if(s)mo.observe(s,{attributes:true,attributeFilter:["hidden"]})})}
 var ixc=el2("ixcats");if(ixc)ixc.addEventListener("click",function(){setTimeout(syncNav,0)});
 var pm=el2("pmode");if(pm)pm.addEventListener("click",function(){setTimeout(syncNav,0)});
 window.addEventListener("hashchange",function(){routeFromLocation()});
