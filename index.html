@@ -7442,13 +7442,17 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden)dexF
 <script>
 /* ===== DEX 화면: 디파이라마 대표 항목 9칸 (사용자 지시) =====
    스테이블코인 공급량만 빼고 디파이라마 대표 항목 전부를 DEX 화면 칸으로 넣는다:
-   TVL 순위(api.llama.fi/protocols) · DEX 거래량(overview/dexs) ·
+   TVL 순위(api.llama.fi/lite/protocols2 경량판) · DEX 거래량(overview/dexs) ·
    수수료·매출(overview/fees 를 dailyFees·dailyRevenue 두 번 읽어 합침) ·
    선물 거래량(overview/derivatives) · 일드(yields.llama.fi/pools,
    TVL $10M 이상 풀만 APY 순) · 브릿지 거래량(overview/bridges) ·
    체인별 현황(v2/chains) · 해킹 기록(/hacks) · 펀딩(/raises).
    전부 무료 공개 API(CORS 허용을 실제로 확인함)를 DEX 화면이 처음 열릴 때 칸마다
    따로 읽어 먼저 온 칸부터 그리고, 화면이 열려 있는 동안 5분마다 다시 읽는다.
+   로딩 단축(사용자 지적): 칸마다 마지막으로 성공한 상위 10 목록을 이 기기의
+   localStorage(kimpwon_dx1_*)에 저장해 두고, 화면을 열면 저장본을 즉시 그린 뒤
+   뒤에서 새로 받아 교체한다(저장본이 없는 첫 방문만 기다린다). 응답이 큰
+   TVL(경량판으로 교체)·일드 두 칸은 가벼운 칸들을 먼저 부른 뒤 늦게 불러온다.
    선물 거래량과 펀딩은 2026-11-26 확인 시점에 무료 API가 402(유료 전환)를
    돌려줘 읽을 수 없었다 — 숫자를 지어내지 않고 그 칸에는 제공되지 않는다는
    안내와 디파이라마 페이지 링크만 보여준다(읽히면 자동으로 목록이 그려진다).
@@ -7474,6 +7478,14 @@ el.innerHTML=rows.map(function(r,i){
 return '<div class="dxrow"><span class="dxrk">'+(i+1)+'</span><span class="dxwho"><span class="dxnm">'+esc(r.name)+'</span>'+(r.sub?'<span class="dxsb">'+esc(r.sub)+"</span>":"")+'</span><span class="dxrt"><span class="dxvl">'+esc(r.value)+"</span>"+(r.subValue?'<span class="dxsv">'+esc(r.subValue)+"</span>":"")+(r.chg!=null?chgHtml(r.chg):"")+"</span></div>";
 }).join("");
 }
+var DXLS="kimpwon_dx1_";
+var DXELS={tvl:"dxl-tvl",dexvol:"dxl-dexvol",fees:"dxl-fees",perps:"dxl-perps",yields:"dxl-yields",bridge:"dxl-bridge",chains:"dxl-chains",hacks:"dxl-hacks",raises:"dxl-raises"};
+function dxGet(k){try{var v=localStorage.getItem(DXLS+k);if(!v)return null;var o=JSON.parse(v);return (o&&Array.isArray(o.rows)&&o.rows.length)?o.rows:null}catch(e){return null}}
+function dxSet(k,rows){try{localStorage.setItem(DXLS+k,JSON.stringify({t:Date.now(),rows:rows}))}catch(e){}}
+function dxPaint(el,k){var r=dxGet(k);if(r){draw(el,r);el.setAttribute("data-dxcached","1");return true}return false}
+function dxDraw(el,k,rows){if(rows&&rows.length)dxSet(k,rows);el.removeAttribute("data-dxcached");draw(el,rows)}
+function dxFail(el,k,paid){if(el.getAttribute("data-dxcached")==="1")return;fail(el,k,paid)}
+function paintAllCached(){Object.keys(DXELS).forEach(function(k){var el=gel(DXELS[k]);if(el)dxPaint(el,k)})}
 function fail(el,key,paid){
 if(paid){el.innerHTML='<div class="dxempty">이 항목은 DefiLlama 무료 공개 API로 제공되지 않아(유료 전환) 숫자를 표시하지 않아요. 위 링크에서 원본을 볼 수 있어요</div>';return}
 el.innerHTML="";
@@ -7492,81 +7504,98 @@ function dateStr(ts){var d=new Date(Number(ts)*1000);if(isNaN(d.getTime()))retur
 var LOADERS={
 tvl:function(){
 var el=gel("dxl-tvl");if(!el)return;
-fetchJ("https://api.llama.fi/protocols",60000).then(function(j){
-var ps=(Array.isArray(j)?j:[]).filter(function(p){return p&&Number(p.tvl)>0});
+dxPaint(el,"tvl");
+fetchJ("https://api.llama.fi/lite/protocols2",60000).then(function(j){
+var list=Array.isArray(j)?j:((j&&j.protocols)||[]);
+var ps=list.filter(function(p){return p&&Number(p.tvl)>0});
 ps.sort(function(a,b){return Number(b.tvl)-Number(a.tvl)});
-draw(el,ps.slice(0,10).map(function(p){return{name:p.name||"?",sub:[p.category,p.chain].filter(Boolean).join(" · "),value:money(p.tvl),chg:(p.change_1d==null?null:Number(p.change_1d))}}));
-}).catch(function(){fail(el,"tvl")});
+dxDraw(el,"tvl",ps.slice(0,10).map(function(p){var cur=Number(p.tvl),prev=Number(p.tvlPrevDay);var chg=(p.change_1d!=null?Number(p.change_1d):(isFinite(prev)&&prev>0?((cur-prev)/prev*100):null));var chain=p.chain||(Array.isArray(p.chains)&&p.chains.length?p.chains[0]:"");return{name:p.name||"?",sub:[p.category,chain].filter(Boolean).join(" · "),value:money(p.tvl),chg:(chg==null||!isFinite(chg)?null:chg)}}));
+}).catch(function(){dxFail(el,"tvl")});
 },
 dexvol:function(){
 var el=gel("dxl-dexvol");if(!el)return;
+dxPaint(el,"dexvol");
 fetchJ("https://api.llama.fi/overview/dexs?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",45000).then(function(j){
-draw(el,topVol(j).map(function(p){return{name:nm(p),sub:p.category||"",value:money(p.total24h),chg:(p.change_1d==null?null:Number(p.change_1d))}}));
-}).catch(function(){fail(el,"dexvol")});
+dxDraw(el,"dexvol",topVol(j).map(function(p){return{name:nm(p),sub:p.category||"",value:money(p.total24h),chg:(p.change_1d==null?null:Number(p.change_1d))}}));
+}).catch(function(){dxFail(el,"dexvol")});
 },
 fees:function(){
 var el=gel("dxl-fees");if(!el)return;
+dxPaint(el,"fees");
 var base="https://api.llama.fi/overview/fees?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true";
 fetchJ(base+"&dataType=dailyFees",45000).then(function(jf){
 fetchJ(base+"&dataType=dailyRevenue",45000).then(function(jr){
 var rev={};((jr&&jr.protocols)||[]).forEach(function(p){rev[p.defillamaId||p.name]=Number(p.total24h)});
-draw(el,topVol(jf).map(function(p){var rv=rev[p.defillamaId||p.name];return{name:nm(p),sub:p.category||"",value:money(p.total24h),subValue:(isFinite(rv)?"매출 "+money(rv):"")}}));
+dxDraw(el,"fees",topVol(jf).map(function(p){var rv=rev[p.defillamaId||p.name];return{name:nm(p),sub:p.category||"",value:money(p.total24h),subValue:(isFinite(rv)?"매출 "+money(rv):"")}}));
 }).catch(function(){
-draw(el,topVol(jf).map(function(p){return{name:nm(p),sub:p.category||"",value:money(p.total24h)}}));
+dxDraw(el,"fees",topVol(jf).map(function(p){return{name:nm(p),sub:p.category||"",value:money(p.total24h)}}));
 });
-}).catch(function(){fail(el,"fees")});
+}).catch(function(){dxFail(el,"fees")});
 },
 perps:function(){
 var el=gel("dxl-perps");if(!el)return;
+dxPaint(el,"perps");
 fetchJ("https://api.llama.fi/overview/derivatives?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",45000).then(function(j){
 var rows=topVol(j).map(function(p){return{name:nm(p),sub:p.category||"",value:money(p.total24h),chg:(p.change_1d==null?null:Number(p.change_1d))}});
-if(rows.length)draw(el,rows);else fail(el,"perps",true);
-}).catch(function(){fail(el,"perps",true)});
+if(rows.length)dxDraw(el,"perps",rows);else dxFail(el,"perps",true);
+}).catch(function(){dxFail(el,"perps",true)});
 },
 yields:function(){
 var el=gel("dxl-yields");if(!el)return;
+dxPaint(el,"yields");
 fetchJ("https://yields.llama.fi/pools",60000).then(function(j){
 var ps=((j&&j.data)||[]).filter(function(p){return p&&Number(p.tvlUsd)>=10000000&&Number(p.apy)>0&&Number(p.apy)<1000});
 ps.sort(function(a,b){return Number(b.apy)-Number(a.apy)});
-draw(el,ps.slice(0,10).map(function(p){return{name:p.project||"?",sub:[p.symbol,p.chain].filter(Boolean).join(" · "),value:Number(p.apy).toFixed(2)+"%",subValue:"TVL "+money(p.tvlUsd)}}));
-}).catch(function(){fail(el,"yields")});
+dxDraw(el,"yields",ps.slice(0,10).map(function(p){return{name:p.project||"?",sub:[p.symbol,p.chain].filter(Boolean).join(" · "),value:Number(p.apy).toFixed(2)+"%",subValue:"TVL "+money(p.tvlUsd)}}));
+}).catch(function(){dxFail(el,"yields")});
 },
 bridge:function(){
 var el=gel("dxl-bridge");if(!el)return;
+dxPaint(el,"bridge");
 fetchJ("https://api.llama.fi/overview/bridges?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",45000).then(function(j){
-draw(el,topVol(j).map(function(p){return{name:nm(p),sub:p.category||"",value:money(p.total24h),chg:(p.change_1d==null?null:Number(p.change_1d))}}));
-}).catch(function(){fail(el,"bridge")});
+dxDraw(el,"bridge",topVol(j).map(function(p){return{name:nm(p),sub:p.category||"",value:money(p.total24h),chg:(p.change_1d==null?null:Number(p.change_1d))}}));
+}).catch(function(){dxFail(el,"bridge")});
 },
 chains:function(){
 var el=gel("dxl-chains");if(!el)return;
+dxPaint(el,"chains");
 fetchJ("https://api.llama.fi/v2/chains",30000).then(function(j){
 var ps=(Array.isArray(j)?j:[]).filter(function(p){return p&&Number(p.tvl)>0});
 ps.sort(function(a,b){return Number(b.tvl)-Number(a.tvl)});
-draw(el,ps.slice(0,10).map(function(p){return{name:p.name||"?",sub:p.tokenSymbol||"",value:money(p.tvl)}}));
-}).catch(function(){fail(el,"chains")});
+dxDraw(el,"chains",ps.slice(0,10).map(function(p){return{name:p.name||"?",sub:p.tokenSymbol||"",value:money(p.tvl)}}));
+}).catch(function(){dxFail(el,"chains")});
 },
 hacks:function(){
 var el=gel("dxl-hacks");if(!el)return;
+dxPaint(el,"hacks");
 fetchJ("https://api.llama.fi/hacks",30000).then(function(j){
 var ps=(Array.isArray(j)?j:[]).filter(function(p){return p&&p.date});
 ps.sort(function(a,b){return Number(b.date)-Number(a.date)});
-draw(el,ps.slice(0,10).map(function(p){var ch=Array.isArray(p.chain)?p.chain.join(", "):(p.chain||"");return{name:p.name||"?",sub:[dateStr(p.date),ch,p.technique].filter(Boolean).join(" · "),value:money(p.amount)}}));
-}).catch(function(){fail(el,"hacks")});
+dxDraw(el,"hacks",ps.slice(0,10).map(function(p){var ch=Array.isArray(p.chain)?p.chain.join(", "):(p.chain||"");return{name:p.name||"?",sub:[dateStr(p.date),ch,p.technique].filter(Boolean).join(" · "),value:money(p.amount)}}));
+}).catch(function(){dxFail(el,"hacks")});
 },
 raises:function(){
 var el=gel("dxl-raises");if(!el)return;
+dxPaint(el,"raises");
 fetchJ("https://api.llama.fi/raises",30000).then(function(j){
 var list=Array.isArray(j)?j:((j&&(j.raises||j.data))||[]);
 var ps=list.filter(function(p){return p&&(p.name||p.project)});
 ps.sort(function(a,b){return Number(b.date||0)-Number(a.date||0)});
 var rows=ps.slice(0,10).map(function(p){return{name:p.name||p.project||"?",sub:[dateStr(p.date),p.round,p.sector||p.category].filter(Boolean).join(" · "),value:(p.amount!=null?money(p.amount):"—")}});
-if(rows.length)draw(el,rows);else fail(el,"raises",true);
-}).catch(function(){fail(el,"raises",true)});
+if(rows.length)dxDraw(el,"raises",rows);else dxFail(el,"raises",true);
+}).catch(function(){dxFail(el,"raises",true)});
 }
 };
 var started=false;
-function loadAll(){Object.keys(LOADERS).forEach(function(k){LOADERS[k]()})}
-function start(){if(started)return;started=true;loadAll();setInterval(function(){if(!view.hidden&&!(pa&&pa.hidden)&&!document.hidden)loadAll()},5*60000)}
+var DXLIGHT=["dexvol","fees","perps","bridge","chains","hacks","raises"];
+var DXHEAVY=["tvl","yields"];
+var heavyDone=false,heavyTimer=null;
+function loadKeys(ks){ks.forEach(function(k){try{LOADERS[k]()}catch(e){}})}
+function loadHeavy(){if(heavyDone)return;heavyDone=true;if(heavyTimer){clearTimeout(heavyTimer);heavyTimer=null}loadKeys(DXHEAVY)}
+function scheduleHeavy(ms){if(heavyDone||heavyTimer)return;heavyTimer=setTimeout(function(){heavyTimer=null;loadHeavy()},ms)}
+function loadAll(){loadKeys(DXLIGHT);if(heavyDone)loadKeys(DXHEAVY);else scheduleHeavy(900)}
+function loadRefresh(){loadKeys(DXLIGHT);setTimeout(function(){loadKeys(DXHEAVY)},1500)}
+function start(){if(started)return;started=true;paintAllCached();loadAll();if("IntersectionObserver" in window){try{var io=new IntersectionObserver(function(es){for(var i=0;i<es.length;i++){if(es[i].isIntersecting){scheduleHeavy(250);io.disconnect();break}}},{rootMargin:"200px"});["dxl-tvl","dxl-yields"].forEach(function(id){var el=gel(id);if(el&&el.parentNode)io.observe(el.parentNode)});}catch(e){}}setInterval(function(){if(!view.hidden&&!(pa&&pa.hidden)&&!document.hidden)loadRefresh()},5*60000)}
 if(window.MutationObserver)new MutationObserver(function(){if(!view.hidden)start()}).observe(view,{attributes:true,attributeFilter:["hidden"]});
 if(!view.hidden)start();
 })();
