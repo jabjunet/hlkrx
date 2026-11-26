@@ -2696,7 +2696,7 @@ var D={
 "금":"Gold","은":"Silver","구리":"Copper","유가":"Oil","차트보기":"Show Chart","차트접기":"Hide Chart",
 "금 (GOLD)":"Gold (GOLD)","은 (SILVER)":"Silver (SILVER)","구리 (COPPER)":"Copper (COPPER)","유가 (WTI 원유)":"Oil (WTI Crude)",
 "국제 현물 · 트로이온스(oz) 기준 · gold-api.com":"Intl spot · per troy ounce (oz) · gold-api.com","국제 현물 · 파운드(lb) 기준 · gold-api.com":"Intl spot · per pound (lb) · gold-api.com","국제 선물 · 배럴(bbl) 기준 · NYMEX WTI":"Intl futures · per barrel (bbl) · NYMEX WTI",
-"국내시세 출처: 한국금거래소 고시 · 2026-11-24":"Domestic prices: Korea Gold Exchange notice · 2026-11-24","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 11월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Nov 2026 (monthly notice)",
+"국내시세 출처: 한국금거래소 고시 · 2026-11-25":"Domestic prices: Korea Gold Exchange notice · 2026-11-25","국내시세 출처: 한국물가정보 전기동 국내 유통가 · 2026년 11월 (월간 고시)":"Domestic price: Korea Price Information copper distribution price · Nov 2026 (monthly notice)",
 "유가는 국내 고시 가격이 없어 김프를 표시하지 않습니다. 국제 시세(WTI) 기준입니다.":"Oil has no domestic posted price, so no Kimchi Premium is shown. Based on international (WTI) prices.","국내 고시 기준 · 하루 1회 갱신":"Domestic official price · updated daily","국제 실시간 시세":"Global live price",
 "김프 (국내 vs 국제 환산)":"Kimchi Prem. (Domestic vs Intl)","국내 유통가 (1kg)":"Domestic price (1kg)","국제 환산가 (1kg)":"Intl converted price (1kg)","국내 살 때 (1돈)":"Domestic buy (1 don)","국내 팔 때 (1돈)":"Domestic sell (1 don)","국제 원화 환산 (1배럴)":"Intl conversion (1 barrel)","당일 고가 (1배럴)":"Day high (1 barrel)","당일 저가 (1배럴)":"Day low (1 barrel)","국내 · 1kg":"Domestic · 1kg","국제 환산 · 1kg":"Intl conv. · 1kg","국내 · 팔 때 1돈":"Domestic · Sell 1 don","국제 환산 · 1돈":"Intl conv. · 1 don",
 "김프 = (국내 가격 ÷ 국제 환산가 − 1) × 100":"Kimchi Prem. = (Domestic price ÷ Intl converted price − 1) × 100","+면 국내가 더 비싸고, −면 국내가 더 쌉니다.":"Positive means the domestic price is higher; negative means it is cheaper.",
@@ -5760,7 +5760,7 @@ if(!sec.hidden&&!S.started){S.started=true;loadData()}
 <p class="cat-err" id="cat-err" role="alert" hidden></p>
 <div class="cat-row2"><button type="button" class="cm-cancel" id="cat-close">닫기</button></div>
 </div></div>
-<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-24), 구리 국내 유통가는 한국물가정보 고시(2026년 11월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-25 조회, KRX는 11/25 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
+<details class="dnote"><summary>데이터 갱신 안내</summary><p class="note">Hyperliquid·Binance·OKX·Bybit 가격과 펀딩비는 실시간으로 불러와 15초마다 갱신하고, 펀딩비 탭을 열어 두면 10초마다 갱신합니다. 달러/원 환율(USD/KRW)도 실시간으로 불러와 15초마다 갱신하며, 김프 계산·원화 환산·상단 달러/원 타일에 그대로 반영됩니다. 해외 탭의 실제 상장 ETF(미국·국내) 가격은 TradingView 기준으로 불러와 1분마다 갱신하고, ETF 행 아래의 거래소 선물(Hyperliquid·Binance·OKX·Bybit) 가격은 다른 시세와 함께 15초마다 갱신합니다. 원자재 국제 시세(금·은·구리 현물, WTI 유가)도 15초마다 갱신합니다. KRX 가격과 거래량은 장중(평일 09:00–15:30)에는 30초마다 최근 체결가로 갱신하고, 장이 닫힌 동안에는 최근 거래일 종가로 표시합니다. 장이 닫힌 동안에는 해외 거래소 가격만 움직이고 김프도 그에 따라 변합니다. 국내 금·은 시세는 한국금거래소 고시(2026-11-25), 구리 국내 유통가는 한국물가정보 고시(2026년 11월) 기준이라 실시간으로 움직이지 않습니다. 역외 시세는 해외 거래소 파생상품 기준이며 실제 주식 소유권과 무관합니다. 해외 탭에서 기준 거래소를 나스닥으로 고르면 나스닥 상장 전체 종목(주식·펀드)을 TradingView 기준으로 시가총액 순으로 불러와 보여주고, 스크롤하면 이어서 더 불러오며, 섹터 버튼에서 업종을 골라(여러 개 겹쳐 선택 가능) 나눠 볼 수 있고, 불러온 종목의 나스닥 가격은 1분마다 갱신합니다. 김프·해외 탭에서는 해당 종목의 시장이 끝나 있을 때만 현재가 칸 맨 위에 가장 최근 거래일의 종가를 함께 표시하고(한국 종목은 한국 장, 미국 종목은 미국 정규장 기준), 장이 열려 있는 동안에는 표시하지 않습니다. 조회가 안 될 때는 마지막 스냅샷(2026-11-25 조회, KRX는 11/25 종가)을 보여줍니다. 지표 탭 워뇨띠 주식 포지션의 현재가·등락률은 TradingView 기준으로 1분마다 확인합니다.</p></details>
 <footer class="sitefoot">
 <nav aria-label="약관 및 방침"><a href="/privacy.html">개인정보처리방침</a><i aria-hidden="true">·</i><a href="/terms.html">이용약관</a><i aria-hidden="true">·</i><button type="button" id="legal-contact-open">문의</button><i aria-hidden="true">·</i><a href="guide.html">가이드</a></nav>
 <p>© 2026 kimpwon</p>
@@ -6956,10 +6956,10 @@ window.addEventListener("resize",function(){clearTimeout(ncRzT);ncRzT=setTimeout
 function gd2(n){return f(n,n<10?3:2)}
 function tvtheme(){var t=document.documentElement.getAttribute("data-theme");if(t)return t;return "dark"}
 var MT={
-au:{sym:"XAU",dec:2,usd:3906.07,buy:694000,sell:598000,tv:"TVC:GOLD",live:false,
+au:{sym:"XAU",dec:2,usd:3906.07,buy:677000,sell:581000,tv:"TVC:GOLD",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
-ag:{sym:"XAG",dec:3,usd:50.075,buy:7900,sell:6750,tv:"TVC:SILVER",live:false,
+ag:{sym:"XAG",dec:3,usd:50.075,buy:7470,sell:6380,tv:"TVC:SILVER",live:false,
  conv:function(usd,fx){return usd*fx/31.1035*3.75},
  krw:function(usd,fx){return "국제 원화 환산 1돈(3.75g) 약 "+f(Math.round(this.conv(usd,fx)))+"원 · 1g 약 "+f(Math.round(usd*fx/31.1035))+"원"}},
 cu:{sym:"HG",dec:4,usd:6.1885,dom:20800,tv:"TVC:COPPER",live:false,
@@ -11048,7 +11048,7 @@ else{ce.textContent="0.00%";ce.className="ixc"}
    ECOS 정적값은 2026-11-13 수집한 한국은행 ECOS 최신값이며, 달러인덱스만 ECOS에 없어 TradingView 실시간 표시를 유지한다 */
 var KXG=[
 ["환율","외국환시장","전일",[["원/달러",null,["1,332.4원","2026-11-13","-0.32%",-1]],["원/위안",null,["199.98원","2026-11-13","-0.19%",-1]],["원/유로",null,["1,472.97원","2026-11-13","-0.71%",-1]],["원/엔(100엔)",null,["833.45원","2026-11-13","-0.48%",-1]],["달러인덱스","dxy"]]],
-["금리","한국은행","전일",[["기준금리",null,["3.00%","2026-11-13","+0.00%p",0]],["콜금리(1일)",null,["3.061%","2026-11-12","+0.09%p",1]],["CD(91일)",null,["3.37%","2026-11-13","+0.00%p",0]],["회사채(3년 AA-)",null,["4.434%","2026-11-13","+0.03%p",1]],["회사채(3년 BBB-)",null,["10.258%","2026-11-13","+0.03%p",1]]]],
+["금리","한국은행","전일",[["기준금리",null,["3.25%","2026-11-26","+0.25%p",1]],["콜금리(1일)",null,["3.061%","2026-11-12","+0.09%p",1]],["CD(91일)",null,["3.37%","2026-11-13","+0.00%p",0]],["회사채(3년 AA-)",null,["4.434%","2026-11-13","+0.03%p",1]],["회사채(3년 BBB-)",null,["10.258%","2026-11-13","+0.03%p",1]]]],
 ["국고채","금융투자협회","전일",[["국고채 1년",null,["3.631%","2026-11-13","+0.01%p",1]],["국고채 3년",null,["3.759%","2026-11-13","+0.03%p",1]],["국고채 5년",null,["3.841%","2026-11-13","+0.04%p",1]],["국고채 10년",null,["4.001%","2026-11-13","+0.06%p",1]]]],
 ["물가","국가데이터처","전월",[["소비자물가지수",null,["120.73","2026년 10월","+0.25%",1]],["근원소비자물가지수",null,["119.22","2026년 10월","+0.43%",1]],["생산자물가지수",null,["129.78","2026년 9월","+0.15%",1]],["수출물가지수",null,["184.15","2026년 10월","+13.45%",1]],["수입물가지수",null,["156.86","2026년 10월","+13.44%",1]],["기대인플레이션율",null,["2.7%","2026년 10월","+0.00%p",0]]]],
 ["경기·심리","한국은행·국가데이터처","전월",[["선행종합지수 순환변동치",null,["104.1","2026년 9월","-0.10%",-1]],["동행종합지수 순환변동치",null,["102.2","2026년 9월","+0.49%",1]],["소비자심리지수",null,["105.4","2026년 10월","-1.13%",-1]],["제조업 BSI",null,["78","2026년 10월","-1.27%",-1]],["경제심리지수",null,["100.8","2026년 10월","+0.90%",1]]]],
