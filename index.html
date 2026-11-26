@@ -2390,17 +2390,18 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    라이터·아스터·Variational) 칸이고, 두 칸 합친 폭은 예전 합친 칸 폭 그대로다.
    그 아래 줄에 변동성지수 칸(왼쪽)과 스테이블코인 요약 칸(오른쪽)이 나란히 온다.
    폰에서는 그리드가 한 열로 쌓이며 CEX 칸 → DEX 칸 → 변동성지수 →
-   스테이블코인 순이 된다. 두 거래소 칸은 평소 10개만 보이는 짧은 높이로
-   두고(아래 10개 보기 규칙), '전체보기'로 펼친 칸만 길어진다 — 접힌 옆
-   칸이 빈 공간으로 함께 늘어나지 않게 두 칸 모두 align-self:start 로
-   각자 자기 높이를 유지한다 (사용자 지시) */
+   스테이블코인 순이 된다. 두 거래소 칸은 항상 10개만 보이는 짧은 높이로
+   두고(아래 10개 보기 규칙), 전체 목록은 제목 줄의 '전체보기'를 눌러 여는
+   전용 화면(#cxlistview)에서 본다 — 옆 칸이 빈 공간으로 함께 늘어나지
+   않게 두 칸 모두 align-self:start 로 각자 자기 높이를 유지한다 (사용자 지시) */
 #pa .cxcoinrow>#cxxbox,#pa .cxcoinrow>#cxdxbox{align-self:start;display:flex;flex-direction:column}
 #pa .cxcoinrow>#cxxbox .cxexwrap,#pa .cxcoinrow>#cxdxbox .cxexwrap{flex:1 1 auto;min-height:0}
-/* 10개 보기(접힌 상태): 목록 영역은 스크롤 없이 10개 행 높이 그대로 보이고,
-   펼친 상태(.cxexp)에서만 예전처럼 최대 520px 안에서 스크롤한다 */
-#pa .cxcoinrow .cxexbox:not(.cxexp) .cxexwrap{max-height:none;overflow-y:hidden}
-/* 제목 줄 오른쪽 끝의 작은 '전체보기/접기' 버튼 — 변동성지수 칸의
-   '전체 차트' 버튼(.dv-allbtn)과 같은 모양으로 맞춘다 */
+/* 10개 보기: 메인 칸의 목록 영역은 스크롤 없이 10개 행 높이 그대로 보인다.
+   전체 목록의 칸 안 스크롤(최대 520px)은 전용 화면(#cxlistview)의 칸이 쓴다 */
+#pa .cxcoinrow .cxexwrap{max-height:none;overflow-y:hidden}
+/* 제목 줄 오른쪽 끝의 작은 '전체보기' 버튼 — 변동성지수 칸의
+   '전체 차트' 버튼(.dv-allbtn)과 같은 모양으로 맞추고, 누르면 그 칸에서
+   고른 거래소의 전체 목록 전용 화면(#cxlistview)으로 넘어간다 */
 #pa .cxexall{flex:none;margin-left:auto;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:999px;padding:4px 11px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;line-height:1.35}
 #pa .cxexall:hover{border-color:var(--mut)}
 #pa .cxexall[hidden]{display:none}
@@ -3116,6 +3117,7 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 <div class="cxview" id="cxv-lp" data-cxview="lp" hidden><div class="cxview-body" id="cxbody-lp"><div class="lpgrid"><div class="lpbox"><div class="lphd"><span class="lpti">바이낸스</span><span class="lpsub">스테이킹 이자 · 자유형(플렉시블) APY</span></div><div id="lp-bn-body"></div><p class="lpnote">API 키 연결 후 표시됩니다</p></div><div class="lpbox"><div class="lphd"><span class="lpti">OKX</span><span class="lpsub">스테이킹 이자 · 자유형(플렉시블) APY</span><span class="lpdate" id="lp-stake-date"></span></div><div id="lp-okx-body"></div></div></div></div></div>
 <div class="cxview dvview" id="dvview" hidden><div class="dvpage"><button type="button" class="dv-back" id="dv-back"><span aria-hidden="true">←</span><span>암호화폐</span></button><h2 class="dvpage-ti">변동성지수 전체 차트</h2><div class="pair" role="group" aria-label="기간 선택"><button type="button" data-dvdays="1" aria-pressed="false">1일</button><button type="button" data-dvdays="7" aria-pressed="false">7일</button><button type="button" data-dvdays="30" aria-pressed="false">30일</button><button type="button" data-dvdays="90" aria-pressed="true">90일</button><button type="button" data-dvdays="180" aria-pressed="false">180일</button><button type="button" data-dvdays="365" aria-pressed="false">1년</button><button type="button" data-dvdays="0" aria-pressed="false">전체</button></div><div class="dv-legend" role="group" aria-label="차트 켜기·끄기"><button type="button" class="dv-lg" data-dvkey="btc" aria-pressed="true"><span class="dv-sw dv-sw1" aria-hidden="true"></span><span class="dv-lg-t">BTC DVOL</span><b class="dv-lg-v" id="dvc-btc-v">—</b><span class="dv-lg-c" id="dvc-btc-c"></span></button><button type="button" class="dv-lg" data-dvkey="eth" aria-pressed="true"><span class="dv-sw dv-sw2" aria-hidden="true"></span><span class="dv-lg-t">ETH DVOL</span><b class="dv-lg-v" id="dvc-eth-v">—</b><span class="dv-lg-c" id="dvc-eth-c"></span></button><button type="button" class="dv-lg" data-dvkey="cvi" aria-pressed="true"><span class="dv-sw dv-sw3" aria-hidden="true"></span><span class="dv-lg-t">CVI · 종합</span><b class="dv-lg-v" id="dvc-cvi-v">—</b><span class="dv-lg-c" id="dvc-cvi-c"></span></button></div><div class="dv-chart" id="dvc-all"></div><p class="dv-src"><span>출처: Deribit</span> · <span>CVI는 BTC·ETH 시총 가중 종합값</span></p></div></div>
 <div class="cxview scview" id="scview" hidden><div class="dvpage"><button type="button" class="dv-back" id="sc-back"><span aria-hidden="true">←</span><span>암호화폐</span></button><h2 class="dvpage-ti">스테이블코인 전체 차트</h2><div class="scbox"><div class="sc-ctl"><div class="pair" role="group" aria-label="코인 선택"><button type="button" data-scs="total" aria-pressed="true">합계</button><button type="button" data-scs="usdt" aria-pressed="false">USDT</button><button type="button" data-scs="usdc" aria-pressed="false">USDC</button></div><div class="pair sc-days" id="sc-days" role="group" aria-label="기간 선택"><button type="button" data-scd="0" data-scall aria-pressed="false" aria-expanded="false">전체<span class="sc-arr" aria-hidden="true">▾</span></button><button type="button" data-scd="7" aria-pressed="false" hidden>7일</button><button type="button" data-scd="30" aria-pressed="true" hidden>30일</button><button type="button" data-scd="90" aria-pressed="false" hidden>90일</button><button type="button" data-scd="180" aria-pressed="false" hidden>180일</button><button type="button" data-scd="365" aria-pressed="false" hidden>1년</button></div><div class="pair sc-mode" role="group" aria-label="차트 종류"><button type="button" data-scm="chg" aria-pressed="true">순증감</button><button type="button" data-scm="sup" aria-pressed="false">공급량</button></div></div><p class="sc-leg" id="sc-leg-bar"><b class="sc-pos">+ 순발행(자금 유입)</b> · <b class="sc-neg">− 순상환(자금 유출)</b></p><p class="sc-leg" id="sc-leg-line" hidden><span>공급량이 늘면 자금 유입</span> · <span>줄면 자금 유출</span></p><p class="sc-pchg" id="sc-pchg" hidden></p><div class="sc-chart" id="sc-chart"><div class="sc-load2">불러오는 중…</div><div class="sc-tip" id="sc-tip" hidden></div></div><p class="sc-agg" id="sc-agg" hidden>1년은 주별 합산 · 전체는 월별 합산</p><p class="sc-src">출처: DefiLlama<span id="sc-src-base"> · 2026-11-19 기준</span></p></div></div></div>
+<div class="cxview cxlistview" id="cxlistview" hidden><div class="dvpage"><button type="button" class="dv-back" id="cxl-back"><span aria-hidden="true">←</span><span>암호화폐</span></button><h2 class="dvpage-ti"><span id="cxl-ti">거래소</span> <span class="cxexn" id="cxl-n"></span></h2><div class="cxexbox"><div class="cxsecrow"><span class="cxseclbl">섹터</span><div class="pair cxpick" id="cxl-secpick" role="group" aria-label="섹터 선택"><button type="button" data-cxlsec="all" aria-pressed="true">전체</button><button type="button" data-cxlsec="l1" aria-pressed="false" hidden>레이어1</button><button type="button" data-cxlsec="l2" aria-pressed="false" hidden>레이어2</button><button type="button" data-cxlsec="defi" aria-pressed="false" hidden>디파이</button><button type="button" data-cxlsec="meme" aria-pressed="false" hidden>밈</button><button type="button" data-cxlsec="ai" aria-pressed="false" hidden>AI</button><button type="button" data-cxlsec="game" aria-pressed="false" hidden>게임·NFT</button><button type="button" data-cxlsec="stable" aria-pressed="false" hidden>스테이블</button><button type="button" data-cxlsec="etc" aria-pressed="false" hidden>기타</button></div></div><div class="cxexwrap" id="cxl-wrap"><table class="cxtab"><thead><tr><th>이름</th><th>현재가</th><th>변동</th></tr></thead><tbody id="cxl-b"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div>
 </section>
 <section id="p-chart" hidden>
 <div class="tv-stage" id="tv-stage">
@@ -3547,11 +3549,12 @@ syncTimer();
    라이터는 전체 종목을 거래대금 순으로 보여준다. 값은 달러 가격과 24시간
    변동률이고(Variational은 변동률을 주지 않아 '—'로 표시), 암호화폐 탭이
    열려 있는 동안 한 번이라도 불러온 거래소는 60초마다 다시 읽는다.
-   목록은 평소 10개만 보이고, 제목 줄 오른쪽 끝의 작은 '전체보기' 버튼을
-   누른 칸만 전체 종목을 보여준다 — 펼친 상태에서는 50개씩 그리고 칸 안을
-   아래로 내리면 이어 붙이며, '접기'를 누르면 10개 보기로 돌아온다.
-   거래소를 바꾸면 접힌 상태로 다시 시작한다. 갱신에 실패하면 마지막으로
-   본 목록을 그대로 두고, 처음부터 불러오지 못했을 때만 다시 시도 버튼을
+   목록은 평소 10개만 보이고, 전체 종목은 제목 줄 오른쪽 끝의 작은
+   '전체보기' 버튼을 눌러 여는 전용 화면(#cxlistview)에서 본다 — 이
+   스크립트는 아래 REG 창구로 각 거래소의 상태·불러오기·그리기 재료를
+   그 화면에 내어 주고, 불러오기가 끝날 때마다 알려 그 화면도 60초
+   갱신을 같이 반영하게 한다. 갱신에 실패하면 마지막으로 본 목록을
+   그대로 두고, 처음부터 불러오지 못했을 때만 다시 시도 버튼을
    보여준다 */
 (function(){
 var pa=document.getElementById("pa");if(!pa)return;
@@ -3561,18 +3564,12 @@ var exPick=document.getElementById(ids.ex),secPick=document.getElementById(ids.s
 if(!tb||!exPick||!secPick)return;
 var wrap=tb.closest(".cxexwrap");
 var box=tb.closest(".cxexbox");
-/* 제목 줄 오른쪽 끝(종목 개수 옆)의 작은 '전체보기' 버튼: 기본은 10개만
-   보이고, 누르면 이 칸만 전체 종목을 칸 안 스크롤로 보여준다. 다시 누르면
-   '접기'로 바뀐 버튼이 10개 보기로 되돌린다 (사용자 지시) */
+/* 제목 줄 오른쪽 끝(종목 개수 옆)의 작은 '전체보기' 버튼: 누르면 이 칸에서
+   지금 고른 거래소·섹터 그대로 전체 목록 전용 화면(#cxlistview)으로
+   넘어간다 — 칸 안에서 펼치는 방식은 폐기했다 (사용자 지시) */
 var allBtn=document.createElement("button");
 allBtn.type="button";allBtn.className="cxexall";allBtn.textContent="전체보기";allBtn.hidden=true;
 if(nEl&&nEl.parentNode)nEl.parentNode.appendChild(allBtn);
-var expanded=false;
-function syncAllBtn(){
-allBtn.textContent=expanded?"접기":"전체보기";
-allBtn.setAttribute("aria-expanded",String(expanded));
-if(box)box.classList.toggle("cxexp",expanded);
-}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function fp(v){v=Number(v);if(!isFinite(v)||!(v>0))return "—";var d=v>=1?2:(v>=0.01?4:8);return "$"+v.toLocaleString("en-US",{maximumFractionDigits:d})}
 function fc(r){r=Number(r);if(!isFinite(r))return '<span class="na">—</span>';var cls=r>0?"up":r<0?"dn":"";return '<span class="'+cls+'">'+(r>0?"+":"")+r.toFixed(2)+"%</span>"}
@@ -3592,16 +3589,11 @@ for(var sk in SECDEF)SECDEF[sk].split(" ").forEach(function(s){SECMAP[s]=sk});
 function secOf(sym){return SECMAP[sym]||"etc"}
 var st={};EXS.forEach(function(x){st[x]={rows:null,shown:0,busy:false,err:false}});
 var cur=first,sec="all",exOpen=false,secOpen=false,view=null;
-function append(){
-if(!view||!expanded)return;var s=st[cur];
-var hint=tb.querySelector("tr.cxmore");if(hint)hint.parentNode.removeChild(hint);
-if(s.shown>=view.length)return;
-var end=Math.min(view.length,s.shown+CH),html="";
-for(var i=s.shown;i<end;i++){var r=view[i];html+="<tr><td><b>"+esc(r.s)+"</b></td><td>"+fp(r.p)+"</td><td>"+fc(r.c)+"</td></tr>"}
-tb.insertAdjacentHTML("beforeend",html);
-s.shown=end;
-if(s.shown<view.length)tb.insertAdjacentHTML("beforeend",'<tr class="cxmore"><td colspan="3">스크롤하면 더 불러옵니다</td></tr>');
-}
+/* 전체 목록 전용 화면(#cxlistview)이 이 칸의 거래소 데이터를 함께 쓰도록
+   여는 창구: 상태(st)·불러오기(load)·그리기 재료(fp·fc·esc)를 내어 주고,
+   그 화면은 paint 자리에 자기 다시 그리기 함수를 걸어 둔다 */
+var REG=(window.__cxReg=window.__cxReg||{});
+EXS.forEach(function(x){REG[x]={st:st[x],load:function(){load(x)},fp:fp,fc:fc,esc:esc,paint:null}});
 function paint(){
 var s=st[cur];
 if(!s.rows){
@@ -3610,27 +3602,18 @@ else tb.innerHTML='<tr><td colspan="3">불러오는 중…</td></tr>';
 if(nEl)nEl.textContent="";view=null;allBtn.hidden=true;return}
 view=sec==="all"?s.rows:s.rows.filter(function(r){return r.k===sec});
 if(nEl)nEl.textContent=view.length+"개";
-/* 전체가 10개 이하면 펼칠 게 없어 버튼을 숨긴다 */
+/* 전체가 10개 이하면 전용 화면으로 볼 게 없어 버튼을 숨긴다 */
 allBtn.hidden=view.length<=10;
-var keep=Math.max(CH,s.shown),top=wrap?wrap.scrollTop:0;
 s.shown=0;tb.innerHTML="";
 if(!view.length){tb.innerHTML='<tr><td colspan="3">표시할 종목이 없어요</td></tr>';return}
-if(!expanded){
-/* 접힌 상태: 위에서 10개만 그리고 스크롤 위치는 맨 위로 되돌린다 */
+/* 메인 칸은 항상 위에서 10개만 보인다 — 전체 목록은 '전체보기' 전용 화면에서 본다 */
 var n10=Math.min(10,view.length),h10="";
 for(var i10=0;i10<n10;i10++){var r10=view[i10];h10+="<tr><td><b>"+esc(r10.s)+"</b></td><td>"+fp(r10.p)+"</td><td>"+fc(r10.c)+"</td></tr>"}
 tb.innerHTML=h10;s.shown=n10;
 if(wrap)wrap.scrollTop=0;
-return}
-while(s.shown<Math.min(keep,view.length))append();
-while(wrap&&wrap.clientHeight>0&&s.shown<view.length&&wrap.scrollHeight<=wrap.clientHeight+2)append();
-if(wrap&&top)wrap.scrollTop=Math.min(top,Math.max(0,wrap.scrollHeight-wrap.clientHeight));
 }
-if(wrap)wrap.addEventListener("scroll",function(){
-if(wrap.scrollTop+wrap.clientHeight>=wrap.scrollHeight-260)append();
-},{passive:true});
-function done(x,rows){var s=st[x];s.rows=rows;s.err=false;s.busy=false;if(x===cur)paint()}
-function failed(x){var s=st[x];s.busy=false;s.err=true;if(x===cur)paint()}
+function done(x,rows){var s=st[x];s.rows=rows;s.err=false;s.busy=false;if(x===cur)paint();var rg=REG[x];if(rg&&rg.paint)rg.paint()}
+function failed(x){var s=st[x];s.busy=false;s.err=true;if(x===cur)paint();var rg=REG[x];if(rg&&rg.paint)rg.paint()}
 function loadBn(){
 var s=st.bn;if(s.busy)return;s.busy=true;
 function go(urls){
@@ -3758,11 +3741,11 @@ exPick.addEventListener("click",function(e){
 var b=e.target.closest("[data-cxex]");if(!b)return;
 if(!exOpen){exOpen=true;secOpen=false;syncPicks();return}
 var v=b.getAttribute("data-cxex");exOpen=false;
-/* 거래소를 바꾸면 그 칸은 다시 10개 보기(접힌 상태)로 시작한다 */
-if(v!==cur){cur=v;expanded=false;syncAllBtn();syncPicks();paint();load(cur)}else syncPicks();
+if(v!==cur){cur=v;syncPicks();paint();load(cur)}else syncPicks();
 });
 allBtn.addEventListener("click",function(){
-expanded=!expanded;syncAllBtn();paint();
+/* 지금 고른 거래소·섹터 그대로 전용 전체 목록 화면을 연다 */
+if(typeof window.__cxOpenList==="function")window.__cxOpenList(cur,sec);
 });
 secPick.addEventListener("click",function(e){
 var b=e.target.closest("[data-cxsec]");if(!b)return;
@@ -3774,7 +3757,7 @@ tb.addEventListener("click",function(e){
 var b=e.target.closest("[data-cxretry]");if(!b)return;
 st[cur].err=false;paint();load(cur);
 });
-syncAllBtn();syncPicks();paint();
+syncPicks();paint();
 var started=false;
 function start(){if(started)return;started=true;load(cur);setInterval(function(){if(!pa.hidden&&!document.hidden){EXS.forEach(function(x){if(st[x].rows||x===cur)load(x)})}},60000)}
 if(window.MutationObserver)new MutationObserver(function(){if(!pa.hidden)start()}).observe(pa,{attributes:true,attributeFilter:["hidden"]});
@@ -4763,6 +4746,148 @@ if(window.MutationObserver&&pa)new MutationObserver(function(){syncFromHash()}).
 /* 상단 '암호화폐' 탭을 누르면 차트 화면에서 원래 암호화폐 화면으로 돌아온다 */
 var navCx=document.querySelector('#tabs [data-nav="crypto"]');
 if(navCx)navCx.addEventListener("click",function(){hideSc()});
+syncFromHash();
+})();
+</script>
+<script>
+/* ===== 거래소 전체 목록 전용 화면 (사용자 지시) =====
+   메인 CEX·DEX 칸 제목 줄의 '전체보기'를 누르면 칸 안에서 펼치지 않고
+   이 페이지 안에서 화면이 넘어간다: 변동성지수 전체 차트 화면과 같은
+   방식으로 코인 타일 띠·메인 칸 묶음이 사라지고 목록 화면(#cxlistview)만
+   남으며, 사이트 헤더는 그대로 위에 있다. 어느 칸에서 눌렀든 그 칸에서
+   지금 고른 거래소·섹터로 열리고, 화면 안에서도 섹터 필터를 메인 칸과
+   같은 방식으로 바꿀 수 있다. 목록은 국내거래소 화면 칸과 같은 방식 —
+   칸 안 스크롤로 50개씩 이어 불러오고(거래대금순), 데이터는 메인 칸
+   스크립트(cxPanel)가 REG 창구로 내어 주는 것을 함께 써서 60초 갱신도
+   같이 반영된다. 주소는 #/crypto?cx=list&ex=거래소키 로 남겨
+   뒤로가기·새로고침에도 같은 화면이 유지되고, 복귀는 화면 안
+   '← 암호화폐' 버튼·헤더 탭·브라우저 뒤로가기 전부 된다 */
+(function(){
+var view=document.getElementById("cxlistview");if(!view)return;
+var pa=document.getElementById("pa");
+var strip=pa?pa.querySelector(".cxstrip"):null;
+var split=pa?pa.querySelector(".pasplit"):null;
+var cats=pa?Array.prototype.slice.call(pa.querySelectorAll(".cxcat")):[];
+var NAMES={bn:"바이낸스",okx:"OKX",by:"바이비트",hl:"하이퍼리퀴드",lt:"라이터",as:"아스터",vr:"Variational"};
+var SECS={all:1,l1:1,l2:1,defi:1,meme:1,ai:1,game:1,stable:1,etc:1};
+var tb=document.getElementById("cxl-b"),nEl=document.getElementById("cxl-n"),tiEl=document.getElementById("cxl-ti");
+var wrap=document.getElementById("cxl-wrap"),secPick=document.getElementById("cxl-secpick");
+if(!tb||!wrap||!secPick)return;
+var CH=50;
+var open=false,cur=null,sec="all",secOpen=false,shown=0,rows=null;
+function reg(){return (window.__cxReg||{})[cur]||null}
+function append(){
+if(!rows)return;var rg=reg();if(!rg)return;
+var hint=tb.querySelector("tr.cxmore");if(hint)hint.parentNode.removeChild(hint);
+if(shown>=rows.length)return;
+var end=Math.min(rows.length,shown+CH),html="";
+for(var i=shown;i<end;i++){var r=rows[i];html+="<tr><td><b>"+rg.esc(r.s)+"</b></td><td>"+rg.fp(r.p)+"</td><td>"+rg.fc(r.c)+"</td></tr>"}
+tb.insertAdjacentHTML("beforeend",html);
+shown=end;
+if(shown<rows.length)tb.insertAdjacentHTML("beforeend",'<tr class="cxmore"><td colspan="3">스크롤하면 더 불러옵니다</td></tr>');
+}
+function paint(){
+var rg=reg();if(!rg)return;var s=rg.st;
+if(tiEl)tiEl.textContent=NAMES[cur]||"";
+if(!s.rows){
+if(s.err)tb.innerHTML='<tr><td colspan="3">불러오지 못했어요 <button type="button" class="abretry" data-cxlretry="1">다시 시도</button></td></tr>';
+else tb.innerHTML='<tr><td colspan="3">불러오는 중…</td></tr>';
+if(nEl)nEl.textContent="";rows=null;shown=0;return}
+rows=sec==="all"?s.rows:s.rows.filter(function(r){return r.k===sec});
+if(nEl)nEl.textContent=rows.length+"개";
+var keep=Math.max(CH,shown),top=wrap.scrollTop||0;
+shown=0;tb.innerHTML="";
+if(!rows.length){tb.innerHTML='<tr><td colspan="3">표시할 종목이 없어요</td></tr>';return}
+while(shown<Math.min(keep,rows.length))append();
+while(wrap.clientHeight>0&&shown<rows.length&&wrap.scrollHeight<=wrap.clientHeight+2)append();
+if(top)wrap.scrollTop=Math.min(top,Math.max(0,wrap.scrollHeight-wrap.clientHeight));
+}
+wrap.addEventListener("scroll",function(){
+if(wrap.scrollTop+wrap.clientHeight>=wrap.scrollHeight-260)append();
+},{passive:true});
+tb.addEventListener("click",function(e){
+var b=e.target.closest("[data-cxlretry]");if(!b)return;
+var rg=reg();if(!rg)return;
+rg.st.err=false;paint();rg.load();
+});
+/* 섹터 칩: 메인 칸과 같은 방식 — 평소에는 고른 것 하나만 보이고,
+   누르면 펼쳐졌다가 고르면 다시 접힌다 */
+function syncSec(){
+secPick.classList.toggle("cxopen",secOpen);
+secPick.querySelectorAll("button").forEach(function(b){
+var sel=b.getAttribute("data-cxlsec")===sec,ar=b.querySelector(".sc-arr");
+b.setAttribute("aria-pressed",String(sel));
+b.hidden=!secOpen&&!sel;
+if(sel){b.setAttribute("aria-expanded",String(secOpen));if(!ar)b.insertAdjacentHTML("beforeend",'<span class="sc-arr" aria-hidden="true">▾</span>')}
+else{b.removeAttribute("aria-expanded");if(ar)ar.parentNode.removeChild(ar)}
+});
+}
+secPick.addEventListener("click",function(e){
+var b=e.target.closest("[data-cxlsec]");if(!b)return;
+if(!secOpen){secOpen=true;syncSec();return}
+var v=b.getAttribute("data-cxlsec");secOpen=false;
+if(v!==sec){sec=v;shown=0;syncSec();paint()}else syncSec();
+});
+function showList(push){
+open=true;
+if(strip)strip.hidden=true;
+if(split)split.hidden=true;
+if(pa)pa.querySelectorAll("[data-cxview]").forEach(function(v){v.hidden=true});
+var dvv=document.getElementById("dvview");if(dvv)dvv.hidden=true;
+var scv=document.getElementById("scview");if(scv)scv.hidden=true;
+cats.forEach(function(b){b.setAttribute("aria-pressed","false")});
+view.hidden=false;
+if(push){try{history.pushState(null,"","#/crypto?cx=list&ex="+cur)}catch(e){}}
+window.scrollTo(0,0);
+paint();
+var rg=reg();if(rg&&!rg.st.rows&&!rg.st.busy)rg.load();
+}
+function hideList(){
+open=false;
+view.hidden=true;
+}
+function closeList(push){
+hideList();
+if(typeof window.__cxReset==="function")window.__cxReset();
+if(push){try{history.pushState(null,"","#/crypto")}catch(e){}}
+window.scrollTo(0,0);
+}
+/* 메인 칸의 '전체보기'가 부르는 창구: 그 칸에서 고른 거래소·섹터로 연다 */
+window.__cxOpenList=function(x,s){
+if(!NAMES[x])return;
+cur=x;sec=SECS[s]?s:"all";secOpen=false;shown=0;
+syncSec();
+showList(true);
+};
+/* REG에 다시 그리기 자리를 걸어 둔다: 메인 칸이 그 거래소를 새로 불러오면
+   (60초 갱신 포함) 이 화면이 열려 있을 때 같이 다시 그린다 */
+if(window.__cxReg)Object.keys(window.__cxReg).forEach(function(x){
+window.__cxReg[x].paint=function(){if(open&&cur===x)paint()};
+});
+var backBtn=document.getElementById("cxl-back");
+if(backBtn)backBtn.addEventListener("click",function(){closeList(true)});
+/* 주소·뒤로가기 동기화: 다른 전용 화면들과 같은 방식 —
+   #/crypto?cx=list&ex=키 이면 그 거래소의 전체 목록 화면이다 */
+function fromHash(){
+var h=location.hash||"";
+if(!/[?&]cx=list/.test(h))return null;
+var m=h.match(/[?&]ex=([a-z]+)/);
+return (m&&NAMES[m[1]])?m[1]:null;
+}
+function syncFromHash(){
+if(!pa||pa.hidden)return;
+var x=fromHash();
+if(x){if(!open||cur!==x){cur=x;sec="all";secOpen=false;shown=0;syncSec();showList(false)}}
+else if(open)hideList();
+}
+window.addEventListener("hashchange",function(){setTimeout(syncFromHash,0)});
+window.addEventListener("popstate",function(){setTimeout(syncFromHash,0)});
+if(window.MutationObserver&&pa)new MutationObserver(function(){syncFromHash()}).observe(pa,{attributes:true,attributeFilter:["hidden"]});
+/* 상단 '암호화폐' 탭이나 카테고리 칩을 누르면 목록 화면에서 나간다 */
+var navCx=document.querySelector('#tabs [data-nav="crypto"]');
+if(navCx)navCx.addEventListener("click",function(){hideList()});
+cats.forEach(function(b){b.addEventListener("click",function(){hideList()})});
+syncSec();
 syncFromHash();
 })();
 </script>
