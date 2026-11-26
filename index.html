@@ -2383,7 +2383,7 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pa .cxview[hidden]{display:none}
 /* 국내거래소 화면: 업비트·빗썸 두 칸을 나란히 두고(폰에서는 위아래로 쌓음),
    각 칸 안 목록은 칸 안에서만 스크롤한다 — 세 칸 목록과 같은 방식 */
-#pa .cxexgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+#pa .cxexgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
 @media(max-width:720px){#pa .cxexgrid{grid-template-columns:1fr}}
 /* 메인 코인 행 (사용자 지시): 맨 위 줄에 거래소 칸 두 개가 나란히 온다 —
    왼쪽은 CEX 전용(바이낸스·OKX·바이비트), 오른쪽은 DEX 전용(하이퍼리퀴드·
@@ -2396,8 +2396,8 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pa .cxcoinrow>#cxxbox .cxexwrap,#pa .cxcoinrow>#cxdxbox .cxexwrap{flex:1 1 auto;min-height:0}
 /* 메인 코인 행 아래 줄 오른쪽 칸: 스테이블코인 요약 칸을 감싸는 열 묶음 */
 #pa .cxrightcol{display:flex;flex-direction:column;gap:14px;min-width:0}
-#pa .cxexbox{border:1px solid var(--bd);border-radius:12px;background:var(--sf);padding:10px;min-width:0}
-#pa .cxexhd{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+#pa .cxexbox{border:1px solid var(--bd);border-radius:12px;background:var(--sf);padding:10px;min-width:0;overflow:hidden}
+#pa .cxexhd{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;flex-wrap:wrap;min-width:0;max-width:100%}
 #pa .cxexti{font-size:14.5px;font-weight:800;color:var(--tx)}
 #pa .cxexn{font-size:12.5px;font-weight:700;color:var(--mut)}
 #pa .cxexwrap{max-height:520px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
@@ -2427,16 +2427,21 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pa .pasplit>.cxcoinrow{grid-column:1/-1;width:100%;min-width:0}
 /* 합친 거래소 칸(사용자 지시): 거래소·섹터 선택은 평소에는 고른 것 하나만
    보이는 작은 칩으로 두고, 누르면 목록이 펼쳐졌다가 고르면 다시 접힌다 —
-   스테이블코인 기간 선택(.sc-days)과 같은 방식. 펼쳐진 칩 줄이 칸보다
-   넓어지면 줄 안에서만 가로로 밀어 볼 수 있게 한다 */
+   스테이블코인 기간 선택(.sc-days)과 같은 방식. 펼친 상태에서는 칩이
+   자기 칸 안에서 줄바꿈(flex-wrap)돼 칸 밖으로 나가지 않게 한다 —
+   예전의 한 줄 가로 밀기(overflow-x)는 칸이 반 폭으로 나뉜 뒤에는
+   칩 줄이 옆 칸까지 침범해 폐기했다 (CEX·DEX 칸 공통) */
 #pa .cxcoinrow .cxexhd{align-items:center}
-#pa .cxpick{flex:none;max-width:100%;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch}
+#pa .cxpick{flex:none;min-width:0;max-width:100%;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch}
 #pa .cxpick::-webkit-scrollbar{display:none;width:0;height:0}
+#pa .cxpick button{flex:none}
 #pa .cxpick button[hidden]{display:none}
+/* 펼친 상태: 남은 폭을 다 쓰되 칩은 칸 안에서 다음 줄로 감긴다 */
+#pa .cxpick.cxopen{flex:1 1 auto;flex-wrap:wrap;overflow-x:visible;overflow-y:visible}
 #pa .cxpick .sc-arr{display:inline-block;font-size:10px;line-height:1;margin-left:4px;opacity:.75}
 @media (prefers-reduced-motion:no-preference){#pa .cxpick .sc-arr{transition:transform .16s ease}}
 #pa .cxpick.cxopen .sc-arr{transform:rotate(180deg)}
-#pa .cxsecrow{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+#pa .cxsecrow{display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;min-width:0;max-width:100%}
 #pa .cxseclbl{flex:none;font-size:11px;font-weight:700;color:var(--mut)}
 </style>
 <style>
