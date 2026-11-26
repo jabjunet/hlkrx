@@ -2148,6 +2148,55 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    지점이라 calc(50% - 4px)로 맞춘다. 헤더 타일 줄 자체는 크기·폭 그대로 둔다.
    폰에서는 헤더 타일이 가로 슬라이드라 끝선이 없으므로 기존 전체 폭을 유지한다 */
 @media(min-width:721px){#cxv-meme .dexbox{flex:0 0 calc(50% - 4px);max-width:calc(50% - 4px)}}
+/* 밈 화면 오른쪽 칸 (사용자 지시): 덱스스크리너 칸 옆 빈 오른쪽 절반에
+   밈코인 인플루언서 6명과 대표 밈코인 10개의 공식 X 링크를 작은 칸으로 넣는다.
+   데스크톱에서는 덱스스크리너와 같은 높이에 나란히, 폰에서는 아래로 쌓인다 */
+#cxv-meme .mm2row{flex-wrap:wrap}
+#cxv-meme .mmxcol{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px}
+#cxv-meme .mmxbox{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;box-sizing:border-box;min-width:0}
+#cxv-meme .mmxhd{display:flex;align-items:baseline;gap:8px;min-width:0}
+#cxv-meme .mmxti{font-size:13px;font-weight:800;color:var(--tx);white-space:nowrap}
+#cxv-meme .mmxsub{font-size:11px;color:var(--mut);white-space:nowrap}
+#cxv-meme .mmxrow{display:flex;align-items:baseline;gap:8px;padding:5px 2px;border-top:1px solid var(--bd);text-decoration:none;color:var(--tx);min-width:0}
+#cxv-meme .mmxrow:hover{background:var(--sf2)}
+#cxv-meme .mmxrk{flex:none;width:16px;font-size:11.5px;font-weight:700;color:var(--mut);text-align:center}
+#cxv-meme .mmxnm{flex:1 1 auto;min-width:0;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#cxv-meme .mmxhdle{flex:none;font-size:11.5px;color:var(--mut);white-space:nowrap}
+#cxv-meme .mmxgrid{display:grid;grid-template-columns:1fr 1fr;column-gap:14px}
+#cxv-meme .mmxcoin{display:flex;align-items:baseline;gap:6px;padding:5px 2px;border-top:1px solid var(--bd);text-decoration:none;color:var(--tx);min-width:0}
+#cxv-meme .mmxcoin:hover{background:var(--sf2)}
+#cxv-meme .mmxcoin .mmxnm{font-size:12px}
+#cxv-meme .mmxcoin .mmxhdle{font-size:11px}
+#cxv-meme .mmxft{margin-top:5px;font-size:10.5px;color:var(--mut);line-height:1.4}
+@media(max-width:720px){#cxv-meme .mmxcol{flex:1 1 100%}}
+@media(max-width:520px){#cxv-meme .mmxgrid{grid-template-columns:1fr}}
+/* DEX 화면 (사용자 지시): 디파이라마 대표 항목 중 스테이블코인 공급량을 뺀
+   나머지 전부(TVL 순위·DEX 거래량·수수료/매출·선물 거래량·일드·브릿지 거래량·
+   체인별 현황·해킹 기록·펀딩)를 칸으로 넣는다. 데스크톱 2열·폰 1열 그리드,
+   각 칸은 밈 화면 칸과 같은 틀(배경·테두리·10px 둥근 모서리)을 쓴다 */
+#cxv-dex .dxgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:start}
+@media(max-width:720px){#cxv-dex .dxgrid{grid-template-columns:1fr}}
+#cxv-dex .dxbox{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;box-sizing:border-box;min-width:0}
+#cxv-dex .dxhd{display:flex;align-items:baseline;gap:8px;min-width:0;margin-bottom:2px}
+#cxv-dex .dxti{font-size:13.5px;font-weight:800;color:var(--tx);white-space:nowrap}
+#cxv-dex .dxsub{font-size:11px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#cxv-dex .dxgo{margin-left:auto;flex:none;font-size:11px;font-weight:700;color:var(--mut);text-decoration:none;white-space:nowrap}
+#cxv-dex .dxgo:hover{color:var(--tx)}
+#cxv-dex .dxrow{display:flex;align-items:center;gap:8px;padding:5px 2px;border-top:1px solid var(--bd);min-width:0}
+#cxv-dex .dxrk{flex:none;width:16px;font-size:11.5px;font-weight:700;color:var(--mut);text-align:center}
+#cxv-dex .dxwho{flex:1 1 auto;min-width:0}
+#cxv-dex .dxnm{display:block;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#cxv-dex .dxsb{display:block;font-size:10.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#cxv-dex .dxrt{flex:none;text-align:right;min-width:0}
+#cxv-dex .dxvl{display:block;font-size:12.5px;font-weight:700;white-space:nowrap}
+#cxv-dex .dxsv{display:block;font-size:10.5px;color:var(--mut);white-space:nowrap}
+#cxv-dex .dxch{font-size:11px;font-weight:700;white-space:nowrap}
+#cxv-dex .dxch.up{color:var(--up)}
+#cxv-dex .dxch.dn{color:var(--dn)}
+#cxv-dex .dxempty{padding:8px 2px;font-size:12px;color:var(--mut);border-top:1px solid var(--bd);line-height:1.5}
+#cxv-dex .dxretry{margin-left:6px;min-height:28px;padding:3px 10px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:7px;font:inherit;font-size:11.5px;font-weight:600;cursor:pointer}
+#cxv-dex .dxft{margin-top:5px;font-size:10.5px;color:var(--mut);line-height:1.4}
+#cxv-dex .dxnote{grid-column:1/-1;font-size:11.5px;color:var(--mut);line-height:1.5;margin:0}
 </style>
 <style>
 /* ===== 암호화폐 탭 두 칸 축소·왼쪽 정렬 (2026-11-17 사용자 지시) =====
@@ -3011,8 +3060,19 @@ load();setInterval(function(){if(!document.hidden)load()},7*60000);
 </div>
 <div class="pathird pabox"><div class="pabox-hd pabox-keep"><span class="pabox-ti">전체 종목</span><span class="pabox-n" id="aball-n"></span><button type="button" class="pabox-tg" data-patg aria-expanded="true" aria-label="전체 종목 칸 접기·펼치기"><span class="pabox-arr" aria-hidden="true">▾</span></button></div><div class="pabox-bd"><div class="absec" id="absec-kr"><div class="abpair"><div class="abcell"><span class="abbox-t">기준 거래소</span><span class="xselw absw"><button type="button" class="xsel" id="absel-b-kr" aria-haspopup="listbox" aria-expanded="false" aria-label="전체 종목 기준 거래소"><span class="xnm" id="abnm-b-kr">Hyperliquid</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="ab-base-kr" role="listbox" aria-label="전체 종목 기준 거래소" hidden><button type="button" role="option" data-abx="us" aria-selected="false">나스닥</button><button type="button" role="option" data-abx="hl" aria-selected="true">Hyperliquid</button><button type="button" role="option" data-abx="bn" aria-selected="false">Binance</button><button type="button" role="option" data-abx="okx" aria-selected="false">OKX</button><button type="button" role="option" data-abx="by" aria-selected="false">Bybit</button></div></span></div><div class="abcell"><span class="abbox-t">비교 거래소</span><span class="xselw absw"><button type="button" class="xsel" id="absel-c-kr" aria-haspopup="listbox" aria-expanded="false" aria-label="전체 종목 비교 거래소"><span class="xnm" id="abnm-c-kr">Binance</span><span class="xca" aria-hidden="true">▾</span></button><div class="xmenu" id="ab-cmp-kr" role="listbox" aria-label="전체 종목 비교 거래소" hidden><button type="button" role="option" data-abx="bn" aria-selected="true">Binance</button><button type="button" role="option" data-abx="hl" aria-selected="false">Hyperliquid</button><button type="button" role="option" data-abx="okx" aria-selected="false">OKX</button><button type="button" role="option" data-abx="by" aria-selected="false">Bybit</button><button type="button" role="option" data-abx="us" aria-selected="false">나스닥</button></div></span></div></div><div class="wrap"><table class="kp kp4"><thead><tr><th>이름</th><th>김프</th><th>변동</th></tr></thead><tbody id="ab3kr"><tr><td colspan="3">불러오는 중…</td></tr></tbody></table></div></div></div></div></div></div></div>
 <div class="cxview" id="cxv-airdrop" data-cxview="airdrop" hidden><div class="cxview-body" id="cxbody-airdrop"></div></div>
-<div class="cxview" id="cxv-meme" data-cxview="meme" hidden><div class="cxview-body" id="cxbody-meme"><div class="cxstrip"><div class="cxtiles" id="memetiles" aria-label="주요 밈코인"></div></div><div class="mm2row"><div class="dexbox" id="dexbox"><div class="dexhd"><span class="dexti">덱스스크리너</span><span class="dexsub">부스트 상위 10</span><a class="dexgo" href="https://dexscreener.com" target="_blank" rel="noopener">dexscreener.com ↗</a></div><div class="dexlist" id="dexlist"><div class="dexempty">불러오는 중…</div></div><div class="dexft">덱스스크리너 부스트 순 · 60초마다 갱신 · 행을 누르면 덱스스크리너에서 열립니다</div></div></div></div></div>
-<div class="cxview" id="cxv-dex" data-cxview="dex" hidden><div class="cxview-body" id="cxbody-dex"></div></div>
+<div class="cxview" id="cxv-meme" data-cxview="meme" hidden><div class="cxview-body" id="cxbody-meme"><div class="cxstrip"><div class="cxtiles" id="memetiles" aria-label="주요 밈코인"></div></div><div class="mm2row"><div class="dexbox" id="dexbox"><div class="dexhd"><span class="dexti">덱스스크리너</span><span class="dexsub">부스트 상위 10</span><a class="dexgo" href="https://dexscreener.com" target="_blank" rel="noopener">dexscreener.com ↗</a></div><div class="dexlist" id="dexlist"><div class="dexempty">불러오는 중…</div></div><div class="dexft">덱스스크리너 부스트 순 · 60초마다 갱신 · 행을 누르면 덱스스크리너에서 열립니다</div></div><div class="mmxcol"><div class="mmxbox"><div class="mmxhd"><span class="mmxti">밈코인 인플루언서</span><span class="mmxsub">X · 눌러서 열기</span></div><div><a class="mmxrow" href="https://x.com/MustStopMurad" target="_blank" rel="noopener"><span class="mmxrk">1</span><span class="mmxnm">Murad</span><span class="mmxhdle">@MustStopMurad ↗</span></a><a class="mmxrow" href="https://x.com/blknoiz06" target="_blank" rel="noopener"><span class="mmxrk">2</span><span class="mmxnm">Ansem</span><span class="mmxhdle">@blknoiz06 ↗</span></a><a class="mmxrow" href="https://x.com/Cupseyy" target="_blank" rel="noopener"><span class="mmxrk">3</span><span class="mmxnm">Cupsey</span><span class="mmxhdle">@Cupseyy ↗</span></a><a class="mmxrow" href="https://x.com/orangie" target="_blank" rel="noopener"><span class="mmxrk">4</span><span class="mmxnm">Orangie</span><span class="mmxhdle">@orangie ↗</span></a><a class="mmxrow" href="https://x.com/theunipcs" target="_blank" rel="noopener"><span class="mmxrk">5</span><span class="mmxnm">Unipcs</span><span class="mmxhdle">@theunipcs ↗</span></a><a class="mmxrow" href="https://x.com/FrankDeGods" target="_blank" rel="noopener"><span class="mmxrk">10</span><span class="mmxnm">Frank</span><span class="mmxhdle">@FrankDeGods ↗</span></a></div></div><div class="mmxbox"><div class="mmxhd"><span class="mmxti">대표 밈코인 공식 X</span><span class="mmxsub">10개 · 눌러서 열기</span></div><div class="mmxgrid"><a class="mmxcoin" href="https://x.com/dogecoin" target="_blank" rel="noopener"><span class="mmxnm">도지코인 DOGE</span><span class="mmxhdle">@dogecoin ↗</span></a><a class="mmxcoin" href="https://x.com/Shibtoken" target="_blank" rel="noopener"><span class="mmxnm">시바이누 SHIB</span><span class="mmxhdle">@Shibtoken ↗</span></a><a class="mmxcoin" href="https://x.com/pepecoineth" target="_blank" rel="noopener"><span class="mmxnm">페페 PEPE</span><span class="mmxhdle">@pepecoineth ↗</span></a><a class="mmxcoin" href="https://x.com/GetTrumpMemes" target="_blank" rel="noopener"><span class="mmxnm">트럼프 TRUMP</span><span class="mmxhdle">@GetTrumpMemes ↗</span></a><a class="mmxcoin" href="https://x.com/bonk_inu" target="_blank" rel="noopener"><span class="mmxnm">봉크 BONK</span><span class="mmxhdle">@bonk_inu ↗</span></a><a class="mmxcoin" href="https://x.com/pudgypenguins" target="_blank" rel="noopener"><span class="mmxnm">퍼지펭귄 PENGU</span><span class="mmxhdle">@pudgypenguins ↗</span></a><a class="mmxcoin" href="https://x.com/FLOKI" target="_blank" rel="noopener"><span class="mmxnm">플로키 FLOKI</span><span class="mmxhdle">@FLOKI ↗</span></a><a class="mmxcoin" href="https://x.com/dogwifcoin" target="_blank" rel="noopener"><span class="mmxnm">도그위프햇 WIF</span><span class="mmxhdle">@dogwifcoin ↗</span></a><a class="mmxcoin" href="https://x.com/spx6900" target="_blank" rel="noopener"><span class="mmxnm">SPX6900 SPX</span><span class="mmxhdle">@spx6900 ↗</span></a><a class="mmxcoin" href="https://x.com/FartCoinOfSOL" target="_blank" rel="noopener"><span class="mmxnm">파트코인 FARTCOIN</span><span class="mmxhdle">@FartCoinOfSOL ↗</span></a></div><div class="mmxft">각 프로젝트 공식 계정입니다. 비슷한 이름의 가짜 계정에 주의하세요</div></div></div></div></div></div>
+<div class="cxview" id="cxv-dex" data-cxview="dex" hidden><div class="cxview-body" id="cxbody-dex"><div class="dxgrid">
+<div class="dxbox"><div class="dxhd"><span class="dxti">TVL 순위</span><span class="dxsub">프로토콜 · 총예치금</span></div><div id="dxl-tvl"><div class="dxempty">불러오는 중…</div></div></div>
+<div class="dxbox"><div class="dxhd"><span class="dxti">DEX 거래량</span><span class="dxsub">24시간 거래량</span></div><div id="dxl-dexvol"><div class="dxempty">불러오는 중…</div></div></div>
+<div class="dxbox"><div class="dxhd"><span class="dxti">수수료 · 매출</span><span class="dxsub">프로토콜 24시간</span></div><div id="dxl-fees"><div class="dxempty">불러오는 중…</div></div></div>
+<div class="dxbox"><div class="dxhd"><span class="dxti">선물(Perps) 거래량</span><span class="dxsub">무기한 선물 DEX</span><a class="dxgo" href="https://defillama.com/derivatives" target="_blank" rel="noopener">defillama.com/derivatives ↗</a></div><div id="dxl-perps"><div class="dxempty">불러오는 중…</div></div></div>
+<div class="dxbox"><div class="dxhd"><span class="dxti">일드(APY) 순위</span><span class="dxsub">TVL $10M 이상 풀</span></div><div id="dxl-yields"><div class="dxempty">불러오는 중…</div></div></div>
+<div class="dxbox"><div class="dxhd"><span class="dxti">브릿지 거래량</span><span class="dxsub">24시간 이동량</span></div><div id="dxl-bridge"><div class="dxempty">불러오는 중…</div></div></div>
+<div class="dxbox"><div class="dxhd"><span class="dxti">체인별 현황</span><span class="dxsub">체인 TVL</span></div><div id="dxl-chains"><div class="dxempty">불러오는 중…</div></div></div>
+<div class="dxbox"><div class="dxhd"><span class="dxti">해킹 기록</span><span class="dxsub">최근 사건</span></div><div id="dxl-hacks"><div class="dxempty">불러오는 중…</div></div></div>
+<div class="dxbox"><div class="dxhd"><span class="dxti">펀딩(투자 유치)</span><span class="dxsub">최근 라운드</span><a class="dxgo" href="https://defillama.com/raises" target="_blank" rel="noopener">defillama.com/raises ↗</a></div><div id="dxl-raises"><div class="dxempty">불러오는 중…</div></div></div>
+<p class="dxnote">DefiLlama 무료 공개 API로 불러옵니다. DEX 화면을 열고 있는 동안 5분마다 다시 읽고, 무료 API로 제공되지 않는 항목은 칸 안에 따로 표시합니다.</p>
+</div></div></div>
 <div class="cxview" id="cxv-lp" data-cxview="lp" hidden><div class="cxview-body" id="cxbody-lp"></div></div>
 <div class="cxview dvview" id="dvview" hidden><div class="dvpage"><button type="button" class="dv-back" id="dv-back"><span aria-hidden="true">←</span><span>암호화폐</span></button><h2 class="dvpage-ti">변동성지수 전체 차트</h2><div class="pair" role="group" aria-label="기간 선택"><button type="button" data-dvdays="1" aria-pressed="false">1일</button><button type="button" data-dvdays="7" aria-pressed="false">7일</button><button type="button" data-dvdays="30" aria-pressed="false">30일</button><button type="button" data-dvdays="90" aria-pressed="true">90일</button><button type="button" data-dvdays="180" aria-pressed="false">180일</button><button type="button" data-dvdays="365" aria-pressed="false">1년</button><button type="button" data-dvdays="0" aria-pressed="false">전체</button></div><div class="dv-legend" role="group" aria-label="차트 켜기·끄기"><button type="button" class="dv-lg" data-dvkey="btc" aria-pressed="true"><span class="dv-sw dv-sw1" aria-hidden="true"></span><span class="dv-lg-t">BTC DVOL</span><b class="dv-lg-v" id="dvc-btc-v">—</b><span class="dv-lg-c" id="dvc-btc-c"></span></button><button type="button" class="dv-lg" data-dvkey="eth" aria-pressed="true"><span class="dv-sw dv-sw2" aria-hidden="true"></span><span class="dv-lg-t">ETH DVOL</span><b class="dv-lg-v" id="dvc-eth-v">—</b><span class="dv-lg-c" id="dvc-eth-c"></span></button><button type="button" class="dv-lg" data-dvkey="cvi" aria-pressed="true"><span class="dv-sw dv-sw3" aria-hidden="true"></span><span class="dv-lg-t">CVI · 종합</span><b class="dv-lg-v" id="dvc-cvi-v">—</b><span class="dv-lg-c" id="dvc-cvi-c"></span></button></div><div class="dv-chart" id="dvc-all"></div><p class="dv-src"><span>출처: Deribit</span> · <span>CVI는 BTC·ETH 시총 가중 종합값</span></p></div></div>
 <div class="cxview scview" id="scview" hidden><div class="dvpage"><button type="button" class="dv-back" id="sc-back"><span aria-hidden="true">←</span><span>암호화폐</span></button><h2 class="dvpage-ti">스테이블코인 전체 차트</h2><div class="scbox"><div class="sc-ctl"><div class="pair" role="group" aria-label="코인 선택"><button type="button" data-scs="total" aria-pressed="true">합계</button><button type="button" data-scs="usdt" aria-pressed="false">USDT</button><button type="button" data-scs="usdc" aria-pressed="false">USDC</button></div><div class="pair sc-days" id="sc-days" role="group" aria-label="기간 선택"><button type="button" data-scd="0" data-scall aria-pressed="false" aria-expanded="false">전체<span class="sc-arr" aria-hidden="true">▾</span></button><button type="button" data-scd="7" aria-pressed="false" hidden>7일</button><button type="button" data-scd="30" aria-pressed="true" hidden>30일</button><button type="button" data-scd="90" aria-pressed="false" hidden>90일</button><button type="button" data-scd="180" aria-pressed="false" hidden>180일</button><button type="button" data-scd="365" aria-pressed="false" hidden>1년</button></div><div class="pair sc-mode" role="group" aria-label="차트 종류"><button type="button" data-scm="chg" aria-pressed="true">순증감</button><button type="button" data-scm="sup" aria-pressed="false">공급량</button></div></div><p class="sc-leg" id="sc-leg-bar"><b class="sc-pos">+ 순발행(자금 유입)</b> · <b class="sc-neg">− 순상환(자금 유출)</b></p><p class="sc-leg" id="sc-leg-line" hidden><span>공급량이 늘면 자금 유입</span> · <span>줄면 자금 유출</span></p><p class="sc-pchg" id="sc-pchg" hidden></p><div class="sc-chart" id="sc-chart"><div class="sc-load2">불러오는 중…</div><div class="sc-tip" id="sc-tip" hidden></div></div><p class="sc-agg" id="sc-agg" hidden>1년은 주별 합산 · 전체는 월별 합산</p><p class="sc-src">출처: DefiLlama<span id="sc-src-base"> · 2026-11-19 기준</span></p></div></div></div>
@@ -7377,6 +7437,138 @@ if(p.url)rw.url=p.url;
 dexFetch();
 setInterval(function(){if(!document.hidden)dexFetch()},60000);
 document.addEventListener("visibilitychange",function(){if(!document.hidden)dexFetch()});
+})();
+</script>
+<script>
+/* ===== DEX 화면: 디파이라마 대표 항목 9칸 (사용자 지시) =====
+   스테이블코인 공급량만 빼고 디파이라마 대표 항목 전부를 DEX 화면 칸으로 넣는다:
+   TVL 순위(api.llama.fi/protocols) · DEX 거래량(overview/dexs) ·
+   수수료·매출(overview/fees 를 dailyFees·dailyRevenue 두 번 읽어 합침) ·
+   선물 거래량(overview/derivatives) · 일드(yields.llama.fi/pools,
+   TVL $10M 이상 풀만 APY 순) · 브릿지 거래량(overview/bridges) ·
+   체인별 현황(v2/chains) · 해킹 기록(/hacks) · 펀딩(/raises).
+   전부 무료 공개 API(CORS 허용을 실제로 확인함)를 DEX 화면이 처음 열릴 때 칸마다
+   따로 읽어 먼저 온 칸부터 그리고, 화면이 열려 있는 동안 5분마다 다시 읽는다.
+   선물 거래량과 펀딩은 2026-11-26 확인 시점에 무료 API가 402(유료 전환)를
+   돌려줘 읽을 수 없었다 — 숫자를 지어내지 않고 그 칸에는 제공되지 않는다는
+   안내와 디파이라마 페이지 링크만 보여준다(읽히면 자동으로 목록이 그려진다).
+   나머지 칸도 실패하면 다시 시도 버튼을 보여준다 */
+(function(){
+var view=document.getElementById("cxv-dex");if(!view)return;
+var pa=document.getElementById("pa");
+function gel(id){return document.getElementById(id)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function money(v){v=Number(v);if(!isFinite(v))return "—";var a=Math.abs(v);if(a>=1e9)return "$"+(v/1e9).toFixed(2)+"B";if(a>=1e6)return "$"+(v/1e6).toFixed(1)+"M";if(a>=1e3)return "$"+(v/1e3).toFixed(1)+"K";return "$"+v.toFixed(0)}
+function chgHtml(r){r=Number(r);if(!isFinite(r))return "";var cls=r>0?"up":r<0?"dn":"";return '<span class="dxch '+cls+'">'+(r>0?"+":"")+r.toFixed(2)+"%</span>"}
+function fetchJ(url,ms){
+return new Promise(function(res,rej){
+var c=("AbortController" in window)?new AbortController():null;
+var t=setTimeout(function(){if(c)c.abort();rej(new Error("timeout"))},ms||45000);
+var opts={cache:"no-store"};if(c)opts.signal=c.signal;
+fetch(url,opts).then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()}).then(function(j){clearTimeout(t);res(j)}).catch(function(e){clearTimeout(t);rej(e)});
+});
+}
+function draw(el,rows){
+if(!rows||!rows.length){el.innerHTML='<div class="dxempty">표시할 항목이 없어요</div>';return}
+el.innerHTML=rows.map(function(r,i){
+return '<div class="dxrow"><span class="dxrk">'+(i+1)+'</span><span class="dxwho"><span class="dxnm">'+esc(r.name)+'</span>'+(r.sub?'<span class="dxsb">'+esc(r.sub)+"</span>":"")+'</span><span class="dxrt"><span class="dxvl">'+esc(r.value)+"</span>"+(r.subValue?'<span class="dxsv">'+esc(r.subValue)+"</span>":"")+(r.chg!=null?chgHtml(r.chg):"")+"</span></div>";
+}).join("");
+}
+function fail(el,key,paid){
+if(paid){el.innerHTML='<div class="dxempty">이 항목은 DefiLlama 무료 공개 API로 제공되지 않아(유료 전환) 숫자를 표시하지 않아요. 위 링크에서 원본을 볼 수 있어요</div>';return}
+el.innerHTML="";
+var e=document.createElement("div");e.className="dxempty";e.textContent="불러오지 못했어요";
+var btn=document.createElement("button");btn.type="button";btn.className="dxretry";btn.textContent="다시 시도";
+btn.addEventListener("click",function(){el.innerHTML='<div class="dxempty">불러오는 중…</div>';LOADERS[key]()});
+e.appendChild(btn);el.appendChild(e);
+}
+function nm(p){return p.displayName||p.name||"?"}
+function topVol(j){
+var ps=((j&&j.protocols)||[]).filter(function(p){return p&&Number(p.total24h)>0});
+ps.sort(function(a,b){return Number(b.total24h)-Number(a.total24h)});
+return ps.slice(0,10);
+}
+function dateStr(ts){var d=new Date(Number(ts)*1000);if(isNaN(d.getTime()))return "";function z(n){return (n<10?"0":"")+n}return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate())}
+var LOADERS={
+tvl:function(){
+var el=gel("dxl-tvl");if(!el)return;
+fetchJ("https://api.llama.fi/protocols",60000).then(function(j){
+var ps=(Array.isArray(j)?j:[]).filter(function(p){return p&&Number(p.tvl)>0});
+ps.sort(function(a,b){return Number(b.tvl)-Number(a.tvl)});
+draw(el,ps.slice(0,10).map(function(p){return{name:p.name||"?",sub:[p.category,p.chain].filter(Boolean).join(" · "),value:money(p.tvl),chg:(p.change_1d==null?null:Number(p.change_1d))}}));
+}).catch(function(){fail(el,"tvl")});
+},
+dexvol:function(){
+var el=gel("dxl-dexvol");if(!el)return;
+fetchJ("https://api.llama.fi/overview/dexs?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",45000).then(function(j){
+draw(el,topVol(j).map(function(p){return{name:nm(p),sub:p.category||"",value:money(p.total24h),chg:(p.change_1d==null?null:Number(p.change_1d))}}));
+}).catch(function(){fail(el,"dexvol")});
+},
+fees:function(){
+var el=gel("dxl-fees");if(!el)return;
+var base="https://api.llama.fi/overview/fees?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true";
+fetchJ(base+"&dataType=dailyFees",45000).then(function(jf){
+fetchJ(base+"&dataType=dailyRevenue",45000).then(function(jr){
+var rev={};((jr&&jr.protocols)||[]).forEach(function(p){rev[p.defillamaId||p.name]=Number(p.total24h)});
+draw(el,topVol(jf).map(function(p){var rv=rev[p.defillamaId||p.name];return{name:nm(p),sub:p.category||"",value:money(p.total24h),subValue:(isFinite(rv)?"매출 "+money(rv):"")}}));
+}).catch(function(){
+draw(el,topVol(jf).map(function(p){return{name:nm(p),sub:p.category||"",value:money(p.total24h)}}));
+});
+}).catch(function(){fail(el,"fees")});
+},
+perps:function(){
+var el=gel("dxl-perps");if(!el)return;
+fetchJ("https://api.llama.fi/overview/derivatives?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",45000).then(function(j){
+var rows=topVol(j).map(function(p){return{name:nm(p),sub:p.category||"",value:money(p.total24h),chg:(p.change_1d==null?null:Number(p.change_1d))}});
+if(rows.length)draw(el,rows);else fail(el,"perps",true);
+}).catch(function(){fail(el,"perps",true)});
+},
+yields:function(){
+var el=gel("dxl-yields");if(!el)return;
+fetchJ("https://yields.llama.fi/pools",60000).then(function(j){
+var ps=((j&&j.data)||[]).filter(function(p){return p&&Number(p.tvlUsd)>=10000000&&Number(p.apy)>0&&Number(p.apy)<1000});
+ps.sort(function(a,b){return Number(b.apy)-Number(a.apy)});
+draw(el,ps.slice(0,10).map(function(p){return{name:p.project||"?",sub:[p.symbol,p.chain].filter(Boolean).join(" · "),value:Number(p.apy).toFixed(2)+"%",subValue:"TVL "+money(p.tvlUsd)}}));
+}).catch(function(){fail(el,"yields")});
+},
+bridge:function(){
+var el=gel("dxl-bridge");if(!el)return;
+fetchJ("https://api.llama.fi/overview/bridges?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",45000).then(function(j){
+draw(el,topVol(j).map(function(p){return{name:nm(p),sub:p.category||"",value:money(p.total24h),chg:(p.change_1d==null?null:Number(p.change_1d))}}));
+}).catch(function(){fail(el,"bridge")});
+},
+chains:function(){
+var el=gel("dxl-chains");if(!el)return;
+fetchJ("https://api.llama.fi/v2/chains",30000).then(function(j){
+var ps=(Array.isArray(j)?j:[]).filter(function(p){return p&&Number(p.tvl)>0});
+ps.sort(function(a,b){return Number(b.tvl)-Number(a.tvl)});
+draw(el,ps.slice(0,10).map(function(p){return{name:p.name||"?",sub:p.tokenSymbol||"",value:money(p.tvl)}}));
+}).catch(function(){fail(el,"chains")});
+},
+hacks:function(){
+var el=gel("dxl-hacks");if(!el)return;
+fetchJ("https://api.llama.fi/hacks",30000).then(function(j){
+var ps=(Array.isArray(j)?j:[]).filter(function(p){return p&&p.date});
+ps.sort(function(a,b){return Number(b.date)-Number(a.date)});
+draw(el,ps.slice(0,10).map(function(p){var ch=Array.isArray(p.chain)?p.chain.join(", "):(p.chain||"");return{name:p.name||"?",sub:[dateStr(p.date),ch,p.technique].filter(Boolean).join(" · "),value:money(p.amount)}}));
+}).catch(function(){fail(el,"hacks")});
+},
+raises:function(){
+var el=gel("dxl-raises");if(!el)return;
+fetchJ("https://api.llama.fi/raises",30000).then(function(j){
+var list=Array.isArray(j)?j:((j&&(j.raises||j.data))||[]);
+var ps=list.filter(function(p){return p&&(p.name||p.project)});
+ps.sort(function(a,b){return Number(b.date||0)-Number(a.date||0)});
+var rows=ps.slice(0,10).map(function(p){return{name:p.name||p.project||"?",sub:[dateStr(p.date),p.round,p.sector||p.category].filter(Boolean).join(" · "),value:(p.amount!=null?money(p.amount):"—")}});
+if(rows.length)draw(el,rows);else fail(el,"raises",true);
+}).catch(function(){fail(el,"raises",true)});
+}
+};
+var started=false;
+function loadAll(){Object.keys(LOADERS).forEach(function(k){LOADERS[k]()})}
+function start(){if(started)return;started=true;loadAll();setInterval(function(){if(!view.hidden&&!(pa&&pa.hidden)&&!document.hidden)loadAll()},5*60000)}
+if(window.MutationObserver)new MutationObserver(function(){if(!view.hidden)start()}).observe(view,{attributes:true,attributeFilter:["hidden"]});
+if(!view.hidden)start();
 })();
 </script>
 <script>
