@@ -2787,9 +2787,10 @@ var D={
 "날짜 규칙으로 계산 · 미국 매월 셋째 금요일, 한국 매월 둘째 목요일":"Calculated by date rule · US: 3rd Friday of each month, KR: 2nd Thursday",
 "실적·지표 캘린더":"Earnings & Indicators Calendar","실적·지표 캘린더 접기·펼치기":"Collapse or expand the earnings & indicators calendar","일정이 없어요":"No events scheduled","이전 달":"Previous month","다음 달":"Next month","장 마감 후":"After Market Close","장 시작 전":"Before Market Open","일":"Sun","월":"Mon","화":"Tue","수":"Wed","목":"Thu","금":"Fri","토":"Sat",
 "전인구 유튜브":"Jeon In-gu YouTube","영상을 불러오지 못했어요":"Could not load videos","워뇨띠 주식 포지션":"Wonyotti Stock Positions","디시 원글 보기":"View Original Post",
-"주식 평가금액 · 2026년 11월 5일 본인 공개":"Stock valuation · Self-disclosed Nov 5, 2026","보유 종목 접기":"Hide Holdings","공개 당시":"At disclosure",
-"실시간 보유 현황이 아니라 11월 5일 공개 시점 기준입니다. 본인이 5억 원 이상 보유 종목만 공개해 그보다 작은 보유 종목은 빠져 있고, 종목별 평가금액은 공개된 평가손익·수익률로 계산한 대략적인 값입니다.":"This reflects the positions as disclosed on Nov 5, not live holdings. Only holdings of 500M KRW or more were disclosed, so smaller positions are omitted, and per-stock valuations are approximate figures calculated from the disclosed P&L and returns.",
-"디시인사이드 코스피 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인":"Self-disclosed on DC Inside KOSPI Gallery · Prices via TradingView · Checked every 1 min",
+"주식 평가금액 · 2026년 11월 25일 본인 공개":"Stock valuation · Self-disclosed Nov 25, 2026","보유 종목 접기":"Hide Holdings","공개 당시":"At disclosure",
+"실시간 보유 현황이 아니라 2026년 11월 25일 공개 시점 기준입니다. 디시인사이드 코스피 마이너 갤러리에 본인이 공개한 전체 보유 종목이고, 종목별 평가금액은 공개 화면의 값 그대로입니다.":"This reflects the positions as disclosed on Nov 25, 2026, not live holdings. It lists every holding he disclosed on DC Inside's KOSPI Minor Gallery, and per-stock valuations are the exact figures from the disclosure screen.",
+"디시인사이드 코스피 마이너 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인":"Self-disclosed on DC Inside KOSPI Minor Gallery · Prices via TradingView · Checked every 1 min",
+"본인 글: 원금 260억 실현익 3.5억 미실현익 -2억 / 현재 총 +1.5억":"His post: principal ₩26B · realized +₩0.35B · unrealized -₩0.2B / total +₩0.15B so far",
 "최신글":"Latest Posts","글쓰기":"Write","구글 로그인":"Google Sign-in","자유":"Free","코인":"Coins","질문":"Q&A","카테고리":"Category","카테고리 필터":"Category filter","최신순":"Newest","인기순":"Most Liked","댓글순":"Most Commented","답글":"Reply","답글을 입력하세요":"Write a reply","답글 입력":"Reply input","답글을 쓰려면 로그인이 필요해요. 위의 구글 로그인 버튼을 눌러 주세요.":"You need to sign in to reply. Press the Google sign-in button above.","답글을 입력해 주세요.":"Please enter a reply.","답글 등록에 실패했어요. 다시 시도해 주세요.":"Failed to post the reply. Please try again.","다크 모드":"Dark Mode","언어":"Language","계산기 버튼":"Calculator Button","켜짐":"On","꺼짐":"Off","해당 카테고리에 글이 없습니다.":"No posts in this category yet.","아직 글이 없어요. 첫 글을 올려보세요":"No posts yet. Be the first to write one.","최근 댓글:":"Latest comment:","카테고리 관리":"Manage Categories","추가":"Add","고정":"Pin","고정 해제":"Unpin","공지":"Notice","새 카테고리 이름":"New category name","카테고리 이름을 입력해 주세요.":"Please enter a category name.","이미 있는 카테고리예요.":"That category already exists.","카테고리 이름은 10자까지예요.":"Category names can be up to 10 characters.","카테고리 저장에 실패했어요. 다시 시도해 주세요.":"Failed to save categories. Please try again.","카테고리는 최소 1개가 필요해요.":"At least one category is required.","'공지'는 고정 글 배지 이름이라 쓸 수 없어요.":"'Notice' is reserved for pinned-post badges and can't be used as a category name.",
 "글을 쓰려면 구글 로그인이 필요해요. 로그인하면 바로 글을 쓸 수 있어요.":"You need to sign in with Google to write a post. Once signed in, you can post right away.",
 "제목을 입력하세요":"Enter a title","내용을 입력하세요":"Enter content","사진 첨부":"Attach Photo","사진 4장까지 넣을 수 있어요":"You can attach up to 4 photos","사진은 4장까지 넣을 수 있어요.":"You can attach up to 4 photos.","이미지 파일만 넣을 수 있어요.":"Only image files can be attached.","사진 지우기":"Remove Photo","취소":"Cancel","등록":"Post","삭제":"Delete","수정":"Edit","수정 완료":"Save Changes","닫기":"Close",
@@ -2858,6 +2859,7 @@ if(m=c.match(/^(.+) 주식 전체 \((.+)\)$/))return m[1]+" Stocks ("+m[2]+")";
 if(m=c.match(/^보유 종목 (\d+)개 보기$/))return "View "+m[1]+" Holdings";
 if(m=c.match(/^사진 (\d+)장 첨부됨 · 4장까지 넣을 수 있어요$/))return m[1]+" photos attached · up to 4 photos";
 if(m=c.match(/^평가손익 \+([\d.]+)억 원 · 순자산 ([\d.]+)억 원 \(예수금 ([\d.]+)억 원 포함\)$/))return "P&L +₩"+bn(m[1])+"B · Net assets ₩"+bn(m[2])+"B (incl. ₩"+bn(m[3])+"B cash)";
+if(m=c.match(/^매입금액 ([\d.]+)억 원 · 평가손익 (-?[\d.]+)억 원 · 순자산 ([\d.]+)억 원 \(예수금 ([\d.]+)억 원 포함\)$/))return "Purchase ₩"+bn(m[1])+"B · P&L "+(m[2].charAt(0)==="-"?"-₩"+bn(m[2].slice(1)):"+₩"+bn(m[2]))+"B · Net assets ₩"+bn(m[3])+"B (incl. ₩"+bn(m[4])+"B cash)";
 if(m=c.match(/^평가손익 (.+)$/))return "P&L "+m[1];
 if(m=c.match(/^(.+) · (\d+)시간마다 확인$/))return m[1]+" · Checked every "+m[2]+"h";
 if(m=c.match(/^(.+) · (\d+)분마다 확인$/))return m[1]+" · Checked every "+m[2]+" min";
@@ -5893,7 +5895,53 @@ if(!sec.hidden&&!S.started){S.started=true;loadData()}
 <section id="pf" hidden></section>
 
 <section id="pc" hidden></section>
-<section id="pi" hidden></section>
+<section id="pi" hidden>
+<div class="ytwrap">
+<div class="ytsec">
+<div class="wnhd"><h2>워뇨띠 주식 포지션</h2><a class="wnsrc" href="https://gall.dcinside.com/mgallery/board/view/?id=kospi&no=5674874" target="_blank" rel="noopener">디시 원글 보기</a></div>
+<div class="c wncard">
+<div class="indlab">주식 평가금액 · 2026년 11월 25일 본인 공개</div>
+<div class="fgrow"><span class="indb">196.2억 원</span><span class="pill dn">평가손익 -1.07%</span></div>
+<p class="indsub">매입금액 198.3억 원 · 평가손익 -2.14억 원 · 순자산 261.6억 원 (예수금 44.0억 원 포함)</p>
+<p class="indsub">본인 글: 원금 260억 실현익 3.5억 미실현익 -2억 / 현재 총 +1.5억</p>
+<button type="button" class="wntg" id="wn-toggle" aria-expanded="false" aria-controls="wn-body"><span id="wn-toggle-tx">보유 종목 27개 보기</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<div id="wn-body" hidden>
+<div style="margin-top:6px">
+<div class="wnrow"><div><div class="wnnm"><b>현대해상</b><small>001450</small></div><span class="wnlive">현재가 <b id="wn-p-001450">—</b><span class="pill" id="wn-c-001450">—</span></span></div><div class="wnrt"><b>2,004,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>대웅제약</b><small>069620</small></div><span class="wnlive">현재가 <b id="wn-p-069620">—</b><span class="pill" id="wn-c-069620">—</span></span></div><div class="wnrt"><b>1,417,500,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>SK바이오팜</b><small>326030</small></div><span class="wnlive">현재가 <b id="wn-p-326030">—</b><span class="pill" id="wn-c-326030">—</span></span></div><div class="wnrt"><b>1,329,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>NHN</b><small>181710</small></div><span class="wnlive">현재가 <b id="wn-p-181710">—</b><span class="pill" id="wn-c-181710">—</span></span></div><div class="wnrt"><b>1,307,500,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>클래시스</b><small>214150</small></div><span class="wnlive">현재가 <b id="wn-p-214150">—</b><span class="pill" id="wn-c-214150">—</span></span></div><div class="wnrt"><b>1,305,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>더블유게임즈</b><small>192080</small></div><span class="wnlive">현재가 <b id="wn-p-192080">—</b><span class="pill" id="wn-c-192080">—</span></span></div><div class="wnrt"><b>1,146,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>익스팬드 에너지</b><small>EXE</small></div><span class="wnlive">현재가 <b id="wn-p-EXE">—</b><span class="pill" id="wn-c-EXE">—</span></span></div><div class="wnrt"><b>1,102,020,720원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>이노션</b><small>214320</small></div><span class="wnlive">현재가 <b id="wn-p-214320">—</b><span class="pill" id="wn-c-214320">—</span></span></div><div class="wnrt"><b>1,008,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>삼성 인버스 2X 코스닥150 선물 ETN</b><small>530107</small></div><span class="wnlive">현재가 <b id="wn-p-530107">—</b><span class="pill" id="wn-c-530107">—</span></span></div><div class="wnrt"><b>982,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>CJ제일제당</b><small>097950</small></div><span class="wnlive">현재가 <b id="wn-p-097950">—</b><span class="pill" id="wn-c-097950">—</span></span></div><div class="wnrt"><b>945,500,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>BNK금융지주</b><small>138930</small></div><span class="wnlive">현재가 <b id="wn-p-138930">—</b><span class="pill" id="wn-c-138930">—</span></span></div><div class="wnrt"><b>752,400,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>동아제약</b><small>000640</small></div><span class="wnlive">현재가 <b id="wn-p-000640">—</b><span class="pill" id="wn-c-000640">—</span></span></div><div class="wnrt"><b>640,500,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>iM금융지주</b><small>139130</small></div><span class="wnlive">현재가 <b id="wn-p-139130">—</b><span class="pill" id="wn-c-139130">—</span></span></div><div class="wnrt"><b>612,800,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>오리온</b><small>271560</small></div><span class="wnlive">현재가 <b id="wn-p-271560">—</b><span class="pill" id="wn-c-271560">—</span></span></div><div class="wnrt"><b>594,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>실리콘투</b><small>257720</small></div><span class="wnlive">현재가 <b id="wn-p-257720">—</b><span class="pill" id="wn-c-257720">—</span></span></div><div class="wnrt"><b>591,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>기아</b><small>000270</small></div><span class="wnlive">현재가 <b id="wn-p-000270">—</b><span class="pill" id="wn-c-000270">—</span></span></div><div class="wnrt"><b>570,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>에스엘</b><small>005850</small></div><span class="wnlive">현재가 <b id="wn-p-005850">—</b><span class="pill" id="wn-c-005850">—</span></span></div><div class="wnrt"><b>567,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>SFA</b><small>056190</small></div><span class="wnlive">현재가 <b id="wn-p-056190">—</b><span class="pill" id="wn-c-056190">—</span></span></div><div class="wnrt"><b>473,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>롯데정밀화학</b><small>004000</small></div><span class="wnlive">현재가 <b id="wn-p-004000">—</b><span class="pill" id="wn-c-004000">—</span></span></div><div class="wnrt"><b>460,500,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>다우기술</b><small>023590</small></div><span class="wnlive">현재가 <b id="wn-p-023590">—</b><span class="pill" id="wn-c-023590">—</span></span></div><div class="wnrt"><b>431,250,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>HS효성첨단소재</b><small>298050</small></div><span class="wnlive">현재가 <b id="wn-p-298050">—</b><span class="pill" id="wn-c-298050">—</span></span></div><div class="wnrt"><b>320,800,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>시프트업</b><small>462870</small></div><span class="wnlive">현재가 <b id="wn-p-462870">—</b><span class="pill" id="wn-c-462870">—</span></span></div><div class="wnrt"><b>272,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>씨젠</b><small>096530</small></div><span class="wnlive">현재가 <b id="wn-p-096530">—</b><span class="pill" id="wn-c-096530">—</span></span></div><div class="wnrt"><b>245,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>에이피알</b><small>278470</small></div><span class="wnlive">현재가 <b id="wn-p-278470">—</b><span class="pill" id="wn-c-278470">—</span></span></div><div class="wnrt"><b>204,050,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>경동나비엔</b><small>009450</small></div><span class="wnlive">현재가 <b id="wn-p-009450">—</b><span class="pill" id="wn-c-009450">—</span></span></div><div class="wnrt"><b>119,600,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>넥센타이어</b><small>002350</small></div><span class="wnlive">현재가 <b id="wn-p-002350">—</b><span class="pill" id="wn-c-002350">—</span></span></div><div class="wnrt"><b>113,000,000원</b></div></div>
+<div class="wnrow"><div><div class="wnnm"><b>롯데관광개발</b><small>032350</small></div><span class="wnlive">현재가 <b id="wn-p-032350">—</b><span class="pill" id="wn-c-032350">—</span></span></div><div class="wnrt"><b>105,500,000원</b></div></div>
+</div>
+<p class="indsub">실시간 보유 현황이 아니라 2026년 11월 25일 공개 시점 기준입니다. 디시인사이드 코스피 마이너 갤러리에 본인이 공개한 전체 보유 종목이고, 종목별 평가금액은 공개 화면의 값 그대로입니다.</p>
+<p class="indmeta wnmeta"><span id="wn-m">디시인사이드 코스피 마이너 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인</span></p>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="pk" hidden></section>
 <section id="pp" hidden></section>
 <div class="lgov" id="pv-ov" hidden><div class="lgbox pvbox" role="dialog" aria-modal="true" aria-labelledby="pv-title">
@@ -10195,7 +10243,7 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden){var
 })();
 </script>
 <script>
-/* 지표 탭: 워뇨띠 주식 포지션 현재가 — 보유 종목·금액은 2026-11-05 디시인사이드 본인 공개 기준으로
+/* 지표 탭: 워뇨띠 주식 포지션 현재가 — 보유 종목·금액은 2026-11-25 디시인사이드 본인 공개 기준으로
    고정해 두고, 현재가·등락률만 사이트의 다른 국내·미국 주식과 같은 TradingView 스캐너
    (korea/scan·america/scan)로 불러와 1분마다 갱신한다. 지표 탭을 처음 열 때 시작하고,
    한쪽 시장이 실패해도 다른 쪽 가격은 그대로 채운다. */
@@ -10203,8 +10251,8 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden){var
 function $(id){return document.getElementById(id)}
 function pad(n){return (n<10?"0":"")+n}
 function stamp(){var d=new Date();return pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds())}
-var KR=["214150","259960","009450","003230","257720","021240","326030","023590","453340","161390","271560","069620","005830","064350","237690","111770"];
-var US=["ADBE","PYPL"];
+var KR=["001450","069620","326030","181710","214150","192080","214320","530107","097950","138930","000640","139130","271560","257720","000270","005850","056190","004000","023590","298050","462870","096530","278470","009450","002350","032350"];
+var US=["EXE"];
 function scan(market,tickers){return fetch("https://scanner.tradingview.com/"+market+"/scan",{method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},body:JSON.stringify({symbols:{tickers:tickers},columns:["close","change"]})}).then(function(r){if(!r.ok)throw new Error("tv "+r.status);return r.json()})}
 /* 종목별 직전 성공 값: 조회가 실패하거나 특정 종목 값이 비어 와도 마지막으로 성공한
    현재가·등락률을 그대로 유지한다. 한 번도 성공한 적이 없는 종목만 처음 표시('—')가 남는다 */
@@ -10221,12 +10269,12 @@ var okAny=false;
 function load(){
 var done=0,ok=false;
 function fin(){if(++done!==2)return;restoreP();var m=$("wn-m");if(!m)return;
-if(ok){okAny=true;m.textContent="디시인사이드 코스피 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인 · 확인 "+stamp()}
+if(ok){okAny=true;m.textContent="디시인사이드 코스피 마이너 갤러리 본인 공개 · 현재가 TradingView · 1분마다 확인 · 확인 "+stamp()}
 else if(!okAny)m.textContent="현재가를 불러오지 못했어요 · 잠시 후 다시 시도해요"}
 scan("korea",KR.map(function(c){return "KRX:"+c})).then(function(j){var got=false;(j.data||[]).forEach(function(x){if(x.d&&x.d[0]>0){setP(x.s.replace("KRX:",""),x.d[0],parseFloat(x.d[1]),false);got=true}});if(got)ok=true;fin()}).catch(fin);
 scan("america",US.map(function(t){return "NASDAQ:"+t})).then(function(j){var got=false;(j.data||[]).forEach(function(x){if(x.d&&x.d[0]>0){setP(x.s.replace("NASDAQ:",""),x.d[0],parseFloat(x.d[1]),true);got=true}});if(got)ok=true;fin()}).catch(fin)}
 var tg=$("wn-toggle"),bd=$("wn-body");
-if(tg&&bd)tg.addEventListener("click",function(){var open=bd.hidden;bd.hidden=!open;tg.setAttribute("aria-expanded",open?"true":"false");var tx=$("wn-toggle-tx");if(tx)tx.textContent=open?"보유 종목 접기":"보유 종목 18개 보기"});
+if(tg&&bd)tg.addEventListener("click",function(){var open=bd.hidden;bd.hidden=!open;tg.setAttribute("aria-expanded",open?"true":"false");var tx=$("wn-toggle-tx");if(tx)tx.textContent=open?"보유 종목 접기":"보유 종목 27개 보기"});
 var started=false;
 function start(){if(!started){started=true;load();setInterval(function(){var s=$("pi");if(s&&!s.hidden&&!document.hidden)load()},60000)}else if(!document.hidden)load()}
 var tabs=$("tabs");
