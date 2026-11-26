@@ -2390,10 +2390,20 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
    라이터·아스터·Variational) 칸이고, 두 칸 합친 폭은 예전 합친 칸 폭 그대로다.
    그 아래 줄에 변동성지수 칸(왼쪽)과 스테이블코인 요약 칸(오른쪽)이 나란히 온다.
    폰에서는 그리드가 한 열로 쌓이며 CEX 칸 → DEX 칸 → 변동성지수 →
-   스테이블코인 순이 된다. 두 거래소 칸은 같은 줄에서 높이를 서로 맞추고
-   (align-self:stretch), 안의 목록 영역이 남은 높이를 채운다 */
-#pa .cxcoinrow>#cxxbox,#pa .cxcoinrow>#cxdxbox{align-self:stretch;display:flex;flex-direction:column}
+   스테이블코인 순이 된다. 두 거래소 칸은 평소 10개만 보이는 짧은 높이로
+   두고(아래 10개 보기 규칙), '전체보기'로 펼친 칸만 길어진다 — 접힌 옆
+   칸이 빈 공간으로 함께 늘어나지 않게 두 칸 모두 align-self:start 로
+   각자 자기 높이를 유지한다 (사용자 지시) */
+#pa .cxcoinrow>#cxxbox,#pa .cxcoinrow>#cxdxbox{align-self:start;display:flex;flex-direction:column}
 #pa .cxcoinrow>#cxxbox .cxexwrap,#pa .cxcoinrow>#cxdxbox .cxexwrap{flex:1 1 auto;min-height:0}
+/* 10개 보기(접힌 상태): 목록 영역은 스크롤 없이 10개 행 높이 그대로 보이고,
+   펼친 상태(.cxexp)에서만 예전처럼 최대 520px 안에서 스크롤한다 */
+#pa .cxcoinrow .cxexbox:not(.cxexp) .cxexwrap{max-height:none;overflow-y:hidden}
+/* 제목 줄 오른쪽 끝의 작은 '전체보기/접기' 버튼 — 변동성지수 칸의
+   '전체 차트' 버튼(.dv-allbtn)과 같은 모양으로 맞춘다 */
+#pa .cxexall{flex:none;margin-left:auto;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:999px;padding:4px 11px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;line-height:1.35}
+#pa .cxexall:hover{border-color:var(--mut)}
+#pa .cxexall[hidden]{display:none}
 /* 메인 코인 행 아래 줄 오른쪽 칸: 스테이블코인 요약 칸을 감싸는 열 묶음 */
 #pa .cxrightcol{display:flex;flex-direction:column;gap:14px;min-width:0}
 #pa .cxexbox{border:1px solid var(--bd);border-radius:12px;background:var(--sf);padding:10px;min-width:0;overflow:hidden}
@@ -3537,9 +3547,12 @@ syncTimer();
    라이터는 전체 종목을 거래대금 순으로 보여준다. 값은 달러 가격과 24시간
    변동률이고(Variational은 변동률을 주지 않아 '—'로 표시), 암호화폐 탭이
    열려 있는 동안 한 번이라도 불러온 거래소는 60초마다 다시 읽는다.
-   목록은 50개씩 그리고 칸 안을 아래로 내리면 이어 붙인다. 갱신에 실패하면
-   마지막으로 본 목록을 그대로 두고, 처음부터 불러오지 못했을 때만 다시
-   시도 버튼을 보여준다 */
+   목록은 평소 10개만 보이고, 제목 줄 오른쪽 끝의 작은 '전체보기' 버튼을
+   누른 칸만 전체 종목을 보여준다 — 펼친 상태에서는 50개씩 그리고 칸 안을
+   아래로 내리면 이어 붙이며, '접기'를 누르면 10개 보기로 돌아온다.
+   거래소를 바꾸면 접힌 상태로 다시 시작한다. 갱신에 실패하면 마지막으로
+   본 목록을 그대로 두고, 처음부터 불러오지 못했을 때만 다시 시도 버튼을
+   보여준다 */
 (function(){
 var pa=document.getElementById("pa");if(!pa)return;
 function cxPanel(ids,EXS,first){
@@ -3547,6 +3560,19 @@ var tb=document.getElementById(ids.b),nEl=document.getElementById(ids.n);
 var exPick=document.getElementById(ids.ex),secPick=document.getElementById(ids.sec);
 if(!tb||!exPick||!secPick)return;
 var wrap=tb.closest(".cxexwrap");
+var box=tb.closest(".cxexbox");
+/* 제목 줄 오른쪽 끝(종목 개수 옆)의 작은 '전체보기' 버튼: 기본은 10개만
+   보이고, 누르면 이 칸만 전체 종목을 칸 안 스크롤로 보여준다. 다시 누르면
+   '접기'로 바뀐 버튼이 10개 보기로 되돌린다 (사용자 지시) */
+var allBtn=document.createElement("button");
+allBtn.type="button";allBtn.className="cxexall";allBtn.textContent="전체보기";allBtn.hidden=true;
+if(nEl&&nEl.parentNode)nEl.parentNode.appendChild(allBtn);
+var expanded=false;
+function syncAllBtn(){
+allBtn.textContent=expanded?"접기":"전체보기";
+allBtn.setAttribute("aria-expanded",String(expanded));
+if(box)box.classList.toggle("cxexp",expanded);
+}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function fp(v){v=Number(v);if(!isFinite(v)||!(v>0))return "—";var d=v>=1?2:(v>=0.01?4:8);return "$"+v.toLocaleString("en-US",{maximumFractionDigits:d})}
 function fc(r){r=Number(r);if(!isFinite(r))return '<span class="na">—</span>';var cls=r>0?"up":r<0?"dn":"";return '<span class="'+cls+'">'+(r>0?"+":"")+r.toFixed(2)+"%</span>"}
@@ -3567,7 +3593,7 @@ function secOf(sym){return SECMAP[sym]||"etc"}
 var st={};EXS.forEach(function(x){st[x]={rows:null,shown:0,busy:false,err:false}});
 var cur=first,sec="all",exOpen=false,secOpen=false,view=null;
 function append(){
-if(!view)return;var s=st[cur];
+if(!view||!expanded)return;var s=st[cur];
 var hint=tb.querySelector("tr.cxmore");if(hint)hint.parentNode.removeChild(hint);
 if(s.shown>=view.length)return;
 var end=Math.min(view.length,s.shown+CH),html="";
@@ -3581,12 +3607,21 @@ var s=st[cur];
 if(!s.rows){
 if(s.err)tb.innerHTML='<tr><td colspan="3">불러오지 못했어요 <button type="button" class="abretry" data-cxretry="1">다시 시도</button></td></tr>';
 else tb.innerHTML='<tr><td colspan="3">불러오는 중…</td></tr>';
-if(nEl)nEl.textContent="";view=null;return}
+if(nEl)nEl.textContent="";view=null;allBtn.hidden=true;return}
 view=sec==="all"?s.rows:s.rows.filter(function(r){return r.k===sec});
 if(nEl)nEl.textContent=view.length+"개";
+/* 전체가 10개 이하면 펼칠 게 없어 버튼을 숨긴다 */
+allBtn.hidden=view.length<=10;
 var keep=Math.max(CH,s.shown),top=wrap?wrap.scrollTop:0;
 s.shown=0;tb.innerHTML="";
 if(!view.length){tb.innerHTML='<tr><td colspan="3">표시할 종목이 없어요</td></tr>';return}
+if(!expanded){
+/* 접힌 상태: 위에서 10개만 그리고 스크롤 위치는 맨 위로 되돌린다 */
+var n10=Math.min(10,view.length),h10="";
+for(var i10=0;i10<n10;i10++){var r10=view[i10];h10+="<tr><td><b>"+esc(r10.s)+"</b></td><td>"+fp(r10.p)+"</td><td>"+fc(r10.c)+"</td></tr>"}
+tb.innerHTML=h10;s.shown=n10;
+if(wrap)wrap.scrollTop=0;
+return}
 while(s.shown<Math.min(keep,view.length))append();
 while(wrap&&wrap.clientHeight>0&&s.shown<view.length&&wrap.scrollHeight<=wrap.clientHeight+2)append();
 if(wrap&&top)wrap.scrollTop=Math.min(top,Math.max(0,wrap.scrollHeight-wrap.clientHeight));
@@ -3723,7 +3758,11 @@ exPick.addEventListener("click",function(e){
 var b=e.target.closest("[data-cxex]");if(!b)return;
 if(!exOpen){exOpen=true;secOpen=false;syncPicks();return}
 var v=b.getAttribute("data-cxex");exOpen=false;
-if(v!==cur){cur=v;syncPicks();paint();load(cur)}else syncPicks();
+/* 거래소를 바꾸면 그 칸은 다시 10개 보기(접힌 상태)로 시작한다 */
+if(v!==cur){cur=v;expanded=false;syncAllBtn();syncPicks();paint();load(cur)}else syncPicks();
+});
+allBtn.addEventListener("click",function(){
+expanded=!expanded;syncAllBtn();paint();
 });
 secPick.addEventListener("click",function(e){
 var b=e.target.closest("[data-cxsec]");if(!b)return;
@@ -3735,7 +3774,7 @@ tb.addEventListener("click",function(e){
 var b=e.target.closest("[data-cxretry]");if(!b)return;
 st[cur].err=false;paint();load(cur);
 });
-syncPicks();paint();
+syncAllBtn();syncPicks();paint();
 var started=false;
 function start(){if(started)return;started=true;load(cur);setInterval(function(){if(!pa.hidden&&!document.hidden){EXS.forEach(function(x){if(st[x].rows||x===cur)load(x)})}},60000)}
 if(window.MutationObserver)new MutationObserver(function(){if(!pa.hidden)start()}).observe(pa,{attributes:true,attributeFilter:["hidden"]});
