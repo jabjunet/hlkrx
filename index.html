@@ -2496,6 +2496,19 @@ body{background-image:radial-gradient(560px 280px at 88% -40px,rgba(22,199,132,.
 #pa .hmview .hmnote{font-size:11.5px;color:var(--mut);margin:8px 0 0}
 #pa .hmview .hmnote[hidden]{display:none}
 @media(max-width:720px){#pa .hmview .hmstage{height:62vh}}
+/* 히트맵 종목 정보 팝업: 타일에 마우스를 올리거나(폰에서는 눌러서) 커서 근처에
+   따라다니는 카드 — 사이트 칸들과 같은 톤(카드 배경·테두리·둥근 모서리·작은 글자).
+   위치는 스크립트가 화면 가장자리에서 잘리지 않게 잡는다 */
+#pa .cxhmt{cursor:pointer}
+.hmpop{position:fixed;z-index:300;width:230px;max-width:calc(100vw - 16px);background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.30);padding:12px 13px 9px;pointer-events:none;color:var(--tx);font-size:12.5px;line-height:1.45}
+.hmpop[hidden]{display:none}
+.hmpop-hd{display:flex;align-items:baseline;gap:8px;min-width:0}
+.hmpop-hd b{font-size:16px;font-weight:800;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hmpop-hd .hmpop-chg{margin-left:auto;flex:none;font-size:13.5px;font-weight:800}
+.hmpop-sub{color:var(--mut);font-size:11.5px;margin:1px 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hmpop-row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:4px 0;border-top:1px solid var(--bd)}
+.hmpop-row span{color:var(--mut);flex:none}
+.hmpop-row b{font-weight:700;text-align:right;white-space:nowrap}
 </style>
 <style>
 /* ===== 암호화폐 탭: 스테이블코인 공급량 증감 =====
@@ -4887,6 +4900,133 @@ rest={x:x,y:y+chh,w:w,h:h-chh};
 }
 hmLayout(nodes.slice(row.length),rest.x,rest.y,rest.w,rest.h,out);
 }
+/* ===== 히트맵 종목 정보 팝업 (사용자 지시) =====
+   작은 히트맵·전체화면 히트맵 공통: 타일에 마우스를 올리면 커서 근처에
+   종목 정보 카드가 따라다니고, 벗어나면 사라진다. 폰에서는 타일을 누르면
+   뜨고 다른 곳을 누르면 닫힌다. 전체화면 히트맵에서 드래그로 이동하는
+   동안에는 뜨지 않는다. 예전의 간단한 title 툴팁은 이 팝업으로 교체했다.
+   시총은 전체화면 히트맵이 쓰는 CoinGecko 시총(capOf)이 실제로 있을
+   때만 줄을 넣고, 없으면 그 줄 자체를 빼서 지어내지 않는다 */
+var HMSECLBL={l1:"레이어1",l2:"레이어2",defi:"디파이",meme:"밈",ai:"AI",game:"게임·NFT",stable:"스테이블",etc:"기타"};
+var hmPopMap={},hmPopCur=null,hmPopPinned=false;
+var hmpop=document.createElement("div");
+hmpop.className="hmpop";hmpop.hidden=true;hmpop.setAttribute("role","tooltip");
+document.body.appendChild(hmpop);
+function hmFmtMoney(v){
+v=Number(v);if(!isFinite(v)||!(v>0))return "—";
+if(v>=1e12)return "$"+(v/1e12).toFixed(2)+"T";
+if(v>=1e9)return "$"+(v/1e9).toFixed(2)+"B";
+if(v>=1e6)return "$"+(v/1e6).toFixed(1)+"M";
+if(v>=1e3)return "$"+(v/1e3).toFixed(1)+"K";
+return "$"+v.toFixed(0);
+}
+function hmPopHTML(r){
+var rg=reg();
+var esc=rg?rg.esc:function(s){return String(s==null?"":s)};
+var chg=isFinite(r.c)?(r.c>0?"+":"")+r.c.toFixed(2)+"%":"—";
+var chgCls=isFinite(r.c)?(r.c>0?"up":r.c<0?"dn":""):"na";
+var html='<div class="hmpop-hd"><b>'+esc(r.s)+'</b><span class="hmpop-chg '+chgCls+'">'+chg+'</span></div>';
+html+='<div class="hmpop-sub">'+esc(NAMES[cur]||"")+" · "+esc(HMSECLBL[r.k]||"기타")+"</div>";
+html+='<div class="hmpop-row"><span>현재가</span><b>'+(rg?rg.fp(r.p):"—")+"</b></div>";
+html+='<div class="hmpop-row"><span>24시간 변동</span><b class="'+chgCls+'">'+chg+"</b></div>";
+html+='<div class="hmpop-row"><span>거래대금</span><b>'+hmFmtMoney(r.v)+"</b></div>";
+var cap=0;try{cap=capOf(r.s)}catch(e){}
+if(cap>0)html+='<div class="hmpop-row"><span>시총</span><b>'+hmFmtMoney(cap)+"</b></div>";
+html+='<div class="hmpop-row"><span>섹터</span><b>'+esc(HMSECLBL[r.k]||"기타")+"</b></div>";
+return html;
+}
+function hmPopPos(x,y){
+var W=hmpop.offsetWidth,H=hmpop.offsetHeight;
+if(!W||!H)return;
+var nx=x+14,ny=y+16;
+if(nx+W>window.innerWidth-8)nx=x-W-14;
+if(nx<8)nx=8;
+if(ny+H>window.innerHeight-8)ny=y-H-14;
+if(ny<8)ny=8;
+hmpop.style.left=nx+"px";hmpop.style.top=ny+"px";
+}
+function hmPopShow(r,x,y,pin){
+hmPopCur=r;hmPopPinned=!!pin;
+hmpop.innerHTML=hmPopHTML(r);
+hmpop.hidden=false;
+hmPopPos(x,y);
+/* 시총 데이터가 아직 없으면 뒤에서 불러와 두고, 다음 팝업부터 있는
+   종목만 시총 줄이 붙는다 (이번 팝업에 지어내 넣지는 않는다) */
+try{if(capState==="idle")loadCap()}catch(e){}
+}
+function hmPopHide(){
+hmpop.hidden=true;hmPopPinned=false;hmPopCur=null;
+}
+function hmTileEl(e){
+var t=e.target;
+if(!t||typeof t.closest!=="function")return null;
+return t.closest(".cxhmt");
+}
+function hmRowFor(el){
+if(!el)return null;
+var s=el.getAttribute("data-hms");
+return s?hmPopMap[s]||null:null;
+}
+/* 전체화면 히트맵 드래그 감지: 누른 채로 움직이면 클릭으로 보지 않고
+   팝업도 숨긴다 (기존 드래그 핸들러와 충돌하지 않게 따로 잰다) */
+var hmDownPt=null,hmDragMoved=false;
+function hmBindPop(box,isStage){
+if(!box)return;
+box.addEventListener("pointerover",function(e){
+if(e.pointerType==="touch")return;
+if(isStage&&(hmDrag||hmDragMoved))return;
+var el=hmTileEl(e);if(!el)return;
+var r=hmRowFor(el);if(!r)return;
+if(!hmpop.hidden&&!hmPopPinned&&hmPopCur===r){hmPopPos(e.clientX,e.clientY);return}
+hmPopShow(r,e.clientX,e.clientY,false);
+});
+box.addEventListener("pointermove",function(e){
+if(e.pointerType==="touch")return;
+if(hmpop.hidden||hmPopPinned)return;
+if(isStage&&hmDrag){hmPopHide();return}
+hmPopPos(e.clientX,e.clientY);
+});
+box.addEventListener("pointerout",function(e){
+if(e.pointerType==="touch"||hmPopPinned)return;
+var el=hmTileEl(e);if(!el)return;
+if(e.relatedTarget&&el.contains(e.relatedTarget))return;
+hmPopHide();
+});
+box.addEventListener("click",function(e){
+if(hmDragMoved)return;
+var el=hmTileEl(e);if(!el)return;
+var r=hmRowFor(el);if(!r)return;
+if(hmPopPinned&&hmPopCur===r){hmPopHide();return}
+hmPopShow(r,e.clientX,e.clientY,true);
+});
+}
+hmBindPop(hmEl,false);
+var hmStageEl=document.getElementById("hm-stage");
+hmBindPop(hmStageEl,true);
+if(hmStageEl){
+hmStageEl.addEventListener("pointerdown",function(e){
+hmDownPt={x:e.clientX,y:e.clientY};hmDragMoved=false;
+});
+hmStageEl.addEventListener("pointermove",function(e){
+if(hmDownPt&&Math.abs(e.clientX-hmDownPt.x)+Math.abs(e.clientY-hmDownPt.y)>8){
+hmDragMoved=true;hmPopHide();
+}
+});
+var hmDownEnd=function(){
+hmDownPt=null;
+setTimeout(function(){hmDragMoved=false},0);
+};
+hmStageEl.addEventListener("pointerup",hmDownEnd);
+hmStageEl.addEventListener("pointercancel",hmDownEnd);
+}
+document.addEventListener("pointerdown",function(e){
+if(hmpop.hidden)return;
+var t=e.target;
+if(t&&typeof t.closest==="function"&&(t.closest(".cxhmt")||t.closest(".hmpop")))return;
+hmPopHide();
+},true);
+window.addEventListener("scroll",function(){if(hmPopPinned)hmPopHide()},{passive:true,capture:true});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")hmPopHide()});
 function drawHm(){
 if(!hmEl||!hmItems)return;
 var rg=reg();if(!rg)return;
@@ -4898,6 +5038,8 @@ if(!(total>0))return;
 var sc=W*H/total;
 var nodes=hmItems.map(function(r){return {r:r,a:r.v*sc}});
 var rects=[];hmLayout(nodes,0,0,W,H,rects);
+hmPopHide();
+hmPopMap={};for(i=0;i<hmItems.length;i++)hmPopMap[hmItems[i].s]=hmItems[i];
 var html="";
 for(i=0;i<rects.length;i++){
 var rc=rects[i],r=rc.n.r;
@@ -4909,13 +5051,14 @@ if(w>=34&&h>=20){
 inner="<b style=\"font-size:"+fs+"px\">"+rg.esc(r.s)+"</b>";
 if(h>=40)inner+="<span style=\"font-size:"+Math.max(9,fs-3)+"px\">"+(isFinite(r.c)?(r.c>0?"+":"")+r.c.toFixed(2)+"%":"—")+"</span>";
 }
-html+="<div class=\"cxhmt\" title=\""+rg.esc(r.s)+(isFinite(r.c)?" "+(r.c>0?"+":"")+r.c.toFixed(2)+"%":"")+"\" style=\"left:"+rc.x.toFixed(1)+"px;top:"+rc.y.toFixed(1)+"px;width:"+w.toFixed(1)+"px;height:"+h.toFixed(1)+"px;"+hmColor(r.c)+"\">"+inner+"</div>";
+html+="<div class=\"cxhmt\" data-hms=\""+rg.esc(r.s)+"\" style=\"left:"+rc.x.toFixed(1)+"px;top:"+rc.y.toFixed(1)+"px;width:"+w.toFixed(1)+"px;height:"+h.toFixed(1)+"px;"+hmColor(r.c)+"\">"+inner+"</div>";
 }
 hmEl.innerHTML=html;
 }
 function paintHm(state){
 if(!hmEl)return;
 if(state){
+hmPopHide();
 hmItems=null;
 if(hmN)hmN.textContent="";
 hmEl.innerHTML='<div class="cxhm-msg">'+(state==="err"?"불러오지 못했어요":state==="empty"?"표시할 종목이 없어요":"불러오는 중…")+"</div>";
@@ -5019,6 +5162,8 @@ hmRenderTiles();
 function hmRenderTiles(){
 if(!hmRects||!hmCanvas)return;
 var rg=reg();if(!rg)return;
+hmPopHide();
+hmPopMap={};for(var mi=0;mi<hmRects.length;mi++)hmPopMap[hmRects[mi].n.r.s]=hmRects[mi].n.r;
 var html="";
 for(var i=0;i<hmRects.length;i++){
 var rc=hmRects[i],r=rc.n.r;
@@ -5032,7 +5177,7 @@ var fsR=Math.max(8.5,Math.min(21,Math.min(ew/4.4,eh/2.3)));
 inner="<b style=\"font-size:"+(fsR/hmZ).toFixed(1)+"px\">"+rg.esc(r.s)+"</b>";
 if(eh>=36)inner+="<span style=\"font-size:"+(Math.max(8.5,fsR-3)/hmZ).toFixed(1)+"px\">"+(isFinite(r.c)?(r.c>0?"+":"")+r.c.toFixed(2)+"%":"—")+"</span>";
 }
-html+="<div class=\"cxhmt\" title=\""+rg.esc(r.s)+" "+rg.esc(rg.fp(r.p))+(isFinite(r.c)?" "+(r.c>0?"+":"")+r.c.toFixed(2)+"%":"")+"\" style=\"left:"+rc.x.toFixed(1)+"px;top:"+rc.y.toFixed(1)+"px;width:"+w.toFixed(1)+"px;height:"+h.toFixed(1)+"px;"+hmColor(r.c)+"\">"+inner+"</div>";
+html+="<div class=\"cxhmt\" data-hms=\""+rg.esc(r.s)+"\" style=\"left:"+rc.x.toFixed(1)+"px;top:"+rc.y.toFixed(1)+"px;width:"+w.toFixed(1)+"px;height:"+h.toFixed(1)+"px;"+hmColor(r.c)+"\">"+inner+"</div>";
 }
 hmCanvas.innerHTML=html;
 }
