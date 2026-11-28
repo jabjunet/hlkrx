@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D 시장 스트레스 레이더 | 김프원</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#0B0E14}
+  body{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',sans-serif;color:#E6EAF2;padding:18px;-webkit-font-smoothing:antialiased}
+  .num{font-variant-numeric:tabular-nums}
+  .wrap{max-width:1240px;margin:0 auto}
+  .card{background:#131720;border:1px solid #1E2430;border-radius:18px;padding:18px}
+  .card-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .card-head h2{font-size:17px;font-weight:800;letter-spacing:-.02em}
+  .card-head .en{font-size:11px;color:#5B6577;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+  .tag{font-size:10.5px;font-weight:700;color:#F59E0B;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);padding:2px 8px;border-radius:99px}
+  .head-right{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:11.5px;color:#8A93A6}
+  .live-dot{width:8px;height:8px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 0 rgba(34,197,94,.5);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.45)}70%{box-shadow:0 0 0 7px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+  .layout{display:flex;gap:16px;align-items:stretch}
+  /* ---------- 3D stage ---------- */
+  .stage{position:relative;flex:1 1 auto;min-width:0;height:540px;background:radial-gradient(120% 90% at 50% 0%,#101623 0%,#0D1119 55%,#0A0D13 100%);border:1px solid #1E2430;border-radius:14px;overflow:hidden}
+  .stage canvas{display:block}
+  .stage-hint{position:absolute;left:12px;bottom:10px;font-size:11px;color:#4C5568;pointer-events:none}
+  .axis-label{position:absolute;transform:translate(-50%,-100%);text-align:center;pointer-events:auto;cursor:pointer;user-select:none;-webkit-user-select:none;transition:opacity .25s;z-index:5;padding:2px 4px}
+  .axis-label .nm{font-size:12.5px;font-weight:700;color:#DCE3EF;text-shadow:0 1px 6px rgba(0,0,0,.8);white-space:nowrap}
+  .axis-label .sc{font-size:15px;font-weight:800;line-height:1.15;text-shadow:0 1px 8px rgba(0,0,0,.85)}
+  .axis-label.dim{opacity:.35}
+  .axis-label:hover .nm{color:#fff}
+  /* ---------- briefing ---------- */
+  .brief{width:364px;flex:0 0 364px;display:flex;flex-direction:column;gap:12px;min-width:0}
+  .panel{background:#0E1219;border:1px solid #1E2430;border-radius:14px;padding:14px 16px}
+  .comp-top{display:flex;align-items:flex-end;gap:10px}
+  .comp-label{font-size:12px;color:#8A93A6;font-weight:700}
+  .comp-score{font-size:42px;font-weight:800;line-height:1;letter-spacing:-.03em}
+  .comp-score small{font-size:15px;color:#5B6577;font-weight:700}
+  .zone-chip{font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:99px;margin-bottom:4px}
+  .gauge{margin-top:12px;height:8px;border-radius:99px;background:linear-gradient(90deg,#3182F6 0%,#00D2FF 40%,#F59E0B 41%,#F59E0B 70%,#F04452 71%,#F04452 100%);position:relative;opacity:.9}
+  .gauge .marker{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid #0E1219;transform:translate(-50%,-50%);box-shadow:0 0 10px rgba(255,255,255,.55)}
+  .gauge-scale{display:flex;justify-content:space-between;font-size:10px;color:#4C5568;margin-top:5px;font-weight:600}
+  .panel h3{font-size:12px;color:#8A93A6;font-weight:800;letter-spacing:.02em;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .row{display:flex;align-items:center;gap:10px;padding:10px 8px;border-bottom:1px solid #1A1F2B;border-radius:8px;cursor:pointer;transition:background .15s}
+  .row:last-child{border-bottom:none}
+  .row:hover{background:#171C28}
+  .row .rank{width:20px;height:20px;border-radius:6px;background:#1B2231;color:#9FB4D8;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .row .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+  .row .main{flex:1 1 auto;min-width:0}
+  .row .nm{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .row .nt{font-size:11px;color:#7A8499;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .row .val{font-size:15px;font-weight:800;text-align:right}
+  .row .val small{display:block;font-size:10.5px;font-weight:700;margin-top:1px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-size:11.5px;font-weight:700;padding:5px 9px;border-radius:99px;background:#151A26;border:1px solid #232B3D;cursor:pointer;transition:all .15s;color:#B9C2D4}
+  .chip:hover{border-color:#3D4A66;color:#fff}
+  .chip b{margin-left:4px}
+  .chip.on{border-color:currentColor;background:#1A2130;color:#fff}
+  .back-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#9FB4D8;background:#151A26;border:1px solid #232B3D;border-radius:8px;padding:5px 10px;cursor:pointer;margin-bottom:8px}
+  .back-btn:hover{color:#fff;border-color:#3D4A66}
+  .detail-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .detail-head .nm{font-size:16px;font-weight:800}
+  .drow{display:flex;align-items:center;gap:8px;padding:9px 2px;border-bottom:1px solid #1A1F2B}
+  .drow:last-child{border-bottom:none}
+  .drow .dot{width:7px;height:7px;border-radius:50%;flex:0 0 auto}
+  .drow .lb{flex:1 1 auto;font-size:13px;color:#C3CADB;font-weight:600;min-width:0}
+  .drow .vl{font-size:13.5px;font-weight:800;text-align:right;white-space:nowrap}
+  .drow .nt{font-size:10.5px;color:#69738A;text-align:right;white-space:nowrap}
+  .hidden{display:none!important}
+  .foot-note{font-size:11px;color:#4C5568;line-height:1.5;padding:0 2px}
+  @media (max-width:920px){
+    .layout{flex-direction:column}
+    .stage{height:420px;flex:none}
+    .brief{width:auto;flex:none}
+  }
+  @media (max-width:520px){
+    body{padding:10px}
+    .card{padding:12px}
+    .stage{height:350px}
+    .axis-label .nm{font-size:11px}
+    .axis-label .sc{font-size:13px}
+    .comp-score{font-size:34px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="card-head">
+      <h2>3D 시장 스트레스 레이더</h2>
+      <span class="en">Dynamic Market Stress Radar</span>
+      <span class="tag">샘플 데이터</span>
+      <div class="head-right"><span class="live-dot"></span><span>실시간</span><span class="num" id="clock">--:--:--</span></div>
+    </div>
+    <div class="layout">
+      <div class="stage" id="stage">
+        <div class="stage-hint">마우스를 움직여보세요 · 축을 클릭하면 우측에 세부 지표가 표시됩니다</div>
+      </div>
+      <div class="brief">
+        <div class="panel">
+          <div class="comp-top">
+            <div>
+              <div class="comp-label">시장 스트레스 종합 지수</div>
+              <div class="comp-score num">64<small> / 100</small></div>
+            </div>
+            <span class="zone-chip" style="color:#F59E0B;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35)">경계 구간</span>
+          </div>
+          <div class="gauge"><div class="marker" style="left:64%"></div></div>
+          <div class="gauge-scale"><span>0 안전</span><span>40</span><span>70</span><span>100 위험</span></div>
+        </div>
+
+        <div class="panel" id="briefMain">
+          <h3>⚠ 스트레스 상위 지표</h3>
+          <div id="top3"></div>
+          <h3 style="margin-top:12px">전체 축</h3>
+          <div class="chips" id="axisChips"></div>
+        </div>
+
+        <div class="panel hidden" id="briefDetail">
+          <button class="back-btn" id="backBtn">← 종합 브리핑</button>
+          <div class="detail-head"><span class="nm" id="dName"></span><span class="zone-chip" id="dChip"></span></div>
+          <div id="dRows"></div>
+        </div>
+
+        <div class="foot-note">6개 거시 축의 스트레스 점수(0~100)를 3D 지형으로 표시합니다. 위험 구간(71+) 축에서는 붉은 파동이 퍼져나갑니다.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+"use strict";
+/* ================= 데이터 ================= */
+var AXES=[
+ {key:'rate', name:'금리 압박', score:72, details:[
+   ['미국 10년물 금리','4.94%','전일 +7bp',3],
+   ['미국 2년물 금리','4.63%','2s10s +29bp',2],
+   ['FOMC 기준금리','3.88%','동결 · 인상 시사',2],
+   ['한국 기준금리','3.25%','11/26 인상 (5:2)',2],
+   ['모기지 30년 금리','7.19%','주택시장 압박',3]]},
+ {key:'liq', name:'유동성', score:58, details:[
+   ['연준 순유동성','$5.82조','WALCL−TGA−RRP',2],
+   ['ON RRP 잔고','$0.3B','완충 소진',3],
+   ['SOFR − IORB','+2bp','IORB 상회 · 주시',2],
+   ['지급준비금','$2.96조','적정 하단 근접',2],
+   ['달러 인덱스','104.03','위험자산 역풍',2]]},
+ {key:'price', name:'물가', score:66, details:[
+   ['CPI 전년비','+3.72%','재가속 구간',3],
+   ['코어 PCE 전년비','+3.3%','예상 3.2% 상회',3],
+   ['CPI 3개월 연율','+5.7%','단기 재가속',3],
+   ['기대인플레이션 5Y','2.61%','목표 상회',2]]},
+ {key:'econ', name:'경기', score:47, details:[
+   ['실업률','4.1%','전월 대비 개선',1],
+   ['Sahm 룰','0.00','침체 신호 없음',1],
+   ['GDP 성장률','+4.3%','연율 · 예상 상회',1],
+   ['신규 실업청구','18.9만','예상 20만 하회',1],
+   ['금융여건지수 NFCI','−0.48','완화적 · 시차 지표',1]]},
+ {key:'fear', name:'시장 공포', score:78, details:[
+   ['VIX 공포지수','23.8','불안 구간',3],
+   ['하이일드 스프레드','3.76%','주간 +53bp',2],
+   ['CCC 스프레드','14.02%','22개월 확대',3],
+   ['CDX IG','8개월 최고','AI 신용군 중심',3],
+   ['풋/콜 비율','1.12','헤지 수요 증가',2]]},
+ {key:'spec', name:'투기 과열', score:63, details:[
+   ['스테이블코인 시총','$2,980억','주간 −$66억',2],
+   ['BTC ETF 자금흐름','−$5.4억','역대 최대 유출',3],
+   ['선물 미결제약정','고점比 −18%','디레버리징 진행',2],
+   ['무기한 펀딩비율','−0.008%','숏 우위 전환',2],
+   ['김치 프리미엄','+1.6%','과열 신호 약함',1]]}
+];
+var TOP3=[
+ {axis:4, nm:'VIX 공포지수', val:'23.8', note:'불안 구간', zone:3},
+ {axis:0, nm:'미국 10년물 금리', val:'4.94%', note:'전일 +7bp', zone:3},
+ {axis:1, nm:'달러 인덱스', val:'104.03', note:'위험자산 역풍', zone:2}
+];
+var ZONE_NAME=['','안전','주의','위험'];
+function zoneOf(s){return s<=40?1:(s<=70?2:3);}
+function zoneColor(s){
+  var c1=new THREE.Color('#3182F6'), c2=new THREE.Color('#00D2FF'),
+      ca=new THREE.Color('#F59E0B'), cr=new THREE.Color('#F04452');
+  if(s<=40) return c1.clone().lerp(c2, s/40);
+  if(s<=70) return ca.clone();
+  return cr.clone();
+}
+function zoneHex(s){var z=zoneOf(s);return z===1?'#00A8E8':(z===2?'#F59E0B':'#F04452');}
+function scoreAt(theta){
+  var seg=Math.PI/3, pos=theta/seg, k=Math.floor(pos)%6, u=pos-Math.floor(pos);
+  var a=AXES[k].score/100, b=AXES[(k+1)%6].score/100;
+  return a+(b-a)*(0.5-0.5*Math.cos(Math.PI*u));
+}
+function wrapAngle(a){while(a>Math.PI)a-=Math.PI*2;while(a<-Math.PI)a+=Math.PI*2;return a;}
+</script>
+<script>
+if(!window.THREE){document.getElementById('stage').innerHTML='<div style="padding:30px;color:#8A93A6;font-size:13px">3D 라이브러리를 불러오지 못했습니다. 네트워크를 확인해 주세요.</div>';throw new Error('THREE missing');}
+var stage=document.getElementById('stage');
+var R=5, FLOOR_Y=-0.55;
+var scene=new THREE.Scene();
+var camera=new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+camera.position.set(0, 8.8, 11.6);
+camera.lookAt(0, 0.1, 0);
+var renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+renderer.setClearColor(0x0C1017, 1);
+stage.appendChild(renderer.domElement);
+
+var parGroup=new THREE.Group(); scene.add(parGroup);          // 마우스 패럴랙스
+var spinGroup=new THREE.Group(); parGroup.add(spinGroup);      // 포커스 회전
+var root=new THREE.Group(); spinGroup.add(root);
+
+/* ---------- 바닥 그리드 층 ---------- */
+function hexPoints(r, y){
+  var pts=[];
+  for(var k=0;k<6;k++){var a=k*Math.PI/3;pts.push(new THREE.Vector3(Math.sin(a)*r, y, -Math.cos(a)*r));}
+  return pts;
+}
+function lineLoop(pts, color, opacity){
+  var g=new THREE.BufferGeometry().setFromPoints(pts);
+  var m=new THREE.LineBasicMaterial({color:color, transparent:true, opacity:opacity});
+  return new THREE.LineLoop(g, m);
+}
+[0.2,0.4,0.6,0.8,1.0].forEach(function(f){
+  root.add(lineLoop(hexPoints(R*f, FLOOR_Y), 0x27324A, f===1?0.95:0.55));
+});
+for(var k=0;k<6;k++){
+  var a=k*Math.PI/3, dir=new THREE.Vector3(Math.sin(a),0,-Math.cos(a));
+  var sg=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,FLOOR_Y,0), dir.clone().multiplyScalar(R)]);
+  root.add(new THREE.Line(sg, new THREE.LineBasicMaterial({color:0x232C42, transparent:true, opacity:0.7})));
+  var sg2=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0.01,0), dir.clone().multiplyScalar(R)]);
+  root.add(new THREE.Line(sg2, new THREE.LineBasicMaterial({color:0x2A3347, transparent:true, opacity:0.55})));
+}
+var floorDisc=new THREE.Mesh(new THREE.CircleGeometry(R+0.45, 64),
+  new THREE.MeshBasicMaterial({color:0x0A0E15, transparent:true, opacity:0.92, side:THREE.DoubleSide}));
+floorDisc.rotation.x=-Math.PI/2; floorDisc.position.y=FLOOR_Y-0.01; root.add(floorDisc);
+root.add(lineLoop(hexPoints(R, 0.01), 0x33405C, 0.9));
+
+/* ---------- 유동 지형 메쉬 ---------- */
+var AS=96, FR=16;
+var tPos=[], tCol=[], tIdx=[], tMeta=[];
+var deep=new THREE.Color('#0C1424');
+for(var j=0;j<=FR;j++){
+  var frac=j/FR;
+  for(var i=0;i<=AS;i++){
+    var th=i/AS*Math.PI*2, s=scoreAt(th), r=frac*R;
+    tPos.push(Math.sin(th)*r, 1.25*s*Math.pow(frac,2.2), -Math.cos(th)*r);
+    var c=zoneColor(s*100).lerp(deep, 1-frac*0.82);
+    tCol.push(c.r, c.g, c.b);
+    tMeta.push({th:th, frac:frac, base:1.25*s*Math.pow(frac,2.2)});
+  }
+}
+for(var j2=0;j2<FR;j2++)for(var i2=0;i2<AS;i2++){
+  var p=j2*(AS+1)+i2, q=p+AS+1;
+  tIdx.push(p,q,p+1, q,q+1,p+1);
+}
+var tGeo=new THREE.BufferGeometry();
+tGeo.setAttribute('position', new THREE.Float32BufferAttribute(tPos,3));
+tGeo.setAttribute('color', new THREE.Float32BufferAttribute(tCol,3));
+tGeo.setIndex(tIdx);
+var terrain=new THREE.Mesh(tGeo, new THREE.MeshBasicMaterial({vertexColors:true, transparent:true, opacity:0.94, side:THREE.DoubleSide}));
+root.add(terrain);
+var terrainWire=new THREE.Mesh(tGeo, new THREE.MeshBasicMaterial({wireframe:true, color:0x4A6FA5, transparent:true, opacity:0.13}));
+root.add(terrainWire);
+
+/* ---------- 레이더 폴리곤(채움+윤곽) ---------- */
+function axisPoint(k){
+  var s=AXES[k].score/100, a=k*Math.PI/3;
+  return {s:s, a:a, x:Math.sin(a)*s*R, z:-Math.cos(a)*s*R, y:1.25*s*Math.pow(s,2.2)};
+}
+var polyPts=[], polyCol=[];
+polyPts.push(0, 0.09, 0); polyCol.push(0.05,0.09,0.16);
+for(var pk=0;pk<6;pk++){
+  var ap=axisPoint(pk);
+  polyPts.push(ap.x, ap.y+0.07, ap.z);
+  var pc=zoneColor(AXES[pk].score); polyCol.push(pc.r,pc.g,pc.b);
+}
+var polyGeo=new THREE.BufferGeometry();
+polyGeo.setAttribute('position', new THREE.Float32BufferAttribute(polyPts,3));
+polyGeo.setAttribute('color', new THREE.Float32BufferAttribute(polyCol,3));
+polyGeo.setIndex([0,1,2, 0,2,3, 0,3,4, 0,4,5, 0,5,6, 0,6,1]);
+var poly=new THREE.Mesh(polyGeo, new THREE.MeshBasicMaterial({vertexColors:true, transparent:true, opacity:0.30, side:THREE.DoubleSide, depthWrite:false}));
+root.add(poly);
+var outlinePts=[];
+for(var ok=0;ok<6;ok++){var op=axisPoint(ok); outlinePts.push(new THREE.Vector3(op.x, op.y+0.09, op.z));}
+root.add(lineLoop(outlinePts, 0xE8EEF7, 0.75));
+
+/* ---------- 기둥 + 노드 + 글로우 ---------- */
+function glowTexture(){
+  var cv=document.createElement('canvas'); cv.width=cv.height=128;
+  var ctx=cv.getContext('2d');
+  var g=ctx.createRadialGradient(64,64,2,64,64,64);
+  g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(0.25,'rgba(255,255,255,.55)');
+  g.addColorStop(0.6,'rgba(255,255,255,.14)'); g.addColorStop(1,'rgba(255,255,255,0)');
+  ctx.fillStyle=g; ctx.fillRect(0,0,128,128);
+  return new THREE.CanvasTexture(cv);
+}
+var glowTex=glowTexture();
+var pillars=[], nodes=[], glows=[], hitMeshes=[], ripples=[];
+var pillarGeo=new THREE.CylinderGeometry(0.085, 0.115, 1, 20); pillarGeo.translate(0, 0.5, 0);
+for(var k2=0;k2<6;k2++){
+  (function(k){
+    var ax=AXES[k], pt=axisPoint(k), col=zoneColor(ax.score);
+    var h=0.75+(ax.score/100)*1.45;
+    var pm=new THREE.Mesh(pillarGeo, new THREE.MeshBasicMaterial({color:col, transparent:true, opacity:0.88}));
+    pm.position.set(pt.x, pt.y, pt.z); pm.scale.y=h; pm.userData={axis:k, h:h, baseY:pt.y};
+    root.add(pm); pillars.push(pm);
+    var nm=new THREE.Mesh(new THREE.SphereGeometry(0.15, 20, 14),
+      new THREE.MeshBasicMaterial({color:col, transparent:true, opacity:0.98}));
+    nm.position.set(pt.x, pt.y+h+0.08, pt.z); root.add(nm); nodes.push(nm);
+    var sm=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex, color:col, transparent:true, opacity:0.6, blending:THREE.AdditiveBlending, depthWrite:false}));
+    sm.position.copy(nm.position); sm.scale.set(1.15,1.15,1); root.add(sm); glows.push(sm);
+    var hit=new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.55,h+1.3,10),
+      new THREE.MeshBasicMaterial({transparent:true, opacity:0, depthWrite:false, colorWrite:false}));
+    hit.position.set(pt.x, pt.y+(h+1.3)/2-0.4, pt.z); hit.userData={axis:k};
+    root.add(hit); hitMeshes.push(hit);
+    if(ax.score>=71){
+      for(var ri=0;ri<2;ri++){
+        var ring=new THREE.Mesh(new THREE.RingGeometry(0.34,0.42,44),
+          new THREE.MeshBasicMaterial({color:0xF04452, transparent:true, opacity:0.4, side:THREE.DoubleSide, depthWrite:false}));
+        ring.rotation.x=-Math.PI/2; ring.position.set(pt.x, pt.y+0.04, pt.z);
+        ring.userData={off:ri*0.5};
+        root.add(ring); ripples.push(ring);
+      }
+    }
+  })(k2);
+}
+
+/* ---------- 스캔 빔 (수직 커튼 + 바닥 웨지) ---------- */
+function beamTexture(){
+  var cv=document.createElement('canvas'); cv.width=256; cv.height=256;
+  var ctx=cv.getContext('2d');
+  var g=ctx.createLinearGradient(0,0,256,0);
+  g.addColorStop(0,'rgba(0,170,255,0)'); g.addColorStop(0.55,'rgba(0,190,255,.10)');
+  g.addColorStop(0.92,'rgba(140,230,255,.5)'); g.addColorStop(1,'rgba(220,250,255,.9)');
+  ctx.fillStyle=g; ctx.fillRect(0,0,256,256);
+  ctx.globalCompositeOperation='destination-out';
+  var v=ctx.createLinearGradient(0,0,0,256);
+  v.addColorStop(0,'rgba(0,0,0,1)'); v.addColorStop(0.45,'rgba(0,0,0,.25)'); v.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=v; ctx.fillRect(0,0,256,256);
+  return new THREE.CanvasTexture(cv);
+}
+var beamGroup=new THREE.Group(); root.add(beamGroup);
+var beamGeo=new THREE.PlaneGeometry(R, 3.1); beamGeo.translate(R/2, 0, 0);
+var beam=new THREE.Mesh(beamGeo, new THREE.MeshBasicMaterial({map:beamTexture(), transparent:true, opacity:0.85, side:THREE.DoubleSide, blending:THREE.AdditiveBlending, depthWrite:false}));
+beam.position.y=1.0; beamGroup.add(beam);
+function wedgeTexture(){
+  var cv=document.createElement('canvas'); cv.width=cv.height=256;
+  var ctx=cv.getContext('2d'); ctx.translate(128,128);
+  for(var i=0;i<44;i++){
+    var a0=-0.30+i*(0.60/44), al=0.17*(1-Math.abs(i/43-0.5)*2);
+    ctx.beginPath(); ctx.moveTo(0,0);
+    ctx.arc(0,0,128, a0, a0+(0.60/44)+0.01); ctx.closePath();
+    ctx.fillStyle='rgba(0,190,255,'+al.toFixed(3)+')'; ctx.fill();
+  }
+  ctx.globalCompositeOperation='destination-out';
+  var rg=ctx.createRadialGradient(0,0,40,0,0,128);
+  rg.addColorStop(0,'rgba(0,0,0,0)'); rg.addColorStop(1,'rgba(0,0,0,0.9)');
+  ctx.fillStyle=rg; ctx.fillRect(-128,-128,256,256);
+  return new THREE.CanvasTexture(cv);
+}
+var wedge=new THREE.Mesh(new THREE.CircleGeometry(R+0.4, 48),
+  new THREE.MeshBasicMaterial({map:wedgeTexture(), transparent:true, opacity:0.8, blending:THREE.AdditiveBlending, depthWrite:false, side:THREE.DoubleSide}));
+wedge.rotation.x=-Math.PI/2; wedge.position.y=FLOOR_Y+0.03;
+beamGroup.add(wedge);
+</script>
+<script>
+/* ================= 라벨 + 우측 브리핑 ================= */
+var ZHEX={1:'#38BDF8',2:'#F59E0B',3:'#F04452'};
+var hoverAxis=null, selectedAxis=null;
+var labels=[];
+for(var lk=0;lk<6;lk++){
+  (function(k){
+    var d=document.createElement('div');
+    d.className='axis-label';
+    d.innerHTML='<div class="nm">'+AXES[k].name+'</div><div class="sc num" style="color:'+zoneHex(AXES[k].score)+'">'+AXES[k].score+'</div>';
+    d.addEventListener('mouseenter',function(){hoverAxis=k;refreshFocus();});
+    d.addEventListener('mouseleave',function(){hoverAxis=null;refreshFocus();});
+    d.addEventListener('click',function(){openDetail(k);});
+    stage.appendChild(d); labels.push(d);
+  })(lk);
+}
+var top3El=document.getElementById('top3');
+TOP3.forEach(function(it, idx){
+  var ax=AXES[it.axis];
+  var row=document.createElement('div'); row.className='row';
+  row.innerHTML='<span class="rank">'+(idx+1)+'</span><span class="dot" style="background:'+ZHEX[it.zone]+'"></span>'+
+    '<span class="main"><span class="nm">'+it.nm+'</span><div class="nt">'+ax.name+'</div></span>'+
+    '<span class="val num" style="color:'+ZHEX[it.zone]+'">'+it.val+'<small>'+it.note+'</small></span>';
+  row.addEventListener('mouseenter',function(){hoverAxis=it.axis;refreshFocus();});
+  row.addEventListener('mouseleave',function(){hoverAxis=null;refreshFocus();});
+  row.addEventListener('click',function(){openDetail(it.axis);});
+  top3El.appendChild(row);
+});
+var chipsEl=document.getElementById('axisChips');
+AXES.forEach(function(ax, k){
+  var c=document.createElement('span'); c.className='chip'; c.dataset.axis=k;
+  c.innerHTML=ax.name+'<b class="num" style="color:'+zoneHex(ax.score)+'">'+ax.score+'</b>';
+  c.addEventListener('mouseenter',function(){hoverAxis=k;refreshFocus();});
+  c.addEventListener('mouseleave',function(){hoverAxis=null;refreshFocus();});
+  c.addEventListener('click',function(){openDetail(k);});
+  chipsEl.appendChild(c);
+});
+function openDetail(k){
+  selectedAxis=k;
+  var ax=AXES[k], z=zoneOf(ax.score);
+  document.getElementById('dName').textContent=ax.name;
+  var chip=document.getElementById('dChip');
+  chip.textContent='스트레스 '+ax.score+' · '+ZONE_NAME[z]+' 구간';
+  chip.style.color=ZHEX[z];
+  chip.style.background='rgba(255,255,255,.04)';
+  chip.style.border='1px solid '+ZHEX[z];
+  var rows=document.getElementById('dRows'); rows.innerHTML='';
+  ax.details.forEach(function(d){
+    var r=document.createElement('div'); r.className='drow';
+    r.innerHTML='<span class="dot" style="background:'+ZHEX[d[3]]+'"></span><span class="lb">'+d[0]+'</span>'+
+      '<span><span class="vl num">'+d[1]+'</span><div class="nt">'+d[2]+'</div></span>';
+    rows.appendChild(r);
+  });
+  document.getElementById('briefMain').classList.add('hidden');
+  document.getElementById('briefDetail').classList.remove('hidden');
+  refreshFocus();
+}
+document.getElementById('backBtn').addEventListener('click',function(){
+  selectedAxis=null;
+  document.getElementById('briefDetail').classList.add('hidden');
+  document.getElementById('briefMain').classList.remove('hidden');
+  refreshFocus();
+});
+
+/* ================= 포커스/패럴랙스 상태 ================= */
+var spinCur=0, spinTarget=0, parRXc=0, parRYc=0, parRXt=0, parRYt=0;
+function focusAxis(){return hoverAxis!==null?hoverAxis:selectedAxis;}
+function refreshFocus(){
+  var f=focusAxis();
+  if(f===null){ spinTarget=spinCur+wrapAngle(0-spinCur); }
+  else{ var desired=Math.PI-f*Math.PI/3; spinTarget=spinCur+wrapAngle(desired-spinCur); }
+  labels.forEach(function(l,k){ l.classList.toggle('dim', f!==null&&f!==k); });
+  chipsEl.querySelectorAll('.chip').forEach(function(c){
+    c.classList.toggle('on', selectedAxis!==null && +c.dataset.axis===selectedAxis);
+  });
+}
+stage.addEventListener('mousemove',function(e){
+  var r=stage.getBoundingClientRect();
+  var mx=((e.clientX-r.left)/r.width)*2-1, my=((e.clientY-r.top)/r.height)*2-1;
+  parRYt=mx*0.14; parRXt=my*0.10;
+});
+stage.addEventListener('mouseleave',function(){parRXt=0;parRYt=0;});
+var raycaster=new THREE.Raycaster(), mouseV=new THREE.Vector2();
+renderer.domElement.addEventListener('pointerdown',function(e){
+  var r=renderer.domElement.getBoundingClientRect();
+  mouseV.x=((e.clientX-r.left)/r.width)*2-1;
+  mouseV.y=-((e.clientY-r.top)/r.height)*2+1;
+  raycaster.setFromCamera(mouseV, camera);
+  var hits=raycaster.intersectObjects(hitMeshes);
+  if(hits.length) openDetail(hits[0].object.userData.axis);
+});
+
+/* ================= 시계/리사이즈 ================= */
+function tickClock(){
+  var el=document.getElementById('clock');
+  if(el) el.textContent=new Date().toLocaleTimeString('ko-KR',{hour12:false});
+}
+tickClock(); setInterval(tickClock,1000);
+function resize(){
+  var w=stage.clientWidth, h=stage.clientHeight;
+  if(!w||!h) return;
+  renderer.setSize(w,h);
+  camera.aspect=w/h; camera.updateProjectionMatrix();
+}
+window.addEventListener('resize',resize);
+if(window.ResizeObserver) new ResizeObserver(resize).observe(stage);
+resize();
+
+/* ================= 애니메이션 ================= */
+var RM=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var waveAmp=RM?0.3:1, beamSpeed=RM?0.15:0.45;
+var beamAngle=0, boost=[0,0,0,0,0,0];
+var clk=new THREE.Clock();
+var projV=new THREE.Vector3();
+function updateLabels(){
+  var w=stage.clientWidth, h=stage.clientHeight;
+  for(var k=0;k<6;k++){
+    nodes[k].getWorldPosition(projV);
+    projV.y+=0.62; projV.project(camera);
+    var l=labels[k];
+    if(projV.z>1){ l.style.opacity='0'; continue; }
+    l.style.opacity='';
+    l.style.left=((projV.x*0.5+0.5)*w)+'px';
+    l.style.top=((-projV.y*0.5+0.5)*h)+'px';
+  }
+}
+function animate(){
+  requestAnimationFrame(animate);
+  var dt=Math.min(clk.getDelta(),0.05), t=clk.elapsedTime;
+  var pos=tGeo.attributes.position;
+  for(var i=0;i<tMeta.length;i++){
+    var m=tMeta[i];
+    pos.array[i*3+1]=m.base+(Math.sin(t*1.7+m.th*2+m.frac*5)*0.05+Math.cos(t*1.15-m.th*3+m.frac*3.5)*0.035)*(0.25+0.75*m.frac)*waveAmp;
+  }
+  pos.needsUpdate=true;
+  beamAngle+=dt*beamSpeed; beamGroup.rotation.y=beamAngle;
+  var psi=Math.PI/2-beamAngle;
+  spinCur+=(spinTarget-spinCur)*0.055; spinGroup.rotation.y=spinCur;
+  parRXc+=(parRXt-parRXc)*0.06; parRYc+=(parRYt-parRYc)*0.06;
+  parGroup.rotation.x=parRXc; parGroup.rotation.y=parRYc;
+  var f=focusAxis();
+  for(var k=0;k<6;k++){
+    var d=Math.abs(wrapAngle(psi-k*Math.PI/3));
+    var beamB=Math.pow(Math.max(0,1-d/0.5),2)*0.9;
+    var target=Math.max(beamB, f===k?1:0);
+    boost[k]+=(target-boost[k])*0.18;
+    var pm=pillars[k], sy=pm.userData.h*(1+0.22*boost[k]);
+    pm.scale.y=sy;
+    nodes[k].position.y=pm.userData.baseY+sy+0.08;
+    glows[k].position.copy(nodes[k].position);
+    var gs=1.15+1.5*boost[k]; glows[k].scale.set(gs,gs,1);
+    glows[k].material.opacity=0.5+0.5*boost[k];
+    var tOp=(f===null||f===k)?0.88:0.30;
+    pm.material.opacity+=(tOp-pm.material.opacity)*0.15;
+    nodes[k].material.opacity=(f===null||f===k)?0.98:0.38;
+  }
+  for(var ri2=0;ri2<ripples.length;ri2++){
+    var rp=ripples[ri2], ph=(t*0.45+rp.userData.off)%1, sc=0.5+ph*2.6;
+    rp.scale.set(sc,sc,sc);
+    rp.material.opacity=(1-ph)*0.5;
+  }
+  updateLabels();
+  renderer.render(scene,camera);
+}
+animate();
+</script>
+</body>
+</html>

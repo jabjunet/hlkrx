@@ -3034,6 +3034,11 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </div>
 <div class="ixtiles" id="ixtiles" aria-label="지수"></div>
 </div>
+<div id="radarBox" style="margin-top:14px">
+<div id="radarLoading" style="padding:36px 16px;text-align:center;color:var(--mut);font-size:14px">3D 스트레스 레이더 불러오는 중…</div>
+<iframe id="radarFrame" title="3D 시장 스트레스 레이더" data-src="https://kimpwon.com/radar.html" style="width:100%;border:0;display:block;height:82vh"></iframe>
+</div>
+<script>(function(){var sec=document.getElementById("ph"),fr=document.getElementById("radarFrame"),ld=document.getElementById("radarLoading"),done=false;function fit(){try{var d=fr.contentDocument;if(!d||!d.body)return;var h=Math.max(d.body.scrollHeight,d.documentElement?d.documentElement.scrollHeight:0);if(h&&Math.abs(h-(parseInt(fr.style.height)||0))>2)fr.style.height=h+"px";}catch(e){}}function onLoad(){if(ld)ld.style.display="none";fit();var n=0;var iv=setInterval(function(){fit();if(++n>40)clearInterval(iv);},500);}function load(){if(done)return;done=true;fr.addEventListener("load",onLoad);fr.src=fr.getAttribute("data-src");}window.addEventListener("resize",fit);if(window.MutationObserver&&sec){new MutationObserver(function(){if(!sec.hidden)setTimeout(fit,300);}).observe(sec,{attributes:true,attributeFilter:["hidden"]});}load();})();</script>
 <div class="hmsrc" aria-hidden="true">
 <div class="hewbox" id="hew-box"><div id="he-list"><div class="hmvempty">불러오는 중…</div></div></div>
 <span class="heupd" id="he-upd"></span>
